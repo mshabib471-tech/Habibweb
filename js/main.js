@@ -51,7 +51,7 @@ const installButton = document.getElementById('install-app-btn');
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
   deferredPrompt = event;
-  installButton.hidden = false;
+  if (installButton) installButton.hidden = false;
 });
 installButton?.addEventListener('click', async () => {
   if (!deferredPrompt) return;
@@ -86,7 +86,8 @@ chatBack?.addEventListener('click', () => chatPopup.hidden = true);
 chatSend?.addEventListener('click', () => {
   const message = chatInput.value.trim();
   if (!message) return;
-  chatLog.insertAdjacentHTML('beforeend', `<p class="me">${message}</p>`);
+  const safeMessage = message.replace(/[&<>'\"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  chatLog.insertAdjacentHTML('beforeend', `<p class="me">${safeMessage}</p>`);
   chatLog.insertAdjacentHTML('beforeend', '<p class="bot">ধন্যবাদ! দ্রুত support এর জন্য WhatsApp: 01868461577.</p>');
   chatInput.value = '';
   chatLog.scrollTop = chatLog.scrollHeight;

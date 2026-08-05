@@ -1,423 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serenity Spaces - Modern Home Design</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Bodoni+Moda:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habib | Mobile Service & Shop</title>
+  <meta name="theme-color" content="#0f1726">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header Navigation -->
-    <header class="header">
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">
-                    <h1>Serenity Spaces</h1>
-                </div>
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li><a href="#collections" class="nav-link">Collections</a></li>
-                    <li><a href="#services" class="nav-link">Services</a></li>
-                    <li><a href="#about" class="nav-link">About</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
-                </ul>
-                <div class="nav-icons">
-                    <a href="#cart" class="icon-btn">
-                        <i class="fas fa-shopping-bag"></i>
-                        <span class="badge">0</span>
-                    </a>
-                    <a href="#account" class="icon-btn">
-                        <i class="fas fa-user"></i>
-                    </a>
-                    <button class="mobile-menu-btn" id="mobileMenuBtn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </nav>
-        </div>
-    </header>
+  <button class="menu-toggle" aria-label="Toggle menu">MENU <i class="fa fa-bars"></i></button>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <p class="hero-subtitle">BESPOKE INTERIOR DESIGN</p>
-                    <h2 class="hero-title">Habibur Rahman</h2>
-                    <p class="hero-tagline">— Independent Interior Designer —</p>
-                    <p class="hero-description">
-                        With a passion for creating spaces that inspire, I specialize in transforming houses into personalized sanctuaries. 
-                        My approach blends timeless elegance with contemporary functionality, ensuring every design reflects your unique 
-                        lifestyle and aesthetic vision. Let's craft a home that tells your story.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#collections" class="btn btn-primary">Explore Portfolio</a>
-                        <a href="#contact" class="btn btn-secondary">Book Consultation</a>
-                    </div>
-                    <div class="designer-signature">
-                        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 20 Q 20 5, 35 20 T 65 20 Q 80 30, 95 20 L 115 25" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                </div>
-                <div class="hero-image designer-portrait">
-                    <img src="https://i.ibb.co.com/hRqSPqrQ/image.png" alt="Sophia Chen - Interior Designer Portrait">
-                </div>
-            </div>
+  <aside class="sidebar glass">
+    <div class="brand"><span class="dot"></span> Habibur Rahman</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="assets/downloads/TecnoChain-CV.pdf">Downloads CV</a>
+      <a href="#contact">Contact</a>
+      <a href="#works">Quick Links</a>
+      <a href="shop.html">Shop</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a id="sidebar-admin-link" href="admin.html" hidden>Admin Panel</a>
+      <a id="sidebar-login-link" href="login.html">Login</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="top-actions panel glass">
+      <button id="theme-toggle" class="btn-soft" type="button"><i class="fa-solid fa-circle-half-stroke"></i> Toggle Theme</button>
+      <a id="login-link" class="btn-soft" href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+      <div id="user-menu" class="user-menu" hidden>
+        <button id="avatar-btn" class="avatar-btn" type="button" aria-haspopup="true" aria-expanded="false">
+          <img id="avatar-img" src="" alt="User avatar">
+          <span id="avatar-name"></span>
+        </button>
+        <div id="avatar-popup" class="avatar-popup" hidden>
+          <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+          <a id="admin-link" href="admin.html" hidden><i class="fa-solid fa-user-shield"></i> Admin Panel</a>
+          <button id="logout-btn" type="button"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
         </div>
+      </div>
+    </div>
+
+    <section id="home" class="panel login-style glass reveal">
+      <div class="left-pane">
+        <p class="eyebrow">Habib Mobile Solution</p>
+        <h1>Trusted <span>Top one Service</span> For Bangladesh</h1>
+        <p class="lead">আমরা বাংলাদেশ জুড়ে professional mobile servicing, software solution, original accessories support এবং trusted after-sales care দিচ্ছি। দ্রুত support, verified service, সব এখন একসাথে।</p>
+        <div class="cta-row">
+          <button id="install-app-btn" class="btn-primary" type="button" hidden>Install App <i class="fa-solid fa-mobile-screen-button"></i></button>
+          <a href="shop.html" class="btn-soft">Open Shop <i class="fa-solid fa-cart-shopping"></i></a>
+          <a href="https://wa.me/8801868461577?text=Hi%20Habib%2C%20I%20want%20to%20book%20a%20mobile%20service." class="btn-soft" target="_blank" rel="noopener">Book on WhatsApp <i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+        <div class="quick-icons">
+          <span><i class="fa-solid fa-bolt"></i> Fast delivery</span>
+          <span><i class="fa-solid fa-certificate"></i> Genuine parts</span>
+          <span><i class="fa-solid fa-shield-heart"></i> Service warranty</span>
+        </div>
+      </div>
+      <div class="right-pane">
+        <img src="https://i.ibb.co.com/hRqSPqrQ/image.png" alt="TecnoChain technician portrait">
+      </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-pencil-ruler"></i>
-                    </div>
-                    <h3>Personalized Approach</h3>
-                    <p>One-on-one collaboration with a dedicated designer who understands your vision</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h3>Artistic Curation</h3>
-                    <p>Handpicked furnishings and décor that blend aesthetics with functionality</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h3>Thoughtful Design</h3>
-                    <p>Sustainable choices that honor both beauty and environmental responsibility</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-gem"></i>
-                    </div>
-                    <h3>Boutique Service</h3>
-                    <p>Intimate attention to detail with limited projects for quality assurance</p>
-                </div>
-            </div>
-        </div>
+    <section id="services" class="panel glass reveal service-zone">
+      <div class="section-head"><h2>Mobile Services <span>Available</span></h2><p>Brand-wise updated services.</p></div>
+      <div class="service-grid brand-grid">
+        <button class="service-card brand-card" data-target="s1"><i class="fa-brands fa-apple"></i><strong>Apple</strong><em>Premium</em><small>iCloud support • Software fix</small></button>
+        <button class="service-card brand-card" data-target="s2"><i class="fa-solid fa-mobile"></i><strong>Samsung</strong><em>Advanced</em><small>FRP • Knox • Firmware</small></button>
+        <button class="service-card brand-card" data-target="s3"><i class="fa-solid fa-bolt"></i><strong>Xiaomi</strong><em>Popular</em><small>Unlock • Flash • Account fix</small></button>
+        <button class="service-card brand-card" data-target="s4"><i class="fa-solid fa-shield-halved"></i><strong>Huawei</strong><em>Pro</em><small>Boot fix • FRP remove</small></button>
+      </div>
+      <div class="service-details glass" id="service-detail-box"><h4 id="service-title">Select a brand service</h4><p id="service-text">click card see service detail</p></div>
     </section>
 
-    <!-- Collections Section -->
-    <section class="collections" id="collections">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Collections</h2>
-                <p class="section-subtitle">Discover curated designs for every space</p>
-            </div>
-            <div class="collections-grid">
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=600&fit=crop" alt="Living Room Collection">
-                        <div class="collection-overlay">
-                            <h3>Living Room</h3>
-                            <p>Create a welcoming space</p>
-                            <a href="#" class="btn btn-light">View Collection</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=600&fit=crop" alt="Bedroom Collection">
-                        <div class="collection-overlay">
-                            <h3>Bedroom</h3>
-                            <p>Your peaceful retreat</p>
-                            <a href="#" class="btn btn-light">View Collection</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://sspark.genspark.ai/cfimages?u1=wFYrFgUCYAo4R%2B9VV0yw%2FMCaGePLM%2BAjisfphAmvJ3wKxcJSZeY2eYmWto1O%2BntjYcWEWGwtv%2B2Cg9Kt8y0FkFlkD45Uqx4IJJ4FBfK0u6NYOOr4iy5PZofDpsQfzmY9dmDSTGCaO%2FiR3QA8AHG%2BsAgE3thOEq18UN8B345TXipzBcgPGnObTRg7Cly%2F83jQN%2Faqbw%2BUzp4w6Jg6mj191%2FZKdmuQWT57677jLOlwTeZn5ZmD8gZFO5LoBdOmsIhqVP6U8pAUnxMrkoW449F3Yg%3D%3D&u2=7HAahyh11V%2F7ymxH&width=2560" alt="Kitchen Collection">
-                        <div class="collection-overlay">
-                            <h3>Kitchen</h3>
-                            <p>Modern culinary spaces</p>
-                            <a href="#" class="btn btn-light">View Collection</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=800&h=600&fit=crop" alt="Dining Room Collection">
-                        <div class="collection-overlay">
-                            <h3>Dining Room</h3>
-                            <p>Gather and celebrate</p>
-                            <a href="#" class="btn btn-light">View Collection</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1600494603989-9650cf6ddd3d?w=800&h=600&fit=crop" alt="Office Collection">
-                        <div class="collection-overlay">
-                            <h3>Home Office</h3>
-                            <p>Work in style</p>
-                            <a href="#" class="btn btn-light">View Collection</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://sspark.genspark.ai/cfimages?u1=vcumqem5PXb95IMzvdjZTU%2F80qwyT59srfshLHVKJE%2FC6o5uUAb3phxNhX2UiHLGH7VNN8A8ONGV2CEVuieRj9FyfVTGrDMFnnacgvYtk63061%2BxnQwlWjD28GgfF6bKdr1g9mX6LDevL8kVIJRZp9S3PFU1M42EpeJwNEx8D3n6B30SyPh%2FWvkwCuCN0y4vTIdgAsO2ozyqJQhMw%2B9iKMptzqlahvZNGp%2Bg4w%3D%3D&u2=77eGQiUnUczcXEis&width=2560" alt="Bathroom Collection">
-                        <div class="collection-overlay">
-                            <h3>Bathroom</h3>
-                            <p>Spa-like sanctuaries</p>
-                            <a href="#" class="btn btn-light">View Collection</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section id="growth" class="panel glass reveal growth-section">
+      <div class="section-head"><h2>Post & Video <span>Blog</span></h2><p>Public feed এ business update, tips, offer এবং ভিডিও blog show হবে।</p></div>
+      <div class="growth-grid blog-grid">
+        <article class="growth-card"><h3><i class="fa-solid fa-newspaper"></i> Post Blog: iPhone Face ID Fix</h3><p>Published: 12 Apr 2026 • Client issue + solved steps + price guide.</p><a class="btn-soft mini-btn" href="#">Read Post</a></article>
+        <article class="growth-card"><h3><i class="fa-solid fa-video"></i> Video Blog: Before/After Repair</h3><p>Samsung display replacement এর short video blog and customer reaction.</p><a class="btn-soft mini-btn" href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" rel="noopener">Watch Video</a></article>
+        <article class="growth-card"><h3><i class="fa-solid fa-rectangle-ad"></i> Campaign Blog: Eid Service Offer</h3><p>Limited সময়ে free diagnosis + premium cleaner gift for first 50 bookings.</p><a class="btn-soft mini-btn" href="https://wa.me/8801868461577" target="_blank" rel="noopener">Claim Offer</a></article>
+      </div>
+      <div class="package-grid">
+        <article class="package-card"><h3>Basic</h3><p>Diagnosis + software tuneup</p><strong>৳499</strong></article>
+        <article class="package-card featured"><h3>Standard</h3><p>Basic + parts clean + performance boost</p><strong>৳999</strong></article>
+        <article class="package-card"><h3>Premium</h3><p>Standard + priority support + 30 days warranty</p><strong>৳1499</strong></article>
+      </div>
+      <div class="upsell-box glass"><h3><i class="fa-solid fa-gift"></i> Upsell Bundle</h3><p>Cover + charger bundle add করলে extra discount পাবেন।</p><a class="btn-primary" href="shop-accessories.html">Add Bundle</a></div>
+      <div class="calculator glass"><h3>Live Client Review</h3><div class="review-item"><p>“Display change করার পর ফোন নতুনের মতো। Service super fast!”</p><strong>— Rafi, Chattogram</strong></div></div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Services</h2>
-                <p class="section-subtitle">Comprehensive interior design solutions</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-number">01</div>
-                    <h3>Discovery Session</h3>
-                    <p>An intimate conversation to understand your lifestyle, aesthetics, and aspirations</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">02</div>
-                    <h3>Concept Development</h3>
-                    <p>Bespoke design narratives crafted through mood boards, sketches, and material palettes</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">03</div>
-                    <h3>Project Orchestration</h3>
-                    <p>Seamless coordination with artisans and contractors to bring your vision to life</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">04</div>
-                    <h3>Art of Styling</h3>
-                    <p>Curated finishing touches that infuse personality and soul into every corner</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">05</div>
-                    <h3>Full Transformation</h3>
-                    <p>Comprehensive renovation services from architectural refinements to décor selection</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">06</div>
-                    <h3>Seasonal Refresh</h3>
-                    <p>Continuous design partnership to evolve your space with changing needs and seasons</p>
-                </div>
-            </div>
-        </div>
+    <section id="downloads" class="panel glass reveal">
+      <div class="section-head"><h2>Download & Install</h2></div>
+      <div class="download-grid">
+        <a class="download-card" href="assets/downloads/TecnoChain-CV.pdf" download><i class="fa-solid fa-file-pdf"></i> Download CV PDF</a>
+        <a class="download-card" href="shop.html"><i class="fa-solid fa-shop"></i> Browse Shop</a>
+        <a class="download-card" href="https://habib-bd.vercel.app/" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Open Live Website</a>
+      </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&h=1000&fit=crop" alt="Interior Design Process">
-                </div>
-                <div class="about-text">
-                    <h2>Meet Sophia</h2>
-                    <p>Hello! I'm Sophia Chen, an independent interior designer with over 15 years of passionate dedication to creating beautiful, livable spaces. Based in the heart of the design world, I've had the privilege of transforming homes across the country, each one a unique reflection of its owner's personality and dreams.</p>
-                    <p>My journey in design began with a simple belief: your home should be more than just beautiful—it should feel like you. I work intimately with each client, taking time to understand not just your aesthetic preferences, but your lifestyle, your routines, and your aspirations. This personal approach ensures that every space I create is both stunning and deeply functional.</p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>150+</h3>
-                            <p>Curated Projects</p>
-                        </div>
-                        <div class="stat">
-                            <h3>100%</h3>
-                            <p>Personal Service</p>
-                        </div>
-                        <div class="stat">
-                            <h3>15+</h3>
-                            <p>Years Expertise</p>
-                        </div>
-                    </div>
-                    <a href="#contact" class="btn btn-primary">Let's Collaborate</a>
-                </div>
-            </div>
-        </div>
+    <section id="contact" class="panel glass reveal contact-section">
+      <div class="contact-grid">
+        <div class="contact-left"><h2>Contact Us</h2><p class="lead">কোনো সমস্যা থাকলে আমদের লোকেশনে যোগযোগ করুন।</p><div class="contact-list"><a href="tel:+8801868461577"><i class="fa-solid fa-phone"></i> 01868461577</a><a href="mailto:mshabib471@gmail.com"><i class="fa-solid fa-envelope"></i> mshabib471@gmail.com</a><a href="https://maps.app.goo.gl/cy87sn1XZtsD5LiE7" target="_blank" rel="noopener"><i class="fa-solid fa-map-location-dot"></i> Open Live Maps</a><a href="https://wa.me/8801868461577" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a></div></div>
+        <form class="contact-form glass" action="https://formsubmit.co/mshabib471@gmail.com" method="post"><h3>Get in Touch</h3><input type="hidden" name="_subject" value="New TecnoChain Contact Message"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><div class="form-row"><input type="text" name="name" placeholder="Your name" required><input type="tel" name="phone" placeholder="Phone number" value="+880"></div><input type="email" name="email" placeholder="Your email" required><textarea name="message" rows="5" placeholder="Write your problem details..." required></textarea><button type="submit" class="btn-primary">Send Message</button></form>
+      </div>
+      <div class="map-grid"><iframe title="Habibur Rahman house map" src="https://maps.google.com/maps?q=22.2149092,92.0320435&t=&z=18&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe><div class="map-info"><h3>Our Location</h3><p>House - Habibur Rahman, Chattogram, Bangladesh</p><a class="btn-soft" href="https://www.google.com/maps/place/House+-+Habibur+Rahman/@22.2148295,92.0319561,21z/data=!4m6!3m5!1s0x30ad17897ade9ccd:0x1c61ab97017caffc!8m2!3d22.2149092!4d92.0320435!16s%2Fg%2F11mwh8snlk" target="_blank" rel="noopener">Open Google Maps</a></div></div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Client Stories</h2>
-                <p class="section-subtitle">What our clients say about us</p>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Working with Sophia was transformative. She didn't just redesign our living room—she understood our family's rhythm and created a space that feels like home. Her attention to detail is remarkable."</p>
-                    <div class="testimonial-author">
-                        <h4>Sarah Mitchell</h4>
-                        <p>Homeowner, New York</p>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Sophia's creative vision exceeded our expectations. She balanced aesthetics with practicality perfectly, and her personal approach made the entire process enjoyable. Highly recommend!"</p>
-                    <div class="testimonial-author">
-                        <h4>James Anderson</h4>
-                        <p>Business Owner, California</p>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Sophia has an incredible eye for design. She took time to understand my style and created a bedroom sanctuary that's both elegant and functional. A true artist!"</p>
-                    <div class="testimonial-author">
-                        <h4>Emily Roberts</h4>
-                        <p>Designer, Texas</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <section id="works" class="panel glass reveal"><div class="section-head"><h2>Follow Social Link</h2></div><div class="social-row"><a class="social-btn" href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i></a><a class="social-btn" href="https://t.me/Ur_H_A_B_I_B" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i></a><a class="social-btn" href="https://wa.me/8801868461577" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a></div><div class="quick-links-list"><a href="#home"><i class="fa-solid fa-angle-right"></i> Home</a><a href="#services"><i class="fa-solid fa-angle-right"></i> Packages</a><a href="#downloads"><i class="fa-solid fa-angle-right"></i> Updates</a><a href="#contact"><i class="fa-solid fa-angle-right"></i> Support</a></div></section>
+  </main>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Let's Start Your Journey</h2>
-                <p class="section-subtitle">Ready to transform your space? I'd love to hear about your vision</p>
-            </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Reach Out to Sophia</h3>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h4>Address</h4>
-                            <p>123 Design Street, Suite 100<br>New York, NY 10001</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h4>Phone</h4>
-                            <p>+1 (555) 123-4567</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email</h4>
-                            <p>sophia@serenityspaces.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-clock"></i>
-                        <div>
-                            <h4>Business Hours</h4>
-                            <p>Monday - Friday: 10:00 AM - 6:00 PM<br>Weekends: By Appointment Only</p>
-                        </div>
-                    </div>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-pinterest"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" id="phone" name="phone" placeholder="Phone Number">
-                    </div>
-                    <div class="form-group">
-                        <select id="service" name="service" required>
-                            <option value="">Select Service</option>
-                            <option value="consultation">Consultation</option>
-                            <option value="full-design">Full Design Service</option>
-                            <option value="renovation">Renovation</option>
-                            <option value="styling">Styling Only</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </section>
+  <div class="chat-widget"><button id="chat-fab" class="chat-fab" aria-label="Open chat menu"><i class="fa-solid fa-comment-dots"></i></button><div id="chat-popup" class="chat-popup" hidden><div id="chat-menu" class="chat-menu"><button type="button" data-chat="live">Live Chat</button><a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" rel="noopener">Facebook</a><a href="https://t.me/Ur_H_A_B_I_B" target="_blank" rel="noopener">Telegram</a><a href="https://wa.me/8801868461577" target="_blank" rel="noopener">WhatsApp</a><button id="chat-close" type="button">Cancel</button></div><div id="chat-live" class="chat-live" hidden><div id="chat-log" class="chat-log"><p class="bot">🤖 Assalamu Alaikum! আপনার ডিভাইস model + problem লিখুন।</p></div><textarea id="chat-input" rows="2" placeholder="Type your message..."></textarea><div class="chat-actions"><button id="chat-send" type="button">Send</button><button id="chat-back" type="button">Close</button></div></div></div></div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Serenity Spaces</h3>
-                    <p>Creating beautiful, functional spaces that inspire and delight.</p>
-                </div>
-                <div class="footer-column">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#collections">Collections</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#about">About</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="#">Interior Design</a></li>
-                        <li><a href="#">Consultation</a></li>
-                        <li><a href="#">Renovation</a></li>
-                        <li><a href="#">Furniture Selection</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Newsletter</h4>
-                    <p>Subscribe to get design tips and updates</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Your email">
-                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
-                    </form>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Serenity Spaces. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

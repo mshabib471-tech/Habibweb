@@ -1,4 +1,45 @@
 // ==========================================
+// 2026 LIGHT / DARK MOOD SYSTEM
+// ==========================================
+const themeToggle = document.getElementById('themeToggle');
+const storedTheme = localStorage.getItem('serenity-theme');
+const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+function applyTheme(theme) {
+    document.body.dataset.theme = theme;
+
+    if (!themeToggle) {
+        return;
+    }
+
+    const isDark = theme === 'dark';
+    const icon = themeToggle.querySelector('i');
+    const text = themeToggle.querySelector('.theme-toggle__text');
+
+    themeToggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+
+    if (icon) {
+        icon.classList.toggle('fa-moon', !isDark);
+        icon.classList.toggle('fa-sun', isDark);
+    }
+
+    if (text) {
+        text.textContent = isDark ? 'Light' : 'Dark';
+    }
+}
+
+applyTheme(storedTheme || (systemPrefersDark ? 'dark' : 'light'));
+
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const nextTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('serenity-theme', nextTheme);
+        applyTheme(nextTheme);
+    });
+}
+
+// ==========================================
 // MOBILE MENU TOGGLE
 // ==========================================
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -171,9 +212,9 @@ function showNotification(message, type = 'info') {
                 top: 100px;
                 right: 20px;
                 max-width: 400px;
-                background-color: white;
+                background: var(--surface-strong);
                 padding: 1.2rem 1.5rem;
-                border-radius: 8px;
+                border-radius: var(--radius-md);
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
                 z-index: 9999;
                 animation: slideInRight 0.3s ease-out;
@@ -200,7 +241,7 @@ function showNotification(message, type = 'info') {
             
             .notification-content span {
                 flex: 1;
-                color: #2d3436;
+                color: var(--text-dark);
                 font-size: 0.95rem;
             }
             
@@ -208,7 +249,7 @@ function showNotification(message, type = 'info') {
                 background: none;
                 border: none;
                 font-size: 1.5rem;
-                color: #636e72;
+                color: var(--text-light);
                 cursor: pointer;
                 padding: 0;
                 width: 24px;
@@ -220,7 +261,7 @@ function showNotification(message, type = 'info') {
             }
             
             .notification-close:hover {
-                color: #2d3436;
+                color: var(--text-dark);
             }
             
             @keyframes slideInRight {
@@ -350,8 +391,8 @@ const createBackToTopButton = () => {
             right: 30px;
             width: 50px;
             height: 50px;
-            background-color: var(--secondary-color);
-            color: white;
+            background: var(--secondary-color);
+            color: var(--white);
             border: none;
             border-radius: 50%;
             font-size: 1.2rem;
@@ -369,7 +410,7 @@ const createBackToTopButton = () => {
         }
         
         #backToTop:hover {
-            background-color: var(--primary-color);
+            background: var(--primary-color);
             transform: translateY(-3px);
         }
         

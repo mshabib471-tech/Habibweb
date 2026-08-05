@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serenity Spaces - Modern Home Design</title>
+    <title>Serenity Spaces - 2026 Interior Design System</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Bodoni+Moda:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
 </head>
-<body>
+<body data-theme="light">
     <!-- Header Navigation -->
     <header class="header">
         <div class="container">
@@ -24,6 +24,10 @@
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
                 <div class="nav-icons">
+                    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+                        <span class="theme-toggle__icon"><i class="fas fa-moon"></i></span>
+                        <span class="theme-toggle__text">Dark</span>
+                    </button>
                     <a href="#cart" class="icon-btn">
                         <i class="fas fa-shopping-bag"></i>
                         <span class="badge">0</span>
@@ -44,9 +48,13 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <p class="hero-subtitle">BESPOKE INTERIOR DESIGN</p>
+                    <p class="hero-subtitle">2026 UI SYSTEM • LAST UPDATE</p>
                     <h2 class="hero-title">Habibur Rahman</h2>
                     <p class="hero-tagline">— Independent Interior Designer —</p>
+                    <div class="hero-badges" aria-label="Studio highlights">
+                        <span><i class="fas fa-wand-magic-sparkles"></i> Adaptive light/dark mood</span>
+                        <span><i class="fas fa-layer-group"></i> Luxury 2026 design language</span>
+                    </div>
                     <p class="hero-description">
                         With a passion for creating spaces that inspire, I specialize in transforming houses into personalized sanctuaries. 
                         My approach blends timeless elegance with contemporary functionality, ensuring every design reflects your unique 
@@ -63,7 +71,12 @@
                     </div>
                 </div>
                 <div class="hero-image designer-portrait">
-                    <img src="https://i.ibb.co.com/hRqSPqrQ/image.png" alt="Sophia Chen - Interior Designer Portrait">
+                    <img src="https://i.ibb.co.com/hRqSPqrQ/image.png" alt="Habibur Rahman - Interior Designer Portrait">
+                    <div class="floating-panel">
+                        <span>Last update</span>
+                        <strong>2026</strong>
+                        <small>Premium UI/UX refresh</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -227,8 +240,9 @@
                     <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&h=1000&fit=crop" alt="Interior Design Process">
                 </div>
                 <div class="about-text">
-                    <h2>Meet Sophia</h2>
-                    <p>Hello! I'm Sophia Chen, an independent interior designer with over 15 years of passionate dedication to creating beautiful, livable spaces. Based in the heart of the design world, I've had the privilege of transforming homes across the country, each one a unique reflection of its owner's personality and dreams.</p>
+                    <p class="eyebrow">Designer profile</p>
+                    <h2>Meet Habibur</h2>
+                    <p>Hello! I'm Habibur Rahman, an independent interior designer with over 15 years of passionate dedication to creating beautiful, livable spaces. My studio blends timeless material choices with a modern digital-first client experience.</p>
                     <p>My journey in design began with a simple belief: your home should be more than just beautiful—it should feel like you. I work intimately with each client, taking time to understand not just your aesthetic preferences, but your lifestyle, your routines, and your aspirations. This personal approach ensures that every space I create is both stunning and deeply functional.</p>
                     <div class="about-stats">
                         <div class="stat">
@@ -313,7 +327,7 @@
             </div>
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3>Reach Out to Sophia</h3>
+                    <h3>Reach Out to Habibur</h3>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
@@ -332,7 +346,7 @@
                         <i class="fas fa-envelope"></i>
                         <div>
                             <h4>Email</h4>
-                            <p>sophia@serenityspaces.com</p>
+                            <p>habibur@serenityspaces.com</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -413,7 +427,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Serenity Spaces. All rights reserved.</p>
+                <p>&copy; 2026 Serenity Spaces. All rights reserved.</p>
             </div>
         </div>
     </footer>

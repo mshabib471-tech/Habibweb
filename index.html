@@ -303,7 +303,7 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
+<!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="container">
             <div class="section-header">
@@ -348,19 +348,14 @@
                         <a href="https://habib-bd.vercel.app/" target="_blank" rel="noopener"><i class="fas fa-globe"></i></a>
                     </div>
                     
-                    <!-- Google Map Integration from old code -->
+                    <!-- Google Map Integration -->
                     <div style="margin-top: 30px; border-radius: 10px; overflow: hidden;">
                         <iframe title="Habibur Rahman house map" src="https://maps.google.com/maps?q=22.2149092,92.0320435&t=&z=18&ie=UTF8&iwloc=&output=embed" width="100%" height="200" style="border:0;" loading="lazy"></iframe>
                     </div>
                 </div>
                 
-                <!-- Contact Form configured with your FormSubmit email -->
-                <form class="contact-form" id="contactForm" action="https://formsubmit.co/mshabib471@gmail.com" method="post">
-                    <!-- FormSubmit Configurations -->
-                    <input type="hidden" name="_subject" value="New Service Booking/Contact Message">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_template" value="table">
-                    
+                <!-- Custom Form using Google Apps Script -->
+                <form class="contact-form" id="contactForm">
                     <div class="form-group">
                         <input type="text" id="name" name="name" placeholder="Your Name" required>
                     </div>
@@ -384,11 +379,54 @@
                     <div class="form-group">
                         <textarea id="message" name="message" rows="5" placeholder="Write your problem details... (ডিভাইসের সমস্যা বিস্তারিত লিখুন)" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary btn-block">Send Message</button>
+                    <!-- Success/Error Message Display -->
+                    <p id="formStatus" style="display:none; text-align:center; margin-top:15px; font-weight:600; padding:10px; border-radius:5px;"></p>
                 </form>
             </div>
         </div>
     </section>
+
+    <!-- JavaScript to handle form submission without reloading -->
+    <script>
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formStatus = document.getElementById('formStatus');
+
+        // Your Web App URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzMmCqUECBRKOc8eGMwvlIoDNJnoJ8sTBsuouHtycJxZr6giWjmdvYhbf_z8EUUzd3rzw/exec';
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            submitBtn.innerText = 'Sending...';
+            submitBtn.disabled = true;
+            formStatus.style.display = 'none';
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => {
+                    formStatus.style.display = 'block';
+                    formStatus.innerText = "Message sent successfully!";
+                    formStatus.style.color = "#155724";
+                    formStatus.style.backgroundColor = "#d4edda";
+                    form.reset();
+                    submitBtn.innerText = 'Send Message';
+                    submitBtn.disabled = false;
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        formStatus.style.display = 'none';
+                    }, 5000);
+                })
+                .catch(error => {
+                    formStatus.style.display = 'block';
+                    formStatus.innerText = "Error sending message. Please try again.";
+                    formStatus.style.color = "#721c24";
+                    formStatus.style.backgroundColor = "#f8d7da";
+                    submitBtn.innerText = 'Send Message';
+                    submitBtn.disabled = false;
+                });
+        });
+    </script>
 
     <!-- Footer -->
     <footer class="footer">

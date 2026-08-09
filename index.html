@@ -1,474 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habib | Mobile Service & Shop</title>
-    
-    <!-- Old Meta Tags & Icons for Web App -->
-    <meta name="theme-color" content="#0f1726">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="manifest.webmanifest">
-    <link rel="icon" href="assets/img/my-profile-img.JPG">
-
-    <!-- New Template Styles (Unchanged) -->
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Bodoni+Moda:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repair Guy</title>
+  
+  <!-- Tailwind CSS & Feather Icons CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  
+  <!-- Custom CSS Link -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <!-- Header Navigation -->
-    <header class="header">
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">
-                    <h1>Habib Mobile Solution</h1>
-                </div>
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li><a href="#brands" class="nav-link">Brands</a></li>
-                    <li><a href="#packages" class="nav-link">Packages</a></li>
-                    <li><a href="#about" class="nav-link">About</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
-                </ul>
-                <div class="nav-icons">
-                    <a href="shop.html" class="icon-btn" title="Shop">
-                        <i class="fas fa-shopping-bag"></i>
-                    </a>
-                    <a href="login.html" class="icon-btn" title="Login/Dashboard">
-                        <i class="fas fa-user"></i>
-                    </a>
-                    <button class="mobile-menu-btn" id="mobileMenuBtn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </nav>
-        </div>
-    </header>
+<body class="min-h-screen bg-white text-slate-800 selection:bg-[#9E1B32] selection:text-white">
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <p class="hero-subtitle">TRUSTED TOP ONE SERVICE</p>
-                    <h2 class="hero-title">Habibur Rahman</h2>
-                    <p class="hero-tagline">— Professional Mobile Servicing —</p>
-                    <p class="hero-description">
-                        আমরা বাংলাদেশ জুড়ে professional mobile servicing, software solution, original accessories support এবং trusted after-sales care দিচ্ছি। দ্রুত support, verified service, সব এখন একসাথে।
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="shop.html" class="btn btn-primary"><i class="fa-solid fa-cart-shopping"></i> Open Shop</a>
-                        <a href="https://wa.me/8801868461577?text=Hi%20Habib%2C%20I%20want%20to%20book%20a%20mobile%20service." target="_blank" rel="noopener" class="btn btn-secondary"><i class="fa-brands fa-whatsapp"></i> Book on WhatsApp</a>
-                    </div>
-                    <div class="designer-signature">
-                        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 20 Q 20 5, 35 20 T 65 20 Q 80 30, 95 20 L 115 25" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                </div>
-                <div class="hero-image designer-portrait">
-                    <!-- Updated with your profile image path -->
-                    <img src="assets/img/my-profile-img.JPG" alt="Habibur Rahman - Technician Portrait" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80'">
-                </div>
-            </div>
+  <!-- ================= HEADER ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white py-5">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center gap-2 cursor-pointer">
+        <div class="w-10 h-10 bg-[#9E1B32] text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
+        <span class="font-bold text-2xl tracking-tight">Repair<span class="text-gray-500 font-medium">Guy</span></span>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm">
+        <a href="#" class="text-[#9E1B32] font-semibold">Home</a>
+        <a href="#" class="hover:text-[#9E1B32] transition-colors">About Us</a>
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-[#9E1B32] transition-colors">
+          Services <i data-feather="chevron-down" class="w-4 h-4"></i>
         </div>
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-[#9E1B32] transition-colors">
+          Pages <i data-feather="chevron-down" class="w-4 h-4"></i>
+        </div>
+        <a href="#" class="hover:text-[#9E1B32] transition-colors">Contact Us</a>
+      </nav>
+
+      <!-- Call CTA & Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <button class="hidden md:flex bg-[#9E1B32] hover:bg-[#801528] text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-lg shadow-rose-900/20 hover:shadow-rose-900/40 hover:-translate-y-0.5">
+          <i data-feather="phone" class="w-4 h-4"></i>
+          <span>(123) 456 - 789</span>
+        </button>
+        <button id="mobile-menu-btn" class="lg:hidden text-slate-800">
+          <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 flex flex-col px-4 py-4 gap-4 pb-8">
+      <a href="#" class="text-[#9E1B32] font-semibold text-lg">Home</a>
+      <a href="#" class="text-lg">About Us</a>
+      <a href="#" class="text-lg">Services</a>
+      <a href="#" class="text-lg">Pages</a>
+      <a href="#" class="text-lg">Contact Us</a>
+      <button class="bg-[#9E1B32] text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 mt-4 w-full">
+        <i data-feather="phone" class="w-4 h-4"></i>
+        <span>(123) 456 - 789</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="pt-[80px] lg:pt-[96px]">
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative w-full h-[500px] md:h-[600px] lg:h-[700px] flex items-center">
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80" alt="Gadget Repair Workshop" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+      
+      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full text-center flex flex-col items-center">
+        <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white max-w-4xl leading-tight tracking-tight animate-fade-in-up">
+          Fast and reliable gadget <br class="hidden md:block" /> repair services
+        </h1>
+        <p class="mt-6 text-gray-200 text-lg md:text-xl max-w-2xl font-light">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+          <button class="bg-[#9E1B32] hover:bg-[#801528] text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-lg">
+            Get Started
+          </button>
+          <button class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-slate-900 px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1">
+            Contact Us
+          </button>
+        </div>
+      </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Fast Delivery</h3>
-                    <p>Super fast service with immediate diagnosis and problem resolution</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <h3>Genuine Parts</h3>
-                    <p>100% original hardware and accessories support for all major brands</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-heart"></i>
-                    </div>
-                    <h3>Service Warranty</h3>
-                    <p>Trusted after-sales care with up to 30 days of service guarantee</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h3>Premium Support</h3>
-                    <p>24/7 dedicated support via WhatsApp and live chat for our customers</p>
-                </div>
-            </div>
+    <!-- ================= QUICK SERVICE BAR ================= -->
+    <section class="bg-gradient-to-r from-[#9E1B32] to-[#4A154B] py-8">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-white">
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#9E1B32] transition-colors"><i data-feather="settings"></i></div>
+            <div><h3 class="font-semibold text-lg">Repair Service</h3><p class="text-sm text-white/70">Professional fixes</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#9E1B32] transition-colors"><i data-feather="cpu"></i></div>
+            <div><h3 class="font-semibold text-lg">Spare Parts</h3><p class="text-sm text-white/70">Genuine components</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#9E1B32] transition-colors"><i data-feather="database"></i></div>
+            <div><h3 class="font-semibold text-lg">Data Recovery</h3><p class="text-sm text-white/70">Safe retrieval</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#9E1B32] transition-colors"><i data-feather="shield"></i></div>
+            <div><h3 class="font-semibold text-lg">Quality Check</h3><p class="text-sm text-white/70">Rigorous testing</p></div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Collections Section (Changed to Supported Brands) -->
-    <section class="collections" id="brands">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Mobile Brands Available</h2>
-                <p class="section-subtitle">Brand-wise updated services</p>
-            </div>
-            <div class="collections-grid">
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=800&fit=crop" alt="Apple Service">
-                        <div class="collection-overlay">
-                            <h3><i class="fa-brands fa-apple"></i> Apple (Premium)</h3>
-                            <p>iCloud support • Software fix</p>
-                            <a href="shop.html" class="btn btn-light">View Details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800&fit=crop" alt="Samsung Service">
-                        <div class="collection-overlay">
-                            <h3><i class="fa-solid fa-mobile"></i> Samsung (Advanced)</h3>
-                            <p>FRP • Knox • Firmware</p>
-                            <a href="shop.html" class="btn btn-light">View Details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1546054454-aa26e2b734c7?w=800&fit=crop" alt="Xiaomi Service">
-                        <div class="collection-overlay">
-                            <h3><i class="fa-solid fa-bolt"></i> Xiaomi (Popular)</h3>
-                            <p>Unlock • Flash • Account fix</p>
-                            <a href="shop.html" class="btn btn-light">View Details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1526406915894-7bcd65f60845?w=800&fit=crop" alt="Huawei Service">
-                        <div class="collection-overlay">
-                            <h3><i class="fa-solid fa-shield-halved"></i> Huawei (Pro)</h3>
-                            <p>Boot fix • FRP remove</p>
-                            <a href="shop.html" class="btn btn-light">View Details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="collection-card">
-                    <div class="collection-image">
-                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&fit=crop" alt="Accessories">
-                        <div class="collection-overlay">
-                            <h3><i class="fa-solid fa-headphones"></i> Accessories</h3>
-                            <p>Original Cover + Charger Bundle</p>
-                            <a href="shop-accessories.html" class="btn btn-light">Add Bundle</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- ================= ABOUT SECTION ================= -->
+    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="relative">
+          <div class="grid grid-cols-2 gap-4">
+            <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=80" alt="Technician" class="rounded-2xl w-full h-[250px] object-cover mt-8 shadow-xl" />
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80" alt="Motherboard" class="rounded-2xl w-full h-[250px] object-cover shadow-xl" />
+          </div>
+          <div class="absolute -bottom-6 md:bottom-8 left-0 md:-left-8 bg-[#4A154B] text-white p-6 rounded-2xl max-w-[220px] shadow-2xl border-l-4 border-[#9E1B32]">
+            <span class="text-[#9E1B32] text-4xl leading-none font-serif">"</span>
+            <p class="font-bold text-lg leading-tight mt-2">We will fix it, till we make it.</p>
+          </div>
         </div>
+        <div>
+          <p class="text-[#9E1B32] font-bold tracking-wider text-sm mb-3">ABOUT OUR CULTURE</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Leading the way in repair solution</h2>
+          <p class="text-gray-600 mb-8 text-lg leading-relaxed">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <button class="bg-[#9E1B32] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#801528] transition-colors shadow-lg">Learn More</button>
+        </div>
+      </div>
     </section>
 
-    <!-- Services Section (Changed to Packages & Blog) -->
-    <section class="services" id="packages">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Service Packages & Updates</h2>
-                <p class="section-subtitle">Public feed এ business update, tips এবং offer show হবে</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-number">01</div>
-                    <h3>Basic Package - ৳499</h3>
-                    <p>Detailed diagnosis + complete software tuneup for your device.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">02</div>
-                    <h3>Standard Package - ৳999</h3>
-                    <p>Basic features + deep parts clean + system performance boost.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">03</div>
-                    <h3>Premium Package - ৳1499</h3>
-                    <p>Standard features + priority support + 30 days replacement warranty.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">04</div>
-                    <h3><i class="fa-solid fa-newspaper"></i> Post Blog</h3>
-                    <p>iPhone Face ID Fix (Published: 12 Apr 2026). Client issue + solved steps + price guide.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">05</div>
-                    <h3><i class="fa-solid fa-video"></i> Video Blog</h3>
-                    <p>Samsung display replacement এর short video blog and client reaction. <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank">Watch Here</a></p>
-                </div>
-                <div class="service-card">
-                    <div class="service-number">06</div>
-                    <h3><i class="fa-solid fa-rectangle-ad"></i> Campaign Offer</h3>
-                    <p>Eid Service Offer: Limited সময়ে free diagnosis + premium cleaner gift for first 50 bookings.</p>
-                </div>
-            </div>
+    <!-- ================= WHY CHOOSE US ================= -->
+    <section class="bg-gray-50 py-20">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <p class="text-[#9E1B32] font-bold tracking-wider text-sm mb-3 uppercase">Why Choose Us</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6">For over 12 years in the gadget area</h2>
+          <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
         </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="relative group rounded-2xl overflow-hidden shadow-lg bg-white pb-6">
+            <div class="h-64 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80" alt="Professional" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-xl shadow-xl w-10/12 text-center font-bold text-slate-800">Professional</div>
+          </div>
+          <div class="relative group rounded-2xl overflow-hidden shadow-lg bg-white pb-6">
+            <div class="h-64 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1588508065123-287b28e0139b?auto=format&fit=crop&q=80" alt="Same Day Repairs" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-xl shadow-xl w-10/12 text-center font-bold text-slate-800">Same Day Repairs</div>
+          </div>
+          <div class="relative group rounded-2xl overflow-hidden shadow-lg bg-white pb-6">
+            <div class="h-64 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80" alt="Genuine Parts" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-xl shadow-xl w-10/12 text-center font-bold text-slate-800">Genuine Parts</div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-image">
-                    <!-- Keeping beautiful placeholder to maintain design but fitting the theme -->
-                    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=1000&fit=crop" alt="Mobile Repair Process">
-                </div>
-                <div class="about-text">
-                    <h2>Meet Habibur Rahman</h2>
-                    <p>Hello! I'm Habibur Rahman, the founder and lead technician behind Habib Mobile Solution. With years of hands-on experience, I've dedicated myself to providing the most reliable and transparent mobile repair services in Chattogram and across Bangladesh.</p>
-                    <p>আমার বিশ্বাস, আপনার শখের ডিভাইসটি শুধু সুন্দরই নয়, পারফেক্টলি কাজ করা উচিত। আমরা প্রতিটি কাস্টমারের সমস্যা গুরুত্বের সাথে দেখি এবং অরিজিনাল পার্টস দিয়ে গ্যারান্টি সহকারে সার্ভিস প্রদান করি। আপনি নিশ্চিন্তে আপনার ডিভাইস আমাদের কাছে পাঠাতে পারেন।</p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>100%</h3>
-                            <p>Genuine Parts</p>
-                        </div>
-                        <div class="stat">
-                            <h3>24/7</h3>
-                            <p>Client Support</p>
-                        </div>
-                        <div class="stat">
-                            <h3>Fast</h3>
-                            <p>Delivery Assured</p>
-                        </div>
-                    </div>
-                    <a href="assets/downloads/TecnoChain-CV.pdf" class="btn btn-primary" download><i class="fa-solid fa-file-pdf"></i> Download My CV</a>
-                </div>
-            </div>
-        </div>
+    <!-- ================= LOGO STRIP ================= -->
+    <section class="border-y border-gray-200 py-10 bg-white">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-10 md:gap-20 opacity-50 grayscale">
+        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
+      </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Client Stories</h2>
-                <p class="section-subtitle">Live Client Review</p>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Display change করার পর ফোন একদম নতুনের মতো হয়ে গেছে। Service super fast and customer support is extremely polite!"</p>
-                    <div class="testimonial-author">
-                        <h4>Rafi</h4>
-                        <p>Customer, Chattogram</p>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Had a critical FRP lock issue on my Samsung device. Habib solved it within an hour. Highly professional service!"</p>
-                    <div class="testimonial-author">
-                        <h4>James Anderson</h4>
-                        <p>Online Client</p>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Ordered original charger and back cover bundle. Delivery was fast and products are 100% genuine. Definitely coming back."</p>
-                    <div class="testimonial-author">
-                        <h4>Emily Roberts</h4>
-                        <p>Customer, Dhaka</p>
-                    </div>
-                </div>
-            </div>
+    <!-- ================= OUR SERVICES ================= -->
+    <section class="py-20 max-w-[1280px] mx-auto px-4 md:px-6 bg-white">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+        <div>
+          <p class="text-[#9E1B32] font-bold tracking-wider text-sm mb-3 uppercase">Our Services</p>
+          <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight">We offer a wide variety gadget services</h2>
         </div>
+        <button class="bg-[#9E1B32] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#801528] transition-colors inline-flex items-center gap-2">
+          View More <i data-feather="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-rose-50 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="smartphone" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3">Mobile Phone</h3>
+          <p class="text-gray-500 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-rose-50 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tablet" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3">Tablet</h3>
+          <p class="text-gray-500 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-rose-50 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="monitor" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3">Laptop</h3>
+          <p class="text-gray-500 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-rose-50 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tv" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3">Computer Desktop</h3>
+          <p class="text-gray-500 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-rose-50 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="camera" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3">Camera</h3>
+          <p class="text-gray-500 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white border border-gray-100 p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-rose-50 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="watch" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3">Wearable Device</h3>
+          <p class="text-gray-500 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+      </div>
     </section>
 
-<!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Contact Us</h2>
-                <p class="section-subtitle">কোনো সমস্যা থাকলে আমাদের লোকেশনে যোগাযোগ করুন</p>
-            </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Reach Out to Habib</h3>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h4>Address</h4>
-                            <p>House - Habibur Rahman, Gachbaria<br>Chattogram, Bangladesh</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h4>Phone</h4>
-                            <p><a href="tel:+8801868461577" style="color:inherit; text-decoration:none;">+880 1868 461577</a></p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email</h4>
-                            <p><a href="mailto:mshabib471@gmail.com" style="color:inherit; text-decoration:none;">mshabib471@gmail.com</a></p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-clock"></i>
-                        <div>
-                            <h4>Business Hours</h4>
-                            <p>Always Open Online<br>Chat support available 24/7</p>
-                        </div>
-                    </div>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
-                        <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" rel="noopener"><i class="fab fa-telegram"></i></a>
-                        <a href="https://wa.me/8801868461577" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://habib-bd.vercel.app/" target="_blank" rel="noopener"><i class="fas fa-globe"></i></a>
-                    </div>
-                    
-                    <!-- Google Map Integration -->
-                    <div style="margin-top: 30px; border-radius: 10px; overflow: hidden;">
-                        <iframe title="Habibur Rahman house map" src="https://maps.google.com/maps?q=22.2149092,92.0320435&t=&z=18&ie=UTF8&iwloc=&output=embed" width="100%" height="200" style="border:0;" loading="lazy"></iframe>
-                    </div>
-                </div>
-                
-                <!-- Custom Form using Google Apps Script -->
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" id="phone" name="phone" placeholder="Phone Number (e.g. +880...)">
-                    </div>
-                    <div class="form-group">
-                        <select id="service" name="service" required>
-                            <option value="">Select Service / Brand Issue</option>
-                            <option value="apple-service">Apple Service</option>
-                            <option value="samsung-service">Samsung Service</option>
-                            <option value="xiaomi-service">Xiaomi Service</option>
-                            <option value="huawei-service">Huawei Service</option>
-                            <option value="buy-accessories">Buy Accessories</option>
-                            <option value="other">Other Inquiry</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" rows="5" placeholder="Write your problem details... (ডিভাইসের সমস্যা বিস্তারিত লিখুন)" required></textarea>
-                    </div>
-                    <button type="submit" id="submitBtn" class="btn btn-primary btn-block">Send Message</button>
-                    <!-- Success/Error Message Display -->
-                    <p id="formStatus" style="display:none; text-align:center; margin-top:15px; font-weight:600; padding:10px; border-radius:5px;"></p>
-                </form>
-            </div>
+    <!-- ================= SUPPORT CTA ================= -->
+    <section class="relative py-20 md:py-28">
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80" alt="Background" class="w-full h-full object-cover blur-sm" />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#4A154B]/95 to-[#9E1B32]/90"></div>
+      </div>
+      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-10">
+        <div class="text-white max-w-xl">
+          <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Get support for your problem</h2>
+          <p class="text-white/80 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
         </div>
+        <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+          <div class="bg-white p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
+            <div class="w-12 h-12 rounded-full bg-rose-50 text-[#9E1B32] flex items-center justify-center"><i data-feather="mail"></i></div>
+            <div>
+              <p class="text-sm text-gray-500 font-medium">Send us an email</p>
+              <p class="font-bold text-slate-800">hello@repairguy.com</p>
+            </div>
+          </div>
+          <div class="bg-white p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
+            <div class="w-12 h-12 rounded-full bg-rose-50 text-[#9E1B32] flex items-center justify-center"><i data-feather="phone"></i></div>
+            <div>
+              <p class="text-sm text-gray-500 font-medium">Give us a call</p>
+              <p class="font-bold text-slate-800">(123) 456 - 7890</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- JavaScript to handle form submission without reloading -->
-    <script>
-        const form = document.getElementById('contactForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const formStatus = document.getElementById('formStatus');
-
-        // Your Web App URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzMmCqUECBRKOc8eGMwvlIoDNJnoJ8sTBsuouHtycJxZr6giWjmdvYhbf_z8EUUzd3rzw/exec';
-
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            submitBtn.innerText = 'Sending...';
-            submitBtn.disabled = true;
-            formStatus.style.display = 'none';
-
-            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                .then(response => {
-                    formStatus.style.display = 'block';
-                    formStatus.innerText = "Message sent successfully!";
-                    formStatus.style.color = "#155724";
-                    formStatus.style.backgroundColor = "#d4edda";
-                    form.reset();
-                    submitBtn.innerText = 'Send Message';
-                    submitBtn.disabled = false;
-                    
-                    // Hide success message after 5 seconds
-                    setTimeout(() => {
-                        formStatus.style.display = 'none';
-                    }, 5000);
-                })
-                .catch(error => {
-                    formStatus.style.display = 'block';
-                    formStatus.innerText = "Error sending message. Please try again.";
-                    formStatus.style.color = "#721c24";
-                    formStatus.style.backgroundColor = "#f8d7da";
-                    submitBtn.innerText = 'Send Message';
-                    submitBtn.disabled = false;
-                });
-        });
-    </script>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Habib Mobile Solution</h3>
-                    <p>Trusted top one mobile service in Bangladesh. We provide professional servicing and original accessories.</p>
-                </div>
-                <div class="footer-column">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="shop.html">Browse Shop</a></li>
-                        <li><a href="#packages">Service Packages</a></li>
-                        <li><a href="#about">About Me</a></li>
-                        <li><a href="dashboard.html">Dashboard</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Top Services</h4>
-                    <ul>
-                        <li><a href="#brands">Apple iCloud Fix</a></li>
-                        <li><a href="#brands">Samsung FRP/Knox</a></li>
-                        <li><a href="#brands">Xiaomi Unlock/Flash</a></li>
-                        <li><a href="#brands">Huawei Boot Fix</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Download CV</h4>
-                    <p>Get a copy of my professional resume.</p>
-                    <a href="assets/downloads/TecnoChain-CV.pdf" class="btn btn-light" style="display:inline-block; margin-top:10px; font-size:14px; padding:8px 16px;" download><i class="fa-solid fa-download"></i> Download PDF</a>
-                </div>
+    <!-- ================= VISION & MISSION ================= -->
+    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer">
+          <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80" alt="Technician Video" class="w-full h-[400px] md:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center pl-1 text-[#9E1B32] shadow-xl group-hover:scale-110 transition-transform duration-300">
+              <i data-feather="play" class="w-8 h-8 fill-current"></i>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Habibur Rahman. All rights reserved.</p>
-            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 bg-black/80 text-white p-6 text-center backdrop-blur-sm">
+            <h3 class="font-bold text-xl">Miguel Velasco Armando</h3>
+            <p class="text-[#9E1B32] font-semibold text-sm mt-1 tracking-widest uppercase">Repair Guy CEO</p>
+          </div>
         </div>
-    </footer>
 
-    <!-- JS Scripts from both versions -->
-    <script type="module" src="assets/js/auth.js"></script>
-    <script src="js/main.js"></script>
+        <div>
+          <p class="text-[#9E1B32] font-bold tracking-wider text-sm mb-3 uppercase">Our Vision & Mission</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Innovate with the gadget trends</h2>
+          <p class="text-gray-600 mb-8 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+          <div class="space-y-4">
+            <div class="accordion-item border rounded-xl p-5 cursor-pointer transition-colors border-[#9E1B32] bg-rose-50/30" onclick="toggleAccordion(this)">
+              <div class="flex justify-between items-center">
+                <h4 class="font-bold text-[#9E1B32]">Nulla aliquet lacus luctus accumsan</h4>
+                <i data-feather="chevron-down" class="w-5 h-5 transition-transform rotate-180 text-[#9E1B32] acc-icon"></i>
+              </div>
+              <p class="acc-content mt-4 text-gray-600 text-sm leading-relaxed block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div class="accordion-item border border-gray-200 hover:border-gray-300 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
+              <div class="flex justify-between items-center">
+                <h4 class="font-bold text-slate-800">Bibendum neque egestas congue</h4>
+                <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-gray-400 acc-icon"></i>
+              </div>
+              <p class="acc-content mt-4 text-gray-600 text-sm leading-relaxed hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div class="accordion-item border border-gray-200 hover:border-gray-300 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
+              <div class="flex justify-between items-center">
+                <h4 class="font-bold text-slate-800">Diam vel quam elementum pulvinar</h4>
+                <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-gray-400 acc-icon"></i>
+              </div>
+              <p class="acc-content mt-4 text-gray-600 text-sm leading-relaxed hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATISTICS ================= -->
+    <section class="bg-gray-50 py-16 border-y border-gray-100">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x-0 lg:divide-x divide-gray-200">
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-slate-800 mb-2">14<span class="text-[#9E1B32] text-3xl md:text-4xl">+</span></div>
+            <p class="text-gray-500 font-medium uppercase tracking-wider text-sm">Glorious Years</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-slate-800 mb-2">500<span class="text-[#9E1B32] text-3xl md:text-4xl">+</span></div>
+            <p class="text-gray-500 font-medium uppercase tracking-wider text-sm">Happy Customer</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-slate-800 mb-2">620<span class="text-[#9E1B32] text-3xl md:text-4xl">+</span></div>
+            <p class="text-gray-500 font-medium uppercase tracking-wider text-sm">Service Complete</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-slate-800 mb-2">99<span class="text-[#9E1B32] text-3xl md:text-4xl">%</span></div>
+            <p class="text-gray-500 font-medium uppercase tracking-wider text-sm">Satisfactions</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIAL ================= -->
+    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl">
+        <div class="bg-[#4A154B] p-10 md:p-16 lg:w-1/2 flex flex-col justify-center relative">
+          <p class="text-rose-300 font-bold tracking-wider text-sm mb-3 uppercase">Testimonial</p>
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-10 leading-tight">Review from our customer</h2>
+          
+          <div class="bg-white p-8 rounded-2xl shadow-xl relative z-10 lg:-mr-24 transform lg:translate-x-12 transition-transform hover:-translate-y-1">
+            <div class="text-[#9E1B32] text-4xl font-serif mb-4 leading-none">"</div>
+            <p class="text-gray-600 text-lg italic mb-6">
+              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem."
+            </p>
+            <div class="flex items-center gap-4">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover" />
+              <div>
+                <h4 class="font-bold text-slate-800">Kylie Store</h4>
+                <div class="flex text-yellow-400 text-sm">★★★★★</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="lg:w-1/2 h-[400px] lg:h-auto">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80" alt="Happy Customer" class="w-full h-full object-cover" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#111111] text-gray-400 pt-20 pb-10">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div class="space-y-6">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-[#9E1B32] text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
+            <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-gray-400 font-medium">Guy</span></span>
+          </div>
+          <p class="text-sm leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+          <div class="space-y-3 text-sm">
+            <p class="flex items-center gap-3"><i data-feather="map-pin" class="w-4 h-4 text-[#9E1B32]"></i> 123 Street Name, City, Country</p>
+            <p class="flex items-center gap-3"><i data-feather="phone" class="w-4 h-4 text-[#9E1B32]"></i> (123) 456 - 7890</p>
+            <p class="flex items-center gap-3"><i data-feather="clock" class="w-4 h-4 text-[#9E1B32]"></i> Mon-Sat: 9:00 AM - 6:00 PM</p>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Services</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Smartphone Repair</a></li>
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Laptop Repair</a></li>
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Desktop Repair</a></li>
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Tablet Repair</a></li>
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">SmartWatch Repair</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Quick Link</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">About</a></li>
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Careers</a></li>
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Price List</a></li>
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Contact</a></li>
+            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe Our Newsletter</h4>
+          <p class="text-sm mb-4">Get the latest news and offers directly.</p>
+          <form class="flex mb-6">
+            <input type="email" placeholder="Email Address" class="bg-gray-800 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:ring-1 focus:ring-[#9E1B32]" />
+            <button type="submit" class="bg-[#9E1B32] hover:bg-[#801528] text-white px-4 py-3 rounded-r-lg transition-colors">Submit</button>
+          </form>
+          <div class="flex gap-4">
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[#9E1B32] text-white transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[#9E1B32] text-white transition-colors"><i data-feather="twitter" class="w-5 h-5"></i></a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[#9E1B32] text-white transition-colors"><i data-feather="instagram" class="w-5 h-5"></i></a>
+            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[#9E1B32] text-white transition-colors"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+        <p>&copy; 2026 Repair Guy. All Rights Reserved.</p>
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition-colors">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Custom Script Link -->
+  <script src="script.js"></script>
 </body>
 </html>

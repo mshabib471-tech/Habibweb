@@ -697,6 +697,353 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repair Guy - Glass UI</title>
+  
+  <!-- Tailwind CSS & Feather Icons CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  
+  <!-- Custom CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative">
+
+  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
+  <div class="fixed inset-0 z-[-1] bg-[#0f172a] overflow-hidden">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
+    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
+  </div>
+
+  <!-- ================= HEADER (Glass) ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-5">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center gap-2 cursor-pointer">
+        <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)]">R</div>
+        <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
+        <a href="#" class="text-rose-400 font-semibold">Home</a>
+        <a href="#" class="hover:text-rose-400 transition-colors">About Us</a>
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
+          Services <i data-feather="chevron-down" class="w-4 h-4"></i>
+        </div>
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
+          Pages <i data-feather="chevron-down" class="w-4 h-4"></i>
+        </div>
+        <a href="#" class="hover:text-rose-400 transition-colors">Contact Us</a>
+      </nav>
+
+      <!-- Call CTA & Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <button class="hidden md:flex bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:-translate-y-0.5">
+          <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
+          <span>(123) 456 - 789</span>
+        </button>
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md">
+          <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Drawer (Glass) -->
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-4 gap-4 pb-8 shadow-2xl">
+      <a href="#" class="text-rose-400 font-semibold text-lg">Home</a>
+      <a href="#" class="text-lg text-slate-200">About Us</a>
+      <a href="#" class="text-lg text-slate-200">Services</a>
+      <a href="#" class="text-lg text-slate-200">Pages</a>
+      <a href="#" class="text-lg text-slate-200">Contact Us</a>
+      <button class="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 mt-4 w-full">
+        <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
+        <span>(123) 456 - 789</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="pt-[80px] lg:pt-[96px]">
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative w-full h-[500px] md:h-[600px] lg:h-[700px] flex items-center">
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80" alt="Gadget Repair Workshop" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-[2px]"></div>
+      </div>
+      
+      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full text-center flex flex-col items-center">
+        <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white max-w-4xl leading-tight tracking-tight animate-fade-in-up">
+          Fast and reliable gadget <br class="hidden md:block" /> repair services
+        </h1>
+        <p class="mt-6 text-slate-300 text-lg md:text-xl max-w-2xl font-light">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+          <button class="bg-[#9E1B32]/80 hover:bg-[#9E1B32] backdrop-blur-md border border-rose-500/50 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-[0_0_20px_rgba(158,27,50,0.4)]">
+            Get Started
+          </button>
+          <button class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1">
+            Contact Us
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= QUICK SERVICE BAR (Glass Floating) ================= -->
+    <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-12 md:-mt-16">
+      <div class="bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-3xl p-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-white">
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/30 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="settings" class="text-rose-300"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Repair Service</h3><p class="text-sm text-slate-300">Professional fixes</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/30 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="cpu" class="text-rose-300"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Spare Parts</h3><p class="text-sm text-slate-300">Genuine components</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/30 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="database" class="text-rose-300"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Data Recovery</h3><p class="text-sm text-slate-300">Safe retrieval</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/30 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="shield" class="text-rose-300"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Quality Check</h3><p class="text-sm text-slate-300">Rigorous testing</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT SECTION ================= -->
+    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="relative">
+          <div class="grid grid-cols-2 gap-4">
+            <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=80" alt="Technician" class="rounded-2xl w-full h-[250px] object-cover mt-8 border border-white/10 shadow-2xl" />
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80" alt="Motherboard" class="rounded-2xl w-full h-[250px] object-cover border border-white/10 shadow-2xl" />
+          </div>
+          <div class="absolute -bottom-6 md:bottom-8 left-0 md:-left-8 bg-[#9E1B32]/30 backdrop-blur-xl border border-white/20 text-white p-6 rounded-2xl max-w-[220px] shadow-[0_8px_32px_0_rgba(158,27,50,0.3)]">
+            <span class="text-rose-300 text-4xl leading-none font-serif">"</span>
+            <p class="font-bold text-lg leading-tight mt-2 text-white">We will fix it, till we make it.</p>
+          </div>
+        </div>
+        <div>
+          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3">ABOUT OUR CULTURE</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Leading the way in repair solution</h2>
+          <p class="text-slate-300 mb-8 text-lg leading-relaxed">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <button class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-lg">Learn More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WHY CHOOSE US (Glass Cards) ================= -->
+    <section class="py-20 relative z-10">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Why Choose Us</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">For over 12 years in the gadget area</h2>
+          <p class="text-slate-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="relative group rounded-2xl overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
+            <div class="h-56 overflow-hidden rounded-xl">
+              <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80" alt="Professional" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="mt-4 text-center font-bold text-white text-lg">Professional</div>
+          </div>
+          <div class="relative group rounded-2xl overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
+            <div class="h-56 overflow-hidden rounded-xl">
+              <img src="https://images.unsplash.com/photo-1588508065123-287b28e0139b?auto=format&fit=crop&q=80" alt="Same Day Repairs" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="mt-4 text-center font-bold text-white text-lg">Same Day Repairs</div>
+          </div>
+          <div class="relative group rounded-2xl overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
+            <div class="h-56 overflow-hidden rounded-xl">
+              <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80" alt="Genuine Parts" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="mt-4 text-center font-bold text-white text-lg">Genuine Parts</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= OUR SERVICES (Glass Grid) ================= -->
+    <section class="py-20 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+        <div>
+          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Services</p>
+          <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">We offer a wide variety gadget services</h2>
+        </div>
+        <button class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 shadow-lg">
+          View More <i data-feather="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <!-- Service Cards -->
+        <div class="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="smartphone" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Mobile Phone</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tablet" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Tablet</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="monitor" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Laptop</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tv" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Computer Desktop</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="camera" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Camera</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-300 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="watch" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Wearable Device</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
+          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VISION & MISSION (Glass Accordion) ================= -->
+    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[40px] p-8 md:p-12 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer border border-white/20">
+            <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80" alt="Technician Video" class="w-full h-[400px] md:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px]">
+              <div class="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/40 rounded-full flex items-center justify-center pl-1 text-white shadow-[0_0_20px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-300">
+                <i data-feather="play" class="w-8 h-8 fill-current"></i>
+              </div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-[#0f172a]/70 backdrop-blur-md border-t border-white/10 text-white p-6 text-center">
+              <h3 class="font-bold text-xl">Miguel Velasco Armando</h3>
+              <p class="text-rose-300 font-semibold text-sm mt-1 tracking-widest uppercase">Repair Guy CEO</p>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Vision & Mission</p>
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Innovate with the gadget trends</h2>
+            <p class="text-slate-300 mb-8 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+            <div class="space-y-4">
+              <!-- Accordion Items -->
+              <div class="accordion-item border rounded-xl p-5 cursor-pointer transition-colors border-rose-500/50 bg-rose-900/20 backdrop-blur-md" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                  <h4 class="font-bold text-rose-300">Nulla aliquet lacus luctus accumsan</h4>
+                  <i data-feather="chevron-down" class="w-5 h-5 transition-transform rotate-180 text-rose-300 acc-icon"></i>
+                </div>
+                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+              <div class="accordion-item border border-white/10 bg-white/5 backdrop-blur-md hover:border-white/30 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                  <h4 class="font-bold text-slate-200">Bibendum neque egestas congue</h4>
+                  <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-slate-400 acc-icon"></i>
+                </div>
+                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+              <div class="accordion-item border border-white/10 bg-white/5 backdrop-blur-md hover:border-white/30 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                  <h4 class="font-bold text-slate-200">Diam vel quam elementum pulvinar</h4>
+                  <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-slate-400 acc-icon"></i>
+                </div>
+                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATISTICS ================= -->
+    <section class="py-16 relative z-10 border-y border-white/10 bg-white/5 backdrop-blur-sm">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x-0 lg:divide-x divide-white/10">
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">14<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
+            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Glorious Years</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">500<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
+            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Happy Customer</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">620<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
+            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Service Complete</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">99<span class="text-rose-400 text-3xl md:text-4xl">%</span></div>
+            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Satisfactions</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 pt-20 pb-10 relative z-10">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div class="space-y-6">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
+            <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+          </div>
+          <p class="text-sm leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Services</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Smartphone Repair</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Laptop Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Quick Link</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-rose-400 transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe</h4>
+          <form class="flex mb-6">
+            <input type="email" placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
+            <button type="submit" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+        <p>&copy; 2026 Repair Guy. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Custom Script Link -->
+  <script src="script.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Repair Guy</title>
   
   <!-- Tailwind CSS & Feather Icons CDN -->

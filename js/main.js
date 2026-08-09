@@ -1,4 +1,66 @@
-// ==========================================
+// Initialize Feather Icons
+feather.replace();
+
+// Glass Header Scroll Effect
+const header = document.getElementById('main-header');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) {
+    header.classList.add('bg-[#0f172a]/60', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
+    header.classList.remove('bg-transparent', 'py-5');
+  } else {
+    header.classList.add('bg-transparent', 'py-5');
+    header.classList.remove('bg-[#0f172a]/60', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
+  }
+});
+
+// Mobile Menu
+const menuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+let isMenuOpen = false;
+
+menuBtn.addEventListener('click', () => {
+  isMenuOpen = !isMenuOpen;
+  if (isMenuOpen) {
+    mobileMenu.classList.remove('hidden');
+    menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6 text-white"></i>';
+  } else {
+    mobileMenu.classList.add('hidden');
+    menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6 text-white"></i>';
+  }
+  feather.replace();
+});
+
+// Glass UI Accordion Logic
+function toggleAccordion(element) {
+  const content = element.querySelector('.acc-content');
+  const icon = element.querySelector('.acc-icon');
+  const title = element.querySelector('h4');
+  const isHidden = content.classList.contains('hidden');
+
+  // Reset all to default glass state
+  document.querySelectorAll('.accordion-item').forEach(item => {
+    item.classList.remove('border-rose-500/50', 'bg-rose-900/20');
+    item.classList.add('border-white/10', 'bg-white/5');
+    item.querySelector('.acc-content').classList.add('hidden');
+    item.querySelector('.acc-content').classList.remove('block');
+    item.querySelector('h4').classList.remove('text-rose-300');
+    item.querySelector('h4').classList.add('text-slate-200');
+    item.querySelector('.acc-icon').classList.remove('rotate-180', 'text-rose-300');
+    item.querySelector('.acc-icon').classList.add('text-slate-400');
+  });
+
+  // Active state
+  if (isHidden) {
+    element.classList.add('border-rose-500/50', 'bg-rose-900/20');
+    element.classList.remove('border-white/10', 'bg-white/5');
+    content.classList.remove('hidden');
+    content.classList.add('block');
+    title.classList.add('text-rose-300');
+    title.classList.remove('text-slate-200');
+    icon.classList.add('rotate-180', 'text-rose-300');
+    icon.classList.remove('text-slate-400');
+  }
+}// ==========================================
 // 2026 LIGHT / DARK MOOD SYSTEM
 // ==========================================
 const themeToggle = document.getElementById('themeToggle');

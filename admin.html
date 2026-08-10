@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Repair Guy</title>
+  <title>Admin Login - Repair Guy</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="style.css">
@@ -15,11 +15,46 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#9E1B32]/20 blur-[150px]"></div>
   </div>
 
-  <div class="max-w-[800px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl">
-    
+  <!-- ================= LOGIN SCREEN ================= -->
+  <div id="loginScreen" class="max-w-[400px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl transition-all duration-500">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-white/10 border border-white/20 rounded-2xl mx-auto flex items-center justify-center mb-4">
+        <i data-feather="lock" class="text-rose-400 w-8 h-8"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-white">Admin Login</h2>
+      <p class="text-slate-400 text-sm mt-2">Authorized Access Only</p>
+    </div>
+
+    <form id="loginForm" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-slate-400 mb-1">Email Address</label>
+        <input type="email" id="loginEmail" required placeholder="Tec.Habiburrahman@gmail.com" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-400 mb-1">Password</label>
+        <input type="password" id="loginPassword" required placeholder="Enter password (admin123)" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors">
+      </div>
+      <p id="loginError" class="text-red-400 text-sm text-center hidden">Invalid email or password!</p>
+      <button type="submit" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-3.5 rounded-xl transition-all mt-2 shadow-[0_0_15px_rgba(158,27,50,0.3)]">
+        Login to Dashboard
+      </button>
+    </form>
+    <div class="text-center mt-6">
+      <a href="index.html" class="text-sm text-slate-400 hover:text-rose-400 transition-colors">← Back to Website</a>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN DASHBOARD ================= -->
+  <div id="dashboardScreen" class="max-w-[800px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl hidden transition-all duration-500">
     <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-       <h2 class="text-3xl font-bold text-white">Admin Dashboard</h2>
-       <a href="index.html" class="text-rose-400 hover:text-white flex items-center gap-2"><i data-feather="home" class="w-4 h-4"></i> Go Home</a>
+       <div>
+         <h2 class="text-3xl font-bold text-white">Admin Dashboard</h2>
+         <p class="text-sm text-rose-300 mt-1">Logged in as Tec.Habiburrahman@gmail.com</p>
+       </div>
+       <div class="flex gap-4">
+         <a href="index.html" class="text-slate-300 hover:text-white flex items-center gap-2"><i data-feather="external-link" class="w-4 h-4"></i> View Site</a>
+         <button onclick="logoutAdmin()" class="text-red-400 hover:text-red-300 flex items-center gap-2"><i data-feather="log-out" class="w-4 h-4"></i> Logout</button>
+       </div>
     </div>
 
     <h3 class="text-xl font-semibold text-white mb-4">Create New Blog/Video Post</h3>
@@ -27,45 +62,84 @@
     <form id="postForm" class="space-y-5">
       <div>
         <label class="block text-sm font-medium text-slate-400 mb-1">Post Title</label>
-        <input type="text" id="postTitle" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
+        <input type="text" id="postTitle" required placeholder="E.g. iPhone 15 Display Replacement" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
            <label class="block text-sm font-medium text-slate-400 mb-1">Category</label>
-           <select id="postCategory" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white outline-none">
-             <option value="Repair Tip">Repair Tip</option>
-             <option value="Video Review">Video Review</option>
-             <option value="News">News</option>
+           <select id="postCategory" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-slate-300 outline-none">
+             <option value="Repair Tip" class="bg-slate-800 text-white">Repair Tip</option>
+             <option value="Video Review" class="bg-slate-800 text-white">Video Review</option>
+             <option value="News" class="bg-slate-800 text-white">News</option>
            </select>
         </div>
         <div>
            <label class="block text-sm font-medium text-slate-400 mb-1">Image / YouTube Link</label>
-           <input type="text" id="postMedia" placeholder="https://..." class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
+           <input type="text" id="postMedia" required placeholder="https://www.youtube.com/watch?v=..." class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
         </div>
       </div>
 
       <div>
         <label class="block text-sm font-medium text-slate-400 mb-1">Description / Content</label>
-        <textarea id="postDescription" rows="4" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none"></textarea>
+        <textarea id="postDescription" rows="4" required placeholder="Write details about the post..." class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none resize-none"></textarea>
       </div>
 
-      <button type="submit" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-4 rounded-xl transition-all mt-4">
+      <button type="submit" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-4 rounded-xl transition-all mt-4 shadow-[0_0_20px_rgba(158,27,50,0.3)]">
         Publish Post to Home Page
       </button>
       
-      <p id="successMsg" class="hidden text-green-400 text-center mt-3 bg-green-500/10 p-2 rounded-lg border border-green-500/20">Post published successfully!</p>
+      <p id="successMsg" class="hidden text-green-400 text-center mt-3 bg-green-500/10 p-3 rounded-lg border border-green-500/20 font-medium">✅ Post published successfully!</p>
     </form>
 
     <div class="mt-12 border-t border-white/10 pt-8">
-        <h3 class="text-lg font-semibold text-white mb-4">Manage Posts</h3>
-        <button onclick="clearPosts()" class="bg-red-500/20 hover:bg-red-500/40 border border-red-500/50 text-red-300 px-4 py-2 rounded-lg text-sm transition-all">Delete All Posts</button>
+        <h3 class="text-lg font-semibold text-white mb-4">Database Management</h3>
+        <p class="text-sm text-slate-400 mb-4">Currently using Browser Local Storage as database.</p>
+        <button onclick="clearPosts()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 px-6 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-2">
+          <i data-feather="trash-2" class="w-4 h-4"></i> Delete All Posts
+        </button>
     </div>
   </div>
 
   <script>
     feather.replace();
 
+    const loginScreen = document.getElementById('loginScreen');
+    const dashboardScreen = document.getElementById('dashboardScreen');
+    
+    // Check if already logged in
+    if(sessionStorage.getItem('isAdmin') === 'true') {
+        loginScreen.classList.add('hidden');
+        dashboardScreen.classList.remove('hidden');
+    }
+
+    // Login Logic
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.toLowerCase();
+      const pass = document.getElementById('loginPassword').value;
+      const error = document.getElementById('loginError');
+
+      // Admin Authentication Check
+      if(email === 'tec.habiburrahman@gmail.com'.toLowerCase() && pass === 'admin123') {
+          sessionStorage.setItem('isAdmin', 'true');
+          error.classList.add('hidden');
+          loginScreen.classList.add('hidden');
+          dashboardScreen.classList.remove('hidden');
+      } else {
+          error.classList.remove('hidden');
+      }
+    });
+
+    // Logout Logic
+    function logoutAdmin() {
+        sessionStorage.removeItem('isAdmin');
+        dashboardScreen.classList.add('hidden');
+        loginScreen.classList.remove('hidden');
+        document.getElementById('loginForm').reset();
+    }
+
+    // Database / Post Logic (Local Storage)
     document.getElementById('postForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
@@ -77,16 +151,10 @@
         date: new Date().toLocaleDateString()
       };
 
-      // Get existing posts or empty array
       let posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
-      
-      // Add new post
       posts.push(newPost);
-      
-      // Save back to local storage
       localStorage.setItem('blogPosts', JSON.stringify(posts));
 
-      // Show success
       const msg = document.getElementById('successMsg');
       msg.classList.remove('hidden');
       this.reset();
@@ -97,7 +165,7 @@
     });
 
     function clearPosts() {
-        if(confirm("Are you sure you want to delete all blog posts?")) {
+        if(confirm("Are you sure you want to delete all blog posts? This action cannot be undone.")) {
             localStorage.removeItem('blogPosts');
             alert("All posts deleted. Check the Home page.");
         }

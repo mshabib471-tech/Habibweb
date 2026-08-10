@@ -1,448 +1,303 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repair Guy</title>
-  
-  <!-- Tailwind CSS Config for Dark Mode -->
-  <script>
-    tailwind = {
-      darkMode: 'class',
-    }
-  </script>
+  <title>Repair Guy - Home</title>
   
   <!-- Tailwind CSS & Feather Icons CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <!-- Custom CSS Link -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 selection:bg-[#9E1B32] selection:text-white transition-colors duration-300">
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col">
 
-  <!-- ================= HEADER ================= -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white dark:bg-slate-900 py-5 border-b border-transparent dark:border-slate-800">
+  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
+  <div class="fixed inset-0 z-[-1] bg-[#0f172a] overflow-hidden">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
+    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
+  </div>
+
+  <!-- ================= HEADER (Glass) ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-5">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
       <!-- Logo -->
-      <div class="flex items-center gap-2 cursor-pointer">
-        <div class="w-10 h-10 bg-[#9E1B32] text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
-        <span class="font-bold text-2xl tracking-tight dark:text-white">Repair<span class="text-gray-500 dark:text-gray-400 font-medium">Guy</span></span>
-      </div>
+      <a href="index.html" class="flex items-center gap-2 cursor-pointer">
+        <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)]">R</div>
+        <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+      </a>
 
       <!-- Desktop Nav -->
-      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm">
-        <a href="#" class="text-[#9E1B32] font-semibold">Home</a>
-        <a href="#" class="hover:text-[#9E1B32] dark:hover:text-[#9E1B32] transition-colors">About Us</a>
-        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-[#9E1B32] transition-colors">
+      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
+        <a href="index.html" class="text-rose-400 font-semibold">Home</a>
+        <a href="#" class="hover:text-rose-400 transition-colors">About Us</a>
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
           Services <i data-feather="chevron-down" class="w-4 h-4"></i>
         </div>
-        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-[#9E1B32] transition-colors">
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
           Pages <i data-feather="chevron-down" class="w-4 h-4"></i>
         </div>
-        <a href="contact.html" class="hover:text-[#9E1B32] transition-colors">Contact Us</a>
+        <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
       </nav>
 
-      <!-- CTA, Theme Toggle & Mobile Toggle -->
+      <!-- Call CTA & Mobile Toggle -->
       <div class="flex items-center gap-4">
-        <!-- Theme Toggle Button -->
-        <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 p-2 rounded-lg transition-colors">
-          <i data-feather="moon" id="theme-toggle-dark-icon" class="w-5 h-5 hidden"></i>
-          <i data-feather="sun" id="theme-toggle-light-icon" class="w-5 h-5 hidden"></i>
+        <button class="hidden md:flex bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:-translate-y-0.5">
+          <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
+          <span>+880 1868 461577</span>
         </button>
-
-        <a href="contact.html" class="hidden md:flex bg-[#9E1B32] hover:bg-[#801528] text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-lg shadow-rose-900/20 hover:-translate-y-0.5">
-          <i data-feather="phone" class="w-4 h-4"></i>
-          <span>(123) 456 - 789</span>
-        </a>
-        
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" class="lg:hidden text-slate-800 dark:text-white p-2">
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md z-50 relative">
           <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Nav Drawer -->
-    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-white dark:bg-slate-900 shadow-xl border-t border-gray-100 dark:border-slate-800 flex flex-col px-4 py-4 gap-4 pb-8">
-      <a href="#" class="text-[#9E1B32] font-semibold text-lg">Home</a>
-      <a href="#" class="text-lg dark:text-slate-200">About Us</a>
-      <a href="#" class="text-lg dark:text-slate-200">Services</a>
-      <a href="#" class="text-lg dark:text-slate-200">Pages</a>
-      <a href="contact.html" class="text-lg dark:text-slate-200">Contact Us</a>
-      <a href="contact.html" class="bg-[#9E1B32] text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 mt-4 w-full">
-        <i data-feather="phone" class="w-4 h-4"></i>
-        <span>(123) 456 - 789</span>
+    <!-- Mobile Nav Drawer (Glass) -->
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-6 gap-4 shadow-2xl transition-all duration-300">
+      <a href="index.html" class="text-rose-400 font-semibold text-lg">Home</a>
+      <a href="#" class="text-lg text-slate-200 hover:text-rose-400">About Us</a>
+      <a href="#" class="text-lg text-slate-200 hover:text-rose-400">Services</a>
+      <a href="#" class="text-lg text-slate-200 hover:text-rose-400">Pages</a>
+      <a href="contact.html" class="text-lg text-slate-200 hover:text-rose-400">Contact Us</a>
+      <a href="tel:+8801868461577" class="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 mt-4 w-full">
+        <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
+        <span>+880 1868 461577</span>
       </a>
     </div>
   </header>
 
-  <main class="pt-[80px] lg:pt-[96px]">
+  <main class="flex-grow pt-[80px] lg:pt-[96px]">
     <!-- ================= HERO SECTION ================= -->
     <section class="relative w-full h-[500px] md:h-[600px] lg:h-[700px] flex items-center">
       <div class="absolute inset-0 z-0">
         <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80" alt="Gadget Repair Workshop" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-black/60 dark:bg-black/70"></div>
+        <div class="absolute inset-0 bg-[#0f172a]/70 backdrop-blur-sm"></div>
       </div>
       
       <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full text-center flex flex-col items-center">
         <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white max-w-4xl leading-tight tracking-tight animate-fade-in-up">
           Fast and reliable gadget <br class="hidden md:block" /> repair services
         </h1>
-        <p class="mt-6 text-gray-200 text-lg md:text-xl max-w-2xl font-light">
+        <p class="mt-6 text-slate-300 text-lg md:text-xl max-w-2xl font-light">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
         <div class="mt-10 flex flex-col sm:flex-row gap-4">
-          <button class="bg-[#9E1B32] hover:bg-[#801528] text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-lg">
+          <button class="bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-[0_0_20px_rgba(158,27,50,0.4)]">
             Get Started
           </button>
-          <a href="contact.html" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-slate-900 px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 inline-block">
+          <a href="contact.html" class="bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 inline-block">
             Contact Now
           </a>
         </div>
       </div>
     </section>
 
-    <!-- ================= QUICK SERVICE BAR ================= -->
-    <section class="bg-gradient-to-r from-[#9E1B32] to-[#4A154B] py-8">
-      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+    <!-- ================= QUICK SERVICE BAR (Glass Floating) ================= -->
+    <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-12 md:-mt-16">
+      <div class="bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-[32px] p-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-white">
           <div class="flex items-center gap-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#9E1B32] transition-colors"><i data-feather="settings"></i></div>
-            <div><h3 class="font-semibold text-lg">Repair Service</h3><p class="text-sm text-white/70">Professional fixes</p></div>
+            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="settings" class="text-rose-400"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Repair Service</h3><p class="text-sm text-slate-400">Professional fixes</p></div>
           </div>
           <div class="flex items-center gap-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#9E1B32] transition-colors"><i data-feather="cpu"></i></div>
-            <div><h3 class="font-semibold text-lg">Spare Parts</h3><p class="text-sm text-white/70">Genuine components</p></div>
+            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="cpu" class="text-rose-400"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Spare Parts</h3><p class="text-sm text-slate-400">Genuine components</p></div>
           </div>
           <div class="flex items-center gap-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#9E1B32] transition-colors"><i data-feather="database"></i></div>
-            <div><h3 class="font-semibold text-lg">Data Recovery</h3><p class="text-sm text-white/70">Safe retrieval</p></div>
+            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="database" class="text-rose-400"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Data Recovery</h3><p class="text-sm text-slate-400">Safe retrieval</p></div>
           </div>
           <div class="flex items-center gap-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-[#9E1B32] transition-colors"><i data-feather="shield"></i></div>
-            <div><h3 class="font-semibold text-lg">Quality Check</h3><p class="text-sm text-white/70">Rigorous testing</p></div>
+            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="shield" class="text-rose-400"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Quality Check</h3><p class="text-sm text-slate-400">Rigorous testing</p></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= ABOUT SECTION ================= -->
-    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-        <div class="relative">
-          <div class="grid grid-cols-2 gap-4">
-            <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=80" alt="Technician" class="rounded-2xl w-full h-[250px] object-cover mt-8 shadow-xl dark:shadow-slate-900/50" />
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80" alt="Motherboard" class="rounded-2xl w-full h-[250px] object-cover shadow-xl dark:shadow-slate-900/50" />
-          </div>
-          <div class="absolute -bottom-6 md:bottom-8 left-0 md:-left-8 bg-[#4A154B] dark:bg-slate-800 text-white p-6 rounded-2xl max-w-[220px] shadow-2xl border-l-4 border-[#9E1B32]">
-            <span class="text-[#9E1B32] text-4xl leading-none font-serif">"</span>
-            <p class="font-bold text-lg leading-tight mt-2">We will fix it, till we make it.</p>
-          </div>
-        </div>
-        <div>
-          <p class="text-[#9E1B32] font-bold tracking-wider text-sm mb-3">ABOUT OUR CULTURE</p>
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight dark:text-white">Leading the way in repair solution</h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-8 text-lg leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-          <button class="bg-[#9E1B32] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#801528] transition-colors shadow-lg">Learn More</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= WHY CHOOSE US ================= -->
-    <section class="bg-gray-50 dark:bg-slate-800/50 py-20 transition-colors duration-300">
+    <!-- ================= DYNAMIC BLOG / VIDEO SECTION (NEW) ================= -->
+    <section class="py-20 relative z-10">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <p class="text-[#9E1B32] font-bold tracking-wider text-sm mb-3 uppercase">Why Choose Us</p>
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 dark:text-white">For over 12 years in the gadget area</h2>
-          <p class="text-gray-600 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div>
+            <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Updates</p>
+            <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">Latest Video & Blogs</h2>
+          </div>
+          <a href="admin.html" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm shadow-lg">
+            Admin Post <i data-feather="external-link" class="w-4 h-4"></i>
+          </a>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="relative group rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-slate-800 pb-6 transition-colors duration-300">
-            <div class="h-64 overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80" alt="Professional" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-            </div>
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-700 px-6 py-3 rounded-xl shadow-xl w-10/12 text-center font-bold text-slate-800 dark:text-white transition-colors duration-300">Professional</div>
-          </div>
-          <div class="relative group rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-slate-800 pb-6 transition-colors duration-300">
-            <div class="h-64 overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1588508065123-287b28e0139b?auto=format&fit=crop&q=80" alt="Same Day Repairs" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-            </div>
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-700 px-6 py-3 rounded-xl shadow-xl w-10/12 text-center font-bold text-slate-800 dark:text-white transition-colors duration-300">Same Day Repairs</div>
-          </div>
-          <div class="relative group rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-slate-800 pb-6 transition-colors duration-300">
-            <div class="h-64 overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80" alt="Genuine Parts" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-            </div>
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-700 px-6 py-3 rounded-xl shadow-xl w-10/12 text-center font-bold text-slate-800 dark:text-white transition-colors duration-300">Genuine Parts</div>
-          </div>
+
+        <!-- This container will be populated by JS -->
+        <div id="blog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Placeholder if no post -->
+          <p class="text-slate-400 italic col-span-full">Loading posts...</p>
         </div>
       </div>
     </section>
 
-    <!-- ================= LOGO STRIP ================= -->
-    <section class="border-y border-gray-200 dark:border-slate-800 py-10 bg-white dark:bg-slate-900 transition-colors duration-300">
-      <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-10 md:gap-20 opacity-50 grayscale dark:opacity-30">
-        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-gray-500"><div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-      </div>
-    </section>
-
-    <!-- ================= OUR SERVICES ================= -->
-    <section class="py-20 max-w-[1280px] mx-auto px-4 md:px-6 bg-white dark:bg-slate-900 transition-colors duration-300">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-        <div>
-          <p class="text-[#9E1B32] font-bold tracking-wider text-sm mb-3 uppercase">Our Services</p>
-          <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight dark:text-white">We offer a wide variety gadget services</h2>
-        </div>
-        <button class="bg-[#9E1B32] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#801528] transition-colors inline-flex items-center gap-2">
-          View More <i data-feather="arrow-right" class="w-4 h-4"></i>
-        </button>
+    <!-- ================= OUR SERVICES (Glass Grid) ================= -->
+    <section class="py-10 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Services</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">We offer a wide variety gadget services</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        <!-- Service Cards -->
-        <div class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
-          <div class="w-20 h-20 bg-rose-50 dark:bg-slate-700 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="smartphone" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 dark:text-white">Mobile Phone</h3>
-          <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="smartphone" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Mobile Phone</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
-          <div class="w-20 h-20 bg-rose-50 dark:bg-slate-700 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tablet" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 dark:text-white">Tablet</h3>
-          <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="laptop" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Laptop Repair</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
-          <div class="w-20 h-20 bg-rose-50 dark:bg-slate-700 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="monitor" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 dark:text-white">Laptop</h3>
-          <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
-        </div>
-        <div class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
-          <div class="w-20 h-20 bg-rose-50 dark:bg-slate-700 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tv" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 dark:text-white">Computer Desktop</h3>
-          <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
-        </div>
-        <div class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
-          <div class="w-20 h-20 bg-rose-50 dark:bg-slate-700 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="camera" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 dark:text-white">Camera</h3>
-          <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
-        </div>
-        <div class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
-          <div class="w-20 h-20 bg-rose-50 dark:bg-slate-700 text-[#9E1B32] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="watch" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 dark:text-white">Wearable Device</h3>
-          <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-[#9E1B32] font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 text-center group flex flex-col items-center">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="monitor" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Desktop Repair</h3>
+          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
         </div>
       </div>
     </section>
 
-    <!-- ================= SUPPORT CTA ================= -->
-    <section class="relative py-20 md:py-28">
-      <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80" alt="Background" class="w-full h-full object-cover blur-sm" />
-        <div class="absolute inset-0 bg-gradient-to-r from-[#4A154B]/95 to-[#9E1B32]/90"></div>
-      </div>
-      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-10">
-        <div class="text-white max-w-xl">
-          <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Get support for your problem</h2>
-          <p class="text-white/80 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-          <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
-            <div class="w-12 h-12 rounded-full bg-rose-50 dark:bg-slate-700 text-[#9E1B32] flex items-center justify-center"><i data-feather="mail"></i></div>
-            <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Send us an email</p>
-              <p class="font-bold text-slate-800 dark:text-white">hello@repairguy.com</p>
-            </div>
-          </div>
-          <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
-            <div class="w-12 h-12 rounded-full bg-rose-50 dark:bg-slate-700 text-[#9E1B32] flex items-center justify-center"><i data-feather="phone"></i></div>
-            <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Give us a call</p>
-              <p class="font-bold text-slate-800 dark:text-white">(123) 456 - 7890</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= VISION & MISSION ================= -->
-    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-        <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer">
-          <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80" alt="Technician Video" class="w-full h-[400px] md:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700" />
-          <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center pl-1 text-[#9E1B32] shadow-xl group-hover:scale-110 transition-transform duration-300">
-              <i data-feather="play" class="w-8 h-8 fill-current"></i>
-            </div>
-          </div>
-          <div class="absolute bottom-0 left-0 right-0 bg-black/80 text-white p-6 text-center backdrop-blur-sm">
-            <h3 class="font-bold text-xl">Miguel Velasco Armando</h3>
-            <p class="text-[#9E1B32] font-semibold text-sm mt-1 tracking-widest uppercase">Repair Guy CEO</p>
-          </div>
-        </div>
-
-        <div>
-          <p class="text-[#9E1B32] font-bold tracking-wider text-sm mb-3 uppercase">Our Vision & Mission</p>
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight dark:text-white">Innovate with the gadget trends</h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-8 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
-          <div class="space-y-4">
-            <!-- Accordion -->
-            <div class="accordion-item border rounded-xl p-5 cursor-pointer transition-colors border-[#9E1B32] bg-rose-50/30 dark:bg-slate-800" onclick="toggleAccordion(this)">
-              <div class="flex justify-between items-center">
-                <h4 class="font-bold text-[#9E1B32]">Nulla aliquet lacus luctus accumsan</h4>
-                <i data-feather="chevron-down" class="w-5 h-5 transition-transform rotate-180 text-[#9E1B32] acc-icon"></i>
-              </div>
-              <p class="acc-content mt-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-            <div class="accordion-item border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 dark:bg-slate-800/50 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
-              <div class="flex justify-between items-center">
-                <h4 class="font-bold text-slate-800 dark:text-slate-200">Bibendum neque egestas congue</h4>
-                <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-gray-400 acc-icon"></i>
-              </div>
-              <p class="acc-content mt-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-            <div class="accordion-item border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 dark:bg-slate-800/50 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
-              <div class="flex justify-between items-center">
-                <h4 class="font-bold text-slate-800 dark:text-slate-200">Diam vel quam elementum pulvinar</h4>
-                <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-gray-400 acc-icon"></i>
-              </div>
-              <p class="acc-content mt-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= STATISTICS ================= -->
-    <section class="bg-gray-50 dark:bg-slate-800/50 py-16 border-y border-gray-100 dark:border-slate-800 transition-colors duration-300">
-      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x-0 lg:divide-x divide-gray-200 dark:divide-slate-700">
-          <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-slate-800 dark:text-white mb-2">14<span class="text-[#9E1B32] text-3xl md:text-4xl">+</span></div>
-            <p class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider text-sm">Glorious Years</p>
-          </div>
-          <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-slate-800 dark:text-white mb-2">500<span class="text-[#9E1B32] text-3xl md:text-4xl">+</span></div>
-            <p class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider text-sm">Happy Customer</p>
-          </div>
-          <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-slate-800 dark:text-white mb-2">620<span class="text-[#9E1B32] text-3xl md:text-4xl">+</span></div>
-            <p class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider text-sm">Service Complete</p>
-          </div>
-          <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-slate-800 dark:text-white mb-2">99<span class="text-[#9E1B32] text-3xl md:text-4xl">%</span></div>
-            <p class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider text-sm">Satisfactions</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= TESTIMONIAL ================= -->
-    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6">
-      <div class="flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl">
-        <div class="bg-[#4A154B] p-10 md:p-16 lg:w-1/2 flex flex-col justify-center relative">
-          <p class="text-rose-300 font-bold tracking-wider text-sm mb-3 uppercase">Testimonial</p>
-          <h2 class="text-4xl md:text-5xl font-bold text-white mb-10 leading-tight">Review from our customer</h2>
-          
-          <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl relative z-10 lg:-mr-24 transform lg:translate-x-12 transition-transform hover:-translate-y-1">
-            <div class="text-[#9E1B32] text-4xl font-serif mb-4 leading-none">"</div>
-            <p class="text-gray-600 dark:text-gray-300 text-lg italic mb-6">
-              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem."
-            </p>
-            <div class="flex items-center gap-4">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover" />
-              <div>
-                <h4 class="font-bold text-slate-800 dark:text-white">Kylie Store</h4>
-                <div class="flex text-yellow-400 text-sm">★★★★★</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="lg:w-1/2 h-[400px] lg:h-auto">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80" alt="Happy Customer" class="w-full h-full object-cover" />
-        </div>
-      </div>
-    </section>
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#111111] text-gray-400 pt-20 pb-10">
+  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 pt-20 pb-10 relative z-10 mt-auto">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         <div class="space-y-6">
           <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-[#9E1B32] text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
-            <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-gray-400 font-medium">Guy</span></span>
+            <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
+            <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
           </div>
-          <p class="text-sm leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
-          <div class="space-y-3 text-sm">
-            <p class="flex items-center gap-3"><i data-feather="map-pin" class="w-4 h-4 text-[#9E1B32]"></i> 123 Street Name, City, Country</p>
-            <p class="flex items-center gap-3"><i data-feather="phone" class="w-4 h-4 text-[#9E1B32]"></i> (123) 456 - 7890</p>
-            <p class="flex items-center gap-3"><i data-feather="clock" class="w-4 h-4 text-[#9E1B32]"></i> Mon-Sat: 9:00 AM - 6:00 PM</p>
-          </div>
+          <p class="text-sm leading-relaxed">Your trusted partner for fast and reliable gadget repair services.</p>
         </div>
-
         <div>
           <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Services</h4>
           <ul class="space-y-3 text-sm">
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Smartphone Repair</a></li>
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Laptop Repair</a></li>
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Desktop Repair</a></li>
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Tablet Repair</a></li>
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">SmartWatch Repair</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Smartphone Repair</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Laptop Repair</a></li>
           </ul>
         </div>
-
         <div>
           <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Quick Link</h4>
           <ul class="space-y-3 text-sm">
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">About</a></li>
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Careers</a></li>
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">Price List</a></li>
-            <li><a href="contact.html" class="hover:text-[#9E1B32] transition-colors">Contact</a></li>
-            <li><a href="#" class="hover:text-[#9E1B32] transition-colors">FAQ</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">About Us</a></li>
+            <li><a href="contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
           </ul>
         </div>
-
         <div>
-          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe Our Newsletter</h4>
-          <p class="text-sm mb-4">Get the latest news and offers directly.</p>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe</h4>
           <form class="flex mb-6">
-            <input type="email" placeholder="Email Address" class="bg-gray-800 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:ring-1 focus:ring-[#9E1B32]" />
-            <button type="submit" class="bg-[#9E1B32] hover:bg-[#801528] text-white px-4 py-3 rounded-r-lg transition-colors">Submit</button>
+            <input type="email" placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
+            <button type="submit" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
           </form>
-          <div class="flex gap-4">
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[#9E1B32] text-white transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[#9E1B32] text-white transition-colors"><i data-feather="twitter" class="w-5 h-5"></i></a>
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[#9E1B32] text-white transition-colors"><i data-feather="instagram" class="w-5 h-5"></i></a>
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[#9E1B32] text-white transition-colors"><i data-feather="linkedin" class="w-5 h-5"></i></a>
-          </div>
         </div>
       </div>
-
-      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
         <p>&copy; 2026 Repair Guy. All Rights Reserved.</p>
-        <div class="flex gap-6">
-          <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-          <a href="#" class="hover:text-white transition-colors">Terms & Conditions</a>
-        </div>
       </div>
     </div>
   </footer>
 
-  <!-- Custom Script Link -->
-  <script src="script.js"></script>
+  <script>
+    // Initialize Feather Icons
+    feather.replace();
+
+    // Glass Header Scroll Effect
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg');
+        header.classList.remove('bg-transparent');
+      } else {
+        header.classList.add('bg-transparent');
+        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg');
+      }
+    });
+
+    // Mobile Menu Toggle Fix
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let isMenuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      if (isMenuOpen) {
+        mobileMenu.classList.remove('hidden');
+        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6"></i>';
+      } else {
+        mobileMenu.classList.add('hidden');
+        menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6"></i>';
+      }
+      feather.replace();
+    });
+
+    // ================= LOAD BLOG POSTS FROM LOCALSTORAGE =================
+    const blogContainer = document.getElementById('blog-container');
+    
+    function loadBlogPosts() {
+      // Get posts from local storage (saved by admin.html)
+      const savedPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+      
+      if (savedPosts.length === 0) {
+        // Dummy post if nothing exists
+        blogContainer.innerHTML = `
+          <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-lg">
+            <div class="w-full h-48 bg-white/10 rounded-xl mb-4 flex items-center justify-center text-slate-400">
+               <i data-feather="video" class="w-10 h-10"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Welcome to Repair Guy</h3>
+            <p class="text-sm text-slate-400 line-clamp-3">New posts created in the admin panel will appear here automatically.</p>
+          </div>
+        `;
+        feather.replace();
+        return;
+      }
+
+      blogContainer.innerHTML = ''; // Clear container
+      
+      // Reverse array to show newest first, limit to 3 for homepage
+      savedPosts.reverse().slice(0, 3).forEach(post => {
+        // Check if it's a YouTube link to embed, else show image
+        let mediaHTML = '';
+        if (post.mediaLink && post.mediaLink.includes('youtube.com')) {
+           // Basic youtube embed extraction
+           const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11);
+           mediaHTML = `<iframe class="w-full h-48 rounded-xl mb-4 border border-white/10" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+        } else {
+           mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80'}" class="w-full h-48 object-cover rounded-xl mb-4 border border-white/10" alt="Blog Media">`;
+        }
+
+        const postElement = document.createElement('div');
+        postElement.className = "bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] hover:border-white/20 transition-all";
+        postElement.innerHTML = `
+          ${mediaHTML}
+          <div class="flex justify-between items-center mb-3">
+             <span class="text-xs font-semibold text-rose-400 bg-rose-500/10 px-2 py-1 rounded">${post.category || 'Update'}</span>
+             <span class="text-xs text-slate-400">${post.date || 'Today'}</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2 leading-snug">${post.title}</h3>
+          <p class="text-sm text-slate-400 mb-4 line-clamp-3">${post.description}</p>
+          <button class="text-rose-300 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">Read More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+        `;
+        blogContainer.appendChild(postElement);
+      });
+      feather.replace();
+    }
+
+    // Load posts on page load
+    loadBlogPosts();
+  </script>
 </body>
 </html>

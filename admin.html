@@ -94,33 +94,47 @@
 
     <div class="mt-12 border-t border-white/10 pt-8">
         <h3 class="text-lg font-semibold text-white mb-4">Database Management</h3>
-        <p class="text-sm text-slate-400 mb-4">Currently using Browser Local Storage as database.</p>
+        <p class="text-sm text-slate-400 mb-4">Connected to Firebase Firestore Database.</p>
         <button onclick="clearPosts()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 px-6 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-2">
           <i data-feather="trash-2" class="w-4 h-4"></i> Delete All Posts
         </button>
     </div>
   </div>
 
-  <script>
+  <!-- Firebase & Admin Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
+      authDomain: "habib-yt.firebaseapp.com",
+      projectId: "habib-yt",
+      storageBucket: "habib-yt.firebasestorage.app",
+      messagingSenderId: "656628491244",
+      appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
+      measurementId: "G-GNY1T88D34"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     feather.replace();
 
     const loginScreen = document.getElementById('loginScreen');
     const dashboardScreen = document.getElementById('dashboardScreen');
     
-    // Check if already logged in
     if(sessionStorage.getItem('isAdmin') === 'true') {
         loginScreen.classList.add('hidden');
         dashboardScreen.classList.remove('hidden');
     }
 
-    // Login Logic
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value.toLowerCase();
       const pass = document.getElementById('loginPassword').value;
       const error = document.getElementById('loginError');
 
-      // Admin Authentication Check
       if(email === 'tec.habiburrahman@gmail.com'.toLowerCase() && pass === 'admin123') {
           sessionStorage.setItem('isAdmin', 'true');
           error.classList.add('hidden');
@@ -131,43 +145,50 @@
       }
     });
 
-    // Logout Logic
-    function logoutAdmin() {
+    window.logoutAdmin = function() {
         sessionStorage.removeItem('isAdmin');
         dashboardScreen.classList.add('hidden');
         loginScreen.classList.remove('hidden');
         document.getElementById('loginForm').reset();
     }
 
-    // Database / Post Logic (Local Storage)
-    document.getElementById('postForm').addEventListener('submit', function(e) {
+    document.getElementById('postForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+      const submitBtn = this.querySelector('button[type="submit"]');
+      submitBtn.innerText = "Publishing...";
       
-      const newPost = {
-        title: document.getElementById('postTitle').value,
-        category: document.getElementById('postCategory').value,
-        mediaLink: document.getElementById('postMedia').value,
-        description: document.getElementById('postDescription').value,
-        date: new Date().toLocaleDateString()
-      };
+      try {
+        await addDoc(collection(db, "blogPosts"), {
+          title: document.getElementById('postTitle').value,
+          category: document.getElementById('postCategory').value,
+          mediaLink: document.getElementById('postMedia').value,
+          description: document.getElementById('postDescription').value,
+          date: new Date().toLocaleDateString(),
+          timestamp: Date.now()
+        });
 
-      let posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
-      posts.push(newPost);
-      localStorage.setItem('blogPosts', JSON.stringify(posts));
-
-      const msg = document.getElementById('successMsg');
-      msg.classList.remove('hidden');
-      this.reset();
-      
-      setTimeout(() => {
-        msg.classList.add('hidden');
-      }, 3000);
+        const msg = document.getElementById('successMsg');
+        msg.classList.remove('hidden');
+        this.reset();
+        setTimeout(() => msg.classList.add('hidden'), 3000);
+      } catch (e) {
+        alert("Error adding document: " + e);
+      } finally {
+        submitBtn.innerText = "Publish Post to Home Page";
+      }
     });
 
-    function clearPosts() {
+    window.clearPosts = async function() {
         if(confirm("Are you sure you want to delete all blog posts? This action cannot be undone.")) {
-            localStorage.removeItem('blogPosts');
-            alert("All posts deleted. Check the Home page.");
+            try {
+                const querySnapshot = await getDocs(collection(db, "blogPosts"));
+                querySnapshot.forEach(async (document) => {
+                    await deleteDoc(doc(db, "blogPosts", document.id));
+                });
+                alert("All posts deleted successfully!");
+            } catch(e) {
+                alert("Error deleting posts: " + e);
+            }
         }
     }
   </script>

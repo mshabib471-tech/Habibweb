@@ -431,8 +431,24 @@
     </div>
   </footer>
 
-  <script>
-    // Initialize Feather Icons
+  <!-- Firebase & App Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
+      authDomain: "habib-yt.firebaseapp.com",
+      projectId: "habib-yt",
+      storageBucket: "habib-yt.firebasestorage.app",
+      messagingSenderId: "656628491244",
+      appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
+      measurementId: "G-GNY1T88D34"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     feather.replace();
 
     // Glass Header Scroll Effect
@@ -465,7 +481,7 @@
     });
 
     // Glass Accordion Logic
-    function toggleAccordion(element) {
+    window.toggleAccordion = function(element) {
       const content = element.querySelector('.acc-content');
       const icon = element.querySelector('.acc-icon');
       const title = element.querySelector('h4');
@@ -494,52 +510,58 @@
       }
     }
 
-    // ================= LOAD BLOG POSTS FROM LOCAL DATABASE =================
-    const blogContainer = document.getElementById('blog-container');
-    
-    function loadBlogPosts() {
-      const savedPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+    // Fetch Blog Posts from Firestore Database
+    async function loadBlogPosts() {
+      const blogContainer = document.getElementById('blog-container');
       
-      if (savedPosts.length === 0) {
-        blogContainer.innerHTML = `
-          <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-lg">
-            <div class="w-full h-48 bg-white/10 rounded-xl mb-4 flex items-center justify-center text-slate-400 border border-white/10">
-               <i data-feather="video" class="w-10 h-10 text-rose-300"></i>
+      try {
+        const q = query(collection(db, "blogPosts"), orderBy("timestamp", "desc"), limit(3));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          blogContainer.innerHTML = `
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-lg col-span-full">
+              <div class="w-full h-48 bg-white/10 rounded-xl mb-4 flex items-center justify-center text-slate-400 border border-white/10">
+                 <i data-feather="video" class="w-10 h-10 text-rose-300"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">Welcome to Repair Guy</h3>
+              <p class="text-sm text-slate-400 line-clamp-3">Posts published from the Admin Panel will appear here.</p>
             </div>
-            <h3 class="text-xl font-bold text-white mb-2">Welcome to Repair Guy</h3>
-            <p class="text-sm text-slate-400 line-clamp-3">Posts published from the Admin Panel will appear here.</p>
-          </div>
-        `;
-        feather.replace();
-        return;
-      }
-
-      blogContainer.innerHTML = ''; 
-      
-      savedPosts.reverse().slice(0, 3).forEach(post => {
-        let mediaHTML = '';
-        if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
-           const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
-           mediaHTML = `<iframe class="w-full h-48 rounded-xl mb-4 border border-white/10" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-        } else {
-           mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80'}" class="w-full h-48 object-cover rounded-xl mb-4 border border-white/10" alt="Blog Media">`;
+          `;
+          feather.replace();
+          return;
         }
 
-        const postElement = document.createElement('div');
-        postElement.className = "bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] hover:border-white/20 transition-all";
-        postElement.innerHTML = `
-          ${mediaHTML}
-          <div class="flex justify-between items-center mb-3">
-             <span class="text-xs font-semibold text-rose-400 bg-rose-500/10 px-2 py-1 rounded">${post.category || 'Update'}</span>
-             <span class="text-xs text-slate-400">${post.date || 'Today'}</span>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-2 leading-snug">${post.title}</h3>
-          <p class="text-sm text-slate-400 mb-4 line-clamp-3">${post.description}</p>
-          <button class="text-rose-300 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">Read More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
-        `;
-        blogContainer.appendChild(postElement);
-      });
-      feather.replace();
+        blogContainer.innerHTML = ''; 
+        
+        querySnapshot.forEach((doc) => {
+          const post = doc.data();
+          let mediaHTML = '';
+          if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
+             const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
+             mediaHTML = `<iframe class="w-full h-48 rounded-xl mb-4 border border-white/10" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+          } else {
+             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80'}" class="w-full h-48 object-cover rounded-xl mb-4 border border-white/10" alt="Blog Media">`;
+          }
+
+          const postElement = document.createElement('div');
+          postElement.className = "bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] hover:border-white/20 transition-all";
+          postElement.innerHTML = `
+            ${mediaHTML}
+            <div class="flex justify-between items-center mb-3">
+               <span class="text-xs font-semibold text-rose-400 bg-rose-500/10 px-2 py-1 rounded">${post.category || 'Update'}</span>
+               <span class="text-xs text-slate-400">${post.date || 'Today'}</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2 leading-snug">${post.title}</h3>
+            <p class="text-sm text-slate-400 mb-4 line-clamp-3">${post.description}</p>
+            <button class="text-rose-300 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">Read More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+          `;
+          blogContainer.appendChild(postElement);
+        });
+        feather.replace();
+      } catch (error) {
+        console.log("Error loading posts:", error);
+      }
     }
 
     loadBlogPosts();

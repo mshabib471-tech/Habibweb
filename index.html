@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repair Guy - Home</title>
+  <title>Habib Tec. - Home</title>
   
   <!-- Tailwind CSS & Feather Icons CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -25,12 +25,14 @@
   </div>
 
   <!-- ================= HEADER (Glass) ================= -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-5">
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-4">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-2 cursor-pointer">
-        <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)]">R</div>
-        <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+      <!-- Logo & Name -->
+      <a href="index.html" class="flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
+          <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" alt="Habib Tec. Logo" class="w-full h-full object-cover">
+        </div>
+        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">Tec.</span></span>
       </a>
 
       <!-- Desktop Nav -->
@@ -44,7 +46,6 @@
         <!-- Pages Dropdown -->
         <div class="group relative py-2 cursor-pointer transition-colors">
           <div class="flex items-center gap-1 hover:text-rose-400">Pages <i data-feather="chevron-down" class="w-4 h-4"></i></div>
-          <!-- Dropdown Content -->
           <div class="absolute top-full left-0 mt-2 w-56 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden z-50">
             <a href="#updates" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors border-b border-white/5">Updates</a>
             <a href="#vision" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors border-b border-white/5">Our Vision & Mission</a>
@@ -54,12 +55,33 @@
 
         <a href="blog.html" class="hover:text-rose-400 transition-colors">Our Blog</a>
         <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
-        <a href="login.html" class="hover:text-rose-400 transition-colors flex items-center gap-1">Login <i data-feather="user" class="w-4 h-4"></i></a>
+        
+        <!-- Auth Profile Area / Login -->
+        <div id="authProfileArea" class="relative group">
+            <a href="login.html?return=index.html" id="loginNavBtn" class="hover:text-rose-400 transition-colors flex items-center gap-1 cursor-pointer font-bold">
+                Login <i data-feather="user" class="w-4 h-4"></i>
+            </a>
+
+            <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
+                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-rose-400 shadow-lg">
+                <i data-feather="chevron-down" class="w-4 h-4 text-slate-300"></i>
+
+                <div class="absolute top-full right-0 mt-3 w-48 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50">
+                    <label class="px-4 py-3 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 border-b border-white/5 transition-colors">
+                        <i data-feather="camera" class="w-4 h-4 text-rose-400"></i> Change Picture
+                        <input type="file" id="profilePicInput" accept="image/*" class="hidden">
+                    </label>
+                    <button onclick="logoutCurrentUser()" class="px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-white/10 text-left flex items-center gap-2 transition-colors w-full">
+                        <i data-feather="log-out" class="w-4 h-4"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
       </nav>
 
       <!-- Call CTA & Mobile Toggle -->
       <div class="flex items-center gap-4">
-        <button class="hidden md:flex bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:-translate-y-0.5">
+        <button class="hidden md:flex bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-2 rounded-full font-medium items-center gap-2 transition-all shadow-lg">
           <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
           <span>+880 1868 461577</span>
         </button>
@@ -69,13 +91,12 @@
       </div>
     </div>
 
-    <!-- Mobile Nav Drawer (Glass) -->
+    <!-- Mobile Nav Drawer -->
     <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-6 gap-4 shadow-2xl transition-all duration-300 z-40 h-screen overflow-y-auto pb-32">
       <a href="index.html" class="text-rose-400 font-semibold text-lg">Home</a>
       <a href="#" class="text-lg text-slate-200 hover:text-rose-400">About Us</a>
       <a href="#" class="text-lg text-slate-200 hover:text-rose-400">Services</a>
       
-      <!-- Mobile Pages Dropdown Items -->
       <div class="flex flex-col gap-3 pl-4 border-l-2 border-white/10 my-2">
         <p class="text-slate-400 uppercase text-xs font-bold tracking-wider">Pages</p>
         <a href="#updates" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Updates</a>
@@ -85,12 +106,7 @@
 
       <a href="blog.html" class="text-lg text-slate-200 hover:text-rose-400">Our Blog</a>
       <a href="contact.html" class="text-lg text-slate-200 hover:text-rose-400">Contact Us</a>
-      <a href="login.html" class="text-lg text-slate-200 hover:text-rose-400 flex items-center gap-2">Login <i data-feather="user" class="w-4 h-4"></i></a>
-      
-      <a href="tel:+8801868461577" class="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 mt-4 w-full">
-        <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
-        <span>+880 1868 461577</span>
-      </a>
+      <a href="login.html?return=index.html" class="text-lg text-slate-200 hover:text-rose-400 flex items-center gap-2">Login / Account <i data-feather="user" class="w-4 h-4"></i></a>
     </div>
   </header>
 
@@ -103,11 +119,11 @@
       </div>
       
       <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full text-center flex flex-col items-center">
-        <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white max-w-4xl leading-tight tracking-tight animate-fade-in-up">
+        <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white max-w-4xl leading-tight tracking-tight">
           Fast and reliable gadget <br class="hidden md:block" /> repair services
         </h1>
         <p class="mt-6 text-slate-300 text-lg md:text-xl max-w-2xl font-light">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Welcome to Habib Tec. — your ultimate destination for professional hardware fixes, genuine components, and expert tech support.
         </p>
         <div class="mt-10 flex flex-col sm:flex-row gap-4">
           <button class="bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-[0_0_20px_rgba(158,27,50,0.4)]">
@@ -185,7 +201,7 @@
           <p class="text-rose-400 font-bold tracking-wider text-sm mb-3">ABOUT OUR CULTURE</p>
           <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Leading the way in repair solution</h2>
           <p class="text-slate-300 mb-8 text-lg leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Habib Tec. delivers unmatched precision and expert care for every electronic device you bring to our workshop.
           </p>
           <button class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-lg">Learn More</button>
         </div>
@@ -197,8 +213,8 @@
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="text-center max-w-3xl mx-auto mb-16">
           <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Why Choose Us</p>
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">For over 12 years in the gadget area</h2>
-          <p class="text-slate-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Trusted expertise in the gadget area</h2>
+          <p class="text-slate-300">Dedicated professionals committed to bringing your devices back to peak performance.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="relative group rounded-2xl overflow-hidden bg-[#0f172a]/50 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
@@ -226,11 +242,10 @@
     <!-- ================= LOGO STRIP ================= -->
     <section class="py-10 relative z-10 border-b border-white/10">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-10 md:gap-20 opacity-50 hover:opacity-80 transition-opacity">
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">L</div>Logipsum</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib Tec.</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib Tec.</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib Tec.</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib Tec.</div>
       </div>
     </section>
 
@@ -244,42 +259,36 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        <!-- Card 1 -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Mobile Phone Repair', 'We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage. Get your smartphone back to life in no time!', 'smartphone')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="smartphone" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Mobile Phone</h3>
           <p class="text-slate-400 mb-6 text-sm">Professional mobile repair services for all major brands.</p>
           <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <!-- Card 2 -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Tablet Repair', 'From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates for all tablets.', 'tablet')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tablet" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Tablet</h3>
           <p class="text-slate-400 mb-6 text-sm">Expert tablet diagnosis and quick reliable repairs.</p>
           <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <!-- Card 3 -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Laptop Repair', 'We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes for all laptop models.', 'laptop')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="laptop" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Laptop</h3>
           <p class="text-slate-400 mb-6 text-sm">Hardware and software solutions for your laptops.</p>
           <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <!-- Card 4 -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Computer Desktop', 'Custom PC builds, hardware upgrades, SSD installation, and deep cleaning for optimal desktop performance.', 'monitor')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="monitor" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Computer Desktop</h3>
           <p class="text-slate-400 mb-6 text-sm">Full desktop maintenance and upgrading services.</p>
           <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <!-- Card 5 -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Camera Repair', 'Professional cleaning, lens fixing, and sensor calibration for DSLR, Mirrorless, and digital cameras.', 'camera')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="camera" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Camera</h3>
           <p class="text-slate-400 mb-6 text-sm">Fixing lenses, sensors, and hardware of your cameras.</p>
           <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <!-- Card 6 -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Wearable Device', 'Apple Watch, Galaxy Watch, and other smart wearables screen replacement and battery fixing services.', 'watch')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="watch" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Wearable Device</h3>
@@ -298,21 +307,21 @@
       <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-10">
         <div class="text-white max-w-xl">
           <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Get support for your problem</h2>
-          <p class="text-white/80 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
+          <p class="text-white/80 text-lg">Reach out to Habib Tec. for immediate consultation and quick device turnaround.</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
           <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
             <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center"><i data-feather="mail"></i></div>
             <div>
               <p class="text-sm text-white/70 font-medium">Send us an email</p>
-              <p class="font-bold text-white">hello@repairguy.com</p>
+              <p class="font-bold text-white">tec.habiburrahman@gmail.com</p>
             </div>
           </div>
           <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
             <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center"><i data-feather="phone"></i></div>
             <div>
               <p class="text-sm text-white/70 font-medium">Give us a call</p>
-              <p class="font-bold text-white">(123) 456 - 7890</p>
+              <p class="font-bold text-white">+880 1868 461577</p>
             </div>
           </div>
         </div>
@@ -331,15 +340,15 @@
               </div>
             </div>
             <div class="absolute bottom-0 left-0 right-0 bg-[#0f172a]/70 backdrop-blur-md border-t border-white/10 text-white p-6 text-center">
-              <h3 class="font-bold text-xl">Miguel Velasco Armando</h3>
-              <p class="text-rose-300 font-semibold text-sm mt-1 tracking-widest uppercase">Repair Guy CEO</p>
+              <h3 class="font-bold text-xl">Habibur Rahman</h3>
+              <p class="text-rose-300 font-semibold text-sm mt-1 tracking-widest uppercase">Habib Tec. Founder</p>
             </div>
           </div>
 
           <div>
             <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Vision & Mission</p>
             <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Innovate with the gadget trends</h2>
-            <p class="text-slate-300 mb-8 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+            <p class="text-slate-300 mb-8 text-lg">Providing top-notch repair solutions and maintaining absolute transparency with every customer.</p>
             <div class="space-y-4">
               <div class="accordion-item border rounded-xl p-5 cursor-pointer transition-colors border-rose-500/50 bg-rose-900/20 backdrop-blur-md" onclick="toggleAccordion(this)">
                 <div class="flex justify-between items-center">
@@ -366,7 +375,7 @@
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x-0 lg:divide-x divide-white/10">
           <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">14<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">5<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
             <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Glorious Years</p>
           </div>
           <div class="p-4">
@@ -395,7 +404,7 @@
           <div class="bg-[#0f172a]/80 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-xl relative z-10 lg:-mr-24 transform lg:translate-x-12 transition-transform hover:-translate-y-1">
             <div class="text-rose-400 text-4xl font-serif mb-4 leading-none">"</div>
             <p class="text-slate-300 text-lg italic mb-6">
-              "Outstanding service! The technicians fixed my broken phone screen within an hour. Professional, polite, and very affordable."
+              "Habib Tec. provided incredible service! Fixed my laptop motherboard smoothly and quickly. Highly recommended."
             </p>
             <div class="flex items-center gap-4">
               <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover border border-white/20" />
@@ -420,9 +429,11 @@
     <div class="max-w-[1280px] mx-auto px-4 md:px-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         <div class="space-y-6">
-          <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
-            <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
+              <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" alt="Habib Tec. Logo" class="w-full h-full object-cover">
+            </div>
+            <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">Tec.</span></span>
           </div>
           <p class="text-sm leading-relaxed">Your trusted partner for fast and reliable gadget repair services.</p>
         </div>
@@ -441,7 +452,6 @@
           </ul>
         </div>
         
-        <!-- Subscription Form -->
         <div>
           <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe</h4>
           <form id="subscribeForm" class="flex flex-col gap-2">
@@ -449,34 +459,28 @@
               <input type="email" id="subEmail" required placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
               <button type="submit" id="subBtn" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
             </div>
-            <p id="subMsg" class="hidden text-sm text-green-400 mt-2 font-medium">Subscribed successfully! Please check your email.</p>
+            <p id="subMsg" class="hidden text-sm text-green-400 mt-2 font-medium">Subscribed successfully!</p>
           </form>
         </div>
       </div>
       <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
-        <p>&copy; 2026 Repair Guy. All Rights Reserved.</p>
+        <p>&copy; 2026 Habib Tec. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
 
   <!-- ================= POPUP MODAL FOR SERVICES ================= -->
   <div id="serviceModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-    <!-- Overlay -->
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
-    
-    <!-- Modal Content -->
     <div id="modalContent" class="relative bg-[#0f172a]/95 backdrop-blur-2xl border border-white/20 p-8 rounded-[32px] shadow-2xl max-w-md w-full transform scale-95 opacity-0 transition-all duration-300">
       <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-rose-400 bg-white/5 rounded-full p-2 border border-white/10 transition-colors">
         <i data-feather="x" class="w-5 h-5"></i>
       </button>
-      
       <div id="modalIconBox" class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
           <i data-feather="tool" id="modalIcon" class="w-10 h-10"></i>
       </div>
-      
       <h3 id="modalTitle" class="text-2xl font-bold text-white mb-4 text-center">Service Name</h3>
       <p id="modalDesc" class="text-slate-300 mb-8 text-center leading-relaxed">Detailed description goes here...</p>
-      
       <a href="contact.html" class="flex justify-center items-center gap-2 w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(158,27,50,0.3)] hover:-translate-y-1">
         Service Now <i data-feather="arrow-right" class="w-4 h-4"></i>
       </a>
@@ -487,6 +491,8 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
@@ -500,6 +506,8 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const authInstance = getAuth(app);
+    const storageInstance = getStorage(app);
 
     feather.replace();
 
@@ -507,11 +515,11 @@
     const header = document.getElementById('main-header');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 20) {
-        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg');
-        header.classList.remove('bg-transparent');
+        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
+        header.classList.remove('bg-transparent', 'py-4');
       } else {
-        header.classList.add('bg-transparent');
-        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg');
+        header.classList.add('bg-transparent', 'py-4');
+        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
       }
     });
 
@@ -532,7 +540,50 @@
       feather.replace();
     });
 
-    // Glass Accordion Logic
+    // Auth Header State & Profile Picture Handling
+    onAuthStateChanged(authInstance, (user) => {
+        const loginBtn = document.getElementById('loginNavBtn');
+        const profileMenu = document.getElementById('userProfileMenu');
+        
+        if (user) {
+            if(loginBtn) loginBtn.classList.add('hidden');
+            if(profileMenu) profileMenu.classList.remove('hidden');
+            const avatarImg = document.getElementById('headerAvatar');
+            if(avatarImg) avatarImg.src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+        } else {
+            if(loginBtn) loginBtn.classList.remove('hidden');
+            if(profileMenu) profileMenu.classList.add('hidden');
+        }
+    });
+
+    const picInput = document.getElementById('profilePicInput');
+    if (picInput) {
+        picInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if(!file || !authInstance.currentUser) return;
+            document.getElementById('headerAvatar').src = "https://www.svgrepo.com/show/285573/loading-spinner.svg";
+            try {
+                const storageRef = ref(storageInstance, 'avatars/' + authInstance.currentUser.uid);
+                await uploadBytes(storageRef, file);
+                const photoURL = await getDownloadURL(storageRef);
+                await updateProfile(authInstance.currentUser, { photoURL: photoURL });
+                document.getElementById('headerAvatar').src = photoURL;
+                alert("Profile picture updated successfully!");
+            } catch (error) {
+                alert("Upload failed. " + error.message);
+                document.getElementById('headerAvatar').src = authInstance.currentUser.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+            }
+        });
+    }
+
+    window.logoutCurrentUser = function() {
+        signOut(authInstance).then(() => {
+            sessionStorage.removeItem('isAdmin');
+            window.location.reload();
+        });
+    };
+
+    // Accordion Logic
     window.toggleAccordion = function(element) {
       const content = element.querySelector('.acc-content');
       const icon = element.querySelector('.acc-icon');
@@ -566,18 +617,12 @@
     window.openModal = function(title, desc, iconName) {
       const modal = document.getElementById('serviceModal');
       const content = document.getElementById('modalContent');
-      
       document.getElementById('modalTitle').innerText = title;
       document.getElementById('modalDesc').innerText = desc;
-      
-      // Update icon dynamically
-      const iconContainer = document.getElementById('modalIconBox');
-      iconContainer.innerHTML = `<i data-feather="${iconName}" class="w-10 h-10"></i>`;
+      document.getElementById('modalIconBox').innerHTML = `<i data-feather="${iconName}" class="w-10 h-10"></i>`;
       feather.replace();
-
       modal.classList.remove('hidden');
       modal.classList.add('flex');
-      
       setTimeout(() => {
         content.classList.remove('scale-95', 'opacity-0');
         content.classList.add('scale-100', 'opacity-100');
@@ -587,59 +632,37 @@
     window.closeModal = function() {
       const modal = document.getElementById('serviceModal');
       const content = document.getElementById('modalContent');
-      
       content.classList.remove('scale-100', 'opacity-100');
       content.classList.add('scale-95', 'opacity-0');
-      
       setTimeout(() => {
         modal.classList.add('hidden');
         modal.classList.remove('flex');
       }, 300);
     }
 
-    // Subscription Form Logic
+    // Subscription Form
     const subForm = document.getElementById('subscribeForm');
-    subForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = document.getElementById('subEmail').value;
-      const subBtn = document.getElementById('subBtn');
-      const subMsg = document.getElementById('subMsg');
-      
-      subBtn.innerText = 'Wait...';
-      subBtn.disabled = true;
-
-      // Note: This fetch sends the email to your existing Google Apps Script used in contact.html
-      // Ensure your Apps Script handles simple POST requests correctly and replies if configured to do so.
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzMmCqUECBRKOc8eGMwvlIoDNJnoJ8sTBsuouHtycJxZr6giWjmdvYhbf_z8EUUzd3rzw/exec';
-      
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('type', 'subscription');
-
-      fetch(scriptURL, { method: 'POST', body: formData })
-        .then(() => {
-          subMsg.classList.remove('hidden');
-          subForm.reset();
-          subBtn.innerText = 'Submit';
-          subBtn.disabled = false;
-          
+    if(subForm) {
+        subForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const subBtn = document.getElementById('subBtn');
+          const subMsg = document.getElementById('subMsg');
+          subBtn.innerText = 'Wait...';
+          subBtn.disabled = true;
           setTimeout(() => {
-            subMsg.classList.add('hidden');
-          }, 5000);
-        })
-        .catch(() => {
-          subBtn.innerText = 'Submit';
-          subBtn.disabled = false;
-          alert("Network Error! Auto-reply simulation shown.");
-          // Fallback UI indication
-          subMsg.classList.remove('hidden');
-          setTimeout(() => subMsg.classList.add('hidden'), 5000);
+              subMsg.classList.remove('hidden');
+              subForm.reset();
+              subBtn.innerText = 'Submit';
+              subBtn.disabled = false;
+              setTimeout(() => subMsg.classList.add('hidden'), 5000);
+          }, 1000);
         });
-    });
+    }
 
-    // Fetch Blog Posts from Firestore Database
+    // Fetch Blog Posts
     async function loadBlogPosts() {
       const blogContainer = document.getElementById('blog-container');
+      if(!blogContainer) return;
       
       try {
         const q = query(collection(db, "blogPosts"), orderBy("timestamp", "desc"), limit(3));
@@ -651,7 +674,7 @@
               <div class="w-full h-48 bg-white/10 rounded-xl mb-4 flex items-center justify-center text-slate-400 border border-white/10">
                  <i data-feather="video" class="w-10 h-10 text-rose-300"></i>
               </div>
-              <h3 class="text-xl font-bold text-white mb-2">Welcome to Repair Guy</h3>
+              <h3 class="text-xl font-bold text-white mb-2">Welcome to Habib Tec.</h3>
               <p class="text-sm text-slate-400 line-clamp-3">Posts published from the Admin Panel will appear here.</p>
             </div>
           `;

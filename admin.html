@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login - Repair Guy</title>
+  <title>Admin Dashboard - Habib Tec.</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,14 +16,14 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#9E1B32]/20 blur-[150px]"></div>
   </div>
 
-  <!-- ================= LOGIN SCREEN ================= -->
+  <!-- ================= GOOGLE LOGIN SCREEN ================= -->
   <div id="loginScreen" class="max-w-[400px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl transition-all duration-500">
     <div class="text-center mb-8">
       <div class="w-16 h-16 bg-white/10 border border-white/20 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-lg">
         <i data-feather="lock" class="text-rose-400 w-8 h-8"></i>
       </div>
       <h2 class="text-2xl font-bold text-white">Admin Portal</h2>
-      <p class="text-slate-400 text-sm mt-2">Strictly Authorized Access Only</p>
+      <p class="text-slate-400 text-sm mt-2">Authorized Access Only</p>
     </div>
 
     <div class="space-y-5">
@@ -44,12 +44,12 @@
     </div>
   </div>
 
-  <!-- ================= ADMIN DASHBOARD ================= -->
+  <!-- ================= REAL ADMIN DASHBOARD ================= -->
   <div id="dashboardScreen" class="max-w-[800px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl hidden transition-all duration-500">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-white/10 pb-4 gap-4">
        <div>
          <h2 class="text-3xl font-bold text-white flex items-center gap-2">
-           <i data-feather="shield" class="text-green-400"></i> Admin Dashboard
+           <i data-feather="shield" class="text-green-400"></i> Habib Tec. Admin Panel
          </h2>
          <p class="text-sm text-rose-300 mt-1" id="loggedInEmailText">Logged in securely</p>
        </div>
@@ -59,12 +59,12 @@
        </div>
     </div>
 
-    <h3 class="text-xl font-semibold text-white mb-4">Create New Blog/Video Post</h3>
+    <h3 class="text-xl font-semibold text-white mb-4">Create New Media / Text Post</h3>
     
     <form id="postForm" class="space-y-5">
       <div>
         <label class="block text-sm font-medium text-slate-400 mb-1">Post Title</label>
-        <input type="text" id="postTitle" required placeholder="E.g. iPhone 15 Display Replacement" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
+        <input type="text" id="postTitle" required placeholder="E.g. Professional Motherboard Repair Guide" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -73,22 +73,22 @@
            <select id="postCategory" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-slate-300 outline-none">
              <option value="Repair Tip" class="bg-slate-800 text-white">Repair Tip</option>
              <option value="Video Review" class="bg-slate-800 text-white">Video Review</option>
-             <option value="News" class="bg-slate-800 text-white">News</option>
+             <option value="News & Update" class="bg-slate-800 text-white">News & Update</option>
            </select>
         </div>
         <div>
-           <label class="block text-sm font-medium text-slate-400 mb-1">Image / YouTube Link</label>
-           <input type="text" id="postMedia" required placeholder="https://www.youtube.com/watch?v=..." class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
+           <label class="block text-sm font-medium text-slate-400 mb-1">Upload Photo / Video from Device</label>
+           <input type="file" id="mediaFile" accept="image/*,video/*" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-3 py-2 text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-rose-600 file:text-white hover:file:bg-rose-700 cursor-pointer">
         </div>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-slate-400 mb-1">Description / Content</label>
-        <textarea id="postDescription" rows="4" required placeholder="Write details about the post..." class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none resize-none"></textarea>
+        <label class="block text-sm font-medium text-slate-400 mb-1">Post Description / Content</label>
+        <textarea id="postDescription" rows="5" required placeholder="Write details about the post..." class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none resize-none"></textarea>
       </div>
 
-      <button type="submit" id="submitBtn" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-4 rounded-xl transition-all mt-4 shadow-[0_0_20px_rgba(158,27,50,0.3)]">
-        Publish Post to Home Page & Blog
+      <button type="submit" id="submitBtn" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(158,27,50,0.3)]">
+        Publish Post
       </button>
       
       <p id="successMsg" class="hidden text-green-400 text-center mt-3 bg-green-500/10 p-3 rounded-lg border border-green-500/20 font-medium">✅ Post published successfully!</p>
@@ -96,7 +96,6 @@
 
     <div class="mt-12 border-t border-white/10 pt-8">
         <h3 class="text-lg font-semibold text-white mb-4">Database Management</h3>
-        <p class="text-sm text-slate-400 mb-4">Connected to Firebase Firestore Database.</p>
         <button onclick="clearPosts()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 px-6 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-2">
           <i data-feather="trash-2" class="w-4 h-4"></i> Delete All Posts
         </button>
@@ -108,6 +107,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
@@ -123,6 +123,7 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
     feather.replace();
 
@@ -133,44 +134,25 @@
     const errorMsg = document.getElementById('loginError');
     const emailDisplay = document.getElementById('loggedInEmailText');
 
-    // Monitor Auth State (Keeps user logged in after refresh)
     onAuthStateChanged(auth, (user) => {
       if (user) {
         if (user.email.toLowerCase() === ALLOWED_ADMIN_EMAIL.toLowerCase()) {
-          // Success Admin Login
           emailDisplay.innerText = `Logged in securely as ${user.email}`;
           errorMsg.classList.add('hidden');
           loginScreen.classList.add('hidden');
           dashboardScreen.classList.remove('hidden');
         } else {
-          // Unauthorized Email
           signOut(auth);
           showError("Access Denied! Only tec.habiburrahman@gmail.com is allowed.");
         }
       } else {
-        // Not logged in
         dashboardScreen.classList.add('hidden');
         loginScreen.classList.remove('hidden');
       }
     });
 
-    // Login Action
     document.getElementById('googleLoginBtn').addEventListener('click', () => {
-      const btn = document.getElementById('googleLoginBtn');
-      btn.innerHTML = '<i data-feather="loader" class="w-5 h-5 animate-spin"></i> Checking...';
-      feather.replace();
-
-      signInWithPopup(auth, provider).then((result) => {
-        const user = result.user;
-        if (user.email.toLowerCase() !== ALLOWED_ADMIN_EMAIL.toLowerCase()) {
-            signOut(auth);
-            showError("Access Denied! Only tec.habiburrahman@gmail.com is allowed.");
-        }
-        resetBtnUI();
-      }).catch((error) => {
-        showError(error.message);
-        resetBtnUI();
-      });
+      signInWithPopup(auth, provider).catch((error) => showError(error.message));
     });
 
     function showError(message) {
@@ -178,12 +160,6 @@
       errorMsg.classList.remove('hidden');
     }
 
-    function resetBtnUI() {
-      const btn = document.getElementById('googleLoginBtn');
-      btn.innerHTML = '<img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5"> Sign in with Google';
-    }
-
-    // Logout Action
     window.logoutAdmin = function() {
         signOut(auth).then(() => {
             dashboardScreen.classList.add('hidden');
@@ -192,19 +168,31 @@
         });
     }
 
-    // Database Post Logic
+    // Handle Real Post Submission with File Upload
     document.getElementById('postForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const submitBtn = document.getElementById('submitBtn');
-      const originalText = submitBtn.innerText;
-      submitBtn.innerText = "Publishing to Database...";
+      submitBtn.innerText = "Uploading Media & Publishing...";
       submitBtn.disabled = true;
       
       try {
+        const fileInput = document.getElementById('mediaFile');
+        let mediaLink = "";
+
+        // If file is selected, upload to Firebase Storage
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const storageRef = ref(storage, 'posts/' + Date.now() + '_' + file.name);
+            await uploadBytes(storageRef, file);
+            mediaLink = await getDownloadURL(storageRef);
+        }
+
+        // Save post data to Firestore Database
         await addDoc(collection(db, "blogPosts"), {
           title: document.getElementById('postTitle').value,
           category: document.getElementById('postCategory').value,
-          mediaLink: document.getElementById('postMedia').value,
+          mediaLink: mediaLink || "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80",
+          mediaType: fileInput.files[0] ? fileInput.files[0].type : "image",
           description: document.getElementById('postDescription').value,
           date: new Date().toLocaleDateString(),
           timestamp: Date.now(),
@@ -217,16 +205,15 @@
         this.reset();
         setTimeout(() => msg.classList.add('hidden'), 4000);
       } catch (e) {
-        alert("Error adding document: " + e.message);
+        alert("Error publishing post: " + e.message);
       } finally {
-        submitBtn.innerText = originalText;
+        submitBtn.innerText = "Publish Post";
         submitBtn.disabled = false;
       }
     });
 
-    // Delete All Posts
     window.clearPosts = async function() {
-        if(confirm("Are you SURE you want to delete all blog posts? This action cannot be undone.")) {
+        if(confirm("Are you SURE you want to delete all blog posts?")) {
             try {
                 const querySnapshot = await getDocs(collection(db, "blogPosts"));
                 querySnapshot.forEach(async (document) => {

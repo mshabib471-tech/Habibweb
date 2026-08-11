@@ -6,6 +6,7 @@
   <title>User Login - Repair Guy</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="min-h-screen text-slate-200 bg-[#0f172a] relative flex flex-col items-center justify-center py-10 px-4">
@@ -15,47 +16,250 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#9E1B32]/20 blur-[150px]"></div>
   </div>
 
-  <div class="max-w-[400px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl transition-all duration-500">
-    <div class="text-center mb-8">
-      <div class="w-16 h-16 bg-white/10 border border-white/20 rounded-2xl mx-auto flex items-center justify-center mb-4">
+  <div class="max-w-[420px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl transition-all duration-500">
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 bg-white/10 border border-white/20 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-lg">
         <i data-feather="users" class="text-rose-400 w-8 h-8"></i>
       </div>
       <h2 class="text-2xl font-bold text-white">Join the Community</h2>
-      <p class="text-slate-400 text-sm mt-2">Login to like and comment on our blog posts.</p>
+      <p class="text-slate-400 text-sm mt-2">Login to like and comment on our blog.</p>
     </div>
 
-    <form id="userLoginForm" class="space-y-5">
+    <!-- ================= GOOGLE LOGIN ================= -->
+    <button id="googleLoginBtn" class="flex items-center justify-center gap-3 w-full bg-white text-slate-800 font-bold py-3 rounded-xl transition-all shadow-lg hover:-translate-y-0.5 mb-6">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+      Continue with Google
+    </button>
+
+    <div class="flex items-center gap-4 mb-6">
+        <div class="h-px bg-white/10 flex-grow"></div>
+        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">OR</span>
+        <div class="h-px bg-white/10 flex-grow"></div>
+    </div>
+
+    <!-- ================= AUTH METHOD TOGGLE ================= -->
+    <div class="flex bg-white/5 border border-white/10 rounded-xl p-1 mb-6">
+        <button id="tabEmail" onclick="switchTab('email')" class="flex-1 py-2 text-sm font-bold rounded-lg bg-rose-600 text-white transition-all shadow-md">Email</button>
+        <button id="tabPhone" onclick="switchTab('phone')" class="flex-1 py-2 text-sm font-bold rounded-lg text-slate-400 hover:text-white transition-all">Phone</button>
+    </div>
+
+    <!-- Error/Success Message Display -->
+    <p id="authMessage" class="hidden text-sm text-center font-medium mb-4 p-3 rounded-lg border"></p>
+
+    <!-- ================= EMAIL & PASSWORD FORM ================= -->
+    <form id="emailForm" class="space-y-4">
       <div>
-        <label class="block text-sm font-medium text-slate-400 mb-1">Email Address</label>
-        <input type="email" id="userEmail" required placeholder="Enter your email" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors">
+        <input type="email" id="userEmail" required placeholder="Email Address" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors">
       </div>
       <div>
-        <label class="block text-sm font-medium text-slate-400 mb-1">Password</label>
-        <input type="password" id="userPassword" required placeholder="Create or enter password" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors">
+        <input type="password" id="userPassword" required placeholder="Password (Min 6 chars)" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors">
       </div>
-      <button type="submit" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-3.5 rounded-xl transition-all mt-2 shadow-[0_0_15px_rgba(158,27,50,0.3)] hover:-translate-y-0.5">
-        Login & Continue
-      </button>
+      
+      <div class="flex gap-3 pt-2">
+          <button type="submit" id="loginBtn" class="flex-1 bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(158,27,50,0.3)] hover:-translate-y-0.5">
+            Login
+          </button>
+          <button type="button" id="registerBtn" class="flex-1 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-3.5 rounded-xl transition-all hover:-translate-y-0.5">
+            Sign Up
+          </button>
+      </div>
     </form>
+
+    <!-- ================= PHONE AUTH FORM ================= -->
+    <div id="phoneForm" class="space-y-4 hidden">
+      <div id="phoneInputSection">
+          <label class="block text-xs font-medium text-slate-400 mb-1">Enter Phone Number with Country Code</label>
+          <input type="tel" id="phoneNumber" placeholder="+8801XXXXXXXXX" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors mb-3">
+          
+          <!-- reCAPTCHA Container (Required for Phone Auth) -->
+          <div id="recaptcha-container" class="mb-3 flex justify-center"></div>
+
+          <button id="sendOtpBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:-translate-y-0.5">
+            Send OTP Code
+          </button>
+      </div>
+
+      <div id="otpInputSection" class="hidden">
+          <label class="block text-xs font-medium text-slate-400 mb-1">Enter 6-digit OTP Code</label>
+          <input type="text" id="otpCode" placeholder="123456" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors mb-4 text-center tracking-widest text-lg font-bold">
+          
+          <button id="verifyOtpBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:-translate-y-0.5">
+            Verify & Login
+          </button>
+      </div>
+    </div>
     
-    <div class="text-center mt-6">
+    <div class="text-center mt-8">
       <a href="blog.html" class="text-sm text-slate-400 hover:text-rose-400 transition-colors flex justify-center items-center gap-1"><i data-feather="arrow-left" class="w-4 h-4"></i> Back to Blog</a>
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+        getAuth, 
+        signInWithPopup, 
+        GoogleAuthProvider, 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword,
+        RecaptchaVerifier,
+        signInWithPhoneNumber 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
+      authDomain: "habib-yt.firebaseapp.com",
+      projectId: "habib-yt",
+      storageBucket: "habib-yt.firebasestorage.app",
+      messagingSenderId: "656628491244",
+      appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
+      measurementId: "G-GNY1T88D34"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+
     feather.replace();
 
-    document.getElementById('userLoginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = document.getElementById('userEmail').value;
-      
-      // Save user email to local storage to simulate login
-      localStorage.setItem('userEmail', email);
-      
-      // Redirect back to blog page to comment
-      window.location.href = 'blog.html';
+    // UI Elements
+    const authMessage = document.getElementById('authMessage');
+    const emailForm = document.getElementById('emailForm');
+    const phoneForm = document.getElementById('phoneForm');
+    const tabEmail = document.getElementById('tabEmail');
+    const tabPhone = document.getElementById('tabPhone');
+
+    // Helper: Show Message
+    function showMessage(msg, type = 'error') {
+        authMessage.innerText = msg;
+        authMessage.classList.remove('hidden', 'text-red-400', 'bg-red-500/10', 'border-red-500/20', 'text-green-400', 'bg-green-500/10', 'border-green-500/20');
+        
+        if (type === 'error') {
+            authMessage.classList.add('text-red-400', 'bg-red-500/10', 'border-red-500/20');
+        } else {
+            authMessage.classList.add('text-green-400', 'bg-green-500/10', 'border-green-500/20');
+        }
+    }
+
+    // Helper: Success Redirect
+    function handleSuccess(identifier) {
+        showMessage('Login successful! Redirecting...', 'success');
+        // Save user info for blog.html to use for comments
+        localStorage.setItem('userEmail', identifier);
+        setTimeout(() => { window.location.href = 'blog.html'; }, 1000);
+    }
+
+    // Tab Switching Logic
+    window.switchTab = function(tab) {
+        if (tab === 'email') {
+            emailForm.classList.remove('hidden');
+            phoneForm.classList.add('hidden');
+            tabEmail.classList.add('bg-rose-600', 'text-white', 'shadow-md');
+            tabEmail.classList.remove('text-slate-400');
+            tabPhone.classList.remove('bg-rose-600', 'text-white', 'shadow-md');
+            tabPhone.classList.add('text-slate-400');
+        } else {
+            emailForm.classList.add('hidden');
+            phoneForm.classList.remove('hidden');
+            tabPhone.classList.add('bg-rose-600', 'text-white', 'shadow-md');
+            tabPhone.classList.remove('text-slate-400');
+            tabEmail.classList.remove('bg-rose-600', 'text-white', 'shadow-md');
+            tabEmail.classList.add('text-slate-400');
+            
+            // Initialize Recaptcha if not already done
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                    'size': 'normal',
+                    'callback': (response) => {
+                        // reCAPTCHA solved
+                    }
+                });
+                window.recaptchaVerifier.render();
+            }
+        }
+    }
+
+    // 1. GOOGLE LOGIN
+    document.getElementById('googleLoginBtn').addEventListener('click', () => {
+        signInWithPopup(auth, googleProvider).then((result) => {
+            handleSuccess(result.user.email);
+        }).catch((error) => {
+            showMessage(error.message);
+        });
     });
+
+    // 2. EMAIL / PASSWORD LOGIN
+    document.getElementById('emailForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('userEmail').value;
+        const pass = document.getElementById('userPassword').value;
+        
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                handleSuccess(userCredential.user.email);
+            })
+            .catch((error) => {
+                showMessage("Login Failed: " + error.message);
+            });
+    });
+
+    // 3. EMAIL / PASSWORD SIGN UP (Register)
+    document.getElementById('registerBtn').addEventListener('click', () => {
+        const email = document.getElementById('userEmail').value;
+        const pass = document.getElementById('userPassword').value;
+        
+        if(!email || pass.length < 6) {
+            showMessage("Please enter email and at least 6 characters password.");
+            return;
+        }
+
+        createUserWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                handleSuccess(userCredential.user.email);
+            })
+            .catch((error) => {
+                showMessage("Sign Up Failed: " + error.message);
+            });
+    });
+
+    // 4. PHONE AUTHENTICATION (OTP)
+    document.getElementById('sendOtpBtn').addEventListener('click', () => {
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        if (!phoneNumber.startsWith('+')) {
+            showMessage("Please include country code (e.g. +880...)");
+            return;
+        }
+
+        const appVerifier = window.recaptchaVerifier;
+        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+            .then((confirmationResult) => {
+                window.confirmationResult = confirmationResult;
+                document.getElementById('phoneInputSection').classList.add('hidden');
+                document.getElementById('otpInputSection').classList.remove('hidden');
+                showMessage("OTP sent successfully! Please check your phone.", "success");
+            }).catch((error) => {
+                showMessage("SMS Failed: " + error.message);
+                // Reset recaptcha if failed
+                if (window.recaptchaVerifier) window.recaptchaVerifier.render();
+            });
+    });
+
+    document.getElementById('verifyOtpBtn').addEventListener('click', () => {
+        const code = document.getElementById('otpCode').value;
+        if (code.length !== 6) {
+            showMessage("Please enter a valid 6-digit OTP.");
+            return;
+        }
+
+        window.confirmationResult.confirm(code).then((result) => {
+            // For phone users, we save the phone number since they don't have an email
+            handleSuccess(result.user.phoneNumber);
+        }).catch((error) => {
+            showMessage("Invalid OTP Code! Please try again.");
+        });
+    });
+
   </script>
 </body>
 </html>

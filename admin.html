@@ -6,6 +6,7 @@
   <title>Admin Login - Repair Guy</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="min-h-screen text-slate-200 bg-[#0f172a] relative flex flex-col items-center justify-center py-10 px-4">
@@ -18,42 +19,43 @@
   <!-- ================= LOGIN SCREEN ================= -->
   <div id="loginScreen" class="max-w-[400px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl transition-all duration-500">
     <div class="text-center mb-8">
-      <div class="w-16 h-16 bg-white/10 border border-white/20 rounded-2xl mx-auto flex items-center justify-center mb-4">
+      <div class="w-16 h-16 bg-white/10 border border-white/20 rounded-2xl mx-auto flex items-center justify-center mb-4 shadow-lg">
         <i data-feather="lock" class="text-rose-400 w-8 h-8"></i>
       </div>
-      <h2 class="text-2xl font-bold text-white">Admin Login</h2>
-      <p class="text-slate-400 text-sm mt-2">Authorized Access Only</p>
+      <h2 class="text-2xl font-bold text-white">Admin Portal</h2>
+      <p class="text-slate-400 text-sm mt-2">Strictly Authorized Access Only</p>
     </div>
 
-    <form id="loginForm" class="space-y-5">
-      <div>
-        <label class="block text-sm font-medium text-slate-400 mb-1">Email Address</label>
-        <input type="email" id="loginEmail" required placeholder="Tec.Habiburrahman@gmail.com" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors">
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-slate-400 mb-1">Password</label>
-        <input type="password" id="loginPassword" required placeholder="Enter password (admin123)" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none transition-colors">
-      </div>
-      <p id="loginError" class="text-red-400 text-sm text-center hidden">Invalid email or password!</p>
-      <button type="submit" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-3.5 rounded-xl transition-all mt-2 shadow-[0_0_15px_rgba(158,27,50,0.3)]">
-        Login to Dashboard
+    <div class="space-y-5">
+      <button id="googleLoginBtn" class="flex items-center justify-center gap-3 w-full bg-white text-slate-800 font-bold py-3.5 rounded-xl transition-all shadow-lg hover:-translate-y-0.5">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+        Sign in with Google
       </button>
-    </form>
+      
+      <p id="loginError" class="text-red-400 text-sm text-center font-medium hidden bg-red-500/10 p-3 rounded-lg border border-red-500/20">
+        Access Denied! Only tec.habiburrahman@gmail.com is allowed.
+      </p>
+    </div>
+    
     <div class="text-center mt-6">
-      <a href="index.html" class="text-sm text-slate-400 hover:text-rose-400 transition-colors">← Back to Website</a>
+      <a href="index.html" class="text-sm text-slate-400 hover:text-rose-400 transition-colors flex justify-center items-center gap-1">
+        <i data-feather="arrow-left" class="w-4 h-4"></i> Back to Website
+      </a>
     </div>
   </div>
 
   <!-- ================= ADMIN DASHBOARD ================= -->
   <div id="dashboardScreen" class="max-w-[800px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl hidden transition-all duration-500">
-    <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-white/10 pb-4 gap-4">
        <div>
-         <h2 class="text-3xl font-bold text-white">Admin Dashboard</h2>
-         <p class="text-sm text-rose-300 mt-1">Logged in as Tec.Habiburrahman@gmail.com</p>
+         <h2 class="text-3xl font-bold text-white flex items-center gap-2">
+           <i data-feather="shield" class="text-green-400"></i> Admin Dashboard
+         </h2>
+         <p class="text-sm text-rose-300 mt-1" id="loggedInEmailText">Logged in securely</p>
        </div>
        <div class="flex gap-4">
-         <a href="index.html" class="text-slate-300 hover:text-white flex items-center gap-2"><i data-feather="external-link" class="w-4 h-4"></i> View Site</a>
-         <button onclick="logoutAdmin()" class="text-red-400 hover:text-red-300 flex items-center gap-2"><i data-feather="log-out" class="w-4 h-4"></i> Logout</button>
+         <a href="index.html" class="text-slate-300 hover:text-white flex items-center gap-2 text-sm font-medium"><i data-feather="external-link" class="w-4 h-4"></i> View Site</a>
+         <button onclick="logoutAdmin()" class="text-red-400 hover:text-red-300 flex items-center gap-2 text-sm font-medium"><i data-feather="log-out" class="w-4 h-4"></i> Logout</button>
        </div>
     </div>
 
@@ -85,8 +87,8 @@
         <textarea id="postDescription" rows="4" required placeholder="Write details about the post..." class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none resize-none"></textarea>
       </div>
 
-      <button type="submit" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-4 rounded-xl transition-all mt-4 shadow-[0_0_20px_rgba(158,27,50,0.3)]">
-        Publish Post to Home Page
+      <button type="submit" id="submitBtn" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-4 rounded-xl transition-all mt-4 shadow-[0_0_20px_rgba(158,27,50,0.3)]">
+        Publish Post to Home Page & Blog
       </button>
       
       <p id="successMsg" class="hidden text-green-400 text-center mt-3 bg-green-500/10 p-3 rounded-lg border border-green-500/20 font-medium">✅ Post published successfully!</p>
@@ -104,6 +106,7 @@
   <!-- Firebase & Admin Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -117,45 +120,85 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
     const db = getFirestore(app);
 
     feather.replace();
 
+    const ALLOWED_ADMIN_EMAIL = "tec.habiburrahman@gmail.com";
+
     const loginScreen = document.getElementById('loginScreen');
     const dashboardScreen = document.getElementById('dashboardScreen');
-    
-    if(sessionStorage.getItem('isAdmin') === 'true') {
-        loginScreen.classList.add('hidden');
-        dashboardScreen.classList.remove('hidden');
-    }
+    const errorMsg = document.getElementById('loginError');
+    const emailDisplay = document.getElementById('loggedInEmailText');
 
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.toLowerCase();
-      const pass = document.getElementById('loginPassword').value;
-      const error = document.getElementById('loginError');
-
-      if(email === 'tec.habiburrahman@gmail.com'.toLowerCase() && pass === 'admin123') {
-          sessionStorage.setItem('isAdmin', 'true');
-          error.classList.add('hidden');
+    // Monitor Auth State (Keeps user logged in after refresh)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (user.email.toLowerCase() === ALLOWED_ADMIN_EMAIL.toLowerCase()) {
+          // Success Admin Login
+          emailDisplay.innerText = `Logged in securely as ${user.email}`;
+          errorMsg.classList.add('hidden');
           loginScreen.classList.add('hidden');
           dashboardScreen.classList.remove('hidden');
+        } else {
+          // Unauthorized Email
+          signOut(auth);
+          showError("Access Denied! Only tec.habiburrahman@gmail.com is allowed.");
+        }
       } else {
-          error.classList.remove('hidden');
+        // Not logged in
+        dashboardScreen.classList.add('hidden');
+        loginScreen.classList.remove('hidden');
       }
     });
 
-    window.logoutAdmin = function() {
-        sessionStorage.removeItem('isAdmin');
-        dashboardScreen.classList.add('hidden');
-        loginScreen.classList.remove('hidden');
-        document.getElementById('loginForm').reset();
+    // Login Action
+    document.getElementById('googleLoginBtn').addEventListener('click', () => {
+      const btn = document.getElementById('googleLoginBtn');
+      btn.innerHTML = '<i data-feather="loader" class="w-5 h-5 animate-spin"></i> Checking...';
+      feather.replace();
+
+      signInWithPopup(auth, provider).then((result) => {
+        const user = result.user;
+        if (user.email.toLowerCase() !== ALLOWED_ADMIN_EMAIL.toLowerCase()) {
+            signOut(auth);
+            showError("Access Denied! Only tec.habiburrahman@gmail.com is allowed.");
+        }
+        resetBtnUI();
+      }).catch((error) => {
+        showError(error.message);
+        resetBtnUI();
+      });
+    });
+
+    function showError(message) {
+      errorMsg.innerText = message;
+      errorMsg.classList.remove('hidden');
     }
 
+    function resetBtnUI() {
+      const btn = document.getElementById('googleLoginBtn');
+      btn.innerHTML = '<img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5"> Sign in with Google';
+    }
+
+    // Logout Action
+    window.logoutAdmin = function() {
+        signOut(auth).then(() => {
+            dashboardScreen.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            document.getElementById('postForm').reset();
+        });
+    }
+
+    // Database Post Logic
     document.getElementById('postForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const submitBtn = this.querySelector('button[type="submit"]');
-      submitBtn.innerText = "Publishing...";
+      const submitBtn = document.getElementById('submitBtn');
+      const originalText = submitBtn.innerText;
+      submitBtn.innerText = "Publishing to Database...";
+      submitBtn.disabled = true;
       
       try {
         await addDoc(collection(db, "blogPosts"), {
@@ -164,22 +207,26 @@
           mediaLink: document.getElementById('postMedia').value,
           description: document.getElementById('postDescription').value,
           date: new Date().toLocaleDateString(),
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          likes: 0,
+          comments: []
         });
 
         const msg = document.getElementById('successMsg');
         msg.classList.remove('hidden');
         this.reset();
-        setTimeout(() => msg.classList.add('hidden'), 3000);
+        setTimeout(() => msg.classList.add('hidden'), 4000);
       } catch (e) {
-        alert("Error adding document: " + e);
+        alert("Error adding document: " + e.message);
       } finally {
-        submitBtn.innerText = "Publish Post to Home Page";
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
       }
     });
 
+    // Delete All Posts
     window.clearPosts = async function() {
-        if(confirm("Are you sure you want to delete all blog posts? This action cannot be undone.")) {
+        if(confirm("Are you SURE you want to delete all blog posts? This action cannot be undone.")) {
             try {
                 const querySnapshot = await getDocs(collection(db, "blogPosts"));
                 querySnapshot.forEach(async (document) => {
@@ -187,7 +234,7 @@
                 });
                 alert("All posts deleted successfully!");
             } catch(e) {
-                alert("Error deleting posts: " + e);
+                alert("Error deleting posts: " + e.message);
             }
         }
     }

@@ -40,10 +40,21 @@
         <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
           Services <i data-feather="chevron-down" class="w-4 h-4"></i>
         </div>
-        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
-          Pages <i data-feather="chevron-down" class="w-4 h-4"></i>
+        
+        <!-- Pages Dropdown -->
+        <div class="group relative py-2 cursor-pointer transition-colors">
+          <div class="flex items-center gap-1 hover:text-rose-400">Pages <i data-feather="chevron-down" class="w-4 h-4"></i></div>
+          <!-- Dropdown Content -->
+          <div class="absolute top-full left-0 mt-2 w-56 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden z-50">
+            <a href="#updates" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors border-b border-white/5">Updates</a>
+            <a href="#vision" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors border-b border-white/5">Our Vision & Mission</a>
+            <a href="#testimonial" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors">Testimonial</a>
+          </div>
         </div>
+
+        <a href="blog.html" class="hover:text-rose-400 transition-colors">Our Blog</a>
         <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
+        <a href="admin.html" class="hover:text-rose-400 transition-colors flex items-center gap-1">Login <i data-feather="user" class="w-4 h-4"></i></a>
       </nav>
 
       <!-- Call CTA & Mobile Toggle -->
@@ -59,12 +70,23 @@
     </div>
 
     <!-- Mobile Nav Drawer (Glass) -->
-    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-6 gap-4 shadow-2xl transition-all duration-300 z-40">
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-6 gap-4 shadow-2xl transition-all duration-300 z-40 h-screen overflow-y-auto pb-32">
       <a href="index.html" class="text-rose-400 font-semibold text-lg">Home</a>
       <a href="#" class="text-lg text-slate-200 hover:text-rose-400">About Us</a>
       <a href="#" class="text-lg text-slate-200 hover:text-rose-400">Services</a>
-      <a href="#" class="text-lg text-slate-200 hover:text-rose-400">Pages</a>
+      
+      <!-- Mobile Pages Dropdown Items -->
+      <div class="flex flex-col gap-3 pl-4 border-l-2 border-white/10 my-2">
+        <p class="text-slate-400 uppercase text-xs font-bold tracking-wider">Pages</p>
+        <a href="#updates" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Updates</a>
+        <a href="#vision" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Our Vision & Mission</a>
+        <a href="#testimonial" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Testimonial</a>
+      </div>
+
+      <a href="blog.html" class="text-lg text-slate-200 hover:text-rose-400">Our Blog</a>
       <a href="contact.html" class="text-lg text-slate-200 hover:text-rose-400">Contact Us</a>
+      <a href="admin.html" class="text-lg text-slate-200 hover:text-rose-400 flex items-center gap-2">Login <i data-feather="user" class="w-4 h-4"></i></a>
+      
       <a href="tel:+8801868461577" class="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 mt-4 w-full">
         <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
         <span>+880 1868 461577</span>
@@ -123,16 +145,21 @@
     </section>
 
     <!-- ================= DYNAMIC BLOG / VIDEO SECTION ================= -->
-    <section class="py-20 relative z-10">
+    <section id="updates" class="py-20 relative z-10 scroll-mt-20">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div>
             <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Updates</p>
             <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">Latest Video & Blogs</h2>
           </div>
-          <a href="admin.html" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm shadow-lg">
-            Admin Login <i data-feather="lock" class="w-4 h-4 text-rose-300"></i>
-          </a>
+          <div class="flex gap-4">
+            <a href="blog.html" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm shadow-lg">
+              See Posts <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <a href="admin.html" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm shadow-lg">
+              Admin Login <i data-feather="lock" class="w-4 h-4 text-rose-300"></i>
+            </a>
+          </div>
         </div>
 
         <div id="blog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -207,54 +234,57 @@
       </div>
     </section>
 
-    <!-- ================= OUR SERVICES ================= -->
+    <!-- ================= OUR SERVICES (With Popup Modal) ================= -->
     <section class="py-20 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
       <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
         <div>
           <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Services</p>
           <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">We offer a wide variety gadget services</h2>
         </div>
-        <button class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 shadow-lg">
-          View More <i data-feather="arrow-right" class="w-4 h-4"></i>
-        </button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+        <!-- Card 1 -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Mobile Phone Repair', 'We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage. Get your smartphone back to life in no time!', 'smartphone')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="smartphone" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Mobile Phone</h3>
-          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+          <p class="text-slate-400 mb-6 text-sm">Professional mobile repair services for all major brands.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+        <!-- Card 2 -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Tablet Repair', 'From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates for all tablets.', 'tablet')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tablet" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Tablet</h3>
-          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+          <p class="text-slate-400 mb-6 text-sm">Expert tablet diagnosis and quick reliable repairs.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+        <!-- Card 3 -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Laptop Repair', 'We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes for all laptop models.', 'laptop')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="laptop" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Laptop</h3>
-          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+          <p class="text-slate-400 mb-6 text-sm">Hardware and software solutions for your laptops.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+        <!-- Card 4 -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Computer Desktop', 'Custom PC builds, hardware upgrades, SSD installation, and deep cleaning for optimal desktop performance.', 'monitor')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="monitor" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Computer Desktop</h3>
-          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+          <p class="text-slate-400 mb-6 text-sm">Full desktop maintenance and upgrading services.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+        <!-- Card 5 -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Camera Repair', 'Professional cleaning, lens fixing, and sensor calibration for DSLR, Mirrorless, and digital cameras.', 'camera')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="camera" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Camera</h3>
-          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+          <p class="text-slate-400 mb-6 text-sm">Fixing lenses, sensors, and hardware of your cameras.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center">
+        <!-- Card 6 -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Wearable Device', 'Apple Watch, Galaxy Watch, and other smart wearables screen replacement and battery fixing services.', 'watch')">
           <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="watch" class="w-10 h-10"></i></div>
           <h3 class="text-xl font-bold mb-3 text-white">Wearable Device</h3>
-          <p class="text-slate-400 mb-6 text-sm">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>
-          <a href="#" class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+          <p class="text-slate-400 mb-6 text-sm">Smartwatch repair and maintenance experts.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
         </div>
       </div>
     </section>
@@ -290,7 +320,7 @@
     </section>
 
     <!-- ================= VISION & MISSION ================= -->
-    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+    <section id="vision" class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-20">
       <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[40px] p-8 md:p-12 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer border border-white/20">
@@ -313,24 +343,17 @@
             <div class="space-y-4">
               <div class="accordion-item border rounded-xl p-5 cursor-pointer transition-colors border-rose-500/50 bg-rose-900/20 backdrop-blur-md" onclick="toggleAccordion(this)">
                 <div class="flex justify-between items-center">
-                  <h4 class="font-bold text-rose-300">Nulla aliquet lacus luctus accumsan</h4>
+                  <h4 class="font-bold text-rose-300">Fast & Secure Repairs</h4>
                   <i data-feather="chevron-down" class="w-5 h-5 transition-transform rotate-180 text-rose-300 acc-icon"></i>
                 </div>
-                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed block">We provide the most efficient and secure repair process ensuring your data and device remain totally safe.</p>
               </div>
               <div class="accordion-item border border-white/10 bg-white/5 backdrop-blur-md hover:border-white/30 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
                 <div class="flex justify-between items-center">
-                  <h4 class="font-bold text-slate-200">Bibendum neque egestas congue</h4>
+                  <h4 class="font-bold text-slate-200">100% Genuine Parts</h4>
                   <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-slate-400 acc-icon"></i>
                 </div>
-                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              </div>
-              <div class="accordion-item border border-white/10 bg-white/5 backdrop-blur-md hover:border-white/30 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
-                <div class="flex justify-between items-center">
-                  <h4 class="font-bold text-slate-200">Diam vel quam elementum pulvinar</h4>
-                  <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-slate-400 acc-icon"></i>
-                </div>
-                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed hidden">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed hidden">We only source and use original or top-tier replacement parts to maximize the lifespan of your gadgets.</p>
               </div>
             </div>
           </div>
@@ -363,7 +386,7 @@
     </section>
 
     <!-- ================= TESTIMONIAL ================= -->
-    <section class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+    <section id="testimonial" class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-20">
       <div class="flex flex-col lg:flex-row rounded-[40px] overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] border border-white/10 bg-white/5 backdrop-blur-xl">
         <div class="p-10 md:p-16 lg:w-1/2 flex flex-col justify-center relative">
           <p class="text-rose-300 font-bold tracking-wider text-sm mb-3 uppercase">Testimonial</p>
@@ -372,7 +395,7 @@
           <div class="bg-[#0f172a]/80 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-xl relative z-10 lg:-mr-24 transform lg:translate-x-12 transition-transform hover:-translate-y-1">
             <div class="text-rose-400 text-4xl font-serif mb-4 leading-none">"</div>
             <p class="text-slate-300 text-lg italic mb-6">
-              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem."
+              "Outstanding service! The technicians fixed my broken phone screen within an hour. Professional, polite, and very affordable."
             </p>
             <div class="flex items-center gap-4">
               <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover border border-white/20" />
@@ -417,11 +440,16 @@
             <li><a href="contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
           </ul>
         </div>
+        
+        <!-- Subscription Form -->
         <div>
           <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe</h4>
-          <form class="flex mb-6">
-            <input type="email" placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
-            <button type="submit" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
+          <form id="subscribeForm" class="flex flex-col gap-2">
+            <div class="flex">
+              <input type="email" id="subEmail" required placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
+              <button type="submit" id="subBtn" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
+            </div>
+            <p id="subMsg" class="hidden text-sm text-green-400 mt-2 font-medium">Subscribed successfully! Please check your email.</p>
           </form>
         </div>
       </div>
@@ -430,6 +458,30 @@
       </div>
     </div>
   </footer>
+
+  <!-- ================= POPUP MODAL FOR SERVICES ================= -->
+  <div id="serviceModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+    
+    <!-- Modal Content -->
+    <div id="modalContent" class="relative bg-[#0f172a]/95 backdrop-blur-2xl border border-white/20 p-8 rounded-[32px] shadow-2xl max-w-md w-full transform scale-95 opacity-0 transition-all duration-300">
+      <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-rose-400 bg-white/5 rounded-full p-2 border border-white/10 transition-colors">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      
+      <div id="modalIconBox" class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+          <i data-feather="tool" id="modalIcon" class="w-10 h-10"></i>
+      </div>
+      
+      <h3 id="modalTitle" class="text-2xl font-bold text-white mb-4 text-center">Service Name</h3>
+      <p id="modalDesc" class="text-slate-300 mb-8 text-center leading-relaxed">Detailed description goes here...</p>
+      
+      <a href="contact.html" class="flex justify-center items-center gap-2 w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(158,27,50,0.3)] hover:-translate-y-1">
+        Service Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </div>
 
   <!-- Firebase & App Script -->
   <script type="module">
@@ -510,6 +562,81 @@
       }
     }
 
+    // Modal Logic
+    window.openModal = function(title, desc, iconName) {
+      const modal = document.getElementById('serviceModal');
+      const content = document.getElementById('modalContent');
+      
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDesc').innerText = desc;
+      
+      // Update icon dynamically
+      const iconContainer = document.getElementById('modalIconBox');
+      iconContainer.innerHTML = `<i data-feather="${iconName}" class="w-10 h-10"></i>`;
+      feather.replace();
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    window.closeModal = function() {
+      const modal = document.getElementById('serviceModal');
+      const content = document.getElementById('modalContent');
+      
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-95', 'opacity-0');
+      
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300);
+    }
+
+    // Subscription Form Logic
+    const subForm = document.getElementById('subscribeForm');
+    subForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('subEmail').value;
+      const subBtn = document.getElementById('subBtn');
+      const subMsg = document.getElementById('subMsg');
+      
+      subBtn.innerText = 'Wait...';
+      subBtn.disabled = true;
+
+      // Note: This fetch sends the email to your existing Google Apps Script used in contact.html
+      // Ensure your Apps Script handles simple POST requests correctly and replies if configured to do so.
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzMmCqUECBRKOc8eGMwvlIoDNJnoJ8sTBsuouHtycJxZr6giWjmdvYhbf_z8EUUzd3rzw/exec';
+      
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('type', 'subscription');
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(() => {
+          subMsg.classList.remove('hidden');
+          subForm.reset();
+          subBtn.innerText = 'Submit';
+          subBtn.disabled = false;
+          
+          setTimeout(() => {
+            subMsg.classList.add('hidden');
+          }, 5000);
+        })
+        .catch(() => {
+          subBtn.innerText = 'Submit';
+          subBtn.disabled = false;
+          alert("Network Error! Auto-reply simulation shown.");
+          // Fallback UI indication
+          subMsg.classList.remove('hidden');
+          setTimeout(() => subMsg.classList.add('hidden'), 5000);
+        });
+    });
+
     // Fetch Blog Posts from Firestore Database
     async function loadBlogPosts() {
       const blogContainer = document.getElementById('blog-container');
@@ -554,7 +681,7 @@
             </div>
             <h3 class="text-xl font-bold text-white mb-2 leading-snug">${post.title}</h3>
             <p class="text-sm text-slate-400 mb-4 line-clamp-3">${post.description}</p>
-            <button class="text-rose-300 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">Read More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+            <a href="blog.html" class="text-rose-300 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">Read More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
           `;
           blogContainer.appendChild(postElement);
         });

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Blog & Updates - Repair Guy</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col">
+
+  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
+  <div class="fixed inset-0 z-[-1] bg-[#0f172a] overflow-hidden">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
+    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
+  </div>
+
+  <!-- ================= HEADER (Glass) ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#0f172a]/80 backdrop-blur-xl border-b border-white/10 shadow-lg py-3">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 cursor-pointer">
+        <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl shadow-lg">R</div>
+        <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
+        <a href="index.html" class="hover:text-rose-400 transition-colors">Home</a>
+        <a href="index.html#updates" class="hover:text-rose-400 transition-colors">About Us</a>
+        <a href="blog.html" class="text-rose-400 font-semibold border-b-2 border-rose-400 pb-1">Our Blog</a>
+        <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
+        
+        <!-- Conditional User Profile / Login -->
+        <div id="userNavMenu">
+           <a href="login.html" class="hover:text-rose-400 transition-colors flex items-center gap-1">Login <i data-feather="user" class="w-4 h-4"></i></a>
+        </div>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md">
+          <i data-feather="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow pt-[100px] pb-20 px-4 md:px-6 relative z-10">
+    <div class="max-w-[800px] mx-auto">
+      
+      <div class="text-center mb-12 animate-fade-in-up">
+        <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Knowledge Base</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Our Blog & Videos</h2>
+        <p class="text-slate-300">Latest updates, repair tips, and video tutorials directly from our experts.</p>
+      </div>
+
+      <!-- Blog Posts Container -->
+      <div id="blog-container" class="space-y-10">
+        <p class="text-center text-slate-400 italic">Loading posts...</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 py-8 relative z-10 mt-auto">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 text-center text-sm">
+      <p>&copy; 2026 Repair Guy. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Firebase & App Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
+      authDomain: "habib-yt.firebaseapp.com",
+      projectId: "habib-yt",
+      storageBucket: "habib-yt.firebasestorage.app",
+      messagingSenderId: "656628491244",
+      appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
+      measurementId: "G-GNY1T88D34"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    feather.replace();
+
+    // Check Login Status
+    const userEmail = localStorage.getItem('userEmail');
+    if (userEmail) {
+        document.getElementById('userNavMenu').innerHTML = `
+           <span class="text-sm text-green-400 font-semibold flex items-center gap-2">
+             <i data-feather="user-check" class="w-4 h-4"></i> ${userEmail.split('@')[0]}
+             <button onclick="logoutUser()" class="ml-2 text-red-400 hover:text-red-300 text-xs border border-red-500/50 px-2 py-1 rounded">Logout</button>
+           </span>
+        `;
+        feather.replace();
+    }
+
+    window.logoutUser = function() {
+        localStorage.removeItem('userEmail');
+        window.location.reload();
+    }
+
+    // Fetch and Render Posts
+    async function loadFullBlogPosts() {
+      const blogContainer = document.getElementById('blog-container');
+      
+      try {
+        const q = query(collection(db, "blogPosts"), orderBy("timestamp", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          blogContainer.innerHTML = `<p class="text-center text-slate-400 italic">No posts available right now.</p>`;
+          return;
+        }
+
+        blogContainer.innerHTML = ''; 
+        
+        querySnapshot.forEach((documentSnapshot) => {
+          const post = documentSnapshot.data();
+          const postId = documentSnapshot.id;
+          
+          let mediaHTML = '';
+          if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
+             const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
+             mediaHTML = `<iframe class="w-full h-64 md:h-96 rounded-2xl mb-6 border border-white/10" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+          } else {
+             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full h-64 md:h-96 object-cover rounded-2xl mb-6 border border-white/10" alt="Blog Media">`;
+          }
+
+          const likesCount = post.likes || 0;
+          const commentsArray = post.comments || [];
+
+          let commentsHTML = commentsArray.map(c => `
+             <div class="bg-white/5 border border-white/10 p-3 rounded-lg mb-2">
+                <p class="text-xs text-rose-300 font-bold mb-1">${c.user}</p>
+                <p class="text-sm text-slate-300">${c.text}</p>
+             </div>
+          `).join('');
+
+          const postElement = document.createElement('div');
+          postElement.className = "bg-white/5 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] animate-fade-in-up";
+          
+          postElement.innerHTML = `
+            ${mediaHTML}
+            <div class="flex justify-between items-center mb-4">
+               <span class="text-xs font-bold text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-full border border-rose-500/20">${post.category || 'Update'}</span>
+               <span class="text-sm text-slate-400 font-medium"><i class="far fa-calendar-alt mr-1"></i> ${post.date || 'Today'}</span>
+            </div>
+            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 leading-snug">${post.title}</h3>
+            <p class="text-base text-slate-300 mb-6 leading-relaxed whitespace-pre-line">${post.description}</p>
+            
+            <!-- Interaction Bar -->
+            <div class="flex items-center gap-6 border-t border-white/10 pt-4">
+                <button onclick="likePost('${postId}')" class="flex items-center gap-2 text-slate-300 hover:text-rose-400 transition-colors group">
+                   <i data-feather="heart" class="w-5 h-5 group-hover:fill-rose-400"></i>
+                   <span id="like-count-${postId}" class="font-semibold">${likesCount} Likes</span>
+                </button>
+                <button onclick="toggleComments('${postId}')" class="flex items-center gap-2 text-slate-300 hover:text-blue-400 transition-colors">
+                   <i data-feather="message-circle" class="w-5 h-5"></i>
+                   <span class="font-semibold">${commentsArray.length} Comments</span>
+                </button>
+            </div>
+
+            <!-- Comment Section (Hidden by default) -->
+            <div id="comment-section-${postId}" class="hidden mt-6 border-t border-white/10 pt-6">
+                <div class="mb-4 max-h-60 overflow-y-auto pr-2 space-y-3" id="comment-list-${postId}">
+                   ${commentsHTML || '<p class="text-sm text-slate-500 italic">No comments yet. Be the first!</p>'}
+                </div>
+                
+                <div class="flex gap-2">
+                   <input type="text" id="comment-input-${postId}" placeholder="Write a comment..." class="flex-grow bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-rose-400 transition-colors text-sm" ${!userEmail ? 'readonly onclick="redirectToLogin()"' : ''}>
+                   <button onclick="submitComment('${postId}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-4 py-2.5 rounded-xl transition-all shadow-lg text-sm font-semibold">Post</button>
+                </div>
+                ${!userEmail ? '<p class="text-xs text-red-400 mt-2"><i class="fas fa-exclamation-circle"></i> You must be logged in to comment.</p>' : ''}
+            </div>
+          `;
+          blogContainer.appendChild(postElement);
+        });
+        feather.replace();
+      } catch (error) {
+        console.log("Error loading posts:", error);
+      }
+    }
+
+    // Like Function
+    window.likePost = async function(postId) {
+        const countSpan = document.getElementById(`like-count-${postId}`);
+        const currentLikes = parseInt(countSpan.innerText);
+        countSpan.innerText = `${currentLikes + 1} Likes`; // Optimistic UI update
+
+        try {
+            const postRef = doc(db, "blogPosts", postId);
+            await updateDoc(postRef, {
+                likes: increment(1)
+            });
+        } catch (error) {
+            console.error("Error liking post: ", error);
+        }
+    }
+
+    // Toggle Comment Section
+    window.toggleComments = function(postId) {
+        const section = document.getElementById(`comment-section-${postId}`);
+        section.classList.toggle('hidden');
+    }
+
+    // Redirect to login if trying to comment without auth
+    window.redirectToLogin = function() {
+        window.location.href = 'login.html';
+    }
+
+    // Submit Comment Function
+    window.submitComment = async function(postId) {
+        if (!userEmail) {
+            redirectToLogin();
+            return;
+        }
+
+        const inputField = document.getElementById(`comment-input-${postId}`);
+        const text = inputField.value.trim();
+        if (!text) return;
+
+        inputField.value = ''; // clear input
+
+        const newComment = {
+            user: userEmail.split('@')[0], 
+            text: text,
+            date: new Date().toLocaleDateString()
+        };
+
+        // Update UI immediately
+        const list = document.getElementById(`comment-list-${postId}`);
+        if(list.innerText.includes('No comments yet')) list.innerHTML = '';
+        list.innerHTML += `
+             <div class="bg-white/5 border border-white/10 p-3 rounded-lg mb-2">
+                <p class="text-xs text-rose-300 font-bold mb-1">${newComment.user}</p>
+                <p class="text-sm text-slate-300">${newComment.text}</p>
+             </div>
+        `;
+
+        // Save to Firebase
+        try {
+            const postRef = doc(db, "blogPosts", postId);
+            await updateDoc(postRef, {
+                comments: arrayUnion(newComment)
+            });
+        } catch (error) {
+            console.error("Error posting comment: ", error);
+        }
+    }
+
+    loadFullBlogPosts();
+  </script>
+</body>
+</html>

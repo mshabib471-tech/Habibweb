@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Repair Guy</title>
+  
+  <!-- Tailwind CSS & Feather Icons CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  
+  <!-- FontAwesome CDN for Social & Contact Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col">
+
+  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
+  <div class="fixed inset-0 z-[-1] bg-[#0f172a] overflow-hidden">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
+    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
+  </div>
+
+  <!-- ================= HEADER (Glass) ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-5">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2 cursor-pointer">
+        <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)]">R</div>
+        <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
+        <a href="index.html" class="hover:text-rose-400 transition-colors">Home</a>
+        <a href="#" class="hover:text-rose-400 transition-colors">About Us</a>
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
+          Services <i data-feather="chevron-down" class="w-4 h-4"></i>
+        </div>
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
+          Pages <i data-feather="chevron-down" class="w-4 h-4"></i>
+        </div>
+        <a href="contact.html" class="text-rose-400 font-semibold">Contact Us</a>
+      </nav>
+
+      <!-- Call CTA & Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <button class="hidden md:flex bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:-translate-y-0.5">
+          <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
+          <span>+880 1868 461577</span>
+        </button>
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md">
+          <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Drawer (Glass) -->
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/90 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-4 gap-4 pb-8 shadow-2xl">
+      <a href="index.html" class="text-lg text-slate-200">Home</a>
+      <a href="#" class="text-lg text-slate-200">About Us</a>
+      <a href="#" class="text-lg text-slate-200">Services</a>
+      <a href="#" class="text-lg text-slate-200">Pages</a>
+      <a href="contact.html" class="text-rose-400 font-semibold text-lg">Contact Us</a>
+      <button class="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 mt-4 w-full">
+        <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
+        <span>+880 1868 461577</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= CONTACT SECTION ================= -->
+  <main class="flex-grow pt-[120px] pb-20 px-4 md:px-6 relative z-10 flex items-center justify-center min-h-screen">
+    <div class="max-w-[1280px] w-full mx-auto">
+      
+      <!-- Section Header -->
+      <div class="text-center mb-12 animate-fade-in-up">
+        <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Get In Touch</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Contact Us</h2>
+        <p class="text-slate-300 max-w-2xl mx-auto">কোনো সমস্যা থাকলে আমাদের লোকেশনে যোগাযোগ করুন অথবা ফর্মটি পূরণ করে মেসেজ দিন।</p>
+      </div>
+
+      <!-- Contact Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch animate-fade-in-up" style="animation-delay: 0.2s;">
+        
+        <!-- Left: Contact Info (Glass Card) -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col h-full">
+          <h3 class="text-2xl font-bold text-white mb-8">Reach Out to Habib</h3>
+          
+          <div class="space-y-6 flex-grow">
+            <!-- Address -->
+            <div class="flex items-start gap-5">
+              <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shrink-0">
+                <i class="fas fa-map-marker-alt text-lg"></i>
+              </div>
+              <div>
+                <h4 class="text-white font-semibold mb-1">Address</h4>
+                <p class="text-slate-400 text-sm leading-relaxed">House - Habibur Rahman, Gachbaria<br>Chattogram, Bangladesh</p>
+              </div>
+            </div>
+            
+            <!-- Phone -->
+            <div class="flex items-start gap-5">
+              <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shrink-0">
+                <i class="fas fa-phone text-lg"></i>
+              </div>
+              <div>
+                <h4 class="text-white font-semibold mb-1">Phone</h4>
+                <p class="text-slate-400 text-sm hover:text-rose-400 transition-colors"><a href="tel:+8801868461577">+880 1868 461577</a></p>
+              </div>
+            </div>
+            
+            <!-- Email -->
+            <div class="flex items-start gap-5">
+              <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shrink-0">
+                <i class="fas fa-envelope text-lg"></i>
+              </div>
+              <div>
+                <h4 class="text-white font-semibold mb-1">Email</h4>
+                <p class="text-slate-400 text-sm hover:text-rose-400 transition-colors"><a href="mailto:mshabib471@gmail.com">mshabib471@gmail.com</a></p>
+              </div>
+            </div>
+            
+            <!-- Business Hours -->
+            <div class="flex items-start gap-5">
+              <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shrink-0">
+                <i class="fas fa-clock text-lg"></i>
+              </div>
+              <div>
+                <h4 class="text-white font-semibold mb-1">Business Hours</h4>
+                <p class="text-slate-400 text-sm leading-relaxed">Always Open Online<br>Chat support available 24/7</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="flex gap-4 mt-8 pt-8 border-t border-white/10">
+            <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] transition-colors text-white">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#0088cc] hover:border-[#0088cc] transition-colors text-white">
+              <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a href="https://wa.me/8801868461577" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-colors text-white">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://habib-bd.vercel.app/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-rose-600 hover:border-rose-600 transition-colors text-white">
+              <i class="fas fa-globe"></i>
+            </a>
+          </div>
+
+          <!-- Google Map -->
+          <div class="mt-8 rounded-2xl overflow-hidden border border-white/20 shadow-lg opacity-80 hover:opacity-100 transition-opacity duration-300 h-[200px]">
+            <iframe title="Habibur Rahman house map" src="https://maps.google.com/maps?q=22.2149092,92.0320435&t=&z=18&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>
+          </div>
+        </div>
+
+        <!-- Right: Contact Form (Glass Card) -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] h-full">
+          <h3 class="text-2xl font-bold text-white mb-8">Send a Message</h3>
+          
+          <form class="space-y-5" id="contactForm">
+            <div>
+              <input type="text" id="name" name="name" placeholder="Your Name" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
+            </div>
+            
+            <div>
+              <input type="email" id="email" name="email" placeholder="Your Email" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
+            </div>
+            
+            <div>
+              <input type="tel" id="phone" name="phone" placeholder="Phone Number (e.g. +880...)" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
+            </div>
+            
+            <div>
+              <select id="service" name="service" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-slate-300 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all appearance-none">
+                <option value="" class="bg-slate-800 text-white">Select Service / Brand Issue</option>
+                <option value="apple-service" class="bg-slate-800 text-white">Apple Service</option>
+                <option value="samsung-service" class="bg-slate-800 text-white">Samsung Service</option>
+                <option value="xiaomi-service" class="bg-slate-800 text-white">Xiaomi Service</option>
+                <option value="huawei-service" class="bg-slate-800 text-white">Huawei Service</option>
+                <option value="buy-accessories" class="bg-slate-800 text-white">Buy Accessories</option>
+                <option value="other" class="bg-slate-800 text-white">Other Inquiry</option>
+              </select>
+            </div>
+            
+            <div>
+              <textarea id="message" name="message" rows="5" placeholder="Write your problem details... (ডিভাইসের সমস্যা বিস্তারিত লিখুন)" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all resize-none"></textarea>
+            </div>
+            
+            <button type="submit" id="submitBtn" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white font-bold text-lg py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(158,27,50,0.4)] hover:-translate-y-1 mt-4">
+              Send Message
+            </button>
+            
+            <!-- Success/Error Message Display -->
+            <p id="formStatus" class="hidden text-center mt-4 font-semibold p-3 rounded-lg border backdrop-blur-md"></p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 pt-20 pb-10 relative z-10 mt-auto">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div class="space-y-6">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
+            <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+          </div>
+          <p class="text-sm leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Services</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Smartphone Repair</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Laptop Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Quick Link</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-rose-400 transition-colors">About Us</a></li>
+            <li><a href="contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe</h4>
+          <form class="flex mb-6">
+            <input type="email" placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
+            <button type="submit" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+        <p>&copy; 2026 Repair Guy. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Initialization Scripts & Form Logic -->
+  <script>
+    // Initialize Feather Icons
+    feather.replace();
+
+    // Glass Header Scroll Effect
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        header.classList.add('bg-[#0f172a]/60', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
+        header.classList.remove('bg-transparent', 'py-5');
+      } else {
+        header.classList.add('bg-transparent', 'py-5');
+        header.classList.remove('bg-[#0f172a]/60', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
+      }
+    });
+
+    // Mobile Menu
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let isMenuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      if (isMenuOpen) {
+        mobileMenu.classList.remove('hidden');
+        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6 text-white"></i>';
+      } else {
+        mobileMenu.classList.add('hidden');
+        menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6 text-white"></i>';
+      }
+      feather.replace();
+    });
+
+    // Form Submission Logic
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formStatus = document.getElementById('formStatus');
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzMmCqUECBRKOc8eGMwvlIoDNJnoJ8sTBsuouHtycJxZr6giWjmdvYhbf_z8EUUzd3rzw/exec';
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        submitBtn.innerText = 'Sending...';
+        submitBtn.disabled = true;
+        
+        formStatus.classList.add('hidden');
+        formStatus.classList.remove('bg-green-500/20', 'border-green-500/50', 'text-green-300', 'bg-red-500/20', 'border-red-500/50', 'text-red-300');
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+            .then(response => {
+                formStatus.classList.remove('hidden');
+                formStatus.classList.add('bg-green-500/20', 'border-green-500/50', 'text-green-300');
+                formStatus.innerText = "Message sent successfully!";
+                
+                form.reset();
+                submitBtn.innerText = 'Send Message';
+                submitBtn.disabled = false;
+                
+                setTimeout(() => {
+                    formStatus.classList.add('hidden');
+                }, 5000);
+            })
+            .catch(error => {
+                formStatus.classList.remove('hidden');
+                formStatus.classList.add('bg-red-500/20', 'border-red-500/50', 'text-red-300');
+                formStatus.innerText = "Error sending message. Please try again.";
+                
+                submitBtn.innerText = 'Send Message';
+                submitBtn.disabled = false;
+            });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habib Tec. - Home</title>
+  
+  <!-- Tailwind CSS & Feather Icons CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS Link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col">
+
+  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
+  <div class="fixed inset-0 z-[-1] bg-[#0f172a] overflow-hidden">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
+    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
+  </div>
+
+  <!-- ================= HEADER (Glass) ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-4">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
+      <!-- Logo & Name -->
+      <a href="index.html" class="flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
+          <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" alt="Habib Tec. Logo" class="w-full h-full object-cover">
+        </div>
+        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">Tec.</span></span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
+        <a href="index.html" class="text-rose-400 font-semibold">Home</a>
+        <a href="#" class="hover:text-rose-400 transition-colors">About Us</a>
+        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
+          Services <i data-feather="chevron-down" class="w-4 h-4"></i>
+        </div>
+        
+        <!-- Pages Dropdown -->
+        <div class="group relative py-2 cursor-pointer transition-colors">
+          <div class="flex items-center gap-1 hover:text-rose-400">Pages <i data-feather="chevron-down" class="w-4 h-4"></i></div>
+          <div class="absolute top-full left-0 mt-2 w-56 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden z-50">
+            <a href="#updates" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors border-b border-white/5">Updates</a>
+            <a href="#vision" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors border-b border-white/5">Our Vision & Mission</a>
+            <a href="#testimonial" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors">Testimonial</a>
+          </div>
+        </div>
+
+        <a href="blog.html" class="hover:text-rose-400 transition-colors">Our Blog</a>
+        <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
+        
+        <!-- Auth Profile Area / Login -->
+        <div id="authProfileArea" class="relative group">
+            <a href="login.html?return=index.html" id="loginNavBtn" class="hover:text-rose-400 transition-colors flex items-center gap-1 cursor-pointer font-bold">
+                Login <i data-feather="user" class="w-4 h-4"></i>
+            </a>
+
+            <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
+                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-rose-400 shadow-lg">
+                <i data-feather="chevron-down" class="w-4 h-4 text-slate-300"></i>
+
+                <div class="absolute top-full right-0 mt-3 w-48 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50">
+                    <label class="px-4 py-3 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 border-b border-white/5 transition-colors">
+                        <i data-feather="camera" class="w-4 h-4 text-rose-400"></i> Change Picture
+                        <input type="file" id="profilePicInput" accept="image/*" class="hidden">
+                    </label>
+                    <button onclick="logoutCurrentUser()" class="px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-white/10 text-left flex items-center gap-2 transition-colors w-full">
+                        <i data-feather="log-out" class="w-4 h-4"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+      </nav>
+
+      <!-- Call CTA & Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <button class="hidden md:flex bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-2 rounded-full font-medium items-center gap-2 transition-all shadow-lg">
+          <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
+          <span>+880 1868 461577</span>
+        </button>
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md z-50 relative">
+          <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-6 gap-4 shadow-2xl transition-all duration-300 z-40 h-screen overflow-y-auto pb-32">
+      <a href="index.html" class="text-rose-400 font-semibold text-lg">Home</a>
+      <a href="#" class="text-lg text-slate-200 hover:text-rose-400">About Us</a>
+      <a href="#" class="text-lg text-slate-200 hover:text-rose-400">Services</a>
+      
+      <div class="flex flex-col gap-3 pl-4 border-l-2 border-white/10 my-2">
+        <p class="text-slate-400 uppercase text-xs font-bold tracking-wider">Pages</p>
+        <a href="#updates" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Updates</a>
+        <a href="#vision" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Our Vision & Mission</a>
+        <a href="#testimonial" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Testimonial</a>
+      </div>
+
+      <a href="blog.html" class="text-lg text-slate-200 hover:text-rose-400">Our Blog</a>
+      <a href="contact.html" class="text-lg text-slate-200 hover:text-rose-400">Contact Us</a>
+      <a href="login.html?return=index.html" class="text-lg text-slate-200 hover:text-rose-400 flex items-center gap-2">Login / Account <i data-feather="user" class="w-4 h-4"></i></a>
+    </div>
+  </header>
+
+  <main class="flex-grow pt-[80px] lg:pt-[96px]">
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative w-full h-[500px] md:h-[600px] lg:h-[700px] flex items-center">
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80" alt="Gadget Repair Workshop" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-[#0f172a]/70 backdrop-blur-sm"></div>
+      </div>
+      
+      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full text-center flex flex-col items-center">
+        <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white max-w-4xl leading-tight tracking-tight">
+          Fast and reliable gadget <br class="hidden md:block" /> repair services
+        </h1>
+        <p class="mt-6 text-slate-300 text-lg md:text-xl max-w-2xl font-light">
+          Welcome to Habib Tec. — your ultimate destination for professional hardware fixes, genuine components, and expert tech support.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+          <button class="bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-[0_0_20px_rgba(158,27,50,0.4)]">
+            Get Started
+          </button>
+          <a href="contact.html" class="bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 inline-block">
+            Contact Now
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= QUICK SERVICE BAR ================= -->
+    <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-12 md:-mt-16">
+      <div class="bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-[32px] p-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-white">
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="settings" class="text-rose-400"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Repair Service</h3><p class="text-sm text-slate-400">Professional fixes</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="cpu" class="text-rose-400"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Spare Parts</h3><p class="text-sm text-slate-400">Genuine components</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="database" class="text-rose-400"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Data Recovery</h3><p class="text-sm text-slate-400">Safe retrieval</p></div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="shield" class="text-rose-400"></i></div>
+            <div><h3 class="font-semibold text-lg text-white">Quality Check</h3><p class="text-sm text-slate-400">Rigorous testing</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= DYNAMIC BLOG / VIDEO SECTION ================= -->
+    <section id="updates" class="py-20 relative z-10 scroll-mt-20">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div>
+            <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Updates</p>
+            <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">Latest Video & Blogs</h2>
+          </div>
+          <div class="flex gap-4">
+            <a href="blog.html" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm shadow-lg">
+              See Posts <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <a href="admin.html" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm shadow-lg">
+              Admin Login <i data-feather="lock" class="w-4 h-4 text-rose-300"></i>
+            </a>
+          </div>
+        </div>
+
+        <div id="blog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <p class="text-slate-400 italic col-span-full">Loading posts...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT SECTION ================= -->
+    <section class="py-20 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="relative">
+          <div class="grid grid-cols-2 gap-4">
+            <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=80" alt="Technician" class="rounded-2xl w-full h-[250px] object-cover mt-8 border border-white/10 shadow-2xl" />
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80" alt="Motherboard" class="rounded-2xl w-full h-[250px] object-cover border border-white/10 shadow-2xl" />
+          </div>
+          <div class="absolute -bottom-6 md:bottom-8 left-0 md:-left-8 bg-[#9E1B32]/30 backdrop-blur-xl border border-white/20 text-white p-6 rounded-2xl max-w-[220px] shadow-[0_8px_32px_0_rgba(158,27,50,0.3)]">
+            <span class="text-rose-300 text-4xl leading-none font-serif">"</span>
+            <p class="font-bold text-lg leading-tight mt-2 text-white">We will fix it, till we make it.</p>
+          </div>
+        </div>
+        <div>
+          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3">ABOUT OUR CULTURE</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Leading the way in repair solution</h2>
+          <p class="text-slate-300 mb-8 text-lg leading-relaxed">
+            Habib Tec. delivers unmatched precision and expert care for every electronic device you bring to our workshop.
+          </p>
+          <button class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-lg">Learn More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WHY CHOOSE US ================= -->
+    <section class="py-20 relative z-10 bg-white/5 backdrop-blur-sm border-y border-white/10">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Why Choose Us</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Trusted expertise in the gadget area</h2>
+          <p class="text-slate-300">Dedicated professionals committed to bringing your devices back to peak performance.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="relative group rounded-2xl overflow-hidden bg-[#0f172a]/50 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
+            <div class="h-56 overflow-hidden rounded-xl">
+              <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80" alt="Professional" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="mt-4 text-center font-bold text-white text-lg">Professional</div>
+          </div>
+          <div class="relative group rounded-2xl overflow-hidden bg-[#0f172a]/50 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
+            <div class="h-56 overflow-hidden rounded-xl">
+              <img src="https://images.unsplash.com/photo-1588508065123-287b28e0139b?auto=format&fit=crop&q=80" alt="Same Day Repairs" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="mt-4 text-center font-bold text-white text-lg">Same Day Repairs</div>
+          </div>
+          <div class="relative group rounded-2xl overflow-hidden bg-[#0f172a]/50 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
+            <div class="h-56 overflow-hidden rounded-xl">
+              <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80" alt="Genuine Parts" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            </div>
+            <div class="mt-4 text-center font-bold text-white text-lg">Genuine Parts</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LOGO STRIP ================= -->
+    <section class="py-10 relative z-10 border-b border-white/10">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-10 md:gap-20 opacity-50 hover:opacity-80 transition-opacity">
+        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib Tec.</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib Tec.</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib Tec.</div>
+        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib Tec.</div>
+      </div>
+    </section>
+
+    <!-- ================= OUR SERVICES (With Popup Modal) ================= -->
+    <section class="py-20 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+        <div>
+          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Services</p>
+          <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">We offer a wide variety gadget services</h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Mobile Phone Repair', 'We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage. Get your smartphone back to life in no time!', 'smartphone')">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="smartphone" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Mobile Phone</h3>
+          <p class="text-slate-400 mb-6 text-sm">Professional mobile repair services for all major brands.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Tablet Repair', 'From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates for all tablets.', 'tablet')">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tablet" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Tablet</h3>
+          <p class="text-slate-400 mb-6 text-sm">Expert tablet diagnosis and quick reliable repairs.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Laptop Repair', 'We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes for all laptop models.', 'laptop')">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="laptop" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Laptop</h3>
+          <p class="text-slate-400 mb-6 text-sm">Hardware and software solutions for your laptops.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Computer Desktop', 'Custom PC builds, hardware upgrades, SSD installation, and deep cleaning for optimal desktop performance.', 'monitor')">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="monitor" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Computer Desktop</h3>
+          <p class="text-slate-400 mb-6 text-sm">Full desktop maintenance and upgrading services.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Camera Repair', 'Professional cleaning, lens fixing, and sensor calibration for DSLR, Mirrorless, and digital cameras.', 'camera')">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="camera" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Camera</h3>
+          <p class="text-slate-400 mb-6 text-sm">Fixing lenses, sensors, and hardware of your cameras.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Wearable Device', 'Apple Watch, Galaxy Watch, and other smart wearables screen replacement and battery fixing services.', 'watch')">
+          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="watch" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white">Wearable Device</h3>
+          <p class="text-slate-400 mb-6 text-sm">Smartwatch repair and maintenance experts.</p>
+          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SUPPORT CTA ================= -->
+    <section class="relative py-20 md:py-28">
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80" alt="Background" class="w-full h-full object-cover blur-sm" />
+        <div class="absolute inset-0 bg-[#4A154B]/80 backdrop-blur-md"></div>
+      </div>
+      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-10">
+        <div class="text-white max-w-xl">
+          <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Get support for your problem</h2>
+          <p class="text-white/80 text-lg">Reach out to Habib Tec. for immediate consultation and quick device turnaround.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+          <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
+            <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center"><i data-feather="mail"></i></div>
+            <div>
+              <p class="text-sm text-white/70 font-medium">Send us an email</p>
+              <p class="font-bold text-white">tec.habiburrahman@gmail.com</p>
+            </div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
+            <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center"><i data-feather="phone"></i></div>
+            <div>
+              <p class="text-sm text-white/70 font-medium">Give us a call</p>
+              <p class="font-bold text-white">+880 1868 461577</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VISION & MISSION ================= -->
+    <section id="vision" class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-20">
+      <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[40px] p-8 md:p-12 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer border border-white/20">
+            <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80" alt="Technician Video" class="w-full h-[400px] md:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px]">
+              <div class="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/40 rounded-full flex items-center justify-center pl-1 text-white shadow-[0_0_20px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-300">
+                <i data-feather="play" class="w-8 h-8 fill-current"></i>
+              </div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-[#0f172a]/70 backdrop-blur-md border-t border-white/10 text-white p-6 text-center">
+              <h3 class="font-bold text-xl">Habibur Rahman</h3>
+              <p class="text-rose-300 font-semibold text-sm mt-1 tracking-widest uppercase">Habib Tec. Founder</p>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Vision & Mission</p>
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Innovate with the gadget trends</h2>
+            <p class="text-slate-300 mb-8 text-lg">Providing top-notch repair solutions and maintaining absolute transparency with every customer.</p>
+            <div class="space-y-4">
+              <div class="accordion-item border rounded-xl p-5 cursor-pointer transition-colors border-rose-500/50 bg-rose-900/20 backdrop-blur-md" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                  <h4 class="font-bold text-rose-300">Fast & Secure Repairs</h4>
+                  <i data-feather="chevron-down" class="w-5 h-5 transition-transform rotate-180 text-rose-300 acc-icon"></i>
+                </div>
+                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed block">We provide the most efficient and secure repair process ensuring your data and device remain totally safe.</p>
+              </div>
+              <div class="accordion-item border border-white/10 bg-white/5 backdrop-blur-md hover:border-white/30 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
+                <div class="flex justify-between items-center">
+                  <h4 class="font-bold text-slate-200">100% Genuine Parts</h4>
+                  <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-slate-400 acc-icon"></i>
+                </div>
+                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed hidden">We only source and use original or top-tier replacement parts to maximize the lifespan of your gadgets.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATISTICS ================= -->
+    <section class="py-16 relative z-10 border-y border-white/10 bg-white/5 backdrop-blur-sm">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x-0 lg:divide-x divide-white/10">
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">5<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
+            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Glorious Years</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">500<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
+            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Happy Customer</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">620<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
+            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Service Complete</p>
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">99<span class="text-rose-400 text-3xl md:text-4xl">%</span></div>
+            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Satisfactions</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIAL ================= -->
+    <section id="testimonial" class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-20">
+      <div class="flex flex-col lg:flex-row rounded-[40px] overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] border border-white/10 bg-white/5 backdrop-blur-xl">
+        <div class="p-10 md:p-16 lg:w-1/2 flex flex-col justify-center relative">
+          <p class="text-rose-300 font-bold tracking-wider text-sm mb-3 uppercase">Testimonial</p>
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-10 leading-tight">Review from our customer</h2>
+          
+          <div class="bg-[#0f172a]/80 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-xl relative z-10 lg:-mr-24 transform lg:translate-x-12 transition-transform hover:-translate-y-1">
+            <div class="text-rose-400 text-4xl font-serif mb-4 leading-none">"</div>
+            <p class="text-slate-300 text-lg italic mb-6">
+              "Habib Tec. provided incredible service! Fixed my laptop motherboard smoothly and quickly. Highly recommended."
+            </p>
+            <div class="flex items-center gap-4">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover border border-white/20" />
+              <div>
+                <h4 class="font-bold text-white">Kylie Store</h4>
+                <div class="flex text-yellow-400 text-sm">★★★★★</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="lg:w-1/2 h-[400px] lg:h-auto border-l border-white/10">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80" alt="Happy Customer" class="w-full h-full object-cover" />
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 pt-20 pb-10 relative z-10 mt-auto">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div class="space-y-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
+              <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" alt="Habib Tec. Logo" class="w-full h-full object-cover">
+            </div>
+            <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">Tec.</span></span>
+          </div>
+          <p class="text-sm leading-relaxed">Your trusted partner for fast and reliable gadget repair services.</p>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Services</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Smartphone Repair</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Laptop Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Quick Link</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-rose-400 transition-colors">About Us</a></li>
+            <li><a href="contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe</h4>
+          <form id="subscribeForm" class="flex flex-col gap-2">
+            <div class="flex">
+              <input type="email" id="subEmail" required placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
+              <button type="submit" id="subBtn" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
+            </div>
+            <p id="subMsg" class="hidden text-sm text-green-400 mt-2 font-medium">Subscribed successfully!</p>
+          </form>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+        <p>&copy; 2026 Habib Tec. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= POPUP MODAL FOR SERVICES ================= -->
+  <div id="serviceModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div id="modalContent" class="relative bg-[#0f172a]/95 backdrop-blur-2xl border border-white/20 p-8 rounded-[32px] shadow-2xl max-w-md w-full transform scale-95 opacity-0 transition-all duration-300">
+      <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-rose-400 bg-white/5 rounded-full p-2 border border-white/10 transition-colors">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+      <div id="modalIconBox" class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+          <i data-feather="tool" id="modalIcon" class="w-10 h-10"></i>
+      </div>
+      <h3 id="modalTitle" class="text-2xl font-bold text-white mb-4 text-center">Service Name</h3>
+      <p id="modalDesc" class="text-slate-300 mb-8 text-center leading-relaxed">Detailed description goes here...</p>
+      <a href="contact.html" class="flex justify-center items-center gap-2 w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(158,27,50,0.3)] hover:-translate-y-1">
+        Service Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Firebase & App Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
+      authDomain: "habib-yt.firebaseapp.com",
+      projectId: "habib-yt",
+      storageBucket: "habib-yt.firebasestorage.app",
+      messagingSenderId: "656628491244",
+      appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
+      measurementId: "G-GNY1T88D34"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const authInstance = getAuth(app);
+    const storageInstance = getStorage(app);
+
+    feather.replace();
+
+    // Glass Header Scroll Effect
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
+        header.classList.remove('bg-transparent', 'py-4');
+      } else {
+        header.classList.add('bg-transparent', 'py-4');
+        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
+      }
+    });
+
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let isMenuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      if (isMenuOpen) {
+        mobileMenu.classList.remove('hidden');
+        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6"></i>';
+      } else {
+        mobileMenu.classList.add('hidden');
+        menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6"></i>';
+      }
+      feather.replace();
+    });
+
+    // Auth Header State & Profile Picture Handling
+    onAuthStateChanged(authInstance, (user) => {
+        const loginBtn = document.getElementById('loginNavBtn');
+        const profileMenu = document.getElementById('userProfileMenu');
+        
+        if (user) {
+            if(loginBtn) loginBtn.classList.add('hidden');
+            if(profileMenu) profileMenu.classList.remove('hidden');
+            const avatarImg = document.getElementById('headerAvatar');
+            if(avatarImg) avatarImg.src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+        } else {
+            if(loginBtn) loginBtn.classList.remove('hidden');
+            if(profileMenu) profileMenu.classList.add('hidden');
+        }
+    });
+
+    const picInput = document.getElementById('profilePicInput');
+    if (picInput) {
+        picInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if(!file || !authInstance.currentUser) return;
+            document.getElementById('headerAvatar').src = "https://www.svgrepo.com/show/285573/loading-spinner.svg";
+            try {
+                const storageRef = ref(storageInstance, 'avatars/' + authInstance.currentUser.uid);
+                await uploadBytes(storageRef, file);
+                const photoURL = await getDownloadURL(storageRef);
+                await updateProfile(authInstance.currentUser, { photoURL: photoURL });
+                document.getElementById('headerAvatar').src = photoURL;
+                alert("Profile picture updated successfully!");
+            } catch (error) {
+                alert("Upload failed. " + error.message);
+                document.getElementById('headerAvatar').src = authInstance.currentUser.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+            }
+        });
+    }
+
+    window.logoutCurrentUser = function() {
+        signOut(authInstance).then(() => {
+            sessionStorage.removeItem('isAdmin');
+            window.location.reload();
+        });
+    };
+
+    // Accordion Logic
+    window.toggleAccordion = function(element) {
+      const content = element.querySelector('.acc-content');
+      const icon = element.querySelector('.acc-icon');
+      const title = element.querySelector('h4');
+      const isHidden = content.classList.contains('hidden');
+
+      document.querySelectorAll('.accordion-item').forEach(item => {
+        item.classList.remove('border-rose-500/50', 'bg-rose-900/20');
+        item.classList.add('border-white/10', 'bg-white/5');
+        item.querySelector('.acc-content').classList.add('hidden');
+        item.querySelector('.acc-content').classList.remove('block');
+        item.querySelector('h4').classList.remove('text-rose-300');
+        item.querySelector('h4').classList.add('text-slate-200');
+        item.querySelector('.acc-icon').classList.remove('rotate-180', 'text-rose-300');
+        item.querySelector('.acc-icon').classList.add('text-slate-400');
+      });
+
+      if (isHidden) {
+        element.classList.add('border-rose-500/50', 'bg-rose-900/20');
+        element.classList.remove('border-white/10', 'bg-white/5');
+        content.classList.remove('hidden');
+        content.classList.add('block');
+        title.classList.add('text-rose-300');
+        title.classList.remove('text-slate-200');
+        icon.classList.add('rotate-180', 'text-rose-300');
+        icon.classList.remove('text-slate-400');
+      }
+    }
+
+    // Modal Logic
+    window.openModal = function(title, desc, iconName) {
+      const modal = document.getElementById('serviceModal');
+      const content = document.getElementById('modalContent');
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDesc').innerText = desc;
+      document.getElementById('modalIconBox').innerHTML = `<i data-feather="${iconName}" class="w-10 h-10"></i>`;
+      feather.replace();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    window.closeModal = function() {
+      const modal = document.getElementById('serviceModal');
+      const content = document.getElementById('modalContent');
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300);
+    }
+
+    // Subscription Form
+    const subForm = document.getElementById('subscribeForm');
+    if(subForm) {
+        subForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const subBtn = document.getElementById('subBtn');
+          const subMsg = document.getElementById('subMsg');
+          subBtn.innerText = 'Wait...';
+          subBtn.disabled = true;
+          setTimeout(() => {
+              subMsg.classList.remove('hidden');
+              subForm.reset();
+              subBtn.innerText = 'Submit';
+              subBtn.disabled = false;
+              setTimeout(() => subMsg.classList.add('hidden'), 5000);
+          }, 1000);
+        });
+    }
+
+    // Fetch Blog Posts
+    async function loadBlogPosts() {
+      const blogContainer = document.getElementById('blog-container');
+      if(!blogContainer) return;
+      
+      try {
+        const q = query(collection(db, "blogPosts"), orderBy("timestamp", "desc"), limit(3));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          blogContainer.innerHTML = `
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-lg col-span-full">
+              <div class="w-full h-48 bg-white/10 rounded-xl mb-4 flex items-center justify-center text-slate-400 border border-white/10">
+                 <i data-feather="video" class="w-10 h-10 text-rose-300"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">Welcome to Habib Tec.</h3>
+              <p class="text-sm text-slate-400 line-clamp-3">Posts published from the Admin Panel will appear here.</p>
+            </div>
+          `;
+          feather.replace();
+          return;
+        }
+
+        blogContainer.innerHTML = ''; 
+        
+        querySnapshot.forEach((doc) => {
+          const post = doc.data();
+          let mediaHTML = '';
+          if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
+             const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
+             mediaHTML = `<iframe class="w-full h-48 rounded-xl mb-4 border border-white/10" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+          } else {
+             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80'}" class="w-full h-48 object-cover rounded-xl mb-4 border border-white/10" alt="Blog Media">`;
+          }
+
+          const postElement = document.createElement('div');
+          postElement.className = "bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] hover:border-white/20 transition-all";
+          postElement.innerHTML = `
+            ${mediaHTML}
+            <div class="flex justify-between items-center mb-3">
+               <span class="text-xs font-semibold text-rose-400 bg-rose-500/10 px-2 py-1 rounded">${post.category || 'Update'}</span>
+               <span class="text-xs text-slate-400">${post.date || 'Today'}</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2 leading-snug">${post.title}</h3>
+            <p class="text-sm text-slate-400 mb-4 line-clamp-3">${post.description}</p>
+            <a href="blog.html" class="text-rose-300 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">Read More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+          `;
+          blogContainer.appendChild(postElement);
+        });
+        feather.replace();
+      } catch (error) {
+        console.log("Error loading posts:", error);
+      }
+    }
+
+    loadBlogPosts();
+  </script>
+</body>
+</html>

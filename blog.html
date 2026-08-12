@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Blog & Updates - Repair Guy</title>
+  <title>Our Blog & Updates - Habib Tec.</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
@@ -22,20 +22,45 @@
   <!-- ================= HEADER (Glass) ================= -->
   <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#0f172a]/80 backdrop-blur-xl border-b border-white/10 shadow-lg py-3">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2 cursor-pointer">
-        <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl shadow-lg">R</div>
-        <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
+      
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3 cursor-pointer">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
+          <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" alt="Habib Tec. Logo" class="w-full h-full object-cover">
+        </div>
+        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">Tec.</span></span>
       </a>
 
+      <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
         <a href="index.html" class="hover:text-rose-400 transition-colors">Home</a>
         <a href="index.html#updates" class="hover:text-rose-400 transition-colors">About Us</a>
         <a href="blog.html" class="text-rose-400 font-semibold border-b-2 border-rose-400 pb-1">Our Blog</a>
         <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
         
-        <!-- Conditional User Profile / Login -->
-        <div id="userNavMenu">
-           <a href="login.html" class="hover:text-rose-400 transition-colors flex items-center gap-1">Login <i data-feather="user" class="w-4 h-4"></i></a>
+        <!-- Auth Profile Area -->
+        <div id="authProfileArea" class="relative group">
+            <!-- Show when Logged Out (Notice the return=blog.html) -->
+            <a href="login.html?return=blog.html" id="loginNavBtn" class="hover:text-rose-400 transition-colors flex items-center gap-1 cursor-pointer font-bold">
+                Login <i data-feather="user" class="w-4 h-4"></i>
+            </a>
+
+            <!-- Show when Logged In (Avatar) -->
+            <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
+                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-rose-400 shadow-lg">
+                <i data-feather="chevron-down" class="w-4 h-4 text-slate-300"></i>
+
+                <!-- Dropdown Menu -->
+                <div class="absolute top-full right-0 mt-3 w-48 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50">
+                    <label class="px-4 py-3 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 border-b border-white/5 transition-colors">
+                        <i data-feather="camera" class="w-4 h-4 text-rose-400"></i> Change Picture
+                        <input type="file" id="profilePicInput" accept="image/*" class="hidden">
+                    </label>
+                    <button onclick="logoutCurrentUser()" class="px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-white/10 text-left flex items-center gap-2 transition-colors">
+                        <i data-feather="log-out" class="w-4 h-4"></i> Logout
+                    </button>
+                </div>
+            </div>
         </div>
       </nav>
 
@@ -67,7 +92,7 @@
   <!-- ================= FOOTER ================= -->
   <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 py-8 relative z-10 mt-auto">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 text-center text-sm">
-      <p>&copy; 2026 Repair Guy. All Rights Reserved.</p>
+      <p>&copy; 2026 Habib Tec. All Rights Reserved.</p>
     </div>
   </footer>
 
@@ -75,6 +100,8 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
@@ -88,27 +115,64 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const authInstance = getAuth(app);
+    const storageInstance = getStorage(app);
 
     feather.replace();
 
-    // Check Login Status
-    const userEmail = localStorage.getItem('userEmail');
-    if (userEmail) {
-        document.getElementById('userNavMenu').innerHTML = `
-           <span class="text-sm text-green-400 font-semibold flex items-center gap-2">
-             <i data-feather="user-check" class="w-4 h-4"></i> ${userEmail.split('@')[0]}
-             <button onclick="logoutUser()" class="ml-2 text-red-400 hover:text-red-300 text-xs border border-red-500/50 px-2 py-1 rounded">Logout</button>
-           </span>
-        `;
-        feather.replace();
+    let globalUserEmail = null;
+
+    // Monitor Auth State (Syncs automatically across pages)
+    onAuthStateChanged(authInstance, (user) => {
+        const loginBtn = document.getElementById('loginNavBtn');
+        const profileMenu = document.getElementById('userProfileMenu');
+        
+        if (user) {
+            loginBtn.classList.add('hidden');
+            profileMenu.classList.remove('hidden');
+            document.getElementById('headerAvatar').src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+            // Save global user email/phone for comments
+            globalUserEmail = user.email || user.phoneNumber;
+        } else {
+            loginBtn.classList.remove('hidden');
+            profileMenu.classList.add('hidden');
+            globalUserEmail = null;
+        }
+    });
+
+    // Handle Profile Picture Upload
+    const picInput = document.getElementById('profilePicInput');
+    if (picInput) {
+        picInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if(!file || !authInstance.currentUser) return;
+            
+            document.getElementById('headerAvatar').src = "https://www.svgrepo.com/show/285573/loading-spinner.svg";
+            
+            try {
+                const storageRef = ref(storageInstance, 'avatars/' + authInstance.currentUser.uid);
+                await uploadBytes(storageRef, file);
+                const photoURL = await getDownloadURL(storageRef);
+                
+                await updateProfile(authInstance.currentUser, { photoURL: photoURL });
+                document.getElementById('headerAvatar').src = photoURL;
+                alert("Profile picture updated successfully!");
+            } catch (error) {
+                alert("Upload failed. Make sure Firebase Storage is enabled. " + error.message);
+                document.getElementById('headerAvatar').src = authInstance.currentUser.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+            }
+        });
     }
 
-    window.logoutUser = function() {
-        localStorage.removeItem('userEmail');
-        window.location.reload();
-    }
+    // Handle Logout
+    window.logoutCurrentUser = function() {
+        signOut(authInstance).then(() => {
+            sessionStorage.removeItem('isAdmin');
+            window.location.reload();
+        });
+    };
 
-    // Fetch and Render Posts
+    // Fetch and Render Posts (Fixed for Videos)
     async function loadFullBlogPosts() {
       const blogContainer = document.getElementById('blog-container');
       
@@ -128,11 +192,21 @@
           const postId = documentSnapshot.id;
           
           let mediaHTML = '';
+          
+          // Logic to check if it's a YouTube link, an uploaded Video, or an Image
           if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
              const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
              mediaHTML = `<iframe class="w-full h-64 md:h-96 rounded-2xl mb-6 border border-white/10" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+          } else if (post.mediaType && post.mediaType.startsWith('video')) {
+             // Real uploaded Video from admin
+             mediaHTML = `
+                <video class="w-full h-64 md:h-96 object-cover rounded-2xl mb-6 border border-white/10 shadow-lg" controls>
+                   <source src="${post.mediaLink}" type="${post.mediaType}">
+                   Your browser does not support the video tag.
+                </video>`;
           } else {
-             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full h-64 md:h-96 object-cover rounded-2xl mb-6 border border-white/10" alt="Blog Media">`;
+             // Image
+             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full h-64 md:h-96 object-cover rounded-2xl mb-6 border border-white/10 shadow-lg" alt="Blog Media">`;
           }
 
           const likesCount = post.likes || 0;
@@ -169,17 +243,16 @@
                 </button>
             </div>
 
-            <!-- Comment Section (Hidden by default) -->
+            <!-- Comment Section -->
             <div id="comment-section-${postId}" class="hidden mt-6 border-t border-white/10 pt-6">
                 <div class="mb-4 max-h-60 overflow-y-auto pr-2 space-y-3" id="comment-list-${postId}">
                    ${commentsHTML || '<p class="text-sm text-slate-500 italic">No comments yet. Be the first!</p>'}
                 </div>
                 
                 <div class="flex gap-2">
-                   <input type="text" id="comment-input-${postId}" placeholder="Write a comment..." class="flex-grow bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-rose-400 transition-colors text-sm" ${!userEmail ? 'readonly onclick="redirectToLogin()"' : ''}>
+                   <input type="text" id="comment-input-${postId}" placeholder="Write a comment..." class="flex-grow bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-rose-400 transition-colors text-sm" onclick="checkAuthBeforeComment()">
                    <button onclick="submitComment('${postId}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-4 py-2.5 rounded-xl transition-all shadow-lg text-sm font-semibold">Post</button>
                 </div>
-                ${!userEmail ? '<p class="text-xs text-red-400 mt-2"><i class="fas fa-exclamation-circle"></i> You must be logged in to comment.</p>' : ''}
             </div>
           `;
           blogContainer.appendChild(postElement);
@@ -194,7 +267,7 @@
     window.likePost = async function(postId) {
         const countSpan = document.getElementById(`like-count-${postId}`);
         const currentLikes = parseInt(countSpan.innerText);
-        countSpan.innerText = `${currentLikes + 1} Likes`; // Optimistic UI update
+        countSpan.innerText = `${currentLikes + 1} Likes`; 
 
         try {
             const postRef = doc(db, "blogPosts", postId);
@@ -212,15 +285,17 @@
         section.classList.toggle('hidden');
     }
 
-    // Redirect to login if trying to comment without auth
-    window.redirectToLogin = function() {
-        window.location.href = 'login.html';
+    // Check Auth on Input Click
+    window.checkAuthBeforeComment = function() {
+        if (!globalUserEmail) {
+            window.location.href = 'login.html?return=blog.html';
+        }
     }
 
     // Submit Comment Function
     window.submitComment = async function(postId) {
-        if (!userEmail) {
-            redirectToLogin();
+        if (!globalUserEmail) {
+            window.location.href = 'login.html?return=blog.html';
             return;
         }
 
@@ -228,15 +303,17 @@
         const text = inputField.value.trim();
         if (!text) return;
 
-        inputField.value = ''; // clear input
+        inputField.value = ''; 
+
+        // Mask email/phone for display
+        let displayName = globalUserEmail.includes('@') ? globalUserEmail.split('@')[0] : "User " + globalUserEmail.substring(globalUserEmail.length - 4);
 
         const newComment = {
-            user: userEmail.split('@')[0], 
+            user: displayName, 
             text: text,
             date: new Date().toLocaleDateString()
         };
 
-        // Update UI immediately
         const list = document.getElementById(`comment-list-${postId}`);
         if(list.innerText.includes('No comments yet')) list.innerHTML = '';
         list.innerHTML += `
@@ -246,7 +323,6 @@
              </div>
         `;
 
-        // Save to Firebase
         try {
             const postRef = doc(db, "blogPosts", postId);
             await updateDoc(postRef, {

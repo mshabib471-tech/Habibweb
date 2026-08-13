@@ -9,8 +9,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
-    /* Sliding Animation CSS */
+    /* ================= FIXED SLIDING ANIMATION CSS ================= */
+    .container-slider {
+      position: relative;
+      overflow: hidden; /* This prevents the issue shown in your screenshot */
+    }
+    
     .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
       transition: all 0.6s ease-in-out;
     }
     
@@ -20,7 +28,7 @@
       z-index: 2;
     }
     
-    .container.right-panel-active .sign-in-container {
+    .container-slider.right-panel-active .sign-in-container {
       transform: translateX(100%);
     }
     
@@ -31,7 +39,7 @@
       z-index: 1;
     }
     
-    .container.right-panel-active .sign-up-container {
+    .container-slider.right-panel-active .sign-up-container {
       transform: translateX(100%);
       opacity: 1;
       z-index: 5;
@@ -43,29 +51,48 @@
       50%, 100% { opacity: 1; z-index: 5; }
     }
     
+    /* OVERLAY SECTION FIX */
     .overlay-container {
+      position: absolute;
+      top: 0;
       left: 50%;
       width: 50%;
+      height: 100%;
+      overflow: hidden; /* This keeps the gradient in its half */
       transition: transform 0.6s ease-in-out;
       z-index: 100;
     }
     
-    .container.right-panel-active .overlay-container {
+    .container-slider.right-panel-active .overlay-container {
       transform: translateX(-100%);
     }
     
     .overlay {
+      position: absolute;
+      top: 0;
       left: -100%;
       width: 200%;
+      height: 100%;
+      background: linear-gradient(135deg, #9E1B32, #4A154B); /* Exact previous colors */
+      color: #FFFFFF;
       transition: transform 0.6s ease-in-out;
     }
     
-    .container.right-panel-active .overlay {
+    .container-slider.right-panel-active .overlay {
       transform: translateX(50%);
     }
     
     .overlay-panel {
+      position: absolute;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 40px;
+      height: 100%;
       width: 50%;
+      text-align: center;
       transition: transform 0.6s ease-in-out;
     }
     
@@ -73,7 +100,7 @@
       transform: translateX(-20%);
     }
     
-    .container.right-panel-active .overlay-left {
+    .container-slider.right-panel-active .overlay-left {
       transform: translateX(0);
     }
     
@@ -82,7 +109,7 @@
       transform: translateX(0);
     }
     
-    .container.right-panel-active .overlay-right {
+    .container-slider.right-panel-active .overlay-right {
       transform: translateX(20%);
     }
 
@@ -90,11 +117,9 @@
     @media (max-width: 768px) {
       .sign-in-container, .sign-up-container { width: 100%; left: 0; }
       .overlay-container { display: none; }
-      .container.right-panel-active .sign-in-container { transform: none; opacity: 0; pointer-events: none; }
-      .container.right-panel-active .sign-up-container { transform: none; opacity: 1; pointer-events: all; }
+      .container-slider.right-panel-active .sign-in-container { transform: none; opacity: 0; pointer-events: none; }
+      .container-slider.right-panel-active .sign-up-container { transform: none; opacity: 1; pointer-events: all; }
       .sign-up-container { transform: none; }
-      
-      /* Mobile Toggle Buttons */
       .mobile-toggle { display: block; }
     }
     @media (min-width: 769px) {
@@ -111,10 +136,10 @@
   </div>
 
   <!-- Main Container -->
-  <div class="container relative w-full max-w-[850px] min-h-[600px] bg-white/5 backdrop-blur-xl border border-white/10 rounded-[32px] overflow-hidden shadow-2xl" id="mainContainer">
+  <div class="container-slider w-full max-w-[850px] min-h-[600px] bg-[#1e293b]/70 backdrop-blur-xl border border-white/10 rounded-[32px] shadow-2xl" id="mainContainer">
     
     <!-- ================= SIGN UP FORM ================= -->
-    <div class="absolute top-0 h-full form-container sign-up-container bg-transparent flex flex-col justify-center px-8 md:px-12">
+    <div class="form-container sign-up-container flex flex-col justify-center px-8 md:px-12">
       <form id="registerForm" class="flex flex-col items-center w-full">
         <h2 class="text-3xl font-bold text-white mb-6">Registration</h2>
         
@@ -157,7 +182,7 @@
     </div>
 
     <!-- ================= SIGN IN FORM ================= -->
-    <div class="absolute top-0 h-full form-container sign-in-container bg-transparent flex flex-col justify-center px-8 md:px-12">
+    <div class="form-container sign-in-container flex flex-col justify-center px-8 md:px-12">
       
       <!-- Email Login Form -->
       <form id="loginForm" class="flex flex-col items-center w-full">
@@ -227,13 +252,13 @@
       </div>
     </div>
 
-    <!-- ================= OVERLAY SLIDER (Image style) ================= -->
-    <div class="absolute top-0 h-full overlay-container hidden md:block">
-      <div class="absolute top-0 h-full overlay bg-gradient-to-tr from-[#9E1B32] to-[#4A154B] text-white">
+    <!-- ================= OVERLAY SLIDER (Fix Applied Here) ================= -->
+    <div class="overlay-container hidden md:block">
+      <div class="overlay">
         
         <!-- Left Panel (Visible when Registration active) -->
-        <div class="absolute top-0 flex flex-col items-center justify-center px-10 text-center h-full w-1/2 overlay-panel overlay-left">
-          <h2 class="text-4xl font-bold mb-4">Welcome Back!</h2>
+        <div class="overlay-panel overlay-left">
+          <h2 class="text-4xl font-bold mb-4 text-white drop-shadow-md">Welcome Back!</h2>
           <p class="text-slate-200 mb-8 font-medium">Already have an account?</p>
           <button class="bg-transparent border-2 border-white text-white font-bold py-3 px-12 rounded-xl transition-all hover:bg-white hover:text-[#9E1B32] shadow-lg" id="signIn">
             Login
@@ -241,8 +266,8 @@
         </div>
         
         <!-- Right Panel (Visible when Login active) -->
-        <div class="absolute top-0 flex flex-col items-center justify-center px-10 text-center h-full w-1/2 overlay-panel overlay-right">
-          <h2 class="text-4xl font-bold mb-4">Hello, Welcome!</h2>
+        <div class="overlay-panel overlay-right">
+          <h2 class="text-4xl font-bold mb-4 text-white drop-shadow-md">Hello, Welcome!</h2>
           <p class="text-slate-200 mb-8 font-medium">Don't have an account?</p>
           <button class="bg-transparent border-2 border-white text-white font-bold py-3 px-12 rounded-xl transition-all hover:bg-white hover:text-[#4A154B] shadow-lg" id="signUp">
             Register
@@ -257,6 +282,7 @@
     <a href="index.html" class="text-sm text-slate-400 hover:text-rose-400 transition-colors flex justify-center items-center gap-1"><i data-feather="arrow-left" class="w-4 h-4"></i> Back to Home</a>
   </div>
 
+  <!-- Firebase & Scripts -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { 
@@ -386,7 +412,6 @@
             .then(res => handleLoginSuccess(res.user, 'phoneMessage'))
             .catch(err => showMessage('phoneMessage', "Invalid OTP!"));
     });
-
   </script>
 </body>
 </html>

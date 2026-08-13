@@ -3,24 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Blog & Updates - Habib Tec.</title>
+  <title>News Feed - Habib Tec.</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-</head>
-<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col">
 
-  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
-  <div class="fixed inset-0 z-[-1] bg-[#0f172a] overflow-hidden">
-    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
-    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
+  <style>
+    /* Hide scrollbar for neatness */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a]">
+
+  <!-- ================= ANIMATED BACKGROUND ================= -->
+  <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/30 blur-[120px] animate-blob"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-blue-900/20 blur-[150px] animate-blob animation-delay-2000"></div>
   </div>
 
   <!-- ================= HEADER (Glass) ================= -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#0f172a]/80 backdrop-blur-xl border-b border-white/10 shadow-lg py-3">
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#0f172a]/90 backdrop-blur-xl border-b border-white/10 shadow-lg py-3">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
       
       <!-- Logo -->
@@ -28,30 +33,27 @@
         <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
           <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" alt="Habib Tec. Logo" class="w-full h-full object-cover">
         </div>
-        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">Tec.</span></span>
+        <span class="font-bold text-xl md:text-2xl tracking-tight text-white hidden sm:block">Habib<span class="text-slate-400 font-medium">Tec.</span></span>
       </a>
 
-      <!-- Desktop Nav -->
-      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
-        <a href="index.html" class="hover:text-rose-400 transition-colors">Home</a>
-        <a href="index.html#updates" class="hover:text-rose-400 transition-colors">About Us</a>
-        <a href="blog.html" class="text-rose-400 font-semibold border-b-2 border-rose-400 pb-1">Our Blog</a>
-        <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
-        
+      <!-- Navigation & Auth -->
+      <div class="flex items-center gap-6">
+        <nav class="hidden md:flex items-center gap-6 font-medium text-sm text-slate-200">
+          <a href="index.html" class="hover:text-rose-400 transition-colors"><i data-feather="home" class="w-5 h-5"></i></a>
+          <a href="blog.html" class="text-rose-400 transition-colors"><i data-feather="compass" class="w-5 h-5"></i></a>
+        </nav>
+
         <!-- Auth Profile Area -->
         <div id="authProfileArea" class="relative group">
-            <!-- Show when Logged Out (Notice the return=blog.html) -->
-            <a href="login.html?return=blog.html" id="loginNavBtn" class="hover:text-rose-400 transition-colors flex items-center gap-1 cursor-pointer font-bold">
-                Login <i data-feather="user" class="w-4 h-4"></i>
+            <a href="login.html?return=blog.html" id="loginNavBtn" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 cursor-pointer font-bold text-sm">
+                Login <i data-feather="log-in" class="w-4 h-4"></i>
             </a>
 
-            <!-- Show when Logged In (Avatar) -->
+            <!-- Avatar -->
             <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
                 <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-rose-400 shadow-lg">
-                <i data-feather="chevron-down" class="w-4 h-4 text-slate-300"></i>
-
-                <!-- Dropdown Menu -->
-                <div class="absolute top-full right-0 mt-3 w-48 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50">
+                
+                <div class="absolute top-full right-0 mt-3 w-48 bg-[#1e293b] border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50">
                     <label class="px-4 py-3 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 border-b border-white/5 transition-colors">
                         <i data-feather="camera" class="w-4 h-4 text-rose-400"></i> Change Picture
                         <input type="file" id="profilePicInput" accept="image/*" class="hidden">
@@ -62,44 +64,36 @@
                 </div>
             </div>
         </div>
-      </nav>
-
-      <div class="flex items-center gap-4">
-        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md">
-          <i data-feather="menu" class="w-6 h-6"></i>
-        </button>
       </div>
     </div>
   </header>
 
-  <main class="flex-grow pt-[100px] pb-20 px-4 md:px-6 relative z-10">
-    <div class="max-w-[800px] mx-auto">
+  <!-- ================= INSTAGRAM STYLE NEWS FEED ================= -->
+  <main class="flex-grow pt-[100px] pb-20 px-0 sm:px-4 relative z-10 flex justify-center">
+    
+    <!-- Feed Container -->
+    <div class="w-full max-w-[500px]">
       
-      <div class="text-center mb-12 animate-fade-in-up">
-        <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Knowledge Base</p>
-        <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Our Blog & Videos</h2>
-        <p class="text-slate-300">Latest updates, repair tips, and video tutorials directly from our experts.</p>
+      <!-- Admin Notice (Hidden by default) -->
+      <div id="adminNotice" class="hidden bg-rose-500/10 border border-rose-500/20 text-rose-400 p-3 rounded-xl mb-6 text-center text-sm font-bold flex items-center justify-center gap-2">
+          <i data-feather="shield" class="w-4 h-4"></i> Admin Mode: You can delete posts.
       </div>
 
-      <!-- Blog Posts Container -->
-      <div id="blog-container" class="space-y-10">
-        <p class="text-center text-slate-400 italic">Loading posts...</p>
+      <div id="blog-container" class="space-y-6">
+        <!-- Skeleton Loader -->
+        <div class="text-center py-10">
+            <i data-feather="loader" class="w-8 h-8 text-rose-400 animate-spin mx-auto mb-4"></i>
+            <p class="text-slate-400 text-sm">Loading feed...</p>
+        </div>
       </div>
 
     </div>
   </main>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 py-8 relative z-10 mt-auto">
-    <div class="max-w-[1280px] mx-auto px-4 md:px-6 text-center text-sm">
-      <p>&copy; 2026 Habib Tec. All Rights Reserved.</p>
-    </div>
-  </footer>
-
   <!-- Firebase & App Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -121,8 +115,14 @@
     feather.replace();
 
     let globalUserEmail = null;
+    let globalUserAvatar = 'https://www.svgrepo.com/show/5125/avatar.svg';
+    let isAdmin = false;
+    const ALLOWED_ADMIN_EMAIL = "tec.habiburrahman@gmail.com".toLowerCase();
 
-    // Monitor Auth State (Syncs automatically across pages)
+    // Store local state of likes to avoid full reloads when clicking like
+    window.postLikesState = {};
+
+    // Auth State Observer
     onAuthStateChanged(authInstance, (user) => {
         const loginBtn = document.getElementById('loginNavBtn');
         const profileMenu = document.getElementById('userProfileMenu');
@@ -130,17 +130,28 @@
         if (user) {
             loginBtn.classList.add('hidden');
             profileMenu.classList.remove('hidden');
-            document.getElementById('headerAvatar').src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
-            // Save global user email/phone for comments
+            
+            globalUserAvatar = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+            document.getElementById('headerAvatar').src = globalUserAvatar;
             globalUserEmail = user.email || user.phoneNumber;
+            
+            // Check if admin
+            if(user.email && user.email.toLowerCase() === ALLOWED_ADMIN_EMAIL) {
+                isAdmin = true;
+                document.getElementById('adminNotice').classList.remove('hidden');
+            }
         } else {
             loginBtn.classList.remove('hidden');
             profileMenu.classList.add('hidden');
             globalUserEmail = null;
+            isAdmin = false;
         }
+        
+        // Fetch posts after determining auth state so UI renders correctly
+        loadFullBlogPosts();
     });
 
-    // Handle Profile Picture Upload
+    // Profile Upload Logic
     const picInput = document.getElementById('profilePicInput');
     if (picInput) {
         picInput.addEventListener('change', async (e) => {
@@ -156,23 +167,23 @@
                 
                 await updateProfile(authInstance.currentUser, { photoURL: photoURL });
                 document.getElementById('headerAvatar').src = photoURL;
-                alert("Profile picture updated successfully!");
+                globalUserAvatar = photoURL;
+                alert("Profile picture updated!");
             } catch (error) {
-                alert("Upload failed. Make sure Firebase Storage is enabled. " + error.message);
-                document.getElementById('headerAvatar').src = authInstance.currentUser.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+                alert("Upload failed: " + error.message);
+                document.getElementById('headerAvatar').src = globalUserAvatar;
             }
         });
     }
 
-    // Handle Logout
+    // Logout
     window.logoutCurrentUser = function() {
         signOut(authInstance).then(() => {
-            sessionStorage.removeItem('isAdmin');
             window.location.reload();
         });
     };
 
-    // Fetch and Render Posts (Fixed for Videos)
+    // Load Posts
     async function loadFullBlogPosts() {
       const blogContainer = document.getElementById('blog-container');
       
@@ -181,7 +192,8 @@
         const querySnapshot = await getDocs(q);
         
         if (querySnapshot.empty) {
-          blogContainer.innerHTML = `<p class="text-center text-slate-400 italic">No posts available right now.</p>`;
+          blogContainer.innerHTML = `<div class="text-center text-slate-400 py-10"><i data-feather="camera-off" class="mx-auto w-10 h-10 mb-4 opacity-50"></i><p>No posts yet.</p></div>`;
+          feather.replace();
           return;
         }
 
@@ -191,68 +203,110 @@
           const post = documentSnapshot.data();
           const postId = documentSnapshot.id;
           
+          // Media Handling
           let mediaHTML = '';
-          
-          // Logic to check if it's a YouTube link, an uploaded Video, or an Image
           if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
              const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
-             mediaHTML = `<iframe class="w-full h-64 md:h-96 rounded-2xl mb-6 border border-white/10" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+             mediaHTML = `<iframe class="w-full aspect-video" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
           } else if (post.mediaType && post.mediaType.startsWith('video')) {
-             // Real uploaded Video from admin
              mediaHTML = `
-                <video class="w-full h-64 md:h-96 object-cover rounded-2xl mb-6 border border-white/10 shadow-lg" controls>
+                <video class="w-full max-h-[600px] object-cover bg-black" controls controlsList="nodownload">
                    <source src="${post.mediaLink}" type="${post.mediaType}">
-                   Your browser does not support the video tag.
                 </video>`;
           } else {
-             // Image
-             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full h-64 md:h-96 object-cover rounded-2xl mb-6 border border-white/10 shadow-lg" alt="Blog Media">`;
+             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full max-h-[600px] object-cover bg-[#0f172a]" alt="Post Media" loading="lazy">`;
           }
 
-          const likesCount = post.likes || 0;
-          const commentsArray = post.comments || [];
+          // Like Logic Setup
+          const likedByArray = post.likedBy || [];
+          const isLiked = globalUserEmail && likedByArray.includes(globalUserEmail);
+          
+          // Save state locally
+          window.postLikesState[postId] = { likedBy: [...likedByArray] };
+          
+          const heartFill = isLiked ? '#f43f5e' : 'none';
+          const heartColor = isLiked ? '#f43f5e' : 'currentColor';
+          const heartClass = isLiked ? 'text-rose-500' : 'text-white hover:text-slate-400';
 
+          // Comments Setup
+          const commentsArray = post.comments || [];
           let commentsHTML = commentsArray.map(c => `
-             <div class="bg-white/5 border border-white/10 p-3 rounded-lg mb-2">
-                <p class="text-xs text-rose-300 font-bold mb-1">${c.user}</p>
-                <p class="text-sm text-slate-300">${c.text}</p>
+             <div class="mb-1 text-sm leading-tight">
+                <span class="font-bold text-white mr-1">${c.user}</span>
+                <span class="text-slate-200">${c.text}</span>
              </div>
           `).join('');
 
+          // Delete Button (Admin Only)
+          const deleteBtnHTML = isAdmin ? `
+             <button onclick="deleteSinglePost('${postId}')" class="text-slate-500 hover:text-red-500 p-1 transition-colors" title="Delete Post">
+                 <i data-feather="trash-2" class="w-5 h-5"></i>
+             </button>` : `<i data-feather="more-horizontal" class="w-5 h-5 text-slate-400"></i>`;
+
           const postElement = document.createElement('div');
-          postElement.className = "bg-white/5 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] animate-fade-in-up";
+          postElement.className = "bg-[#1e293b]/80 sm:rounded-2xl border-y sm:border border-white/10 shadow-lg overflow-hidden animate-fade-in-up";
           
           postElement.innerHTML = `
-            ${mediaHTML}
-            <div class="flex justify-between items-center mb-4">
-               <span class="text-xs font-bold text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-full border border-rose-500/20">${post.category || 'Update'}</span>
-               <span class="text-sm text-slate-400 font-medium"><i class="far fa-calendar-alt mr-1"></i> ${post.date || 'Today'}</span>
-            </div>
-            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 leading-snug">${post.title}</h3>
-            <p class="text-base text-slate-300 mb-6 leading-relaxed whitespace-pre-line">${post.description}</p>
-            
-            <!-- Interaction Bar -->
-            <div class="flex items-center gap-6 border-t border-white/10 pt-4">
-                <button onclick="likePost('${postId}')" class="flex items-center gap-2 text-slate-300 hover:text-rose-400 transition-colors group">
-                   <i data-feather="heart" class="w-5 h-5 group-hover:fill-rose-400"></i>
-                   <span id="like-count-${postId}" class="font-semibold">${likesCount} Likes</span>
-                </button>
-                <button onclick="toggleComments('${postId}')" class="flex items-center gap-2 text-slate-300 hover:text-blue-400 transition-colors">
-                   <i data-feather="message-circle" class="w-5 h-5"></i>
-                   <span class="font-semibold">${commentsArray.length} Comments</span>
-                </button>
+            <!-- Header -->
+            <div class="flex items-center justify-between p-3 md:p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-rose-500/50 p-0.5">
+                        <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <div class="flex flex-col leading-tight">
+                        <span class="font-bold text-sm text-white">Habib Tec.</span>
+                        <span class="text-[11px] text-slate-400">${post.date} • ${post.category || 'Update'}</span>
+                    </div>
+                </div>
+                <div>${deleteBtnHTML}</div>
             </div>
 
-            <!-- Comment Section -->
-            <div id="comment-section-${postId}" class="hidden mt-6 border-t border-white/10 pt-6">
-                <div class="mb-4 max-h-60 overflow-y-auto pr-2 space-y-3" id="comment-list-${postId}">
-                   ${commentsHTML || '<p class="text-sm text-slate-500 italic">No comments yet. Be the first!</p>'}
-                </div>
+            <!-- Media Content (Edge to Edge) -->
+            <div class="w-full bg-black border-y border-white/5">
+                ${mediaHTML}
+            </div>
+            
+            <!-- Actions & Content -->
+            <div class="p-3 md:p-4 pt-3">
                 
-                <div class="flex gap-2">
-                   <input type="text" id="comment-input-${postId}" placeholder="Write a comment..." class="flex-grow bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-rose-400 transition-colors text-sm" onclick="checkAuthBeforeComment()">
-                   <button onclick="submitComment('${postId}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-4 py-2.5 rounded-xl transition-all shadow-lg text-sm font-semibold">Post</button>
+                <!-- Action Icons -->
+                <div class="flex items-center gap-4 mb-3">
+                    <button onclick="toggleLike('${postId}')" class="focus:outline-none transform active:scale-90 transition-transform">
+                        <svg id="heart-icon-${postId}" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="${heartFill}" stroke="${heartColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${heartClass} transition-colors duration-200">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </button>
+                    <button onclick="toggleComments('${postId}')" class="text-white hover:text-slate-400 focus:outline-none transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    </button>
+                    <button class="text-white hover:text-slate-400 focus:outline-none transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
                 </div>
+
+                <!-- Likes Count -->
+                <p class="font-bold text-sm text-white mb-2" id="like-count-${postId}">${likedByArray.length} likes</p>
+
+                <!-- Caption -->
+                <div class="text-sm text-slate-200 mb-2 leading-relaxed">
+                    <span class="font-bold text-white mr-1">Habib Tec.</span> ${post.description}
+                </div>
+
+                <!-- Comments Toggle -->
+                ${commentsArray.length > 0 ? `<button onclick="toggleComments('${postId}')" class="text-sm text-slate-400 mb-2 focus:outline-none">View all ${commentsArray.length} comments</button>` : ''}
+
+                <!-- Comments Display Box -->
+                <div id="comment-section-${postId}" class="hidden flex-col gap-1 mb-3 max-h-40 overflow-y-auto no-scrollbar">
+                    ${commentsHTML}
+                </div>
+
+                <!-- Add Comment Input -->
+                <div class="flex items-center gap-3 border-t border-white/10 pt-3 mt-2">
+                    <img src="${globalUserAvatar}" class="w-7 h-7 rounded-full object-cover">
+                    <input type="text" id="comment-input-${postId}" placeholder="Add a comment..." class="bg-transparent flex-grow text-sm text-white focus:outline-none placeholder-slate-500" onclick="checkAuthBeforeAction()">
+                    <button onclick="submitComment('${postId}')" class="text-rose-500 font-bold text-sm hover:text-white transition-colors focus:outline-none">Post</button>
+                </div>
+
             </div>
           `;
           blogContainer.appendChild(postElement);
@@ -263,50 +317,71 @@
       }
     }
 
-    // Like Function
-    window.likePost = async function(postId) {
-        const countSpan = document.getElementById(`like-count-${postId}`);
-        const currentLikes = parseInt(countSpan.innerText);
-        countSpan.innerText = `${currentLikes + 1} Likes`; 
+    // Auth Check Helper
+    window.checkAuthBeforeAction = function() {
+        if (!globalUserEmail) {
+            window.location.href = 'login.html?return=blog.html';
+            return false;
+        }
+        return true;
+    }
+
+    // Toggle Single Like (One User = One Like)
+    window.toggleLike = async function(postId) {
+        if (!checkAuthBeforeAction()) return;
+
+        const state = window.postLikesState[postId];
+        const hasLiked = state.likedBy.includes(globalUserEmail);
+        const postRef = doc(db, "blogPosts", postId);
+        
+        const heartIcon = document.getElementById(`heart-icon-${postId}`);
+        const likeCount = document.getElementById(`like-count-${postId}`);
 
         try {
-            const postRef = doc(db, "blogPosts", postId);
-            await updateDoc(postRef, {
-                likes: increment(1)
-            });
+            if (hasLiked) {
+                // Remove Like
+                await updateDoc(postRef, { likedBy: arrayRemove(globalUserEmail) });
+                state.likedBy = state.likedBy.filter(e => e !== globalUserEmail);
+                
+                // Update UI visually
+                heartIcon.setAttribute('fill', 'none');
+                heartIcon.setAttribute('color', 'currentColor');
+                heartIcon.classList.remove('text-rose-500');
+                heartIcon.classList.add('text-white');
+            } else {
+                // Add Like
+                await updateDoc(postRef, { likedBy: arrayUnion(globalUserEmail) });
+                state.likedBy.push(globalUserEmail);
+                
+                // Update UI visually
+                heartIcon.setAttribute('fill', '#f43f5e'); 
+                heartIcon.setAttribute('color', '#f43f5e');
+                heartIcon.classList.remove('text-white');
+                heartIcon.classList.add('text-rose-500');
+            }
+            likeCount.innerText = `${state.likedBy.length} likes`;
         } catch (error) {
-            console.error("Error liking post: ", error);
+            console.error("Error updating like:", error);
         }
     }
 
-    // Toggle Comment Section
+    // Toggle Comments visibility
     window.toggleComments = function(postId) {
         const section = document.getElementById(`comment-section-${postId}`);
         section.classList.toggle('hidden');
+        section.classList.toggle('flex');
     }
 
-    // Check Auth on Input Click
-    window.checkAuthBeforeComment = function() {
-        if (!globalUserEmail) {
-            window.location.href = 'login.html?return=blog.html';
-        }
-    }
-
-    // Submit Comment Function
+    // Submit Comment
     window.submitComment = async function(postId) {
-        if (!globalUserEmail) {
-            window.location.href = 'login.html?return=blog.html';
-            return;
-        }
+        if (!checkAuthBeforeAction()) return;
 
         const inputField = document.getElementById(`comment-input-${postId}`);
         const text = inputField.value.trim();
         if (!text) return;
 
         inputField.value = ''; 
-
-        // Mask email/phone for display
-        let displayName = globalUserEmail.includes('@') ? globalUserEmail.split('@')[0] : "User " + globalUserEmail.substring(globalUserEmail.length - 4);
+        let displayName = globalUserEmail.includes('@') ? globalUserEmail.split('@')[0] : "User_" + globalUserEmail.substring(globalUserEmail.length - 4);
 
         const newComment = {
             user: displayName, 
@@ -314,14 +389,18 @@
             date: new Date().toLocaleDateString()
         };
 
-        const list = document.getElementById(`comment-list-${postId}`);
+        const list = document.getElementById(`comment-section-${postId}`);
+        list.classList.remove('hidden');
+        list.classList.add('flex');
+        
         if(list.innerText.includes('No comments yet')) list.innerHTML = '';
         list.innerHTML += `
-             <div class="bg-white/5 border border-white/10 p-3 rounded-lg mb-2">
-                <p class="text-xs text-rose-300 font-bold mb-1">${newComment.user}</p>
-                <p class="text-sm text-slate-300">${newComment.text}</p>
+             <div class="mb-1 text-sm leading-tight">
+                <span class="font-bold text-white mr-1">${newComment.user}</span>
+                <span class="text-slate-200">${newComment.text}</span>
              </div>
         `;
+        list.scrollTop = list.scrollHeight; // Auto scroll to bottom
 
         try {
             const postRef = doc(db, "blogPosts", postId);
@@ -333,7 +412,21 @@
         }
     }
 
-    loadFullBlogPosts();
+    // Delete Single Post (Admin Only)
+    window.deleteSinglePost = async function(postId) {
+        if (!isAdmin) return;
+        
+        if (confirm("Are you SURE you want to delete this specific post? This cannot be undone.")) {
+            try {
+                await deleteDoc(doc(db, "blogPosts", postId));
+                alert("Post deleted successfully.");
+                loadFullBlogPosts(); // Reload feed
+            } catch (error) {
+                alert("Failed to delete post: " + error.message);
+            }
+        }
+    }
+
   </script>
 </body>
 </html>

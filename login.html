@@ -3,125 +3,268 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login & Register - Repair Guy</title>
+  <title>Login & Register - Habib Tec.</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* Sliding Animation CSS */
+    .form-container {
+      transition: all 0.6s ease-in-out;
+    }
+    
+    .sign-in-container {
+      left: 0;
+      width: 50%;
+      z-index: 2;
+    }
+    
+    .container.right-panel-active .sign-in-container {
+      transform: translateX(100%);
+    }
+    
+    .sign-up-container {
+      left: 0;
+      width: 50%;
+      opacity: 0;
+      z-index: 1;
+    }
+    
+    .container.right-panel-active .sign-up-container {
+      transform: translateX(100%);
+      opacity: 1;
+      z-index: 5;
+      animation: show 0.6s;
+    }
+    
+    @keyframes show {
+      0%, 49.99% { opacity: 0; z-index: 1; }
+      50%, 100% { opacity: 1; z-index: 5; }
+    }
+    
+    .overlay-container {
+      left: 50%;
+      width: 50%;
+      transition: transform 0.6s ease-in-out;
+      z-index: 100;
+    }
+    
+    .container.right-panel-active .overlay-container {
+      transform: translateX(-100%);
+    }
+    
+    .overlay {
+      left: -100%;
+      width: 200%;
+      transition: transform 0.6s ease-in-out;
+    }
+    
+    .container.right-panel-active .overlay {
+      transform: translateX(50%);
+    }
+    
+    .overlay-panel {
+      width: 50%;
+      transition: transform 0.6s ease-in-out;
+    }
+    
+    .overlay-left {
+      transform: translateX(-20%);
+    }
+    
+    .container.right-panel-active .overlay-left {
+      transform: translateX(0);
+    }
+    
+    .overlay-right {
+      right: 0;
+      transform: translateX(0);
+    }
+    
+    .container.right-panel-active .overlay-right {
+      transform: translateX(20%);
+    }
+
+    /* Mobile Fallback */
+    @media (max-width: 768px) {
+      .sign-in-container, .sign-up-container { width: 100%; left: 0; }
+      .overlay-container { display: none; }
+      .container.right-panel-active .sign-in-container { transform: none; opacity: 0; pointer-events: none; }
+      .container.right-panel-active .sign-up-container { transform: none; opacity: 1; pointer-events: all; }
+      .sign-up-container { transform: none; }
+      
+      /* Mobile Toggle Buttons */
+      .mobile-toggle { display: block; }
+    }
+    @media (min-width: 769px) {
+      .mobile-toggle { display: none; }
+    }
+  </style>
 </head>
 <body class="min-h-screen text-slate-200 bg-[#0f172a] relative flex flex-col items-center justify-center py-10 px-4">
   
+  <!-- Animated Background -->
   <div class="fixed inset-0 z-[-1] overflow-hidden">
     <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-900/20 blur-[120px]"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#9E1B32]/20 blur-[150px]"></div>
   </div>
 
-  <div class="max-w-[420px] w-full bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-2xl transition-all duration-500">
+  <!-- Main Container -->
+  <div class="container relative w-full max-w-[850px] min-h-[600px] bg-white/5 backdrop-blur-xl border border-white/10 rounded-[32px] overflow-hidden shadow-2xl" id="mainContainer">
     
-    <!-- ================= MAIN TAB (USER vs ADMIN) ================= -->
-    <div class="flex bg-white/5 border border-white/10 rounded-xl p-1 mb-8">
-        <button id="tabUserLogin" onclick="switchMainTab('user')" class="flex-1 py-2 text-sm font-bold rounded-lg bg-rose-600 text-white transition-all shadow-md">User Portal</button>
-        <button id="tabAdminLogin" onclick="switchMainTab('admin')" class="flex-1 py-2 text-sm font-bold rounded-lg text-slate-400 hover:text-white transition-all">Admin Portal</button>
-    </div>
+    <!-- ================= SIGN UP FORM ================= -->
+    <div class="absolute top-0 h-full form-container sign-up-container bg-transparent flex flex-col justify-center px-8 md:px-12">
+      <form id="registerForm" class="flex flex-col items-center w-full">
+        <h2 class="text-3xl font-bold text-white mb-6">Registration</h2>
+        
+        <p id="regMessage" class="hidden text-xs text-center font-medium mb-4 p-2 rounded-lg border w-full"></p>
 
-    <!-- Error/Success Message -->
-    <p id="authMessage" class="hidden text-sm text-center font-medium mb-4 p-3 rounded-lg border"></p>
-
-    <!-- ================= 1. USER PORTAL ================= -->
-    <div id="userPortalSection">
-        <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-white">Join the Community</h2>
-            <p class="text-slate-400 text-sm mt-1">Login to like, comment & manage profile.</p>
+        <div class="relative w-full mb-4">
+          <input type="text" id="regName" placeholder="Username" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <i data-feather="user" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
         </div>
-
-        <button onclick="loginWithGoogle('user')" class="flex items-center justify-center gap-3 w-full bg-white text-slate-800 font-bold py-3 rounded-xl transition-all shadow-lg hover:-translate-y-0.5 mb-6">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
-            Continue with Google
+        
+        <div class="relative w-full mb-4">
+          <input type="email" id="regEmail" placeholder="Email" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <i data-feather="mail" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
+        </div>
+        
+        <div class="relative w-full mb-6">
+          <input type="password" id="regPassword" placeholder="Password" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <i data-feather="lock" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
+        </div>
+        
+        <button type="submit" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-3.5 rounded-xl shadow-[0_0_15px_rgba(158,27,50,0.4)] transition-all hover:-translate-y-1">
+          Register
         </button>
 
-        <div class="flex items-center gap-4 mb-6">
-            <div class="h-px bg-white/10 flex-grow"></div>
-            <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">OR</span>
-            <div class="h-px bg-white/10 flex-grow"></div>
+        <p class="text-slate-400 text-xs mt-6 mb-3">or register with social platforms</p>
+        <div class="flex gap-4">
+          <button type="button" onclick="loginWithGoogle()" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors shadow-lg">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+          </button>
+          <button type="button" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors opacity-50 cursor-not-allowed">
+            <i data-feather="facebook" class="w-4 h-4 text-white"></i>
+          </button>
+          <button type="button" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors opacity-50 cursor-not-allowed">
+            <i data-feather="github" class="w-4 h-4 text-white"></i>
+          </button>
         </div>
 
-        <div class="flex border-b border-white/10 mb-6">
-            <button id="subTabEmail" onclick="switchUserTab('email')" class="flex-1 pb-2 text-sm font-bold border-b-2 border-rose-500 text-white transition-all">Email & Pass</button>
-            <button id="subTabPhone" onclick="switchUserTab('phone')" class="flex-1 pb-2 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white transition-all">Phone OTP</button>
-        </div>
-
-        <!-- User Email Form -->
-        <form id="userEmailForm" class="space-y-4">
-            <input type="email" id="userEmail" required placeholder="Email Address" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
-            <input type="password" id="userPassword" required placeholder="Password (Min 6 chars)" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white focus:border-rose-400 outline-none">
-            
-            <div class="flex gap-3 pt-2">
-                <button type="submit" id="userLoginBtn" class="flex-1 bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-3.5 rounded-xl shadow-[0_0_15px_rgba(158,27,50,0.3)] transition-all">Login</button>
-                <button type="button" id="userRegisterBtn" class="flex-1 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-3.5 rounded-xl transition-all">Create Account</button>
-            </div>
-        </form>
-
-        <!-- User Phone Form -->
-        <div id="userPhoneForm" class="space-y-4 hidden">
-            <div id="phoneInputSection">
-                <label class="block text-xs font-medium text-slate-400 mb-1">Select Country & Enter Number</label>
-                <div class="flex gap-2 mb-3">
-                    <select id="countryCode" class="bg-[#0f172a]/50 border border-white/10 rounded-xl px-3 py-3 text-white focus:border-rose-400 outline-none w-1/3">
-                        <option value="+880">🇧🇩 +880</option>
-                        <option value="+91">🇮🇳 +91</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+44">🇬🇧 +44</option>
-                        <option value="+971">🇦🇪 +971</option>
-                    </select>
-                    <input type="tel" id="phoneNumber" placeholder="18XXXXXXXX" class="w-2/3 bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-400 outline-none">
-                </div>
-                <div id="recaptcha-container" class="mb-3 flex justify-center"></div>
-                <button id="sendOtpBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg">Send OTP Code</button>
-            </div>
-
-            <div id="otpInputSection" class="hidden">
-                <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white text-center tracking-widest text-lg font-bold outline-none mb-4">
-                <button id="verifyOtpBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg">Verify & Login</button>
-            </div>
-        </div>
+        <button type="button" class="mobile-toggle mt-6 text-sm text-rose-400 font-semibold" id="mobileSignInBtn">Already have an account? Login</button>
+      </form>
     </div>
 
-    <!-- ================= 2. ADMIN PORTAL ================= -->
-    <div id="adminPortalSection" class="hidden">
-        <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-white">Admin Portal</h2>
-            <p class="text-slate-400 text-sm mt-1">Strictly Authorized Access Only.</p>
+    <!-- ================= SIGN IN FORM ================= -->
+    <div class="absolute top-0 h-full form-container sign-in-container bg-transparent flex flex-col justify-center px-8 md:px-12">
+      
+      <!-- Email Login Form -->
+      <form id="loginForm" class="flex flex-col items-center w-full">
+        <h2 class="text-3xl font-bold text-white mb-6">Login</h2>
+        
+        <p id="loginMessage" class="hidden text-xs text-center font-medium mb-4 p-2 rounded-lg border w-full"></p>
+
+        <div class="relative w-full mb-4">
+          <input type="email" id="loginEmail" placeholder="Email Address" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <i data-feather="user" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
+        </div>
+        
+        <div class="relative w-full mb-2">
+          <input type="password" id="loginPassword" placeholder="Password" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <i data-feather="lock" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
         </div>
 
-        <button onclick="loginWithGoogle('admin')" class="flex items-center justify-center gap-3 w-full bg-white text-slate-800 font-bold py-3 rounded-xl transition-all shadow-lg hover:-translate-y-0.5 mb-6">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
-            Admin Google Login
+        <div class="w-full flex justify-between items-center mb-6 px-1">
+            <button type="button" onclick="togglePhoneAuth()" class="text-xs text-slate-400 hover:text-rose-400 transition-colors">Use Phone Number?</button>
+            <a href="#" class="text-xs text-slate-400 hover:text-rose-400 transition-colors">Forgot Password?</a>
+        </div>
+        
+        <button type="submit" class="w-full bg-[#4A154B]/90 hover:bg-[#4A154B] text-white font-bold py-3.5 rounded-xl shadow-[0_0_15px_rgba(74,21,75,0.4)] transition-all hover:-translate-y-1">
+          Login
         </button>
 
-        <div class="flex items-center gap-4 mb-6">
-            <div class="h-px bg-white/10 flex-grow"></div>
-            <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">OR</span>
-            <div class="h-px bg-white/10 flex-grow"></div>
+        <p class="text-slate-400 text-xs mt-6 mb-3">or login with social platforms</p>
+        <div class="flex gap-4">
+          <button type="button" onclick="loginWithGoogle()" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors shadow-lg">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+          </button>
+          <button type="button" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors opacity-50 cursor-not-allowed">
+            <i data-feather="facebook" class="w-4 h-4 text-white"></i>
+          </button>
+          <button type="button" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors opacity-50 cursor-not-allowed">
+            <i data-feather="github" class="w-4 h-4 text-white"></i>
+          </button>
         </div>
 
-        <form id="adminEmailForm" class="space-y-4">
-            <input type="email" id="adminEmail" required placeholder="Admin Email" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white outline-none">
-            <input type="password" id="adminPassword" required placeholder="Admin Password" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3 text-white outline-none">
-            <button type="submit" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold py-3.5 rounded-xl shadow-lg transition-all mt-2">Login to Dashboard</button>
-        </form>
+        <button type="button" class="mobile-toggle mt-6 text-sm text-rose-400 font-semibold" id="mobileSignUpBtn">Don't have an account? Register</button>
+      </form>
+
+      <!-- Phone Auth Form (Hidden by default) -->
+      <div id="phoneAuthForm" class="flex flex-col items-center w-full hidden">
+        <h2 class="text-3xl font-bold text-white mb-6">Phone Login</h2>
+        <p id="phoneMessage" class="hidden text-xs text-center font-medium mb-4 p-2 rounded-lg border w-full"></p>
+
+        <div id="phoneInputSection" class="w-full">
+            <div class="flex gap-2 mb-4">
+                <select id="countryCode" class="bg-[#0f172a]/60 border border-white/10 rounded-xl px-3 py-3 text-white focus:border-rose-400 outline-none w-1/3">
+                    <option value="+880">🇧🇩 +880</option>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                </select>
+                <input type="tel" id="phoneNumber" placeholder="18XXXXXXXX" class="w-2/3 bg-[#0f172a]/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-400 outline-none">
+            </div>
+            <div id="recaptcha-container" class="mb-3 flex justify-center"></div>
+            <button id="sendOtpBtn" class="w-full bg-[#4A154B]/90 hover:bg-[#4A154B] text-white font-bold py-3.5 rounded-xl transition-all shadow-lg">Send OTP</button>
+        </div>
+
+        <div id="otpInputSection" class="w-full hidden">
+            <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3 text-white text-center tracking-widest text-lg font-bold outline-none mb-4">
+            <button id="verifyOtpBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg">Verify & Login</button>
+        </div>
+
+        <button type="button" onclick="togglePhoneAuth()" class="mt-6 text-sm text-slate-400 hover:text-rose-400 transition-colors">Back to Email Login</button>
+      </div>
     </div>
 
-    <div class="text-center mt-8">
-      <a href="index.html" class="text-sm text-slate-400 hover:text-rose-400 transition-colors flex justify-center items-center gap-1"><i data-feather="arrow-left" class="w-4 h-4"></i> Back to Website</a>
+    <!-- ================= OVERLAY SLIDER (Image style) ================= -->
+    <div class="absolute top-0 h-full overlay-container hidden md:block">
+      <div class="absolute top-0 h-full overlay bg-gradient-to-tr from-[#9E1B32] to-[#4A154B] text-white">
+        
+        <!-- Left Panel (Visible when Registration active) -->
+        <div class="absolute top-0 flex flex-col items-center justify-center px-10 text-center h-full w-1/2 overlay-panel overlay-left">
+          <h2 class="text-4xl font-bold mb-4">Welcome Back!</h2>
+          <p class="text-slate-200 mb-8 font-medium">Already have an account?</p>
+          <button class="bg-transparent border-2 border-white text-white font-bold py-3 px-12 rounded-xl transition-all hover:bg-white hover:text-[#9E1B32] shadow-lg" id="signIn">
+            Login
+          </button>
+        </div>
+        
+        <!-- Right Panel (Visible when Login active) -->
+        <div class="absolute top-0 flex flex-col items-center justify-center px-10 text-center h-full w-1/2 overlay-panel overlay-right">
+          <h2 class="text-4xl font-bold mb-4">Hello, Welcome!</h2>
+          <p class="text-slate-200 mb-8 font-medium">Don't have an account?</p>
+          <button class="bg-transparent border-2 border-white text-white font-bold py-3 px-12 rounded-xl transition-all hover:bg-white hover:text-[#4A154B] shadow-lg" id="signUp">
+            Register
+          </button>
+        </div>
+        
+      </div>
     </div>
+  </div>
+
+  <div class="text-center mt-8">
+    <a href="index.html" class="text-sm text-slate-400 hover:text-rose-400 transition-colors flex justify-center items-center gap-1"><i data-feather="arrow-left" class="w-4 h-4"></i> Back to Home</a>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { 
         getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, 
-        createUserWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber, signOut
+        createUserWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber, updateProfile
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
       authDomain: "habib-yt.firebaseapp.com",
@@ -137,110 +280,102 @@
     const googleProvider = new GoogleAuthProvider();
     feather.replace();
 
+    // ================= SLIDING ANIMATION LOGIC =================
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('mainContainer');
+    const mobileSignUpBtn = document.getElementById('mobileSignUpBtn');
+    const mobileSignInBtn = document.getElementById('mobileSignInBtn');
+
+    signUpButton.addEventListener('click', () => container.classList.add("right-panel-active"));
+    signInButton.addEventListener('click', () => container.classList.remove("right-panel-active"));
+    mobileSignUpBtn.addEventListener('click', () => container.classList.add("right-panel-active"));
+    mobileSignInBtn.addEventListener('click', () => container.classList.remove("right-panel-active"));
+
+    // ================= FIREBASE AUTH LOGIC =================
     const ALLOWED_ADMIN = "tec.habiburrahman@gmail.com".toLowerCase();
-    
-    // Find where to redirect after login (default is index.html)
     const urlParams = new URLSearchParams(window.location.search);
     const returnUrl = urlParams.get('return') || 'index.html';
 
-    // UI Helpers
-    const authMessage = document.getElementById('authMessage');
-    function showMessage(msg, type = 'error') {
-        authMessage.innerText = msg;
-        authMessage.className = `text-sm text-center font-medium mb-4 p-3 rounded-lg border ${type === 'error' ? 'text-red-400 bg-red-500/10 border-red-500/20' : 'text-green-400 bg-green-500/10 border-green-500/20'}`;
+    function showMessage(id, msg, type = 'error') {
+        const msgEl = document.getElementById(id);
+        msgEl.innerText = msg;
+        msgEl.className = `text-xs text-center font-medium mb-4 p-2 rounded-lg border w-full ${type === 'error' ? 'text-red-400 bg-red-500/10 border-red-500/20' : 'text-green-400 bg-green-500/10 border-green-500/20'}`;
     }
 
-    // Success Logic
-    function handleLoginSuccess(user, role) {
-        if (role === 'admin') {
-            if (user.email && user.email.toLowerCase() === ALLOWED_ADMIN) {
-                showMessage("Admin verified! Redirecting...", "success");
-                sessionStorage.setItem('isAdmin', 'true');
-                setTimeout(() => window.location.href = 'admin.html', 1000);
-            } else {
-                signOut(auth);
-                showMessage("Access Denied! Only Admin can login here.", "error");
-            }
+    function handleLoginSuccess(user, msgElementId) {
+        if (user.email && user.email.toLowerCase() === ALLOWED_ADMIN) {
+            showMessage(msgElementId, "Admin verified! Redirecting...", "success");
+            sessionStorage.setItem('isAdmin', 'true');
+            setTimeout(() => window.location.href = 'admin.html', 1000);
         } else {
-            // Check if user accidentally logged in as admin through user portal
-            if(user.email && user.email.toLowerCase() === ALLOWED_ADMIN) {
-                sessionStorage.setItem('isAdmin', 'true');
-            }
-            showMessage("Login successful! Redirecting...", "success");
+            showMessage(msgElementId, "Login successful! Redirecting...", "success");
             setTimeout(() => window.location.href = returnUrl, 1000);
         }
     }
 
-    // Google Login (Shared)
-    window.loginWithGoogle = function(role) {
+    // Google Auth
+    window.loginWithGoogle = function() {
         signInWithPopup(auth, googleProvider).then(result => {
-            handleLoginSuccess(result.user, role);
-        }).catch(err => showMessage(err.message));
+            handleLoginSuccess(result.user, container.classList.contains("right-panel-active") ? 'regMessage' : 'loginMessage');
+        }).catch(err => alert("Google Login Error: " + err.message));
     }
 
-    // Tab Switching
-    window.switchMainTab = function(tab) {
-        document.getElementById('userPortalSection').style.display = tab === 'user' ? 'block' : 'none';
-        document.getElementById('adminPortalSection').style.display = tab === 'admin' ? 'block' : 'none';
-        
-        document.getElementById('tabUserLogin').className = tab === 'user' ? 'flex-1 py-2 text-sm font-bold rounded-lg bg-rose-600 text-white transition-all shadow-md' : 'flex-1 py-2 text-sm font-bold rounded-lg text-slate-400 hover:text-white transition-all';
-        document.getElementById('tabAdminLogin').className = tab === 'admin' ? 'flex-1 py-2 text-sm font-bold rounded-lg bg-rose-600 text-white transition-all shadow-md' : 'flex-1 py-2 text-sm font-bold rounded-lg text-slate-400 hover:text-white transition-all';
-        authMessage.classList.add('hidden');
-    }
-
-    window.switchUserTab = function(tab) {
-        document.getElementById('userEmailForm').style.display = tab === 'email' ? 'block' : 'none';
-        document.getElementById('userPhoneForm').style.display = tab === 'phone' ? 'block' : 'none';
-        
-        document.getElementById('subTabEmail').className = tab === 'email' ? 'flex-1 pb-2 text-sm font-bold border-b-2 border-rose-500 text-white transition-all' : 'flex-1 pb-2 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white transition-all';
-        document.getElementById('subTabPhone').className = tab === 'phone' ? 'flex-1 pb-2 text-sm font-bold border-b-2 border-rose-500 text-white transition-all' : 'flex-1 pb-2 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white transition-all';
-        
-        if(tab === 'phone' && !window.recaptchaVerifier) {
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {'size': 'normal'});
-            window.recaptchaVerifier.render();
-        }
-        authMessage.classList.add('hidden');
-    }
-
-    // Admin Form Submit
-    document.getElementById('adminEmailForm').addEventListener('submit', (e) => {
+    // Email/Pass Login
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth, document.getElementById('adminEmail').value, document.getElementById('adminPassword').value)
-            .then(res => handleLoginSuccess(res.user, 'admin'))
-            .catch(err => showMessage("Admin Login Failed: " + err.message));
+        signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value)
+            .then(res => handleLoginSuccess(res.user, 'loginMessage'))
+            .catch(err => showMessage('loginMessage', "Login Failed: " + err.message));
     });
 
-    // User Email Form Submit
-    document.getElementById('userEmailForm').addEventListener('submit', (e) => {
+    // Registration
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth, document.getElementById('userEmail').value, document.getElementById('userPassword').value)
-            .then(res => handleLoginSuccess(res.user, 'user'))
-            .catch(err => showMessage("Login Failed: " + err.message));
-    });
-
-    document.getElementById('userRegisterBtn').addEventListener('click', () => {
-        const email = document.getElementById('userEmail').value;
-        const pass = document.getElementById('userPassword').value;
-        if(!email || pass.length < 6) return showMessage("Provide email and min 6 char password.");
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const pass = document.getElementById('regPassword').value;
         
         createUserWithEmailAndPassword(auth, email, pass)
-            .then(res => handleLoginSuccess(res.user, 'user'))
-            .catch(err => showMessage("Sign Up Failed: " + err.message));
+            .then(res => {
+                updateProfile(res.user, { displayName: name }).then(() => {
+                    handleLoginSuccess(res.user, 'regMessage');
+                });
+            })
+            .catch(err => showMessage('regMessage', "Sign Up Failed: " + err.message));
     });
 
-    // Phone Auth
+    // Toggle Phone Auth UI
+    window.togglePhoneAuth = function() {
+        const loginForm = document.getElementById('loginForm');
+        const phoneForm = document.getElementById('phoneAuthForm');
+        if (loginForm.classList.contains('hidden')) {
+            loginForm.classList.remove('hidden');
+            phoneForm.classList.add('hidden');
+        } else {
+            loginForm.classList.add('hidden');
+            phoneForm.classList.remove('hidden');
+            
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {'size': 'normal'});
+                window.recaptchaVerifier.render();
+            }
+        }
+    }
+
+    // Phone Auth Logic
     document.getElementById('sendOtpBtn').addEventListener('click', () => {
         const fullNumber = document.getElementById('countryCode').value + document.getElementById('phoneNumber').value;
-        if (fullNumber.length < 10) return showMessage("Invalid phone number.");
+        if (fullNumber.length < 10) return showMessage('phoneMessage', "Invalid phone number.");
 
         signInWithPhoneNumber(auth, fullNumber, window.recaptchaVerifier)
             .then((conf) => {
                 window.confirmationResult = conf;
                 document.getElementById('phoneInputSection').classList.add('hidden');
                 document.getElementById('otpInputSection').classList.remove('hidden');
-                showMessage("OTP Sent!", "success");
+                showMessage('phoneMessage', "OTP Sent!", "success");
             }).catch(err => {
-                showMessage("SMS Failed: " + err.message);
+                showMessage('phoneMessage', "SMS Failed: " + err.message);
                 if (window.recaptchaVerifier) window.recaptchaVerifier.render();
             });
     });
@@ -248,9 +383,10 @@
     document.getElementById('verifyOtpBtn').addEventListener('click', () => {
         const code = document.getElementById('otpCode').value;
         window.confirmationResult.confirm(code)
-            .then(res => handleLoginSuccess(res.user, 'user'))
-            .catch(err => showMessage("Invalid OTP!"));
+            .then(res => handleLoginSuccess(res.user, 'phoneMessage'))
+            .catch(err => showMessage('phoneMessage', "Invalid OTP!"));
     });
+
   </script>
 </body>
 </html>

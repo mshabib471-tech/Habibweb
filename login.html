@@ -12,7 +12,7 @@
     /* ================= FIXED SLIDING ANIMATION CSS ================= */
     .container-slider {
       position: relative;
-      overflow: hidden; /* This prevents the issue shown in your screenshot */
+      overflow: hidden; 
     }
     
     .form-container {
@@ -26,10 +26,15 @@
       left: 0;
       width: 50%;
       z-index: 2;
+      opacity: 1;
+      pointer-events: auto; /* Active state */
     }
     
+    /* FIX: Hide Sign In form when sliding to Register */
     .container-slider.right-panel-active .sign-in-container {
       transform: translateX(100%);
+      opacity: 0; 
+      pointer-events: none; 
     }
     
     .sign-up-container {
@@ -37,13 +42,16 @@
       width: 50%;
       opacity: 0;
       z-index: 1;
+      pointer-events: none; /* Inactive state */
     }
     
+    /* FIX: Show Register form correctly */
     .container-slider.right-panel-active .sign-up-container {
       transform: translateX(100%);
       opacity: 1;
       z-index: 5;
       animation: show 0.6s;
+      pointer-events: auto;
     }
     
     @keyframes show {
@@ -51,14 +59,13 @@
       50%, 100% { opacity: 1; z-index: 5; }
     }
     
-    /* OVERLAY SECTION FIX */
     .overlay-container {
       position: absolute;
       top: 0;
       left: 50%;
       width: 50%;
       height: 100%;
-      overflow: hidden; /* This keeps the gradient in its half */
+      overflow: hidden; 
       transition: transform 0.6s ease-in-out;
       z-index: 100;
     }
@@ -73,7 +80,7 @@
       left: -100%;
       width: 200%;
       height: 100%;
-      background: linear-gradient(135deg, #9E1B32, #4A154B); /* Exact previous colors */
+      background: linear-gradient(135deg, #9E1B32, #4A154B); 
       color: #FFFFFF;
       transition: transform 0.6s ease-in-out;
     }
@@ -146,17 +153,17 @@
         <p id="regMessage" class="hidden text-xs text-center font-medium mb-4 p-2 rounded-lg border w-full"></p>
 
         <div class="relative w-full mb-4">
-          <input type="text" id="regName" placeholder="Username" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <input type="text" id="regName" placeholder="Username" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner transition-colors">
           <i data-feather="user" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
         </div>
         
         <div class="relative w-full mb-4">
-          <input type="email" id="regEmail" placeholder="Email" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <input type="email" id="regEmail" placeholder="Email" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner transition-colors">
           <i data-feather="mail" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
         </div>
         
         <div class="relative w-full mb-6">
-          <input type="password" id="regPassword" placeholder="Password" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <input type="password" id="regPassword" placeholder="Password" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner transition-colors">
           <i data-feather="lock" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
         </div>
         
@@ -166,7 +173,7 @@
 
         <p class="text-slate-400 text-xs mt-6 mb-3">or register with social platforms</p>
         <div class="flex gap-4">
-          <button type="button" onclick="loginWithGoogle()" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors shadow-lg">
+          <button type="button" onclick="loginWithGoogle()" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors shadow-lg hover:-translate-y-0.5">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
           </button>
           <button type="button" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors opacity-50 cursor-not-allowed">
@@ -191,12 +198,12 @@
         <p id="loginMessage" class="hidden text-xs text-center font-medium mb-4 p-2 rounded-lg border w-full"></p>
 
         <div class="relative w-full mb-4">
-          <input type="email" id="loginEmail" placeholder="Email Address" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <input type="email" id="loginEmail" placeholder="Email Address" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner transition-colors">
           <i data-feather="user" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
         </div>
         
         <div class="relative w-full mb-2">
-          <input type="password" id="loginPassword" placeholder="Password" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner">
+          <input type="password" id="loginPassword" placeholder="Password" required class="w-full bg-[#0f172a]/60 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:border-rose-400 outline-none pr-10 shadow-inner transition-colors">
           <i data-feather="lock" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
         </div>
 
@@ -211,7 +218,7 @@
 
         <p class="text-slate-400 text-xs mt-6 mb-3">or login with social platforms</p>
         <div class="flex gap-4">
-          <button type="button" onclick="loginWithGoogle()" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors shadow-lg">
+          <button type="button" onclick="loginWithGoogle()" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors shadow-lg hover:-translate-y-0.5">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
           </button>
           <button type="button" class="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors opacity-50 cursor-not-allowed">
@@ -252,7 +259,7 @@
       </div>
     </div>
 
-    <!-- ================= OVERLAY SLIDER (Fix Applied Here) ================= -->
+    <!-- ================= OVERLAY SLIDER ================= -->
     <div class="overlay-container hidden md:block">
       <div class="overlay">
         
@@ -327,6 +334,7 @@
         const msgEl = document.getElementById(id);
         msgEl.innerText = msg;
         msgEl.className = `text-xs text-center font-medium mb-4 p-2 rounded-lg border w-full ${type === 'error' ? 'text-red-400 bg-red-500/10 border-red-500/20' : 'text-green-400 bg-green-500/10 border-green-500/20'}`;
+        msgEl.classList.remove('hidden');
     }
 
     function handleLoginSuccess(user, msgElementId) {

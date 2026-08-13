@@ -107,9 +107,9 @@
         </div>
     </div>
 
-    <!-- ================= UPLOAD POST SECTION ================= -->
+    <!-- ================= UPLOAD POST SECTION (NO STORAGE NEEDED) ================= -->
     <div class="bg-[#0f172a]/40 border border-white/10 p-6 md:p-8 rounded-3xl shadow-inner">
-        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i data-feather="upload-cloud" class="text-rose-400"></i> Create New Post</h3>
+        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i data-feather="edit-3" class="text-rose-400"></i> Create New Post</h3>
         
         <form id="postForm" class="space-y-6">
           <div>
@@ -127,9 +127,9 @@
                </select>
             </div>
             <div>
-               <label class="block text-sm font-bold text-slate-300 mb-2">Upload Photo / Video</label>
-               <!-- File Upload Input (Crucial Part) -->
-               <input type="file" id="mediaFile" accept="image/*,video/*" class="w-full bg-[#0f172a]/80 border border-white/10 rounded-xl px-3 py-3 text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-rose-600 file:text-white hover:file:bg-rose-700 cursor-pointer shadow-inner transition-all">
+               <label class="block text-sm font-bold text-slate-300 mb-2">Image URL or YouTube Link</label>
+               <!-- User pastes link here instead of uploading file -->
+               <input type="url" id="mediaLinkInput" required placeholder="Paste ImgBB link or YouTube Video link here" class="w-full bg-[#0f172a]/80 border border-white/10 rounded-xl px-5 py-4 text-white focus:border-rose-400 outline-none transition-all shadow-inner">
             </div>
           </div>
 
@@ -143,7 +143,7 @@
           </button>
           
           <div id="uploadStatus" class="hidden text-center mt-4">
-              <p class="text-blue-400 font-bold animate-pulse text-sm">Uploading media & saving post... Please wait!</p>
+              <p class="text-blue-400 font-bold animate-pulse text-sm">Saving post to database... Please wait!</p>
           </div>
           <p id="successMsg" class="hidden text-green-400 text-center mt-4 bg-green-500/10 p-4 rounded-xl border border-green-500/20 font-bold text-lg shadow-lg">✅ Post published successfully!</p>
           <p id="errorMsg" class="hidden text-red-400 text-center mt-4 bg-red-500/10 p-4 rounded-xl border border-red-500/20 font-bold text-sm shadow-lg"></p>
@@ -162,12 +162,11 @@
     </div>
   </div>
 
-  <!-- Firebase & Admin Script -->
+  <!-- Firebase & Admin Script (Storage removed entirely) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
@@ -183,7 +182,6 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
     feather.replace();
 
@@ -203,7 +201,6 @@
           loginScreen.classList.add('hidden');
           dashboardScreen.classList.remove('hidden');
           
-          // Load Analytics Data immediately after login
           fetchAnalyticsData();
         } else {
           signOut(auth);
@@ -247,7 +244,6 @@
                 if(data.comments) totalComments += data.comments.length;
             });
 
-            // Animate Numbers
             animateValue("stat-posts", 0, totalPosts, 1000);
             animateValue("stat-likes", 0, totalLikes, 1000);
             animateValue("stat-comments", 0, totalComments, 1000);
@@ -257,7 +253,6 @@
         }
     }
 
-    // Number Animation Helper
     function animateValue(id, start, end, duration) {
         const obj = document.getElementById(id);
         let startTimestamp = null;
@@ -270,7 +265,7 @@
         window.requestAnimationFrame(step);
     }
 
-    // ================= REAL POST UPLOAD LOGIC =================
+    // ================= URL-BASED POST SUBMISSION LOGIC =================
     document.getElementById('postForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
@@ -285,32 +280,13 @@
       errorMsg.classList.add('hidden');
       
       try {
-        const fileInput = document.getElementById('mediaFile');
-        let mediaLink = "";
-        let mediaType = "text"; // default
+        const mediaLink = document.getElementById('mediaLinkInput').value;
 
-        // 1. Upload File to Storage if selected
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            mediaType = file.type; // Ex: image/jpeg or video/mp4
-            
-            // Clean filename
-            const cleanFileName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
-            const storageRef = ref(storage, 'posts/' + Date.now() + '_' + cleanFileName);
-            
-            // Uploading Bytes
-            await uploadBytes(storageRef, file);
-            
-            // Getting Downloadable URL
-            mediaLink = await getDownloadURL(storageRef);
-        }
-
-        // 2. Save Data to Firestore Database
+        // Save Data to Firestore Database
         await addDoc(collection(db, "blogPosts"), {
           title: document.getElementById('postTitle').value,
           category: document.getElementById('postCategory').value,
-          mediaLink: mediaLink, // URL from storage
-          mediaType: mediaType, // Tells blog.html if it's image or video
+          mediaLink: mediaLink, // URL from input field
           description: document.getElementById('postDescription').value,
           date: new Date().toLocaleDateString(),
           timestamp: Date.now(),
@@ -318,22 +294,18 @@
           comments: []
         });
 
-        // 3. Update UI on Success
         uploadStatus.classList.add('hidden');
         successMsg.classList.remove('hidden');
         submitBtn.classList.remove('hidden');
         
         this.reset();
-        
-        // Refresh Analytics to show new post count
         fetchAnalyticsData();
         
         setTimeout(() => successMsg.classList.add('hidden'), 5000);
       } catch (e) {
-        // Handle Errors (e.g., Storage rules error)
         uploadStatus.classList.add('hidden');
         submitBtn.classList.remove('hidden');
-        errorMsg.innerText = "❌ Upload Failed: " + e.message + " (Check Firebase Storage Rules!)";
+        errorMsg.innerText = "❌ Post Failed: " + e.message;
         errorMsg.classList.remove('hidden');
       }
     });

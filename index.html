@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Habib iFix - Home</title>
+  <title>Habib iFix - </title>
 
   <meta name="google-site-verification" content="H4mJ97tyRrqapbw3aXNiscb71npw5YnZZqFCHgtwyC0" />
   
@@ -34,7 +34,7 @@
         <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
           <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" alt="Habib Tec. Logo" class="w-full h-full object-cover">
         </div>
-        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">Tec.</span></span>
+        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">iFix</span></span>
       </a>
 
       <!-- Desktop Nav -->
@@ -717,6 +717,186 @@
     }
 
     loadBlogPosts();
+  </script>
+
+  <!-- ================= AI AGENT (FLOATING CHATBOT) ================= -->
+  <div id="ai-agent-container" class="fixed bottom-6 right-6 z-[100] flex flex-col items-end font-sans">
+    
+    <!-- Chat Window -->
+    <div id="ai-chat-window" class="hidden w-[330px] sm:w-[360px] h-[460px] mb-4 bg-[#0f172a]/95 backdrop-blur-2xl border border-white/20 rounded-[28px] shadow-[0_10px_40px_rgba(0,0,0,0.6)] flex-col overflow-hidden transition-all duration-300 origin-bottom-right scale-95 opacity-0">
+      
+      <!-- Chat Header -->
+      <div class="bg-gradient-to-r from-[#9E1B32] to-[#4A154B] p-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30 shadow-inner">
+            <i data-feather="cpu" class="text-white w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-white font-bold text-sm tracking-wide">Habib AI Assistant</h3>
+            <p class="text-white/80 text-[11px] flex items-center gap-1.5 font-medium mt-0.5">
+              <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
+            </p>
+          </div>
+        </div>
+        <button onclick="toggleAiChat()" class="text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-full p-1.5">
+          <i data-feather="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      
+      <!-- Chat Body -->
+      <div id="ai-chat-body" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3.5 scroll-smooth bg-gradient-to-b from-[#0f172a]/50 to-transparent">
+        
+        <!-- Welcome Message -->
+        <div class="flex gap-2 w-max max-w-[85%] animate-fade-in-up">
+          <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
+             <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
+          </div>
+          <div class="bg-white/10 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
+            Hello! Welcome to <b>Habib Tec.</b> 👋<br>How can I help you with your gadget repairs today?
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Chat Input Area -->
+      <div class="p-3 border-t border-white/10 bg-[#0f172a]/95 flex gap-2 items-center">
+        <input type="text" id="ai-chat-input" placeholder="Ask anything..." class="flex-grow bg-[#1e293b] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-rose-400 transition-colors shadow-inner" onkeypress="handleAiKeyPress(event)">
+        <button onclick="sendAiMessage()" class="bg-gradient-to-tr from-[#9E1B32] to-rose-600 hover:opacity-90 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(158,27,50,0.4)] flex-shrink-0 active:scale-95">
+          <i data-feather="send" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Floating Chat Toggle Button -->
+    <button onclick="toggleAiChat()" id="ai-chat-btn" class="w-14 h-14 bg-gradient-to-tr from-[#9E1B32] to-[#4A154B] rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(158,27,50,0.5)] hover:scale-110 transition-transform duration-300 border border-white/20 z-50">
+      <i data-feather="message-square" class="text-white w-6 h-6"></i>
+    </button>
+  </div>
+
+  <!-- AI Agent JavaScript -->
+  <script>
+    // ⚠️ আপনার Google AI Studio থেকে নেওয়া Gemini API Key টি এখানে বসান:
+    const GEMINI_API_KEY = "AQ.Ab8RN6IX8ui4KgIIRMe6g-Li48L4g2BOR27G9PHAgwcF_K0wTQ";
+
+    // Toggle Chat Box
+    function toggleAiChat() {
+      const chatWindow = document.getElementById('ai-chat-window');
+      
+      if (chatWindow.classList.contains('hidden')) {
+        chatWindow.classList.remove('hidden');
+        chatWindow.classList.add('flex');
+        setTimeout(() => {
+          chatWindow.classList.remove('scale-95', 'opacity-0');
+          chatWindow.classList.add('scale-100', 'opacity-100');
+        }, 10);
+      } else {
+        chatWindow.classList.remove('scale-100', 'opacity-100');
+        chatWindow.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+          chatWindow.classList.add('hidden');
+          chatWindow.classList.remove('flex');
+        }, 300);
+      }
+      feather.replace();
+    }
+
+    // Handle Enter Key
+    function handleAiKeyPress(event) {
+      if (event.key === 'Enter') sendAiMessage();
+    }
+
+    // Send Message & Get Gemini AI Response
+    async function sendAiMessage() {
+      const inputField = document.getElementById('ai-chat-input');
+      const text = inputField.value.trim();
+      if (!text) return;
+
+      const chatBody = document.getElementById('ai-chat-body');
+
+      // 1. User Message Append
+      chatBody.innerHTML += `
+        <div class="flex gap-2 w-max max-w-[85%] self-end animate-fade-in-up">
+          <div class="bg-gradient-to-r from-rose-600 to-[#9E1B32] text-[13px] text-white p-3 rounded-2xl rounded-br-none shadow-sm leading-relaxed border border-rose-500/30">
+            ${escapeHtml(text)}
+          </div>
+        </div>
+      `;
+      
+      inputField.value = '';
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // 2. Typing Indicator
+      const typingId = 'typing-' + Date.now();
+      chatBody.innerHTML += `
+        <div id="${typingId}" class="flex gap-2 w-max max-w-[85%] mt-1 animate-fade-in-up">
+          <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
+             <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
+          </div>
+          <div class="bg-white/10 border border-white/10 p-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 items-center">
+             <div class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
+             <div class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+             <div class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+          </div>
+        </div>
+      `;
+      feather.replace();
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // 3. API Request to Gemini
+      try {
+        const promptContext = `You are Habib Tec. AI Assistant, a helpful customer service chatbot for 'Habib Tec.' - a professional gadget repair shop. Answer concisely, professionally, and warmly. Query: ${text}`;
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptContext }] }]
+          })
+        });
+
+        const data = await response.json();
+        let aiReply = "Thank you for reaching out! How else can I assist you with your device?";
+        
+        if (data && data.candidates && data.candidates[0].content.parts[0].text) {
+          aiReply = data.candidates[0].content.parts[0].text;
+        }
+
+        document.getElementById(typingId).remove();
+        
+        chatBody.innerHTML += `
+          <div class="flex gap-2 w-max max-w-[85%] mt-1 animate-fade-in-up">
+            <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
+               <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
+            </div>
+            <div class="bg-white/10 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
+              ${formatAiResponse(aiReply)}
+            </div>
+          </div>
+        `;
+        feather.replace();
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+      } catch (error) {
+        if(document.getElementById(typingId)) document.getElementById(typingId).remove();
+        chatBody.innerHTML += `
+          <div class="flex gap-2 w-max max-w-[85%] mt-1">
+            <div class="bg-red-500/10 border border-red-500/20 text-[13px] text-red-400 p-3 rounded-2xl">
+              Sorry, could not connect to AI. Please try again or check API Key.
+            </div>
+          </div>
+        `;
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    }
+
+    // Helper functions
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function formatAiResponse(text) {
+      return text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+    }
   </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Habib iFix - Fast repair services </title>
+  <title>Habib iFix - Fast repair services</title>
 
   <meta name="google-site-verification" content="H4mJ97tyRrqapbw3aXNiscb71npw5YnZZqFCHgtwyC0" />
   
@@ -14,13 +14,22 @@
   <!-- FontAwesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Custom CSS Link -->
-  <link rel="stylesheet" href="style.css">
+  <style>
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: blob 7s infinite; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+  </style>
 </head>
-<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col">
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a]">
 
   <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
-  <div class="fixed inset-0 z-[-1] bg-[#0f172a] overflow-hidden">
+  <div class="fixed inset-0 z-[-1] overflow-hidden">
     <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
     <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
     <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
@@ -489,6 +498,66 @@
     </div>
   </div>
 
+  <!-- Global JavaScript helper functions for window scope access -->
+  <script>
+    // Accordion Logic
+    function toggleAccordion(element) {
+      const content = element.querySelector('.acc-content');
+      const icon = element.querySelector('.acc-icon');
+      const title = element.querySelector('h4');
+      const isHidden = content.classList.contains('hidden');
+
+      document.querySelectorAll('.accordion-item').forEach(item => {
+        item.classList.remove('border-rose-500/50', 'bg-rose-900/20');
+        item.classList.add('border-white/10', 'bg-white/5');
+        item.querySelector('.acc-content').classList.add('hidden');
+        item.querySelector('.acc-content').classList.remove('block');
+        item.querySelector('h4').classList.remove('text-rose-300');
+        item.querySelector('h4').classList.add('text-slate-200');
+        item.querySelector('.acc-icon').classList.remove('rotate-180', 'text-rose-300');
+        item.querySelector('.acc-icon').classList.add('text-slate-400');
+      });
+
+      if (isHidden) {
+        element.classList.add('border-rose-500/50', 'bg-rose-900/20');
+        element.classList.remove('border-white/10', 'bg-white/5');
+        content.classList.remove('hidden');
+        content.classList.add('block');
+        title.classList.add('text-rose-300');
+        title.classList.remove('text-slate-200');
+        icon.classList.add('rotate-180', 'text-rose-300');
+        icon.classList.remove('text-slate-400');
+      }
+    }
+
+    // Modal Logic
+    function openModal(title, desc, iconName) {
+      const modal = document.getElementById('serviceModal');
+      const content = document.getElementById('modalContent');
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDesc').innerText = desc;
+      document.getElementById('modalIconBox').innerHTML = `<i data-feather="${iconName}" class="w-10 h-10"></i>`;
+      feather.replace();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('serviceModal');
+      const content = document.getElementById('modalContent');
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300);
+    }
+  </script>
+
   <!-- Firebase & App Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -585,63 +654,6 @@
         });
     };
 
-    // Accordion Logic
-    window.toggleAccordion = function(element) {
-      const content = element.querySelector('.acc-content');
-      const icon = element.querySelector('.acc-icon');
-      const title = element.querySelector('h4');
-      const isHidden = content.classList.contains('hidden');
-
-      document.querySelectorAll('.accordion-item').forEach(item => {
-        item.classList.remove('border-rose-500/50', 'bg-rose-900/20');
-        item.classList.add('border-white/10', 'bg-white/5');
-        item.querySelector('.acc-content').classList.add('hidden');
-        item.querySelector('.acc-content').classList.remove('block');
-        item.querySelector('h4').classList.remove('text-rose-300');
-        item.querySelector('h4').classList.add('text-slate-200');
-        item.querySelector('.acc-icon').classList.remove('rotate-180', 'text-rose-300');
-        item.querySelector('.acc-icon').classList.add('text-slate-400');
-      });
-
-      if (isHidden) {
-        element.classList.add('border-rose-500/50', 'bg-rose-900/20');
-        element.classList.remove('border-white/10', 'bg-white/5');
-        content.classList.remove('hidden');
-        content.classList.add('block');
-        title.classList.add('text-rose-300');
-        title.classList.remove('text-slate-200');
-        icon.classList.add('rotate-180', 'text-rose-300');
-        icon.classList.remove('text-slate-400');
-      }
-    }
-
-    // Modal Logic
-    window.openModal = function(title, desc, iconName) {
-      const modal = document.getElementById('serviceModal');
-      const content = document.getElementById('modalContent');
-      document.getElementById('modalTitle').innerText = title;
-      document.getElementById('modalDesc').innerText = desc;
-      document.getElementById('modalIconBox').innerHTML = `<i data-feather="${iconName}" class="w-10 h-10"></i>`;
-      feather.replace();
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      setTimeout(() => {
-        content.classList.remove('scale-95', 'opacity-0');
-        content.classList.add('scale-100', 'opacity-100');
-      }, 10);
-    }
-
-    window.closeModal = function() {
-      const modal = document.getElementById('serviceModal');
-      const content = document.getElementById('modalContent');
-      content.classList.remove('scale-100', 'opacity-100');
-      content.classList.add('scale-95', 'opacity-0');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }, 300);
-    }
-
     // Subscription Form
     const subForm = document.getElementById('subscribeForm');
     if(subForm) {
@@ -674,7 +686,7 @@
           blogContainer.innerHTML = `
             <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-lg col-span-full">
               <div class="w-full h-48 bg-white/10 rounded-xl mb-4 flex items-center justify-center text-slate-400 border border-white/10">
-                 <i data-feather="video" class="w-10 h-10 text-rose-300"></i>
+                   <i data-feather="video" class="w-10 h-10 text-rose-300"></i>
               </div>
               <h3 class="text-xl font-bold text-white mb-2">Welcome to Habib Tec.</h3>
               <p class="text-sm text-slate-400 line-clamp-3">Posts published from the Admin Panel will appear here.</p>
@@ -775,7 +787,6 @@
 
   <!-- AI Agent JavaScript -->
   <script>
-    // ⚠️ আপনার Google AI Studio থেকে নেওয়া Gemini API Key টি এখানে বসান:
     const GEMINI_API_KEY = "AQ.Ab8RN6IX8ui4KgIIRMe6g-Li48L4g2BOR27G9PHAgwcF_K0wTQ";
 
     // Toggle Chat Box
@@ -866,7 +877,7 @@
         chatBody.innerHTML += `
           <div class="flex gap-2 w-max max-w-[85%] mt-1 animate-fade-in-up">
             <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
-               <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
+                <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
             </div>
             <div class="bg-white/10 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
               ${formatAiResponse(aiReply)}

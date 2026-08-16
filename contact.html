@@ -1,204 +1,282 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us - Habib iFix</title>
   
-  <!-- Tailwind CSS & Feather Icons CDN -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Feather Icons -->
   <script src="https://unpkg.com/feather-icons"></script>
   
-  <!-- FontAwesome CDN for Social & Contact Icons -->
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Custom CSS Link -->
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col">
 
-  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
-  <div class="fixed inset-0 z-[-1] bg-[#0f172a] overflow-hidden">
-    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
-    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
+  <!-- Google Fonts (Inter) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #9E1B32; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #be2e4c; }
+
+    /* Animations */
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: blob 7s infinite; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
+
+    /* Glassmorphism Utilities */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-card-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(158, 27, 50, 0.5);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(158, 27, 50, 0.1);
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a] overflow-x-hidden">
+
+  <!-- ================= ANIMATED BACKGROUND ================= -->
+  <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#9E1B32]/30 blur-[120px] animate-blob mix-blend-screen"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/40 blur-[150px] animate-blob animation-delay-2000 mix-blend-screen"></div>
+    <div class="absolute top-[40%] left-[30%] w-[500px] h-[500px] rounded-full bg-blue-900/20 blur-[120px] animate-blob animation-delay-4000 mix-blend-screen"></div>
+    <!-- Noise Texture Overlay -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
   </div>
 
-  <!-- ================= HEADER (Glass) ================= -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-5">
+  <!-- ================= HEADER ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
       <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-3 cursor-pointer">
-        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
+      <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-rose-500/50 transition-colors">
           <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" class="w-full h-full object-cover">
         </div>
-        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">iFix</span></span>
+        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium group-hover:text-rose-400 transition-colors">iFix</span></span>
       </a>
 
       <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
-        <a href="index.html" class="hover:text-rose-400 transition-colors">Home</a>
-        <a href="#" class="hover:text-rose-400 transition-colors">About Us</a>
-        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
-          Services <i data-feather="chevron-down" class="w-4 h-4"></i>
+        <a href="index.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Home</a>
+        <a href="index.html#about" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">About Us</a>
+        
+        <a href="index.html#services" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Services</a>
+        
+        <!-- Pages Dropdown -->
+        <div class="group relative py-2 cursor-pointer transition-colors">
+          <div class="flex items-center gap-1 hover:text-rose-400 transition-colors">Pages <i data-feather="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i></div>
+          <div class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-56 glass-panel rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden z-50 transform translate-y-2 group-hover:translate-y-0">
+            <a href="index.html#updates" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2"><i data-feather="rss" class="w-3 h-3"></i> Updates</a>
+            <a href="index.html#vision" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2"><i data-feather="eye" class="w-3 h-3"></i> Vision & Mission</a>
+            <a href="index.html#testimonial" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"><i data-feather="message-circle" class="w-3 h-3"></i> Testimonials</a>
+          </div>
         </div>
-        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
-          Pages <i data-feather="chevron-down" class="w-4 h-4"></i>
-        </div>
-        <a href="contact.html" class="text-rose-400 font-semibold">Contact Us</a>
+
+        <a href="contact.html" class="text-rose-400 font-semibold relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-rose-500">Contact Us</a>
       </nav>
 
       <!-- Call CTA & Mobile Toggle -->
       <div class="flex items-center gap-4">
-        <button class="hidden md:flex bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:-translate-y-0.5">
+        <button class="hidden md:flex bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 hover:border-rose-500/30">
           <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
           <span>+880 1868 461577</span>
         </button>
-        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md">
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
           <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Nav Drawer (Glass) -->
-    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/90 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-4 gap-4 pb-8 shadow-2xl">
-      <a href="index.html" class="text-lg text-slate-200">Home</a>
-      <a href="#" class="text-lg text-slate-200">About Us</a>
-      <a href="#" class="text-lg text-slate-200">Services</a>
-      <a href="#" class="text-lg text-slate-200">Pages</a>
-      <a href="contact.html" class="text-rose-400 font-semibold text-lg">Contact Us</a>
-      <button class="bg-white/10 border border-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-medium flex items-center justify-center gap-2 mt-4 w-full">
-        <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
-        <span>+880 1868 461577</span>
-      </button>
+    <!-- Mobile Nav Drawer -->
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-2xl border-t border-white/10 flex flex-col px-6 py-8 gap-5 shadow-2xl transition-all duration-300 z-40 min-h-screen">
+      <a href="index.html" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Home</a>
+      <a href="index.html#about" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">About Us</a>
+      <a href="index.html#services" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Services</a>
+      
+      <div class="flex flex-col gap-3 pl-4 border-l border-white/10 my-2">
+        <p class="text-slate-500 uppercase text-xs font-bold tracking-widest mb-1">Quick Links</p>
+        <a href="index.html#updates" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Latest Updates</a>
+        <a href="index.html#vision" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Vision & Mission</a>
+        <a href="index.html#testimonial" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Testimonials</a>
+      </div>
+
+      <a href="contact.html" class="text-rose-400 font-semibold text-xl border-l-2 border-rose-500 pl-4" onclick="closeMobileMenu()">Contact Us</a>
     </div>
   </header>
 
   <!-- ================= CONTACT SECTION ================= -->
-  <main class="flex-grow pt-[120px] pb-20 px-4 md:px-6 relative z-10 flex items-center justify-center min-h-screen">
+  <main class="flex-grow pt-[120px] pb-24 px-4 md:px-6 relative z-10 flex items-center justify-center">
     <div class="max-w-[1280px] w-full mx-auto">
       
       <!-- Section Header -->
-      <div class="text-center mb-12 animate-fade-in-up">
-        <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Get In Touch</p>
-        <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Contact Us</h2>
-        <p class="text-slate-300 max-w-2xl mx-auto">কোনো সমস্যা থাকলে আমাদের লোকেশনে যোগাযোগ করুন অথবা ফর্মটি পূরণ করে মেসেজ দিন।</p>
+      <div class="text-center mb-16 animate-fade-in-up">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs font-bold uppercase tracking-wider mb-4">
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Support Center
+        </div>
+        <h2 class="text-4xl md:text-6xl font-extrabold mb-6 text-white tracking-tight">Get In Touch</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto text-lg">কোনো সমস্যা থাকলে আমাদের লোকেশনে যোগাযোগ করুন অথবা ফর্মটি পূরণ করে মেসেজ দিন। আমরা সবসময় আপনাকে সাহায্য করতে প্রস্তুত।</p>
       </div>
 
       <!-- Contact Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch animate-fade-in-up" style="animation-delay: 0.2s;">
         
         <!-- Left: Contact Info (Glass Card) -->
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col h-full">
-          <h3 class="text-2xl font-bold text-white mb-8">Reach Out to Habib</h3>
+        <div class="glass-panel glass-card-hover p-8 md:p-10 rounded-[32px] shadow-2xl flex flex-col h-full relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-rose-500/20 transition-colors"></div>
           
-          <div class="space-y-6 flex-grow">
+          <h3 class="text-2xl font-bold text-white mb-8 relative z-10">Contact Information</h3>
+          
+          <div class="space-y-8 flex-grow relative z-10">
             <!-- Address -->
-            <div class="flex items-start gap-5">
-              <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shrink-0">
-                <i class="fas fa-map-marker-alt text-lg"></i>
+            <div class="flex items-start gap-5 group/item">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center text-rose-400 shrink-0 group-hover/item:scale-110 group-hover/item:border-rose-500/50 transition-all duration-300 shadow-lg">
+                <i class="fas fa-map-marker-alt text-xl"></i>
               </div>
               <div>
-                <h4 class="text-white font-semibold mb-1">Address</h4>
-                <p class="text-slate-400 text-sm leading-relaxed">House - Habibur Rahman, Gachbaria<br>Chattogram, Bangladesh</p>
+                <h4 class="text-white font-bold text-lg mb-1">Our Location</h4>
+                <p class="text-slate-400 leading-relaxed">House - Habibur Rahman, Gachbaria<br>Chattogram, Bangladesh</p>
               </div>
             </div>
             
             <!-- Phone -->
-            <div class="flex items-start gap-5">
-              <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shrink-0">
-                <i class="fas fa-phone text-lg"></i>
+            <div class="flex items-start gap-5 group/item">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center text-rose-400 shrink-0 group-hover/item:scale-110 group-hover/item:border-rose-500/50 transition-all duration-300 shadow-lg">
+                <i class="fas fa-phone text-xl"></i>
               </div>
               <div>
-                <h4 class="text-white font-semibold mb-1">Phone</h4>
-                <p class="text-slate-400 text-sm hover:text-rose-400 transition-colors"><a href="tel:+8801868461577">+880 1868 461577</a></p>
+                <h4 class="text-white font-bold text-lg mb-1">Phone Number</h4>
+                <p class="text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"><a href="tel:+8801868461577">+880 1868 461577</a></p>
               </div>
             </div>
             
             <!-- Email -->
-            <div class="flex items-start gap-5">
-              <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shrink-0">
-                <i class="fas fa-envelope text-lg"></i>
+            <div class="flex items-start gap-5 group/item">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center text-rose-400 shrink-0 group-hover/item:scale-110 group-hover/item:border-rose-500/50 transition-all duration-300 shadow-lg">
+                <i class="fas fa-envelope text-xl"></i>
               </div>
               <div>
-                <h4 class="text-white font-semibold mb-1">Email</h4>
-                <p class="text-slate-400 text-sm hover:text-rose-400 transition-colors"><a href="mailto:mshabib471@gmail.com">mshabib471@gmail.com</a></p>
+                <h4 class="text-white font-bold text-lg mb-1">Email Address</h4>
+                <p class="text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"><a href="mailto:mshabib471@gmail.com">mshabib471@gmail.com</a></p>
               </div>
             </div>
             
             <!-- Business Hours -->
-            <div class="flex items-start gap-5">
-              <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-rose-300 shrink-0">
-                <i class="fas fa-clock text-lg"></i>
+            <div class="flex items-start gap-5 group/item">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center text-rose-400 shrink-0 group-hover/item:scale-110 group-hover/item:border-rose-500/50 transition-all duration-300 shadow-lg">
+                <i class="fas fa-clock text-xl"></i>
               </div>
               <div>
-                <h4 class="text-white font-semibold mb-1">Business Hours</h4>
-                <p class="text-slate-400 text-sm leading-relaxed">Always Open Online<br>Chat support available 24/7</p>
+                <h4 class="text-white font-bold text-lg mb-1">Working Hours</h4>
+                <p class="text-slate-400 leading-relaxed">Always Open Online<br>Chat support available 24/7</p>
               </div>
             </div>
           </div>
 
           <!-- Social Links -->
-          <div class="flex gap-4 mt-8 pt-8 border-t border-white/10">
-            <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] transition-colors text-white">
-              <i class="fab fa-facebook-f"></i>
+          <div class="flex gap-4 mt-10 pt-8 border-t border-white/10 relative z-10">
+            <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-lg">
+              <i class="fab fa-facebook-f text-lg"></i>
             </a>
-            <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#0088cc] hover:border-[#0088cc] transition-colors text-white">
-              <i class="fab fa-telegram-plane"></i>
+            <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#0088cc] hover:border-[#0088cc] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-lg">
+              <i class="fab fa-telegram-plane text-lg"></i>
             </a>
-            <a href="https://wa.me/8801868461577" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-colors text-white">
-              <i class="fab fa-whatsapp"></i>
+            <a href="https://wa.me/8801868461577" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-lg">
+              <i class="fab fa-whatsapp text-lg"></i>
             </a>
-            <a href="https://habib-bd.vercel.app/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-rose-600 hover:border-rose-600 transition-colors text-white">
-              <i class="fas fa-globe"></i>
+            <a href="https://habib-bd.vercel.app/" target="_blank" rel="noopener" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-rose-600 hover:border-rose-600 hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-lg">
+              <i class="fas fa-globe text-lg"></i>
             </a>
           </div>
 
           <!-- Google Map -->
-          <div class="mt-8 rounded-2xl overflow-hidden border border-white/20 shadow-lg opacity-80 hover:opacity-100 transition-opacity duration-300 h-[200px]">
+          <div class="mt-8 rounded-2xl overflow-hidden border border-white/10 shadow-2xl opacity-80 hover:opacity-100 transition-opacity duration-500 h-[220px] relative z-10 group/map">
+             <div class="absolute inset-0 bg-rose-500/10 mix-blend-overlay pointer-events-none z-10 group-hover/map:bg-transparent transition-colors"></div>
             <iframe title="Habibur Rahman house map" src="https://maps.google.com/maps?q=22.2149092,92.0320435&t=&z=18&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>
           </div>
         </div>
 
         <!-- Right: Contact Form (Glass Card) -->
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] h-full">
-          <h3 class="text-2xl font-bold text-white mb-8">Send a Message</h3>
+        <div class="glass-panel glass-card-hover p-8 md:p-10 rounded-[32px] shadow-2xl h-full relative overflow-hidden">
+          <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 blur-[80px] rounded-full pointer-events-none"></div>
           
-          <form class="space-y-5" id="contactForm">
-            <div>
-              <input type="text" id="name" name="name" placeholder="Your Name" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
+          <h3 class="text-2xl font-bold text-white mb-8 relative z-10">Send us a Message</h3>
+          
+          <form class="space-y-6 relative z-10" id="contactForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <div class="group">
+                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Your Name</label>
+                  <input type="text" id="name" name="name" placeholder="John Doe" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 focus:bg-[#0f172a] transition-all shadow-inner">
+               </div>
+               <div class="group">
+                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Email Address</label>
+                  <input type="email" id="email" name="email" placeholder="john@example.com" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 focus:bg-[#0f172a] transition-all shadow-inner">
+               </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <div class="group">
+                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" placeholder="+880 1..." class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 focus:bg-[#0f172a] transition-all shadow-inner">
+               </div>
+               <div class="group">
+                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Service Type</label>
+                  <div class="relative">
+                     <select id="service" name="service" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-4 text-slate-300 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 focus:bg-[#0f172a] transition-all appearance-none cursor-pointer shadow-inner">
+                        <option value="" class="bg-slate-900">Select Service / Issue</option>
+                        <option value="apple-service" class="bg-slate-900">Apple Service</option>
+                        <option value="samsung-service" class="bg-slate-900">Samsung Service</option>
+                        <option value="xiaomi-service" class="bg-slate-900">Xiaomi Service</option>
+                        <option value="huawei-service" class="bg-slate-900">Huawei Service</option>
+                        <option value="buy-accessories" class="bg-slate-900">Buy Accessories</option>
+                        <option value="other" class="bg-slate-900">Other Inquiry</option>
+                     </select>
+                     <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+                        <i data-feather="chevron-down" class="w-4 h-4"></i>
+                     </div>
+                  </div>
+               </div>
             </div>
             
-            <div>
-              <input type="email" id="email" name="email" placeholder="Your Email" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
+            <div class="group">
+               <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Message Details</label>
+               <textarea id="message" name="message" rows="5" placeholder="Describe your device problem here... (ডিভাইসের সমস্যা বিস্তারিত লিখুন)" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 focus:bg-[#0f172a] transition-all resize-none shadow-inner"></textarea>
             </div>
             
-            <div>
-              <input type="tel" id="phone" name="phone" placeholder="Phone Number (e.g. +880...)" class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all">
-            </div>
-            
-            <div>
-              <select id="service" name="service" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-slate-300 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all appearance-none">
-                <option value="" class="bg-slate-800 text-white">Select Service / Brand Issue</option>
-                <option value="apple-service" class="bg-slate-800 text-white">Apple Service</option>
-                <option value="samsung-service" class="bg-slate-800 text-white">Samsung Service</option>
-                <option value="xiaomi-service" class="bg-slate-800 text-white">Xiaomi Service</option>
-                <option value="huawei-service" class="bg-slate-800 text-white">Huawei Service</option>
-                <option value="buy-accessories" class="bg-slate-800 text-white">Buy Accessories</option>
-                <option value="other" class="bg-slate-800 text-white">Other Inquiry</option>
-              </select>
-            </div>
-            
-            <div>
-              <textarea id="message" name="message" rows="5" placeholder="Write your problem details... (ডিভাইসের সমস্যা বিস্তারিত লিখুন)" required class="w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 transition-all resize-none"></textarea>
-            </div>
-            
-            <button type="submit" id="submitBtn" class="w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white font-bold text-lg py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(158,27,50,0.4)] hover:-translate-y-1 mt-4">
-              Send Message
+            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-[#9E1B32] to-rose-600 hover:from-rose-600 hover:to-[#9E1B32] text-white font-bold text-lg py-4 rounded-xl transition-all shadow-[0_10px_30px_-10px_rgba(158,27,50,0.6)] hover:-translate-y-1 mt-2 flex items-center justify-center gap-2">
+              <span>Send Message</span> <i data-feather="send" class="w-4 h-4"></i>
             </button>
             
             <!-- Success/Error Message Display -->
-            <p id="formStatus" class="hidden text-center mt-4 font-semibold p-3 rounded-lg border backdrop-blur-md"></p>
+            <div id="formStatus" class="hidden mt-4 font-medium p-4 rounded-xl border backdrop-blur-md text-center animate-fade-in-up flex items-center justify-center gap-2"></div>
           </form>
         </div>
 
@@ -207,41 +285,91 @@
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 pt-20 pb-10 relative z-10 mt-auto">
+  <footer class="bg-[#050a14] text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-white/10">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-        <div class="space-y-6">
-          <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center rounded-lg font-bold text-xl">R</div>
-            <span class="font-bold text-2xl tracking-tight text-white">Repair<span class="text-slate-400 font-medium">Guy</span></span>
-          </div>
-          <p class="text-sm leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+      
+      <!-- Top Call-to-Action Card -->
+      <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-rose-500/20 blur-[100px] pointer-events-none group-hover:bg-rose-500/30 transition-colors"></div>
+        <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">Ready to fix your device?</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">
+          Visit us today or contact us online. Experience the best repair service in town with Habib iFix.
+        </p>
+        <a href="contact.html" class="inline-block bg-white text-[#0f172a] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">
+          Get Started Now
+        </a>
+      </div>
+
+      <!-- Main Footer Links Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
+        
+        <!-- Brand Logo & Info -->
+        <div class="col-span-2 space-y-6">
+          <a href="index.html" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
+              <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover">
+            </div>
+            <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span>
+          </a>
+          <p class="text-slate-500 leading-relaxed pr-8">
+            Your trusted partner for fast and reliable gadget repair services and component solutions. We breathe life back into your tech.
+          </p>
         </div>
+
+        <!-- Column 1 -->
         <div>
-          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Services</h4>
-          <ul class="space-y-3 text-sm">
-            <li><a href="#" class="hover:text-rose-400 transition-colors">Smartphone Repair</a></li>
-            <li><a href="#" class="hover:text-rose-400 transition-colors">Laptop Repair</a></li>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4>
+          <ul class="space-y-4">
+            <li><a href="index.html#services" class="hover:text-rose-400 transition-colors">Phone Repair</a></li>
+            <li><a href="index.html#services" class="hover:text-rose-400 transition-colors">Laptop Fix</a></li>
+            <li><a href="index.html#services" class="hover:text-rose-400 transition-colors">Tablet Service</a></li>
+            <li><a href="index.html#services" class="hover:text-rose-400 transition-colors">Data Recovery</a></li>
           </ul>
         </div>
+
+        <!-- Column 2 -->
         <div>
-          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Quick Link</h4>
-          <ul class="space-y-3 text-sm">
-            <li><a href="#" class="hover:text-rose-400 transition-colors">About Us</a></li>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
+          <ul class="space-y-4">
+            <li><a href="index.html" class="hover:text-rose-400 transition-colors">Home</a></li>
+            <li><a href="index.html#about" class="hover:text-rose-400 transition-colors">About Us</a></li>
+            <li><a href="index.html#testimonial" class="hover:text-rose-400 transition-colors">Reviews</a></li>
             <li><a href="contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
           </ul>
         </div>
+
+        <!-- Column 3 -->
         <div>
-          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe</h4>
-          <form class="flex mb-6">
-            <input type="email" placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
-            <button type="submit" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
-          </form>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4>
+          <ul class="space-y-4">
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Warranty Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4 -->
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4>
+          <div class="flex flex-col gap-4">
+             <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
+             <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i> Instagram</a>
+             <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-lg"></i> Twitter</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Bottom Bar -->
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
+        <div class="flex items-center gap-6">
+          <p>&copy; 2026 Habib iFix. All Rights Reserved.</p>
+          <span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Online
+          </span>
         </div>
       </div>
-      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
-        <p>&copy; 2026 Repair Guy. All Rights Reserved.</p>
-      </div>
+
     </div>
   </footer>
 
@@ -253,28 +381,34 @@
     // Glass Header Scroll Effect
     const header = document.getElementById('main-header');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        header.classList.add('bg-[#0f172a]/60', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
-        header.classList.remove('bg-transparent', 'py-5');
+      if (window.scrollY > 50) {
+        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
+        header.classList.remove('bg-transparent', 'py-4');
       } else {
-        header.classList.add('bg-transparent', 'py-5');
-        header.classList.remove('bg-[#0f172a]/60', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
+        header.classList.add('bg-transparent', 'py-4');
+        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
       }
     });
 
-    // Mobile Menu
+    // Mobile Menu Logic
     const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     let isMenuOpen = false;
+
+    function closeMobileMenu() {
+       isMenuOpen = false;
+       mobileMenu.classList.add('hidden');
+       menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6"></i>';
+       feather.replace();
+    }
 
     menuBtn.addEventListener('click', () => {
       isMenuOpen = !isMenuOpen;
       if (isMenuOpen) {
         mobileMenu.classList.remove('hidden');
-        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6 text-white"></i>';
+        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6"></i>';
       } else {
-        mobileMenu.classList.add('hidden');
-        menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6 text-white"></i>';
+        closeMobileMenu();
       }
       feather.replace();
     });
@@ -284,37 +418,48 @@
     const submitBtn = document.getElementById('submitBtn');
     const formStatus = document.getElementById('formStatus');
 
+    // Using the provided Google Script URL
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzMmCqUECBRKOc8eGMwvlIoDNJnoJ8sTBsuouHtycJxZr6giWjmdvYhbf_z8EUUzd3rzw/exec';
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        submitBtn.innerText = 'Sending...';
+        
+        // Loading State
+        const originalBtnContent = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sending...';
         submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
         
         formStatus.classList.add('hidden');
-        formStatus.classList.remove('bg-green-500/20', 'border-green-500/50', 'text-green-300', 'bg-red-500/20', 'border-red-500/50', 'text-red-300');
 
         fetch(scriptURL, { method: 'POST', body: new FormData(form) })
             .then(response => {
+                // Success State
+                formStatus.className = "mt-4 font-medium p-4 rounded-xl border backdrop-blur-md text-center animate-fade-in-up flex items-center justify-center gap-2 bg-green-500/10 border-green-500/30 text-green-400";
+                formStatus.innerHTML = '<i data-feather="check-circle" class="w-5 h-5"></i> Message sent successfully! We will contact you soon.';
                 formStatus.classList.remove('hidden');
-                formStatus.classList.add('bg-green-500/20', 'border-green-500/50', 'text-green-300');
-                formStatus.innerText = "Message sent successfully!";
                 
                 form.reset();
-                submitBtn.innerText = 'Send Message';
+                submitBtn.innerHTML = originalBtnContent;
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                feather.replace();
                 
                 setTimeout(() => {
                     formStatus.classList.add('hidden');
-                }, 5000);
+                }, 6000);
             })
             .catch(error => {
+                // Error State
+                console.error('Error!', error.message);
+                formStatus.className = "mt-4 font-medium p-4 rounded-xl border backdrop-blur-md text-center animate-fade-in-up flex items-center justify-center gap-2 bg-red-500/10 border-red-500/30 text-red-400";
+                formStatus.innerHTML = '<i data-feather="alert-circle" class="w-5 h-5"></i> Error sending message. Please try again later.';
                 formStatus.classList.remove('hidden');
-                formStatus.classList.add('bg-red-500/20', 'border-red-500/50', 'text-red-300');
-                formStatus.innerText = "Error sending message. Please try again.";
                 
-                submitBtn.innerText = 'Send Message';
+                submitBtn.innerHTML = originalBtnContent;
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                feather.replace();
             });
     });
   </script>

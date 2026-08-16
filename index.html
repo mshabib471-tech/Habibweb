@@ -1,20 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Habib iFix - Fast repair services</title>
 
-  <meta name="google-site-verification" content="H4mJ97tyRrqapbw3aXNiscb71npw5YnZZqFCHgtwyC0" />
-  
-  <!-- Tailwind CSS & Feather Icons CDN -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Feather Icons -->
   <script src="https://unpkg.com/feather-icons"></script>
   
-  <!-- FontAwesome CDN -->
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <!-- Google Fonts (Inter) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
+    body { font-family: 'Inter', sans-serif; }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #9E1B32; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #be2e4c; }
+
+    /* Animations */
     @keyframes blob {
       0% { transform: translate(0px, 0px) scale(1); }
       33% { transform: translate(30px, -50px) scale(1.1); }
@@ -24,62 +36,87 @@
     .animate-blob { animation: blob 7s infinite; }
     .animation-delay-2000 { animation-delay: 2s; }
     .animation-delay-4000 { animation-delay: 4s; }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fade-in-up 0.3s ease-out forwards; }
+
+    /* Glassmorphism Utilities */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-card-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(158, 27, 50, 0.5);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(158, 27, 50, 0.2);
+    }
   </style>
 </head>
-<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a]">
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a] overflow-x-hidden">
 
-  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
-  <div class="fixed inset-0 z-[-1] overflow-hidden">
-    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/40 blur-[120px] animate-blob"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/50 blur-[150px] animate-blob animation-delay-2000"></div>
-    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/30 blur-[120px] animate-blob animation-delay-4000"></div>
+  <!-- ================= ANIMATED BACKGROUND ================= -->
+  <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#9E1B32]/30 blur-[120px] animate-blob mix-blend-screen"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/40 blur-[150px] animate-blob animation-delay-2000 mix-blend-screen"></div>
+    <div class="absolute top-[40%] left-[30%] w-[500px] h-[500px] rounded-full bg-blue-900/20 blur-[120px] animate-blob animation-delay-4000 mix-blend-screen"></div>
+    <!-- Noise Texture Overlay -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
   </div>
 
-  <!-- ================= HEADER (Glass) ================= -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-4">
+  <!-- ================= HEADER ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
-      <!-- Logo & Name -->
-      <a href="index.html" class="flex items-center gap-3 cursor-pointer">
-        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
+      <!-- Logo -->
+      <a href="#home" class="flex items-center gap-3 cursor-pointer group">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-rose-500/50 transition-colors">
           <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" class="w-full h-full object-cover">
         </div>
-        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">iFix</span></span>
+        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium group-hover:text-rose-400 transition-colors">iFix</span></span>
       </a>
 
       <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
-        <a href="index.html" class="text-rose-400 font-semibold">Home</a>
-        <a href="about.html" class="hover:text-rose-400 transition-colors">About Us</a>
-        <div class="group relative flex items-center gap-1 cursor-pointer hover:text-rose-400 transition-colors">
-          Services <i data-feather="chevron-down" class="w-4 h-4"></i>
-        </div>
+        <a href="#home" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Home</a>
+        <a href="#about" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">About Us</a>
+        
+        <a href="#services" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Services</a>
         
         <!-- Pages Dropdown -->
         <div class="group relative py-2 cursor-pointer transition-colors">
-          <div class="flex items-center gap-1 hover:text-rose-400">Pages <i data-feather="chevron-down" class="w-4 h-4"></i></div>
-          <div class="absolute top-full left-0 mt-2 w-56 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden z-50">
-            <a href="#updates" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors border-b border-white/5">Updates</a>
-            <a href="#vision" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors border-b border-white/5">Our Vision & Mission</a>
-            <a href="#testimonial" class="px-4 py-3 text-slate-300 hover:text-rose-400 hover:bg-white/5 transition-colors">Testimonial</a>
+          <div class="flex items-center gap-1 hover:text-rose-400 transition-colors">Pages <i data-feather="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i></div>
+          <div class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-56 glass-panel rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden z-50 transform translate-y-2 group-hover:translate-y-0">
+            <a href="#updates" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2"><i data-feather="rss" class="w-3 h-3"></i> Updates</a>
+            <a href="#vision" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2"><i data-feather="eye" class="w-3 h-3"></i> Vision & Mission</a>
+            <a href="#testimonial" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"><i data-feather="message-circle" class="w-3 h-3"></i> Testimonials</a>
           </div>
         </div>
 
-        <a href="blog.html" class="hover:text-rose-400 transition-colors">Our Blog</a>
-        <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
+        <a href="#blog" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Blog</a>
+        <a href="#contact" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Contact</a>
         
-        <!-- Auth Profile Area / Login -->
-        <div id="authProfileArea" class="relative group">
-            <a href="login.html?return=index.html" id="loginNavBtn" class="hover:text-rose-400 transition-colors flex items-center gap-1 cursor-pointer font-bold">
-                Login <i data-feather="user" class="w-4 h-4"></i>
+        <!-- Auth Area -->
+        <div id="authProfileArea" class="relative group ml-4">
+            <a href="#" id="loginNavBtn" class="bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                Login <i data-feather="user" class="w-3 h-3"></i>
             </a>
 
             <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
-                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-rose-400 shadow-lg">
+                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-rose-500/50 shadow-[0_0_10px_rgba(158,27,50,0.3)]">
                 <i data-feather="chevron-down" class="w-4 h-4 text-slate-300"></i>
 
-                <div class="absolute top-full right-0 mt-3 w-48 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50">
+                <div class="absolute top-full right-0 mt-3 w-48 glass-panel rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50 transform origin-top-right scale-95 group-hover:scale-100">
                     <label class="px-4 py-3 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 border-b border-white/5 transition-colors">
-                        <i data-feather="camera" class="w-4 h-4 text-rose-400"></i> Change Picture
+                        <i data-feather="camera" class="w-4 h-4 text-rose-400"></i> Change Pic
                         <input type="file" id="profilePicInput" accept="image/*" class="hidden">
                     </label>
                     <button onclick="logoutCurrentUser()" class="px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-white/10 text-left flex items-center gap-2 transition-colors w-full">
@@ -90,248 +127,276 @@
         </div>
       </nav>
 
-      <!-- Call CTA & Mobile Toggle -->
-      <div class="flex items-center gap-4">
-        <button class="hidden md:flex bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-5 py-2 rounded-full font-medium items-center gap-2 transition-all shadow-lg">
-          <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
-          <span>+880 1868 461577</span>
-        </button>
-        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md z-50 relative">
+      <!-- Mobile Toggle -->
+      <div class="flex items-center gap-4 lg:hidden">
+        <button id="mobile-menu-btn" class="text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md z-50 relative hover:bg-white/10 transition-colors">
           <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
         </button>
       </div>
     </div>
 
     <!-- Mobile Nav Drawer -->
-    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-xl border-t border-white/10 flex flex-col px-4 py-6 gap-4 shadow-2xl transition-all duration-300 z-40 h-screen overflow-y-auto pb-32">
-      <a href="index.html" class="text-rose-400 font-semibold text-lg">Home</a>
-      <a href="about.html" class="text-lg text-slate-200 hover:text-rose-400">About Us</a>
-      <a href="#" class="text-lg text-slate-200 hover:text-rose-400">Services</a>
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-2xl border-t border-white/10 flex flex-col px-6 py-8 gap-5 shadow-2xl transition-all duration-300 z-40 min-h-screen">
+      <a href="#home" class="text-rose-400 font-semibold text-xl border-l-2 border-rose-500 pl-4" onclick="closeMobileMenu()">Home</a>
+      <a href="#about" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">About Us</a>
+      <a href="#services" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Services</a>
       
-      <div class="flex flex-col gap-3 pl-4 border-l-2 border-white/10 my-2">
-        <p class="text-slate-400 uppercase text-xs font-bold tracking-wider">Pages</p>
-        <a href="#updates" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Updates</a>
-        <a href="#vision" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Our Vision & Mission</a>
-        <a href="#testimonial" class="text-slate-200 hover:text-rose-400" onclick="document.getElementById('mobile-menu-btn').click()">Testimonial</a>
+      <div class="flex flex-col gap-3 pl-4 border-l border-white/10 my-2">
+        <p class="text-slate-500 uppercase text-xs font-bold tracking-widest mb-1">Quick Links</p>
+        <a href="#updates" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Latest Updates</a>
+        <a href="#vision" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Vision & Mission</a>
+        <a href="#testimonial" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Testimonials</a>
       </div>
 
-      <a href="blog.html" class="text-lg text-slate-200 hover:text-rose-400">Our Blog</a>
-      <a href="contact.html" class="text-lg text-slate-200 hover:text-rose-400">Contact Us</a>
-      <a href="login.html?return=index.html" class="text-lg text-slate-200 hover:text-rose-400 flex items-center gap-2">Login / Account <i data-feather="user" class="w-4 h-4"></i></a>
+      <a href="#contact" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Contact Us</a>
+      <a href="#" class="mt-4 text-center w-full bg-white/5 border border-white/10 py-3 rounded-xl text-white font-medium" onclick="closeMobileMenu()">Login / Account</a>
     </div>
   </header>
 
-  <main class="flex-grow pt-[80px] lg:pt-[96px]">
+  <main class="flex-grow">
     <!-- ================= HERO SECTION ================= -->
-    <section class="relative w-full h-[500px] md:h-[600px] lg:h-[700px] flex items-center">
+    <section id="home" class="relative w-full min-h-screen flex items-center pt-20">
       <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80" alt="Gadget Repair Workshop" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-[#0f172a]/70 backdrop-blur-sm"></div>
+        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80" alt="Gadget Repair Workshop" class="w-full h-full object-cover opacity-40" />
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0f172a]/80 via-[#0f172a]/60 to-[#0f172a]"></div>
       </div>
       
       <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full text-center flex flex-col items-center">
-        <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-white max-w-4xl leading-tight tracking-tight">
-          Fast and reliable gadget <br class="hidden md:block" /> repair services
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs font-bold uppercase tracking-wider mb-6 animate-fade-in-up">
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Professional Repair Services
+        </div>
+        <h1 class="text-5xl md:text-6xl lg:text-8xl font-extrabold text-white max-w-5xl leading-[1.1] tracking-tight mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+          Revive Your Gadgets <br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-purple-500">With Precision</span>
         </h1>
-        <p class="mt-6 text-slate-300 text-lg md:text-xl max-w-2xl font-light">
+        <p class="mt-4 text-slate-300 text-lg md:text-xl max-w-2xl font-light leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
           Welcome to Habib Tec. — your ultimate destination for professional hardware fixes, genuine components, and expert tech support.
         </p>
-        <div class="mt-10 flex flex-col sm:flex-row gap-4">
-          <button class="bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-[0_0_20px_rgba(158,27,50,0.4)]">
-            Get Started
-          </button>
-          <a href="contact.html" class="bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 inline-block">
-            Contact Now
+        <div class="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
+          <a href="#services" class="bg-gradient-to-r from-[#9E1B32] to-rose-600 hover:from-rose-600 hover:to-[#9E1B32] text-white px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 shadow-[0_10px_30px_-10px_rgba(158,27,50,0.6)] flex items-center justify-center gap-2">
+            Explore Services <i data-feather="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="#contact" class="bg-white/5 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 inline-flex items-center justify-center gap-2">
+            <i data-feather="phone-call" class="w-4 h-4 text-rose-400"></i> Contact Now
           </a>
         </div>
       </div>
     </section>
 
     <!-- ================= QUICK SERVICE BAR ================= -->
-    <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-12 md:-mt-16">
-      <div class="bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] rounded-[32px] p-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-white">
-          <div class="flex items-center gap-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="settings" class="text-rose-400"></i></div>
-            <div><h3 class="font-semibold text-lg text-white">Repair Service</h3><p class="text-sm text-slate-400">Professional fixes</p></div>
+    <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-16 md:-mt-24">
+      <div class="glass-panel rounded-[32px] p-8 shadow-2xl border-t border-white/20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-white divide-y sm:divide-y-0 lg:divide-x divide-white/10">
+          <div class="flex items-center gap-4 group cursor-pointer p-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300 shadow-lg"><i data-feather="settings" class="text-rose-400 w-6 h-6"></i></div>
+            <div><h3 class="font-bold text-lg text-white">Expert Repair</h3><p class="text-sm text-slate-400">Certified technicians</p></div>
           </div>
-          <div class="flex items-center gap-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="cpu" class="text-rose-400"></i></div>
-            <div><h3 class="font-semibold text-lg text-white">Spare Parts</h3><p class="text-sm text-slate-400">Genuine components</p></div>
+          <div class="flex items-center gap-4 group cursor-pointer p-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300 shadow-lg"><i data-feather="cpu" class="text-rose-400 w-6 h-6"></i></div>
+            <div><h3 class="font-bold text-lg text-white">Genuine Parts</h3><p class="text-sm text-slate-400">100% Original components</p></div>
           </div>
-          <div class="flex items-center gap-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="database" class="text-rose-400"></i></div>
-            <div><h3 class="font-semibold text-lg text-white">Data Recovery</h3><p class="text-sm text-slate-400">Safe retrieval</p></div>
+          <div class="flex items-center gap-4 group cursor-pointer p-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300 shadow-lg"><i data-feather="database" class="text-rose-400 w-6 h-6"></i></div>
+            <div><h3 class="font-bold text-lg text-white">Data Safety</h3><p class="text-sm text-slate-400">Secure recovery process</p></div>
           </div>
-          <div class="flex items-center gap-4 group cursor-pointer">
-            <div class="w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-white/20 transition-all"><i data-feather="shield" class="text-rose-400"></i></div>
-            <div><h3 class="font-semibold text-lg text-white">Quality Check</h3><p class="text-sm text-slate-400">Rigorous testing</p></div>
+          <div class="flex items-center gap-4 group cursor-pointer p-2">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300 shadow-lg"><i data-feather="shield" class="text-rose-400 w-6 h-6"></i></div>
+            <div><h3 class="font-bold text-lg text-white">Warranty</h3><p class="text-sm text-slate-400">Service guarantee</p></div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ================= DYNAMIC BLOG / VIDEO SECTION ================= -->
-    <section id="updates" class="py-20 relative z-10 scroll-mt-20">
+    <section id="updates" class="py-24 relative z-10 scroll-mt-24">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div>
-            <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Updates</p>
-            <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">Latest Video & Blogs</h2>
+            <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-2 block">Stay Updated</span>
+            <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">Latest News &<br>Tech Insights</h2>
           </div>
           <div class="flex gap-4">
-            <a href="blog.html" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm shadow-lg">
-              See Posts <i data-feather="arrow-right" class="w-4 h-4"></i>
-            </a>
-            <a href="admin.html" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm shadow-lg">
-              Admin Login <i data-feather="lock" class="w-4 h-4 text-rose-300"></i>
+            <a href="#blog" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm backdrop-blur-md">
+              View All Posts <i data-feather="arrow-right" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
 
         <div id="blog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <p class="text-slate-400 italic col-span-full">Loading posts...</p>
+          <!-- Content injected via JS -->
+          <div class="col-span-full flex justify-center py-12">
+             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ================= ABOUT SECTION ================= -->
-    <section class="py-20 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section id="about" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div class="relative">
           <div class="grid grid-cols-2 gap-4">
-            <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=80" alt="Technician" class="rounded-2xl w-full h-[250px] object-cover mt-8 border border-white/10 shadow-2xl" />
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80" alt="Motherboard" class="rounded-2xl w-full h-[250px] object-cover border border-white/10 shadow-2xl" />
+            <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=80" alt="Technician" class="rounded-3xl w-full h-[280px] object-cover mt-12 border border-white/10 shadow-2xl transform hover:-translate-y-2 transition-transform duration-500" />
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80" alt="Motherboard" class="rounded-3xl w-full h-[280px] object-cover border border-white/10 shadow-2xl transform hover:-translate-y-2 transition-transform duration-500" />
           </div>
-          <div class="absolute -bottom-6 md:bottom-8 left-0 md:-left-8 bg-[#9E1B32]/30 backdrop-blur-xl border border-white/20 text-white p-6 rounded-2xl max-w-[220px] shadow-[0_8px_32px_0_rgba(158,27,50,0.3)]">
-            <span class="text-rose-300 text-4xl leading-none font-serif">"</span>
-            <p class="font-bold text-lg leading-tight mt-2 text-white">We will fix it, till we make it.</p>
+          <!-- Floating Badge -->
+          <div class="absolute -bottom-6 md:bottom-12 left-0 md:-left-8 glass-panel bg-[#9E1B32]/80 text-white p-6 rounded-2xl max-w-[240px] shadow-[0_20px_50px_-12px_rgba(158,27,50,0.5)] border border-white/20 backdrop-blur-xl">
+            <span class="text-rose-200 text-5xl leading-none font-serif opacity-50 absolute top-2 left-4">"</span>
+            <p class="font-bold text-xl leading-tight mt-4 relative z-10">We fix it till we make it perfect.</p>
           </div>
         </div>
         <div>
-          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3">ABOUT OUR CULTURE</p>
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Leading the way in repair solution</h2>
-          <p class="text-slate-300 mb-8 text-lg leading-relaxed">
-            Habib iFix delivers unmatched precision and expert care for every electronic device you bring to our workshop.
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Who We Are</span>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Leading the way in <br>repair solutions</h2>
+          <p class="text-slate-400 mb-8 text-lg leading-relaxed">
+            Habib iFix delivers unmatched precision and expert care for every electronic device you bring to our workshop. We combine modern technology with traditional craftsmanship.
           </p>
-          <button class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:-translate-y-1 shadow-lg">Learn More</button>
+          
+          <div class="space-y-4 mb-8">
+             <div class="flex items-center gap-3 text-slate-300">
+                <div class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center"><i data-feather="check" class="w-3 h-3"></i></div>
+                Certified Hardware Experts
+             </div>
+             <div class="flex items-center gap-3 text-slate-300">
+                <div class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center"><i data-feather="check" class="w-3 h-3"></i></div>
+                Transparent Pricing Model
+             </div>
+          </div>
+
+          <a href="#contact" class="inline-block bg-white text-[#0f172a] hover:bg-slate-200 px-8 py-3.5 rounded-full font-bold transition-all hover:-translate-y-1 shadow-lg">Discover More</a>
         </div>
       </div>
     </section>
 
     <!-- ================= WHY CHOOSE US ================= -->
-    <section class="py-20 relative z-10 bg-white/5 backdrop-blur-sm border-y border-white/10">
+    <section class="py-24 relative z-10 bg-black/20 border-y border-white/5">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="text-center max-w-3xl mx-auto mb-16">
-          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Why Choose Us</p>
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Why Choose Us</span>
           <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Trusted expertise in the gadget area</h2>
-          <p class="text-slate-300">Dedicated professionals committed to bringing your devices back to peak performance.</p>
+          <p class="text-slate-400">Dedicated professionals committed to bringing your devices back to peak performance with speed and reliability.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="relative group rounded-2xl overflow-hidden bg-[#0f172a]/50 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
-            <div class="h-56 overflow-hidden rounded-xl">
-              <img src="https://i.ibb.co.com/bRmHP7S2/cell-phone-repair-at-service-center-smartphone-dissasembling-and-diagnostic-repairman-workplace-top.jpg" alt="Professional" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <!-- Card 1 -->
+          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group">
+            <div class="h-64 overflow-hidden rounded-[20px] relative">
+              <img src="https://i.ibb.co.com/bRmHP7S2/cell-phone-repair-at-service-center-smartphone-dissasembling-and-diagnostic-repairman-workplace-top.jpg" alt="Professional" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent opacity-80"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                 <h3 class="font-bold text-white text-xl mb-1">Professional Team</h3>
+                 <p class="text-sm text-slate-300">Skilled technicians ready to help.</p>
+              </div>
             </div>
-            <div class="mt-4 text-center font-bold text-white text-lg">Professional</div>
           </div>
-          <div class="relative group rounded-2xl overflow-hidden bg-[#0f172a]/50 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
-            <div class="h-56 overflow-hidden rounded-xl">
-              <img src="https://i.ibb.co.com/d05zkJkx/mobile-tech-training-and-service-centre-chalode-kannur-mobile-phone-repair-and-services-y8a94bsl8t.webp" alt="Same Day Repairs" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <!-- Card 2 -->
+          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group">
+            <div class="h-64 overflow-hidden rounded-[20px] relative">
+              <img src="https://i.ibb.co.com/d05zkJkx/mobile-tech-training-and-service-centre-chalode-kannur-mobile-phone-repair-and-services-y8a94bsl8t.webp" alt="Same Day Repairs" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent opacity-80"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                 <h3 class="font-bold text-white text-xl mb-1">Fast Turnaround</h3>
+                 <p class="text-sm text-slate-300">Most repairs done same-day.</p>
+              </div>
             </div>
-            <div class="mt-4 text-center font-bold text-white text-lg">Same Day Repairs</div>
           </div>
-          <div class="relative group rounded-2xl overflow-hidden bg-[#0f172a]/50 backdrop-blur-md border border-white/10 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:border-white/30 transition-all duration-300">
-            <div class="h-56 overflow-hidden rounded-xl">
-              <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80" alt="Genuine Parts" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <!-- Card 3 -->
+          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group">
+            <div class="h-64 overflow-hidden rounded-[20px] relative">
+              <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80" alt="Genuine Parts" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent opacity-80"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                 <h3 class="font-bold text-white text-xl mb-1">Quality Assured</h3>
+                 <p class="text-sm text-slate-300">Only genuine spare parts used.</p>
+              </div>
             </div>
-            <div class="mt-4 text-center font-bold text-white text-lg">Genuine Parts</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= LOGO STRIP ================= -->
-    <section class="py-10 relative z-10 border-b border-white/10">
-      <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-10 md:gap-20 opacity-50 hover:opacity-80 transition-opacity">
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib iFIx</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Mobile Repair</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Habib iFix</div>
-        <div class="flex items-center gap-2 font-bold text-xl text-slate-300"><div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white text-xs">H</div>Mobile Repair</div>
-      </div>
-    </section>
-
-    <!-- ================= OUR SERVICES (With Popup Modal) ================= -->
-    <section class="py-20 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+    <!-- ================= OUR SERVICES ================= -->
+    <section id="services" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-24">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
         <div>
-          <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Services</p>
-          <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">We offer a wide variety gadget services</h2>
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Our Expertise</span>
+          <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">Comprehensive Gadget Services</h2>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Mobile Phone Repair', 'We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage. Get your smartphone back to life in no time!', 'smartphone')">
-          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="smartphone" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white">Mobile Phone</h3>
-          <p class="text-slate-400 mb-6 text-sm">Professional mobile repair services for all major brands.</p>
-          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Service Item 1 -->
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Mobile Phone Repair', 'We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage. Get your smartphone back to life in no time!', 'smartphone')">
+          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="smartphone" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Mobile Phone</h3>
+          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Professional mobile repair services for all major brands including iPhone & Samsung.</p>
+          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Tablet Repair', 'From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates for all tablets.', 'tablet')">
-          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="tablet" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white">Tablet</h3>
-          <p class="text-slate-400 mb-6 text-sm">Expert tablet diagnosis and quick reliable repairs.</p>
-          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+
+        <!-- Service Item 2 -->
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Tablet Repair', 'From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates for all tablets.', 'tablet')">
+          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="tablet" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Tablet Repair</h3>
+          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Expert tablet diagnosis and quick reliable repairs for screens and batteries.</p>
+          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Laptop Repair', 'We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes for all laptop models.', 'laptop')">
-          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="laptop" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white">Laptop</h3>
-          <p class="text-slate-400 mb-6 text-sm">Hardware and software solutions for your laptops.</p>
-          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+
+        <!-- Service Item 3 -->
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Laptop Repair', 'We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes for all laptop models.', 'laptop')">
+          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="laptop" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Laptop Care</h3>
+          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Hardware and software solutions for your laptops. Hinge, Screen, SSD upgrades.</p>
+          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Computer Desktop', 'Custom PC builds, hardware upgrades, SSD installation, and deep cleaning for optimal desktop performance.', 'monitor')">
-          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="monitor" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white">Computer Desktop</h3>
-          <p class="text-slate-400 mb-6 text-sm">Full desktop maintenance and upgrading services.</p>
-          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+
+        <!-- Service Item 4 -->
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Computer Desktop', 'Custom PC builds, hardware upgrades, SSD installation, and deep cleaning for optimal desktop performance.', 'monitor')">
+          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="monitor" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Desktop PC</h3>
+          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Full desktop maintenance, custom builds, and upgrading services for gamers.</p>
+          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Camera Repair', 'Professional cleaning, lens fixing, and sensor calibration for DSLR, Mirrorless, and digital cameras.', 'camera')">
-          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="camera" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white">Camera</h3>
-          <p class="text-slate-400 mb-6 text-sm">Fixing lenses, sensors, and hardware of your cameras.</p>
-          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+
+        <!-- Service Item 5 -->
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Camera Repair', 'Professional cleaning, lens fixing, and sensor calibration for DSLR, Mirrorless, and digital cameras.', 'camera')">
+          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="camera" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">DSLR Camera</h3>
+          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Fixing lenses, sensors, and internal hardware of your professional cameras.</p>
+          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
         </div>
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Wearable Device', 'Apple Watch, Galaxy Watch, and other smart wearables screen replacement and battery fixing services.', 'watch')">
-          <div class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"><i data-feather="watch" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white">Wearable Device</h3>
-          <p class="text-slate-400 mb-6 text-sm">Smartwatch repair and maintenance experts.</p>
-          <button class="text-rose-300 font-semibold flex items-center gap-1 hover:gap-2 transition-all">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></button>
+
+        <!-- Service Item 6 -->
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Wearable Device', 'Apple Watch, Galaxy Watch, and other smart wearables screen replacement and battery fixing services.', 'watch')">
+          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="watch" class="w-10 h-10"></i></div>
+          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Smart Wearables</h3>
+          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Smartwatch repair and maintenance experts for all latest models.</p>
+          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
         </div>
       </div>
     </section>
 
     <!-- ================= SUPPORT CTA ================= -->
-    <section class="relative py-20 md:py-28">
+    <section id="contact" class="relative py-24 md:py-32 scroll-mt-24">
       <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80" alt="Background" class="w-full h-full object-cover blur-sm" />
-        <div class="absolute inset-0 bg-[#4A154B]/80 backdrop-blur-md"></div>
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80" alt="Background" class="w-full h-full object-cover blur-sm scale-105" />
+        <div class="absolute inset-0 bg-[#4A154B]/90 backdrop-blur-md mix-blend-multiply"></div>
       </div>
-      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-10">
+      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-12">
         <div class="text-white max-w-xl">
-          <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Get support for your problem</h2>
-          <p class="text-white/80 text-lg">Reach out to Habib Tec. for immediate consultation and quick device turnaround.</p>
+          <h2 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">Need immediate help?</h2>
+          <p class="text-white/80 text-xl font-light">Reach out to Habib Tec. for immediate consultation and quick device turnaround. We are available 24/7.</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-          <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
-            <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center"><i data-feather="mail"></i></div>
+          <div class="glass-panel bg-white/10 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer group">
+            <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center group-hover:bg-rose-500 transition-colors"><i data-feather="mail"></i></div>
             <div>
-              <p class="text-sm text-white/70 font-medium">Send us an email</p>
+              <p class="text-sm text-white/70 font-medium">Email us</p>
               <p class="font-bold text-white">tec.habiburrahman@gmail.com</p>
             </div>
           </div>
-          <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
-            <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center"><i data-feather="phone"></i></div>
+          <div class="glass-panel bg-white/10 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer group">
+            <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center group-hover:bg-rose-500 transition-colors"><i data-feather="phone"></i></div>
             <div>
-              <p class="text-sm text-white/70 font-medium">Give us a call</p>
+              <p class="text-sm text-white/70 font-medium">Call us</p>
               <p class="font-bold text-white">+880 1868 461577</p>
             </div>
           </div>
@@ -340,40 +405,50 @@
     </section>
 
     <!-- ================= VISION & MISSION ================= -->
-    <section id="vision" class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-20">
-      <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[40px] p-8 md:p-12 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+    <section id="vision" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-24">
+      <div class="glass-panel rounded-[40px] p-8 md:p-16 shadow-2xl">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer border border-white/20">
-            <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80" alt="Technician Video" class="w-full h-[400px] md:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px]">
-              <div class="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/40 rounded-full flex items-center justify-center pl-1 text-white shadow-[0_0_20px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-300">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer border border-white/20 aspect-[4/5] lg:aspect-auto lg:h-[500px]">
+            <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80" alt="Technician Video" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px] group-hover:bg-black/30 transition-colors">
+              <div class="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/40 rounded-full flex items-center justify-center pl-1 text-white shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-300">
                 <i data-feather="play" class="w-8 h-8 fill-current"></i>
               </div>
             </div>
-            <div class="absolute bottom-0 left-0 right-0 bg-[#0f172a]/70 backdrop-blur-md border-t border-white/10 text-white p-6 text-center">
-              <h3 class="font-bold text-xl">Habibur Rahman</h3>
-              <p class="text-rose-300 font-semibold text-sm mt-1 tracking-widest uppercase">Habib Tec. Founder</p>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0f172a] to-transparent p-8 text-white text-center">
+              <h3 class="font-bold text-2xl">Habibur Rahman</h3>
+              <p class="text-rose-300 font-semibold text-sm mt-1 tracking-widest uppercase">Founder, Habib Tec.</p>
             </div>
           </div>
 
           <div>
-            <p class="text-rose-400 font-bold tracking-wider text-sm mb-3 uppercase">Our Vision & Mission</p>
+            <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Core Values</span>
             <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Innovate with the gadget trends</h2>
-            <p class="text-slate-300 mb-8 text-lg">Providing top-notch repair solutions and maintaining absolute transparency with every customer.</p>
+            <p class="text-slate-400 mb-8 text-lg">Providing top-notch repair solutions and maintaining absolute transparency with every customer interaction.</p>
+            
             <div class="space-y-4">
-              <div class="accordion-item border rounded-xl p-5 cursor-pointer transition-colors border-rose-500/50 bg-rose-900/20 backdrop-blur-md" onclick="toggleAccordion(this)">
+              <div class="accordion-item border border-rose-500/30 bg-rose-900/10 rounded-2xl p-6 cursor-pointer transition-all duration-300" onclick="toggleAccordion(this)">
                 <div class="flex justify-between items-center">
-                  <h4 class="font-bold text-rose-300">Fast & Secure Repairs</h4>
-                  <i data-feather="chevron-down" class="w-5 h-5 transition-transform rotate-180 text-rose-300 acc-icon"></i>
+                  <h4 class="font-bold text-lg text-rose-300">Fast & Secure Repairs</h4>
+                  <div class="w-8 h-8 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 acc-icon-box rotate-180 transition-transform duration-300">
+                     <i data-feather="chevron-down" class="w-4 h-4"></i>
+                  </div>
                 </div>
-                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed block">We provide the most efficient and secure repair process ensuring your data and device remain totally safe.</p>
+                <div class="acc-content max-h-40 opacity-100 mt-4 overflow-hidden transition-all duration-300">
+                   <p class="text-slate-400 leading-relaxed">We provide the most efficient and secure repair process ensuring your data and device remain totally safe throughout the service.</p>
+                </div>
               </div>
-              <div class="accordion-item border border-white/10 bg-white/5 backdrop-blur-md hover:border-white/30 rounded-xl p-5 cursor-pointer transition-colors" onclick="toggleAccordion(this)">
+              
+              <div class="accordion-item border border-white/10 bg-white/5 rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:border-white/20" onclick="toggleAccordion(this)">
                 <div class="flex justify-between items-center">
-                  <h4 class="font-bold text-slate-200">100% Genuine Parts</h4>
-                  <i data-feather="chevron-down" class="w-5 h-5 transition-transform text-slate-400 acc-icon"></i>
+                  <h4 class="font-bold text-lg text-slate-200">100% Genuine Parts</h4>
+                  <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 acc-icon-box transition-transform duration-300">
+                     <i data-feather="chevron-down" class="w-4 h-4"></i>
+                  </div>
                 </div>
-                <p class="acc-content mt-4 text-slate-300 text-sm leading-relaxed hidden">We only source and use original or top-tier replacement parts to maximize the lifespan of your gadgets.</p>
+                <div class="acc-content max-h-0 opacity-0 mt-0 overflow-hidden transition-all duration-300">
+                   <p class="text-slate-400 leading-relaxed pt-4">We only source and use original or top-tier replacement parts to maximize the lifespan of your gadgets.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -382,205 +457,213 @@
     </section>
 
     <!-- ================= STATISTICS ================= -->
-    <section class="py-16 relative z-10 border-y border-white/10 bg-white/5 backdrop-blur-sm">
+    <section class="py-20 relative z-10 border-y border-white/10 bg-white/[0.02]">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x-0 lg:divide-x divide-white/10">
-          <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">5<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
-            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Glorious Years</p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+          <div class="p-4 group">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">5<span class="text-rose-500 text-3xl">+</span></div>
+            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Years Experience</p>
           </div>
-          <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">500<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
-            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Happy Customer</p>
+          <div class="p-4 group">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">500<span class="text-rose-500 text-3xl">+</span></div>
+            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Happy Clients</p>
           </div>
-          <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">620<span class="text-rose-400 text-3xl md:text-4xl">+</span></div>
-            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Service Complete</p>
+          <div class="p-4 group">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">620<span class="text-rose-500 text-3xl">+</span></div>
+            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Devices Fixed</p>
           </div>
-          <div class="p-4">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2">99<span class="text-rose-400 text-3xl md:text-4xl">%</span></div>
-            <p class="text-slate-400 font-medium uppercase tracking-wider text-sm">Satisfactions</p>
+          <div class="p-4 group">
+            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">99<span class="text-rose-500 text-3xl">%</span></div>
+            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Satisfaction Rate</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ================= TESTIMONIAL ================= -->
-    <section id="testimonial" class="py-20 md:py-28 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-20">
-      <div class="flex flex-col lg:flex-row rounded-[40px] overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] border border-white/10 bg-white/5 backdrop-blur-xl">
-        <div class="p-10 md:p-16 lg:w-1/2 flex flex-col justify-center relative">
-          <p class="text-rose-300 font-bold tracking-wider text-sm mb-3 uppercase">Testimonial</p>
-          <h2 class="text-4xl md:text-5xl font-bold text-white mb-10 leading-tight">Review from our customer</h2>
+    <section id="testimonial" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-24">
+      <div class="flex flex-col lg:flex-row rounded-[40px] overflow-hidden shadow-2xl border border-white/10 glass-panel">
+        <div class="p-12 md:p-20 lg:w-1/2 flex flex-col justify-center relative bg-gradient-to-br from-[#0f172a] to-[#1e1b4b]">
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-4 block">Testimonial</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 leading-tight">What our customers say</h2>
           
-          <div class="bg-[#0f172a]/80 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-xl relative z-10 lg:-mr-24 transform lg:translate-x-12 transition-transform hover:-translate-y-1">
-            <div class="text-rose-400 text-4xl font-serif mb-4 leading-none">"</div>
-            <p class="text-slate-300 text-lg italic mb-6">
-              "Habib Tec. provided incredible service! Fixed my laptop motherboard smoothly and quickly. Highly recommended."
+          <div class="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl relative z-10 lg:-mr-12 transform lg:translate-x-6 transition-transform hover:-translate-y-2 duration-300">
+            <i data-feather="message-square" class="text-rose-500/20 w-12 h-12 absolute top-6 right-6"></i>
+            <p class="text-slate-300 text-xl italic mb-8 leading-relaxed">
+              "Habib Tec. provided incredible service! Fixed my laptop motherboard smoothly and quickly. The pricing was transparent and the staff was very knowledgeable."
             </p>
             <div class="flex items-center gap-4">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover border border-white/20" />
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80" alt="Customer" class="w-14 h-14 rounded-full object-cover border-2 border-rose-500/50" />
               <div>
-                <h4 class="font-bold text-white">Kylie Store</h4>
-                <div class="flex text-yellow-400 text-sm">★★★★★</div>
+                <h4 class="font-bold text-white text-lg">Kylie Store</h4>
+                <div class="flex text-yellow-400 text-sm gap-1">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
               </div>
             </div>
           </div>
         </div>
         
-        <div class="lg:w-1/2 h-[400px] lg:h-auto border-l border-white/10">
+        <div class="lg:w-1/2 h-[400px] lg:h-auto relative">
           <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80" alt="Happy Customer" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-rose-900/20 mix-blend-overlay"></div>
         </div>
       </div>
     </section>
 
   </main>
+
 <!-- ================= FOOTER ================= -->
-<footer class="bg-[#0f172a] text-slate-400 pt-16 pb-12 relative z-10 mt-auto border-t border-white/10">
+<footer class="bg-[#050a14] text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-white/10">
   <div class="max-w-[1280px] mx-auto px-4 md:px-6">
     
-    <!-- Top Call-to-Action Card (Inspired by the reference image) -->
-    <div class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-[32px] p-8 md:p-12 text-center mb-16 shadow-2xl relative overflow-hidden">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[100px] bg-rose-500/15 blur-[80px] pointer-events-none"></div>
-      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Build like the best</h2>
-      <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base mb-8 leading-relaxed">
-        Explore our docs and spin up a project in minutes. Discover firsthand why Habib iFix is the ultimate, enterprise-grade choice for speed, quality, and future-proofing your tech stack.
+    <!-- Top Call-to-Action Card -->
+    <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-rose-500/20 blur-[100px] pointer-events-none group-hover:bg-rose-500/30 transition-colors"></div>
+      <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">Ready to fix your device?</h2>
+      <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">
+        Visit us today or contact us online. Experience the best repair service in town with Habib iFix.
       </p>
-      <a href="contact.html" class="inline-block bg-white text-slate-900 font-semibold px-8 py-3 rounded-full hover:bg-slate-200 transition-all shadow-lg hover:-translate-y-0.5">
-        Get Started for Free
+      <a href="#contact" class="inline-block bg-white text-[#0f172a] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">
+        Get Started Now
       </a>
     </div>
 
     <!-- Main Footer Links Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-16 text-sm">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
       
       <!-- Brand Logo & Info -->
-      <div class="col-span-2 space-y-4">
-        <a href="index.html" class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center">
-            <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" class="w-full h-full object-cover">
+      <div class="col-span-2 space-y-6">
+        <a href="#home" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
+            <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover">
           </div>
-          <span class="font-bold text-xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">iFix</span></span>
+          <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span>
         </a>
-        <p class="text-xs text-slate-500 leading-relaxed pr-4">
-          Your trusted partner for fast and reliable gadget repair services and component solutions.
+        <p class="text-slate-500 leading-relaxed pr-8">
+          Your trusted partner for fast and reliable gadget repair services and component solutions. We breathe life back into your tech.
         </p>
       </div>
 
-      <!-- Column 1: Services -->
+      <!-- Column 1 -->
       <div>
-        <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-wider">Services</h4>
-        <ul class="space-y-3">
-          <li><a href="#" class="hover:text-white transition-colors">Smartphone Repair</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Laptop Repair</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Tablet Fix</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Data Recovery</a></li>
+        <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4>
+        <ul class="space-y-4">
+          <li><a href="#services" class="hover:text-rose-400 transition-colors">Phone Repair</a></li>
+          <li><a href="#services" class="hover:text-rose-400 transition-colors">Laptop Fix</a></li>
+          <li><a href="#services" class="hover:text-rose-400 transition-colors">Tablet Service</a></li>
+          <li><a href="#services" class="hover:text-rose-400 transition-colors">Data Recovery</a></li>
         </ul>
       </div>
 
-      <!-- Column 2: Resources -->
+      <!-- Column 2 -->
       <div>
-        <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-wider">Resources</h4>
-        <ul class="space-y-3">
-          <li><a href="blog.html" class="hover:text-white transition-colors">Blog</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Changelog</a></li>
-          <li><a href="contact.html" class="hover:text-white transition-colors">Support</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Trust Center</a></li>
+        <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
+        <ul class="space-y-4">
+          <li><a href="#home" class="hover:text-rose-400 transition-colors">Home</a></li>
+          <li><a href="#about" class="hover:text-rose-400 transition-colors">About Us</a></li>
+          <li><a href="#testimonial" class="hover:text-rose-400 transition-colors">Reviews</a></li>
+          <li><a href="#contact" class="hover:text-rose-400 transition-colors">Contact</a></li>
         </ul>
       </div>
 
-      <!-- Column 3: Company -->
+      <!-- Column 3 -->
       <div>
-        <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-wider">Company</h4>
-        <ul class="space-y-3">
-          <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
-          <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Customers</a></li>
-          <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+        <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4>
+        <ul class="space-y-4">
+          <li><a href="#" class="hover:text-rose-400 transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="hover:text-rose-400 transition-colors">Terms of Service</a></li>
+          <li><a href="#" class="hover:text-rose-400 transition-colors">Warranty Policy</a></li>
         </ul>
       </div>
 
-      <!-- Column 4: Legal -->
+      <!-- Column 4 -->
       <div>
-        <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-wider">Legal</h4>
-        <ul class="space-y-3">
-          <li><a href="#" class="hover:text-white transition-colors">Terms of service</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Privacy policy</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Security</a></li>
-          <li><a href="#" class="hover:text-white transition-colors">Guidelines</a></li>
-        </ul>
+        <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4>
+        <div class="flex flex-col gap-4">
+           <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
+           <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i> Instagram</a>
+           <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-lg"></i> Twitter</a>
+        </div>
       </div>
 
     </div>
 
-    <!-- Footer Bottom Bar (Copyright & Social Icons) -->
-    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+    <!-- Footer Bottom Bar -->
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
       <div class="flex items-center gap-6">
         <p>&copy; 2026 Habib iFix. All Rights Reserved.</p>
-        <span class="flex items-center gap-2 text-emerald-400 font-medium">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> All Systems Operational
+        <span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Online
         </span>
-      </div>
-      
-      <!-- Social Media Icons (matching the reference image style) -->
-      <div class="flex items-center gap-4 text-slate-400">
-        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-github text-base"></i></a>
-        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-twitter text-base"></i></a>
-        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-facebook text-base"></i></a>
-        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-base"></i></a>
-        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-base"></i></a>
       </div>
     </div>
 
   </div>
 </footer>
 
-  <!-- ================= POPUP MODAL FOR SERVICES ================= -->
+  <!-- ================= POPUP MODAL ================= -->
   <div id="serviceModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
-    <div id="modalContent" class="relative bg-[#0f172a]/95 backdrop-blur-2xl border border-white/20 p-8 rounded-[32px] shadow-2xl max-w-md w-full transform scale-95 opacity-0 transition-all duration-300">
-      <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-rose-400 bg-white/5 rounded-full p-2 border border-white/10 transition-colors">
+    <div class="absolute inset-0 bg-[#0f172a]/80 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+    <div id="modalContent" class="relative glass-panel bg-[#0f172a] p-8 md:p-10 rounded-[32px] shadow-2xl max-w-md w-full transform scale-95 opacity-0 transition-all duration-300 border border-white/20">
+      <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 border border-white/10 transition-colors">
         <i data-feather="x" class="w-5 h-5"></i>
       </button>
-      <div id="modalIconBox" class="w-20 h-20 bg-white/10 border border-white/20 text-rose-400 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+      <div id="modalIconBox" class="w-24 h-24 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-inner">
           <i data-feather="tool" id="modalIcon" class="w-10 h-10"></i>
       </div>
       <h3 id="modalTitle" class="text-2xl font-bold text-white mb-4 text-center">Service Name</h3>
-      <p id="modalDesc" class="text-slate-300 mb-8 text-center leading-relaxed">Detailed description goes here...</p>
-      <a href="contact.html" class="flex justify-center items-center gap-2 w-full bg-[#9E1B32]/90 hover:bg-[#9E1B32] border border-rose-500/50 text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(158,27,50,0.3)] hover:-translate-y-1">
-        Service Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+      <p id="modalDesc" class="text-slate-400 mb-8 text-center leading-relaxed">Detailed description goes here...</p>
+      <a href="#contact" onclick="closeModal()" class="flex justify-center items-center gap-2 w-full bg-gradient-to-r from-[#9E1B32] to-rose-600 hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-[0_10px_20px_-5px_rgba(158,27,50,0.4)] hover:-translate-y-1">
+        Book Appointment <i data-feather="arrow-right" class="w-4 h-4"></i>
       </a>
     </div>
   </div>
 
-  <!-- Global JavaScript helper functions for window scope access -->
+  <!-- Global JavaScript -->
   <script>
-    // Accordion Logic
+    // Initialize Icons
+    feather.replace();
+
+    // Accordion Logic (Fixed)
     function toggleAccordion(element) {
       const content = element.querySelector('.acc-content');
-      const icon = element.querySelector('.acc-icon');
+      const iconBox = element.querySelector('.acc-icon-box');
       const title = element.querySelector('h4');
-      const isHidden = content.classList.contains('hidden');
+      
+      // Check if current is open
+      const isOpen = !content.classList.contains('max-h-0');
 
+      // Close all others
       document.querySelectorAll('.accordion-item').forEach(item => {
-        item.classList.remove('border-rose-500/50', 'bg-rose-900/20');
+        item.classList.remove('border-rose-500/30', 'bg-rose-900/10');
         item.classList.add('border-white/10', 'bg-white/5');
-        item.querySelector('.acc-content').classList.add('hidden');
-        item.querySelector('.acc-content').classList.remove('block');
+        
+        const c = item.querySelector('.acc-content');
+        c.classList.add('max-h-0', 'opacity-0', 'mt-0');
+        c.classList.remove('max-h-40', 'opacity-100', 'mt-4');
+        
         item.querySelector('h4').classList.remove('text-rose-300');
         item.querySelector('h4').classList.add('text-slate-200');
-        item.querySelector('.acc-icon').classList.remove('rotate-180', 'text-rose-300');
-        item.querySelector('.acc-icon').classList.add('text-slate-400');
+        
+        const i = item.querySelector('.acc-icon-box');
+        i.classList.remove('rotate-180', 'bg-rose-500/20', 'text-rose-400');
+        i.classList.add('bg-white/5', 'text-slate-400');
       });
 
-      if (isHidden) {
-        element.classList.add('border-rose-500/50', 'bg-rose-900/20');
+      // Toggle clicked one
+      if (!isOpen) {
         element.classList.remove('border-white/10', 'bg-white/5');
-        content.classList.remove('hidden');
-        content.classList.add('block');
+        element.classList.add('border-rose-500/30', 'bg-rose-900/10');
+        
+        content.classList.remove('max-h-0', 'opacity-0', 'mt-0');
+        content.classList.add('max-h-40', 'opacity-100', 'mt-4');
+        
         title.classList.add('text-rose-300');
         title.classList.remove('text-slate-200');
-        icon.classList.add('rotate-180', 'text-rose-300');
-        icon.classList.remove('text-slate-400');
+        
+        iconBox.classList.add('rotate-180', 'bg-rose-500/20', 'text-rose-400');
+        iconBox.classList.remove('bg-white/5', 'text-slate-400');
       }
     }
 
@@ -588,28 +671,72 @@
     function openModal(title, desc, iconName) {
       const modal = document.getElementById('serviceModal');
       const content = document.getElementById('modalContent');
+      
       document.getElementById('modalTitle').innerText = title;
       document.getElementById('modalDesc').innerText = desc;
       document.getElementById('modalIconBox').innerHTML = `<i data-feather="${iconName}" class="w-10 h-10"></i>`;
       feather.replace();
+      
       modal.classList.remove('hidden');
       modal.classList.add('flex');
-      setTimeout(() => {
+      
+      // Small delay for transition
+      requestAnimationFrame(() => {
         content.classList.remove('scale-95', 'opacity-0');
         content.classList.add('scale-100', 'opacity-100');
-      }, 10);
+      });
     }
 
     function closeModal() {
       const modal = document.getElementById('serviceModal');
       const content = document.getElementById('modalContent');
+      
       content.classList.remove('scale-100', 'opacity-100');
       content.classList.add('scale-95', 'opacity-0');
+      
       setTimeout(() => {
         modal.classList.add('hidden');
         modal.classList.remove('flex');
       }, 300);
     }
+
+    // Header Scroll Effect
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
+        header.classList.remove('bg-transparent', 'py-4');
+      } else {
+        header.classList.add('bg-transparent', 'py-4');
+        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
+      }
+    });
+
+    // Mobile Menu
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let isMenuOpen = false;
+
+    function closeMobileMenu() {
+       isMenuOpen = false;
+       mobileMenu.classList.add('hidden');
+       menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6"></i>';
+       feather.replace();
+    }
+
+    menuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      if (isMenuOpen) {
+        mobileMenu.classList.remove('hidden');
+        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6"></i>';
+      } else {
+        closeMobileMenu();
+      }
+      feather.replace();
+    });
+
+    // Mock Auth Functions (Placeholders)
+    window.logoutCurrentUser = function() { alert("Logged out!"); };
   </script>
 
   <!-- Firebase & App Script -->
@@ -629,227 +756,174 @@
       measurementId: "G-GNY1T88D34"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const authInstance = getAuth(app);
-    const storageInstance = getStorage(app);
+    try {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const authInstance = getAuth(app);
+        const storageInstance = getStorage(app);
 
-    feather.replace();
-
-    // Glass Header Scroll Effect
-    const header = document.getElementById('main-header');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
-        header.classList.remove('bg-transparent', 'py-4');
-      } else {
-        header.classList.add('bg-transparent', 'py-4');
-        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-lg', 'py-3');
-      }
-    });
-
-    // Mobile Menu Toggle
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    let isMenuOpen = false;
-
-    menuBtn.addEventListener('click', () => {
-      isMenuOpen = !isMenuOpen;
-      if (isMenuOpen) {
-        mobileMenu.classList.remove('hidden');
-        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6"></i>';
-      } else {
-        mobileMenu.classList.add('hidden');
-        menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6"></i>';
-      }
-      feather.replace();
-    });
-
-    // Auth Header State & Profile Picture Handling
-    onAuthStateChanged(authInstance, (user) => {
-        const loginBtn = document.getElementById('loginNavBtn');
-        const profileMenu = document.getElementById('userProfileMenu');
-        
-        if (user) {
-            if(loginBtn) loginBtn.classList.add('hidden');
-            if(profileMenu) profileMenu.classList.remove('hidden');
-            const avatarImg = document.getElementById('headerAvatar');
-            if(avatarImg) avatarImg.src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
-        } else {
-            if(loginBtn) loginBtn.classList.remove('hidden');
-            if(profileMenu) profileMenu.classList.add('hidden');
-        }
-    });
-
-    const picInput = document.getElementById('profilePicInput');
-    if (picInput) {
-        picInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if(!file || !authInstance.currentUser) return;
-            document.getElementById('headerAvatar').src = "https://www.svgrepo.com/show/285573/loading-spinner.svg";
-            try {
-                const storageRef = ref(storageInstance, 'avatars/' + authInstance.currentUser.uid);
-                await uploadBytes(storageRef, file);
-                const photoURL = await getDownloadURL(storageRef);
-                await updateProfile(authInstance.currentUser, { photoURL: photoURL });
-                document.getElementById('headerAvatar').src = photoURL;
-                alert("Profile picture updated successfully!");
-            } catch (error) {
-                alert("Upload failed. " + error.message);
-                document.getElementById('headerAvatar').src = authInstance.currentUser.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+        // Auth State
+        onAuthStateChanged(authInstance, (user) => {
+            const loginBtn = document.getElementById('loginNavBtn');
+            const profileMenu = document.getElementById('userProfileMenu');
+            
+            if (user) {
+                if(loginBtn) loginBtn.classList.add('hidden');
+                if(profileMenu) profileMenu.classList.remove('hidden');
+                const avatarImg = document.getElementById('headerAvatar');
+                if(avatarImg) avatarImg.src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
+            } else {
+                if(loginBtn) loginBtn.classList.remove('hidden');
+                if(profileMenu) profileMenu.classList.add('hidden');
             }
         });
-    }
 
-    window.logoutCurrentUser = function() {
-        signOut(authInstance).then(() => {
-            sessionStorage.removeItem('isAdmin');
-            window.location.reload();
-        });
-    };
-
-    // Subscription Form
-    const subForm = document.getElementById('subscribeForm');
-    if(subForm) {
-        subForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          const subBtn = document.getElementById('subBtn');
-          const subMsg = document.getElementById('subMsg');
-          subBtn.innerText = 'Wait...';
-          subBtn.disabled = true;
-          setTimeout(() => {
-              subMsg.classList.remove('hidden');
-              subForm.reset();
-              subBtn.innerText = 'Submit';
-              subBtn.disabled = false;
-              setTimeout(() => subMsg.classList.add('hidden'), 5000);
-          }, 1000);
-        });
-    }
-
-    // Fetch Blog Posts
-    async function loadBlogPosts() {
-      const blogContainer = document.getElementById('blog-container');
-      if(!blogContainer) return;
-      
-      try {
-        const q = query(collection(db, "blogPosts"), orderBy("timestamp", "desc"), limit(3));
-        const querySnapshot = await getDocs(q);
-        
-        if (querySnapshot.empty) {
-          blogContainer.innerHTML = `
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-lg col-span-full">
-              <div class="w-full h-48 bg-white/10 rounded-xl mb-4 flex items-center justify-center text-slate-400 border border-white/10">
-                   <i data-feather="video" class="w-10 h-10 text-rose-300"></i>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-2">Welcome to Habib Tec.</h3>
-              <p class="text-sm text-slate-400 line-clamp-3">Posts published from the Admin Panel will appear here.</p>
-            </div>
-          `;
-          feather.replace();
-          return;
+        // Profile Pic Upload
+        const picInput = document.getElementById('profilePicInput');
+        if (picInput) {
+            picInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if(!file || !authInstance.currentUser) return;
+                try {
+                    const storageRef = ref(storageInstance, 'avatars/' + authInstance.currentUser.uid);
+                    await uploadBytes(storageRef, file);
+                    const photoURL = await getDownloadURL(storageRef);
+                    await updateProfile(authInstance.currentUser, { photoURL: photoURL });
+                    document.getElementById('headerAvatar').src = photoURL;
+                } catch (error) { console.error(error); }
+            });
         }
 
-        blogContainer.innerHTML = ''; 
-        
-        querySnapshot.forEach((doc) => {
-          const post = doc.data();
-          let mediaHTML = '';
-          if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
-             const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
-             mediaHTML = `<iframe class="w-full h-48 rounded-xl mb-4 border border-white/10" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-          } else {
-             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80'}" class="w-full h-48 object-cover rounded-xl mb-4 border border-white/10" alt="Blog Media">`;
+        window.logoutCurrentUser = function() {
+            signOut(authInstance).then(() => window.location.reload());
+        };
+
+        // Fetch Blog Posts
+        async function loadBlogPosts() {
+          const blogContainer = document.getElementById('blog-container');
+          if(!blogContainer) return;
+          
+          try {
+            const q = query(collection(db, "blogPosts"), orderBy("timestamp", "desc"), limit(3));
+            const querySnapshot = await getDocs(q);
+            
+            if (querySnapshot.empty) {
+              blogContainer.innerHTML = `
+                <div class="glass-panel p-8 rounded-[32px] col-span-full text-center">
+                  <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-500">
+                       <i data-feather="inbox" class="w-8 h-8"></i>
+                  </div>
+                  <h3 class="text-xl font-bold text-white mb-2">No Updates Yet</h3>
+                  <p class="text-sm text-slate-400">Check back later for the latest tech news.</p>
+                </div>
+              `;
+              feather.replace();
+              return;
+            }
+
+            blogContainer.innerHTML = ''; 
+            
+            querySnapshot.forEach((doc) => {
+              const post = doc.data();
+              let mediaHTML = '';
+              if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
+                 const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
+                 mediaHTML = `<div class="relative aspect-video rounded-2xl overflow-hidden mb-4 border border-white/10"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+              } else {
+                 mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80'}" class="w-full aspect-video object-cover rounded-2xl mb-4 border border-white/10" alt="Blog Media">`;
+              }
+
+              const postElement = document.createElement('div');
+              postElement.className = "glass-panel glass-card-hover p-6 rounded-[32px] flex flex-col";
+              postElement.innerHTML = `
+                ${mediaHTML}
+                <div class="flex justify-between items-center mb-3">
+                   <span class="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full uppercase tracking-wide border border-rose-500/20">${post.category || 'Update'}</span>
+                   <span class="text-xs text-slate-500">${post.date || 'Today'}</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3 leading-snug">${post.title}</h3>
+                <p class="text-sm text-slate-400 mb-6 line-clamp-3 flex-grow">${post.description}</p>
+                <a href="#" class="text-rose-300 font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all mt-auto">Read Article <i data-feather="arrow-right" class="w-4 h-4"></i></a>
+              `;
+              blogContainer.appendChild(postElement);
+            });
+            feather.replace();
+          } catch (error) {
+            console.log("Error loading posts:", error);
+            blogContainer.innerHTML = `<p class="text-red-400 col-span-full text-center">Failed to load posts.</p>`;
           }
+        }
 
-          const postElement = document.createElement('div');
-          postElement.className = "bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[24px] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] hover:border-white/20 transition-all";
-          postElement.innerHTML = `
-            ${mediaHTML}
-            <div class="flex justify-between items-center mb-3">
-               <span class="text-xs font-semibold text-rose-400 bg-rose-500/10 px-2 py-1 rounded">${post.category || 'Update'}</span>
-               <span class="text-xs text-slate-400">${post.date || 'Today'}</span>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2 leading-snug">${post.title}</h3>
-            <p class="text-sm text-slate-400 mb-4 line-clamp-3">${post.description}</p>
-            <a href="blog.html" class="text-rose-300 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">Read More <i data-feather="arrow-right" class="w-4 h-4"></i></a>
-          `;
-          blogContainer.appendChild(postElement);
-        });
-        feather.replace();
-      } catch (error) {
-        console.log("Error loading posts:", error);
-      }
+        loadBlogPosts();
+    } catch(e) {
+        console.error("Firebase Init Error", e);
     }
-
-    loadBlogPosts();
   </script>
 
-  <!-- ================= AI AGENT (FLOATING CHATBOT) ================= -->
+  <!-- ================= AI AGENT ================= -->
   <div id="ai-agent-container" class="fixed bottom-6 right-6 z-[100] flex flex-col items-end font-sans">
     
     <!-- Chat Window -->
-    <div id="ai-chat-window" class="hidden w-[330px] sm:w-[360px] h-[460px] mb-4 bg-[#0f172a]/95 backdrop-blur-2xl border border-white/20 rounded-[28px] shadow-[0_10px_40px_rgba(0,0,0,0.6)] flex-col overflow-hidden transition-all duration-300 origin-bottom-right scale-95 opacity-0">
+    <div id="ai-chat-window" class="hidden w-[340px] sm:w-[380px] h-[500px] mb-4 glass-panel bg-[#0f172a] rounded-[28px] shadow-2xl flex-col overflow-hidden transition-all duration-300 origin-bottom-right scale-95 opacity-0 border border-white/20">
       
-      <!-- Chat Header -->
-      <div class="bg-gradient-to-r from-[#9E1B32] to-[#4A154B] p-4 flex justify-between items-center shadow-md">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30 shadow-inner">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-[#9E1B32] to-[#4A154B] p-4 flex justify-between items-center shadow-lg relative overflow-hidden">
+        <div class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity"></div>
+        <div class="flex items-center gap-3 relative z-10">
+          <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30 shadow-inner backdrop-blur-sm">
             <i data-feather="cpu" class="text-white w-5 h-5"></i>
           </div>
           <div>
-            <h3 class="text-white font-bold text-sm tracking-wide">Habib AI Assistant</h3>
-            <p class="text-white/80 text-[11px] flex items-center gap-1.5 font-medium mt-0.5">
-              <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
+            <h3 class="text-white font-bold text-sm tracking-wide">Habib AI Support</h3>
+            <p class="text-white/80 text-[10px] flex items-center gap-1.5 font-medium mt-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_5px_#4ade80]"></span> Online
             </p>
           </div>
         </div>
-        <button onclick="toggleAiChat()" class="text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-full p-1.5">
+        <button onclick="toggleAiChat()" class="text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-full p-1.5 relative z-10">
           <i data-feather="x" class="w-4 h-4"></i>
         </button>
       </div>
       
-      <!-- Chat Body -->
-      <div id="ai-chat-body" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3.5 scroll-smooth bg-gradient-to-b from-[#0f172a]/50 to-transparent">
-        
-        <!-- Welcome Message -->
+      <!-- Body -->
+      <div id="ai-chat-body" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3.5 scroll-smooth bg-[#0f172a]">
         <div class="flex gap-2 w-max max-w-[85%] animate-fade-in-up">
           <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
              <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
           </div>
-          <div class="bg-white/10 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
-            Hello! Welcome to <b>Habib iFix</b> 👋<br>How can I help you with your gadget repairs today?
+          <div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
+            Hello! Welcome to <b>Habib iFix</b> 👋<br>How can I assist you with your gadget today?
           </div>
         </div>
-
       </div>
       
-      <!-- Chat Input Area -->
-      <div class="p-3 border-t border-white/10 bg-[#0f172a]/95 flex gap-2 items-center">
-        <input type="text" id="ai-chat-input" placeholder="Ask anything..." class="flex-grow bg-[#1e293b] border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-rose-400 transition-colors shadow-inner" onkeypress="handleAiKeyPress(event)">
-        <button onclick="sendAiMessage()" class="bg-gradient-to-tr from-[#9E1B32] to-rose-600 hover:opacity-90 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-[0_0_15px_rgba(158,27,50,0.4)] flex-shrink-0 active:scale-95">
+      <!-- Input -->
+      <div class="p-3 border-t border-white/10 bg-[#0f172a] flex gap-2 items-center">
+        <input type="text" id="ai-chat-input" placeholder="Type a message..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-rose-500/50 focus:bg-white/10 transition-all shadow-inner" onkeypress="handleAiKeyPress(event)">
+        <button onclick="sendAiMessage()" class="bg-gradient-to-tr from-[#9E1B32] to-rose-600 hover:shadow-[0_0_15px_rgba(158,27,50,0.5)] text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0 active:scale-95">
           <i data-feather="send" class="w-4 h-4"></i>
         </button>
       </div>
     </div>
 
-    <!-- Floating Chat Toggle Button -->
-    <button onclick="toggleAiChat()" id="ai-chat-btn" class="w-14 h-14 bg-gradient-to-tr from-[#9E1B32] to-[#4A154B] rounded-full flex items-center justify-center shadow-[0_0_25px_rgba(158,27,50,0.5)] hover:scale-110 transition-transform duration-300 border border-white/20 z-50">
-      <i data-feather="message-square" class="text-white w-6 h-6"></i>
+    <!-- Toggle Button -->
+    <button onclick="toggleAiChat()" id="ai-chat-btn" class="w-14 h-14 bg-gradient-to-tr from-[#9E1B32] to-[#4A154B] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(158,27,50,0.4)] hover:scale-110 transition-transform duration-300 border border-white/20 z-50 group">
+      <i data-feather="message-square" class="text-white w-6 h-6 group-hover:rotate-12 transition-transform"></i>
     </button>
   </div>
 
-  <!-- AI Agent JavaScript -->
+  <!-- AI Agent JS -->
   <script>
-    const GEMINI_API_KEY = "AQ.Ab8RN6IX8ui4KgIIRMe6g-Li48L4g2BOR27G9PHAgwcF_K0wTQ";
+    const GEMINI_API_KEY = "AQ.Ab8RN6J2Wk-LWVzBky-5GEMuPxZD2SP0fVFaH_hJ6c0Np9mYWA";
 
-    // Toggle Chat Box
     function toggleAiChat() {
       const chatWindow = document.getElementById('ai-chat-window');
+      const btn = document.getElementById('ai-chat-btn');
       
       if (chatWindow.classList.contains('hidden')) {
         chatWindow.classList.remove('hidden');
         chatWindow.classList.add('flex');
+        btn.innerHTML = '<i data-feather="x" class="text-white w-6 h-6"></i>';
         setTimeout(() => {
           chatWindow.classList.remove('scale-95', 'opacity-0');
           chatWindow.classList.add('scale-100', 'opacity-100');
@@ -857,6 +931,7 @@
       } else {
         chatWindow.classList.remove('scale-100', 'opacity-100');
         chatWindow.classList.add('scale-95', 'opacity-0');
+        btn.innerHTML = '<i data-feather="message-square" class="text-white w-6 h-6 group-hover:rotate-12 transition-transform"></i>';
         setTimeout(() => {
           chatWindow.classList.add('hidden');
           chatWindow.classList.remove('flex');
@@ -865,12 +940,10 @@
       feather.replace();
     }
 
-    // Handle Enter Key
     function handleAiKeyPress(event) {
       if (event.key === 'Enter') sendAiMessage();
     }
 
-    // Send Message & Get Gemini AI Response
     async function sendAiMessage() {
       const inputField = document.getElementById('ai-chat-input');
       const text = inputField.value.trim();
@@ -878,10 +951,9 @@
 
       const chatBody = document.getElementById('ai-chat-body');
 
-      // 1. User Message Append
       chatBody.innerHTML += `
         <div class="flex gap-2 w-max max-w-[85%] self-end animate-fade-in-up">
-          <div class="bg-gradient-to-r from-rose-600 to-[#9E1B32] text-[13px] text-white p-3 rounded-2xl rounded-br-none shadow-sm leading-relaxed border border-rose-500/30">
+          <div class="bg-gradient-to-r from-rose-600 to-[#9E1B32] text-[13px] text-white p-3 rounded-2xl rounded-br-none shadow-md leading-relaxed border border-rose-500/30">
             ${escapeHtml(text)}
           </div>
         </div>
@@ -890,33 +962,29 @@
       inputField.value = '';
       chatBody.scrollTop = chatBody.scrollHeight;
 
-      // 2. Typing Indicator
       const typingId = 'typing-' + Date.now();
       chatBody.innerHTML += `
         <div id="${typingId}" class="flex gap-2 w-max max-w-[85%] mt-1 animate-fade-in-up">
           <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
              <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
           </div>
-          <div class="bg-white/10 border border-white/10 p-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 items-center">
-             <div class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
-             <div class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
-             <div class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+          <div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 items-center">
+             <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
+             <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+             <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
           </div>
         </div>
       `;
       feather.replace();
       chatBody.scrollTop = chatBody.scrollHeight;
 
-      // 3. API Request to Gemini
       try {
         const promptContext = `You are Habib Tec. AI Assistant, a helpful customer service chatbot for 'Habib Tec.' - a professional gadget repair shop. Answer concisely, professionally, and warmly. Query: ${text}`;
 
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: promptContext }] }]
-          })
+          body: JSON.stringify({ contents: [{ parts: [{ text: promptContext }] }] })
         });
 
         const data = await response.json();
@@ -933,7 +1001,7 @@
             <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
                 <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
             </div>
-            <div class="bg-white/10 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
+            <div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
               ${formatAiResponse(aiReply)}
             </div>
           </div>
@@ -946,7 +1014,7 @@
         chatBody.innerHTML += `
           <div class="flex gap-2 w-max max-w-[85%] mt-1">
             <div class="bg-red-500/10 border border-red-500/20 text-[13px] text-red-400 p-3 rounded-2xl">
-              Sorry, could not connect to AI. Please try again or check API Key.
+              Connection error. Please try again.
             </div>
           </div>
         `;
@@ -954,7 +1022,6 @@
       }
     }
 
-    // Helper functions
     function escapeHtml(text) {
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }

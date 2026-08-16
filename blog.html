@@ -117,10 +117,20 @@
     <!-- Feed Container -->
     <div class="w-full max-w-[550px]">
       
-      <!-- Admin Notice (Hidden by default) -->
-      <div id="adminNotice" class="hidden bg-gradient-to-r from-rose-500/10 to-purple-500/10 border border-rose-500/20 text-rose-300 p-4 rounded-2xl mb-6 text-center text-sm font-medium flex items-center justify-center gap-2 backdrop-blur-md animate-fade-in-up">
-          <i data-feather="shield" class="w-4 h-4 text-rose-500"></i> 
-          <span>Admin Mode Active: You have full control.</span>
+      <!-- Admin Notice & Create Post Trigger (Hidden by default) -->
+      <div id="adminControls" class="hidden mb-6 animate-fade-in-up">
+          <div class="bg-gradient-to-r from-rose-500/10 to-purple-500/10 border border-rose-500/20 text-rose-300 p-3 rounded-2xl text-center text-sm font-medium flex items-center justify-center gap-2 backdrop-blur-md mb-4">
+              <i data-feather="shield" class="w-4 h-4 text-rose-500"></i> 
+              <span>Admin Mode Active</span>
+          </div>
+          
+          <!-- Create Post Button -->
+          <button onclick="openCreatePostModal()" class="w-full bg-[#1e293b] hover:bg-[#263344] border border-white/10 p-4 rounded-2xl flex items-center gap-4 transition-all shadow-lg group">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-orange-500 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                  <i data-feather="plus" class="w-6 h-6"></i>
+              </div>
+              <span class="text-slate-300 font-medium group-hover:text-white transition-colors">Create New Post...</span>
+          </button>
       </div>
 
       <!-- Stories / Highlights Placeholder (Visual Only) -->
@@ -160,10 +170,72 @@
     </div>
   </main>
 
+  <!-- ================= CREATE POST MODAL ================= -->
+  <div id="createPostModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+     <div class="bg-[#1e293b] border border-white/10 w-full max-w-lg rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[90vh]" id="modalContent">
+        
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-4 border-b border-white/10">
+            <h3 class="text-lg font-bold text-white">Create New Post</h3>
+            <button onclick="closeCreatePostModal()" class="text-slate-400 hover:text-white transition-colors"><i data-feather="x" class="w-6 h-6"></i></button>
+        </div>
+
+        <!-- Modal Body (Scrollable) -->
+        <div class="p-6 overflow-y-auto custom-scrollbar flex-grow">
+            <form id="createPostForm" class="space-y-5">
+                
+                <!-- Media Input Type Selection -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Media Type</label>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="setMediaType('image')" id="btn-type-image" class="flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all">Image</button>
+                        <button type="button" onclick="setMediaType('video')" id="btn-type-video" class="flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all">Video/YouTube</button>
+                    </div>
+                    <input type="hidden" id="selectedMediaType" value="image">
+                </div>
+
+                <!-- Media URL Input -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Media URL</label>
+                    <input type="url" id="postMediaUrl" required placeholder="Paste Image Link (ImgBB) or YouTube Link" class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none transition-all text-sm">
+                    <p class="text-[10px] text-slate-500 mt-1 ml-1">Upload images to ImgBB or similar and paste link here.</p>
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Category</label>
+                    <select id="postCategory" class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none transition-all text-sm appearance-none">
+                        <option value="Update" class="bg-slate-900">General Update</option>
+                        <option value="Repair Tip" class="bg-slate-900">Repair Tip</option>
+                        <option value="Review" class="bg-slate-900">Product Review</option>
+                        <option value="Offer" class="bg-slate-900">Special Offer</option>
+                    </select>
+                </div>
+
+                <!-- Caption -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Caption / Description</label>
+                    <textarea id="postDescription" rows="4" required placeholder="Write your caption here..." class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none resize-none transition-all text-sm"></textarea>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="p-4 border-t border-white/10 bg-[#1e293b] rounded-b-2xl">
+            <button onclick="submitNewPost()" id="publishBtn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(225,29,72,0.3)] flex items-center justify-center gap-2">
+                <span>Publish Post</span> <i data-feather="send" class="w-4 h-4"></i>
+            </button>
+            <div id="postStatus" class="hidden mt-3 text-center text-sm font-medium"></div>
+        </div>
+
+     </div>
+  </div>
+
   <!-- Firebase & App Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -189,13 +261,14 @@
     let isAdmin = false;
     const ALLOWED_ADMIN_EMAIL = "tec.habiburrahman@gmail.com".toLowerCase();
 
-    // Store local state of likes to avoid full reloads when clicking like
+    // Store local state of likes
     window.postLikesState = {};
 
     // Auth State Observer
     onAuthStateChanged(authInstance, (user) => {
         const loginBtn = document.getElementById('loginNavBtn');
         const profileMenu = document.getElementById('userProfileMenu');
+        const adminControls = document.getElementById('adminControls');
         
         if (user) {
             loginBtn.classList.add('hidden');
@@ -208,16 +281,19 @@
             // Check if admin
             if(user.email && user.email.toLowerCase() === ALLOWED_ADMIN_EMAIL) {
                 isAdmin = true;
-                document.getElementById('adminNotice').classList.remove('hidden');
+                adminControls.classList.remove('hidden');
+            } else {
+                isAdmin = false;
+                adminControls.classList.add('hidden');
             }
         } else {
             loginBtn.classList.remove('hidden');
             profileMenu.classList.add('hidden');
+            adminControls.classList.add('hidden');
             globalUserEmail = null;
             isAdmin = false;
         }
         
-        // Fetch posts after determining auth state so UI renders correctly
         loadFullBlogPosts();
     });
 
@@ -253,7 +329,104 @@
         });
     };
 
-    // Load Posts
+    // --- CREATE POST LOGIC ---
+    const modal = document.getElementById('createPostModal');
+    const modalContent = document.getElementById('modalContent');
+
+    window.openCreatePostModal = function() {
+        if(!isAdmin) return;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    window.closeCreatePostModal = function() {
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('createPostForm').reset();
+            document.getElementById('postStatus').classList.add('hidden');
+            setMediaType('image'); // Reset to image
+        }, 300);
+    }
+
+    window.setMediaType = function(type) {
+        document.getElementById('selectedMediaType').value = type;
+        const btnImg = document.getElementById('btn-type-image');
+        const btnVid = document.getElementById('btn-type-video');
+        const input = document.getElementById('postMediaUrl');
+
+        if(type === 'image') {
+            btnImg.className = "flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all";
+            btnVid.className = "flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all";
+            input.placeholder = "Paste Image Link (e.g. ImgBB, Flickr)...";
+        } else {
+            btnVid.className = "flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all";
+            btnImg.className = "flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all";
+            input.placeholder = "Paste YouTube or Video Link...";
+        }
+    }
+
+    window.submitNewPost = async function() {
+        const mediaUrl = document.getElementById('postMediaUrl').value.trim();
+        const category = document.getElementById('postCategory').value;
+        const description = document.getElementById('postDescription').value.trim();
+        const mediaType = document.getElementById('selectedMediaType').value;
+        const statusDiv = document.getElementById('postStatus');
+        const btn = document.getElementById('publishBtn');
+
+        if(!mediaUrl || !description) {
+            statusDiv.innerText = "Please fill in all fields.";
+            statusDiv.className = "mt-3 text-center text-sm font-medium text-red-400";
+            statusDiv.classList.remove('hidden');
+            return;
+        }
+
+        // UI Loading State
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Publishing...';
+        statusDiv.classList.add('hidden');
+
+        try {
+            await addDoc(collection(db, "blogPosts"), {
+                mediaLink: mediaUrl,
+                mediaType: mediaType === 'video' ? 'video/youtube' : 'image', // Simplified type logic
+                category: category,
+                description: description,
+                date: new Date().toLocaleDateString(),
+                timestamp: serverTimestamp(),
+                likedBy: [],
+                comments: []
+            });
+
+            statusDiv.innerText = "✅ Post published successfully!";
+            statusDiv.className = "mt-3 text-center text-sm font-medium text-green-400";
+            statusDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                closeCreatePostModal();
+                loadFullBlogPosts(); // Refresh feed
+                btn.disabled = false;
+                btn.innerHTML = '<span>Publish Post</span> <i data-feather="send" class="w-4 h-4"></i>';
+                feather.replace();
+            }, 1500);
+
+        } catch (error) {
+            console.error("Error creating post:", error);
+            statusDiv.innerText = "❌ Error: " + error.message;
+            statusDiv.className = "mt-3 text-center text-sm font-medium text-red-400";
+            statusDiv.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = '<span>Publish Post</span> <i data-feather="send" class="w-4 h-4"></i>';
+        }
+    }
+
+    // --- FEED LOADING LOGIC ---
     async function loadFullBlogPosts() {
       const blogContainer = document.getElementById('blog-container');
       
@@ -282,14 +455,13 @@
           
           // Media Handling
           let mediaHTML = '';
-          if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
+          const isYoutube = post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'));
+          
+          if (isYoutube) {
              const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
              mediaHTML = `<div class="relative aspect-video bg-black"><iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
           } else if (post.mediaType && post.mediaType.startsWith('video')) {
-             mediaHTML = `
-                <video class="w-full max-h-[600px] object-cover bg-black" controls controlsList="nodownload">
-                   <source src="${post.mediaLink}" type="${post.mediaType}">
-                </video>`;
+             mediaHTML = `<video class="w-full max-h-[600px] object-cover bg-black" controls controlsList="nodownload"><source src="${post.mediaLink}" type="video/mp4"></video>`;
           } else {
              mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full max-h-[600px] object-cover bg-[#1e293b]" alt="Post Media" loading="lazy">`;
           }
@@ -297,8 +469,6 @@
           // Like Logic Setup
           const likedByArray = post.likedBy || [];
           const isLiked = globalUserEmail && likedByArray.includes(globalUserEmail);
-          
-          // Save state locally
           window.postLikesState[postId] = { likedBy: [...likedByArray] };
           
           const heartFill = isLiked ? '#f43f5e' : 'none';
@@ -313,7 +483,6 @@
                 <span class="text-slate-300">${c.text}</span>
                 <div class="text-[10px] text-slate-500 mt-0.5 ml-1 flex gap-3">
                     <span>${c.date || 'Now'}</span>
-                    <span class="cursor-pointer hover:text-slate-300">Reply</span>
                 </div>
              </div>
           `).join('');
@@ -342,7 +511,7 @@
                 <div>${deleteBtnHTML}</div>
             </div>
 
-            <!-- Media Content (Edge to Edge) -->
+            <!-- Media Content -->
             <div class="w-full bg-black border-y border-white/5 relative group">
                 ${mediaHTML}
             </div>
@@ -365,7 +534,6 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                         </button>
                     </div>
-                    <!-- Bookmark Icon -->
                     <button class="text-white hover:text-slate-400 focus:outline-none transition-colors">
                          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                     </button>
@@ -405,7 +573,7 @@
       }
     }
 
-    // Auth Check Helper
+    // --- INTERACTION HELPERS ---
     window.checkAuthBeforeAction = function() {
         if (!globalUserEmail) {
             window.location.href = 'login.html?return=blog.html';
@@ -417,10 +585,9 @@
     window.focusComment = function(postId) {
         if(!checkAuthBeforeAction()) return;
         document.getElementById(`comment-input-${postId}`).focus();
-        toggleComments(postId, true); // Force open
+        toggleComments(postId, true);
     }
 
-    // Toggle Single Like (One User = One Like)
     window.toggleLike = async function(postId) {
         if (!checkAuthBeforeAction()) return;
 
@@ -431,7 +598,6 @@
         const heartIcon = document.getElementById(`heart-icon-${postId}`);
         const likeCount = document.getElementById(`like-count-${postId}`);
 
-        // Optimistic UI Update
         if (hasLiked) {
             heartIcon.setAttribute('fill', 'none');
             heartIcon.setAttribute('stroke', 'currentColor');
@@ -457,11 +623,9 @@
             }
         } catch (error) {
             console.error("Error updating like:", error);
-            // Revert UI on error ideally, but keeping simple for now
         }
     }
 
-    // Toggle Comments visibility
     window.toggleComments = function(postId, forceOpen = false) {
         const section = document.getElementById(`comment-section-${postId}`);
         if(forceOpen) {
@@ -473,7 +637,6 @@
         }
     }
 
-    // Submit Comment
     window.submitComment = async function(postId) {
         if (!checkAuthBeforeAction()) return;
 
@@ -494,7 +657,6 @@
         list.classList.remove('hidden');
         list.classList.add('flex');
         
-        // Add to DOM immediately
         const commentDiv = document.createElement('div');
         commentDiv.className = "mb-2 text-sm leading-snug animate-fade-in-up";
         commentDiv.innerHTML = `
@@ -516,14 +678,12 @@
         }
     }
 
-    // Delete Single Post (Admin Only)
     window.deleteSinglePost = async function(postId) {
         if (!isAdmin) return;
         
         if (confirm("Are you SURE you want to delete this specific post? This cannot be undone.")) {
             try {
                 await deleteDoc(doc(db, "blogPosts", postId));
-                // Remove from DOM
                 event.target.closest('article').remove();
             } catch (error) {
                 alert("Failed to delete post: " + error.message);

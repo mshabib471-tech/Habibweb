@@ -434,51 +434,105 @@
     </section>
 
   </main>
+<!-- ================= FOOTER ================= -->
+<footer class="bg-[#0f172a] text-slate-400 pt-16 pb-12 relative z-10 mt-auto border-t border-white/10">
+  <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+    
+    <!-- Top Call-to-Action Card (Inspired by the reference image) -->
+    <div class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-[32px] p-8 md:p-12 text-center mb-16 shadow-2xl relative overflow-hidden">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[100px] bg-rose-500/15 blur-[80px] pointer-events-none"></div>
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Build like the best</h2>
+      <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base mb-8 leading-relaxed">
+        Explore our docs and spin up a project in minutes. Discover firsthand why Habib iFix is the ultimate, enterprise-grade choice for speed, quality, and future-proofing your tech stack.
+      </p>
+      <a href="contact.html" class="inline-block bg-white text-slate-900 font-semibold px-8 py-3 rounded-full hover:bg-slate-200 transition-all shadow-lg hover:-translate-y-0.5">
+        Get Started for Free
+      </a>
+    </div>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 pt-20 pb-10 relative z-10 mt-auto">
-    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-        <div class="space-y-6">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
-              <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" class="w-full h-full object-cover">
-            </div>
-            <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">iFix</span></span>
+    <!-- Main Footer Links Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-16 text-sm">
+      
+      <!-- Brand Logo & Info -->
+      <div class="col-span-2 space-y-4">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center">
+            <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" class="w-full h-full object-cover">
           </div>
-          <p class="text-sm leading-relaxed">Your trusted partner for fast and reliable gadget repair services.</p>
-        </div>
-        <div>
-          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Services</h4>
-          <ul class="space-y-3 text-sm">
-            <li><a href="#" class="hover:text-rose-400 transition-colors">Smartphone Repair</a></li>
-            <li><a href="#" class="hover:text-rose-400 transition-colors">Laptop Repair</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Quick Link</h4>
-          <ul class="space-y-3 text-sm">
-            <li><a href="#" class="hover:text-rose-400 transition-colors">About Us</a></li>
-            <li><a href="contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 class="text-white font-bold text-lg mb-6 uppercase tracking-wider text-sm">Subscribe</h4>
-          <form id="subscribeForm" class="flex flex-col gap-2">
-            <div class="flex">
-              <input type="email" id="subEmail" required placeholder="Email Address" class="bg-white/5 border border-white/20 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:border-rose-400 backdrop-blur-md" />
-              <button type="submit" id="subBtn" class="bg-rose-600/80 hover:bg-rose-600 border border-rose-500 text-white px-4 py-3 rounded-r-lg transition-colors backdrop-blur-md">Submit</button>
-            </div>
-            <p id="subMsg" class="hidden text-sm text-green-400 mt-2 font-medium">Subscribed successfully!</p>
-          </form>
-        </div>
+          <span class="font-bold text-xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">iFix</span></span>
+        </a>
+        <p class="text-xs text-slate-500 leading-relaxed pr-4">
+          Your trusted partner for fast and reliable gadget repair services and component solutions.
+        </p>
       </div>
-      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
-        <p>&copy; 2026 Habib iFix All Rights Reserved.</p>
+
+      <!-- Column 1: Services -->
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-wider">Services</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="hover:text-white transition-colors">Smartphone Repair</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Laptop Repair</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Tablet Fix</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Data Recovery</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 2: Resources -->
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-wider">Resources</h4>
+        <ul class="space-y-3">
+          <li><a href="blog.html" class="hover:text-white transition-colors">Blog</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Changelog</a></li>
+          <li><a href="contact.html" class="hover:text-white transition-colors">Support</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Trust Center</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Company -->
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-wider">Company</h4>
+        <ul class="space-y-3">
+          <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+          <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Customers</a></li>
+          <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Legal -->
+      <div>
+        <h4 class="text-white font-semibold mb-4 text-xs uppercase tracking-wider">Legal</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="hover:text-white transition-colors">Terms of service</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Privacy policy</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Security</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Guidelines</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer Bottom Bar (Copyright & Social Icons) -->
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+      <div class="flex items-center gap-6">
+        <p>&copy; 2026 Habib iFix. All Rights Reserved.</p>
+        <span class="flex items-center gap-2 text-emerald-400 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> All Systems Operational
+        </span>
+      </div>
+      
+      <!-- Social Media Icons (matching the reference image style) -->
+      <div class="flex items-center gap-4 text-slate-400">
+        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-github text-base"></i></a>
+        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-twitter text-base"></i></a>
+        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-facebook text-base"></i></a>
+        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram text-base"></i></a>
+        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube text-base"></i></a>
       </div>
     </div>
-  </footer>
+
+  </div>
+</footer>
 
   <!-- ================= POPUP MODAL FOR SERVICES ================= -->
   <div id="serviceModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">

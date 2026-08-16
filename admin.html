@@ -144,7 +144,7 @@
     <!-- Main Content Area -->
     <main class="flex-grow max-w-[1400px] w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
        
-       <!-- Sidebar / Navigation Tabs (Mobile: Top, Desktop: Left) -->
+       <!-- Sidebar / Navigation Tabs -->
        <aside class="lg:col-span-3 space-y-2">
           <nav class="flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar">
              <button onclick="switchTab('overview')" class="tab-btn active flex items-center gap-3 px-5 py-4 rounded-xl border border-transparent text-left transition-all whitespace-nowrap hover:bg-white/5">
@@ -234,11 +234,11 @@
              </div>
           </div>
 
-          <!-- TAB: USER MANAGEMENT -->
+          <!-- TAB: USER MANAGEMENT (FULLY FUNCTIONAL) -->
           <div id="tab-users" class="tab-content hidden animate-fade-in-up">
              <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-white">User Management</h2>
-                <button class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+                <button onclick="openAddUserModal()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
                    <i data-feather="plus" class="w-4 h-4"></i> Add User
                 </button>
              </div>
@@ -257,32 +257,7 @@
                       <tbody class="divide-y divide-white/5 text-sm" id="userTableBody">
                          <!-- Populated by JS -->
                          <tr class="hover:bg-white/5 transition-colors">
-                            <td class="p-4 flex items-center gap-3">
-                               <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 to-orange-500 flex items-center justify-center text-white font-bold text-xs">HR</div>
-                               <div>
-                                  <p class="text-white font-medium">Habibur Rahman</p>
-                                  <p class="text-slate-500 text-xs">tec.habiburrahman@gmail.com</p>
-                               </div>
-                            </td>
-                            <td class="p-4"><span class="bg-purple-500/20 text-purple-300 px-2 py-1 rounded text-xs font-bold border border-purple-500/20">Super Admin</span></td>
-                            <td class="p-4"><span class="flex items-center gap-1.5 text-emerald-400 text-xs"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active</span></td>
-                            <td class="p-4 text-right text-slate-500">-</td>
-                         </tr>
-                         <!-- Example Moderator -->
-                         <tr class="hover:bg-white/5 transition-colors">
-                            <td class="p-4 flex items-center gap-3">
-                               <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold text-xs">JD</div>
-                               <div>
-                                  <p class="text-white font-medium">John Doe</p>
-                                  <p class="text-slate-500 text-xs">john@example.com</p>
-                               </div>
-                            </td>
-                            <td class="p-4"><span class="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs font-bold border border-blue-500/20">Moderator</span></td>
-                            <td class="p-4"><span class="flex items-center gap-1.5 text-slate-400 text-xs"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Offline</span></td>
-                            <td class="p-4 text-right">
-                               <button class="text-slate-400 hover:text-white p-1"><i data-feather="edit-2" class="w-4 h-4"></i></button>
-                               <button class="text-slate-400 hover:text-red-400 p-1 ml-2"><i data-feather="trash" class="w-4 h-4"></i></button>
-                            </td>
+                            <td class="p-4 text-center text-slate-500" colspan="4">Loading users...</td>
                          </tr>
                       </tbody>
                    </table>
@@ -341,7 +316,7 @@
                    <button onclick="clearPosts()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-lg hover:-translate-y-0.5">
                      <i data-feather="trash-2" class="w-4 h-4"></i> Wipe All Blog Posts
                    </button>
-                   <button class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-lg hover:-translate-y-0.5">
+                   <button onclick="clearUsers()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-lg hover:-translate-y-0.5">
                      <i data-feather="user-x" class="w-4 h-4"></i> Reset All Users
                    </button>
                 </div>
@@ -359,100 +334,58 @@
        </div>
     </main>
 
-    <!-- ================= FOOTER (Requested Style) ================= -->
-    <footer class="bg-[#050a14] text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-white/10">
-        <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-            
-            <!-- Top Call-to-Action Card -->
-            <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group">
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-rose-500/20 blur-[100px] pointer-events-none group-hover:bg-rose-500/30 transition-colors"></div>
-                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">Ready to fix your device?</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">
-                    Visit us today or contact us online. Experience the best repair service in town with Habib iFix.
-                </p>
-                <a href="../contact.html" class="inline-block bg-white text-[#0f172a] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">
-                    Get Started Now
-                </a>
-            </div>
-
-            <!-- Main Footer Links Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
-                
-                <!-- Brand Logo & Info -->
-                <div class="col-span-2 space-y-6">
-                    <a href="../index.html" class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
-                        <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover">
-                        </div>
-                        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span>
-                    </a>
-                    <p class="text-slate-500 leading-relaxed pr-8">
-                        Your trusted partner for fast and reliable gadget repair services and component solutions. We breathe life back into your tech.
-                    </p>
-                </div>
-
-                <!-- Column 1 -->
-                <div>
-                    <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="hover:text-rose-400 transition-colors">Phone Repair</a></li>
-                        <li><a href="#" class="hover:text-rose-400 transition-colors">Laptop Fix</a></li>
-                        <li><a href="#" class="hover:text-rose-400 transition-colors">Tablet Service</a></li>
-                        <li><a href="#" class="hover:text-rose-400 transition-colors">Data Recovery</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 2 -->
-                <div>
-                    <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
-                    <ul class="space-y-4">
-                        <li><a href="../index.html" class="hover:text-rose-400 transition-colors">Home</a></li>
-                        <li><a href="../about.html" class="hover:text-rose-400 transition-colors">About Us</a></li>
-                        <li><a href="../index.html#testimonial" class="hover:text-rose-400 transition-colors">Reviews</a></li>
-                        <li><a href="../contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 3 -->
-                <div>
-                    <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="hover:text-rose-400 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-rose-400 transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-rose-400 transition-colors">Warranty Policy</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 4 -->
-                <div>
-                    <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4>
-                    <div class="flex flex-col gap-4">
-                        <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
-                        <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i> Instagram</a>
-                        <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-lg"></i> Twitter</a>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Footer Bottom Bar -->
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
-                <div class="flex items-center gap-6">
-                    <p>&copy; 2026 Habib iFix. All Rights Reserved.</p>
-                    <span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Online
-                    </span>
-                </div>
-            </div>
-        </div>
+    <!-- ================= SIMPLE FOOTER ================= -->
+    <footer class="border-t border-white/10 bg-[#050a14] py-8 mt-auto">
+       <div class="max-w-[1400px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-slate-500 text-sm">&copy; 2026 Habib iFix Admin Panel.</p>
+          <div class="flex gap-6">
+             <a href="blog.html" class="text-slate-400 hover:text-rose-400 text-sm font-medium transition-colors flex items-center gap-2">
+                <i data-feather="file-text" class="w-4 h-4"></i> Back to Blog
+             </a>
+             <a href="index.html" class="text-slate-400 hover:text-rose-400 text-sm font-medium transition-colors flex items-center gap-2">
+                <i data-feather="home" class="w-4 h-4"></i> Back to Home
+             </a>
+          </div>
+       </div>
     </footer>
+  </div>
+
+  <!-- ================= ADD USER MODAL ================= -->
+  <div id="addUserModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+     <div class="bg-[#0f172a] border border-white/10 w-full max-w-md rounded-2xl shadow-2xl p-6 transform scale-95 opacity-0 transition-all duration-300" id="modalContent">
+        <div class="flex justify-between items-center mb-6">
+           <h3 class="text-xl font-bold text-white">Add New User</h3>
+           <button onclick="closeAddUserModal()" class="text-slate-400 hover:text-white"><i data-feather="x" class="w-6 h-6"></i></button>
+        </div>
+        
+        <form id="addUserForm" class="space-y-4">
+           <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Full Name</label>
+              <input type="text" id="newUserName" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-rose-500 outline-none">
+           </div>
+           <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Email Address</label>
+              <input type="email" id="newUserEmail" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-rose-500 outline-none">
+           </div>
+           <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Role</label>
+              <select id="newUserRole" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-rose-500 outline-none">
+                 <option value="Moderator" class="bg-slate-900">Moderator</option>
+                 <option value="Editor" class="bg-slate-900">Editor</option>
+                 <option value="Admin" class="bg-slate-900">Admin</option>
+              </select>
+           </div>
+           
+           <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-lg mt-4 transition-colors">Create Account</button>
+        </form>
+     </div>
   </div>
 
   <!-- Firebase & Admin Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc, addDoc, query, where, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
@@ -472,10 +405,8 @@
     feather.replace();
 
     // --- CONFIGURATION ---
-    const ALLOWED_ADMIN_EMAILS = [
-        "tec.habiburrahman@gmail.com", 
-        // Add moderator emails here
-    ];
+    // Allow main admin and any user stored in 'admins' collection
+    const SUPER_ADMIN_EMAIL = "tec.habiburrahman@gmail.com";
 
     // --- DOM ELEMENTS ---
     const loginScreen = document.getElementById('loginScreen');
@@ -483,29 +414,37 @@
     const loginError = document.getElementById('loginError');
     const adminNameDisplay = document.getElementById('adminNameDisplay');
     const adminAvatar = document.getElementById('adminAvatar');
+    const userTableBody = document.getElementById('userTableBody');
 
     // --- AUTH LOGIC ---
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Check if email is allowed (Admin or Moderator)
-        if (ALLOWED_ADMIN_EMAILS.includes(user.email.toLowerCase())) {
-          // Success Login
+        // Check authorization
+        const isSuperAdmin = user.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
+        
+        // If not super admin, check database for moderator status
+        let isAuthorized = isSuperAdmin;
+        if (!isAuthorized) {
+            const q = query(collection(db, "admins"), where("email", "==", user.email.toLowerCase()));
+            const snapshot = await getDocs(q);
+            if (!snapshot.empty) isAuthorized = true;
+        }
+
+        if (isAuthorized) {
           loginError.classList.add('hidden');
           loginScreen.classList.add('hidden');
           dashboardScreen.classList.remove('hidden');
           
-          // Set UI Data
           adminNameDisplay.innerText = user.displayName || "Administrator";
           if(user.photoURL) adminAvatar.src = user.photoURL;
           
           fetchAnalyticsData();
+          loadUsers(); // Load users table
         } else {
-          // Unauthorized
           signOut(auth);
-          showLoginError("Access Denied! You are not authorized to access this panel.");
+          showLoginError("Access Denied! You are not authorized.");
         }
       } else {
-        // Logged Out
         dashboardScreen.classList.add('hidden');
         loginScreen.classList.remove('hidden');
       }
@@ -528,36 +467,34 @@
       feather.replace();
     }
 
-    // --- TAB SWITCHING LOGIC ---
+    // --- TAB SWITCHING ---
     window.switchTab = function(tabName) {
-        // Hide all contents
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-        // Show selected
         document.getElementById(`tab-${tabName}`).classList.remove('hidden');
         
-        // Update Buttons
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         event.currentTarget.classList.add('active');
     }
 
-    // --- ANALYTICS LOGIC ---
+    // --- ANALYTICS ---
     async function fetchAnalyticsData() {
         try {
-            const querySnapshot = await getDocs(collection(db, "blogPosts"));
+            const postsSnap = await getDocs(collection(db, "blogPosts"));
             let totalPosts = 0;
             let totalLikes = 0;
-            // Mocking comments count as it might be nested
             
-            querySnapshot.forEach((doc) => {
+            postsSnap.forEach((doc) => {
                 totalPosts++;
                 const data = doc.data();
                 if(data.likes) totalLikes += data.likes;
             });
 
+            const usersSnap = await getDocs(collection(db, "admins"));
+            const totalUsers = usersSnap.size + 1; // +1 for super admin
+
             animateValue("stat-posts", 0, totalPosts, 1000);
             animateValue("stat-likes", 0, totalLikes, 1000);
-            // Mock users count for demo
-            animateValue("stat-users", 0, 12, 1000); 
+            animateValue("stat-users", 0, totalUsers, 1000); 
             
         } catch (error) {
             console.error("Error fetching analytics:", error);
@@ -577,19 +514,153 @@
         window.requestAnimationFrame(step);
     }
 
+    // --- USER MANAGEMENT (REAL LOGIC) ---
+    
+    // 1. Load Users
+    async function loadUsers() {
+        userTableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Loading...</td></tr>`;
+        
+        // Always show Super Admin first (hardcoded visually)
+        let html = `
+            <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-4 flex items-center gap-3">
+                   <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 to-orange-500 flex items-center justify-center text-white font-bold text-xs">HR</div>
+                   <div>
+                      <p class="text-white font-medium">Habibur Rahman</p>
+                      <p class="text-slate-500 text-xs">${SUPER_ADMIN_EMAIL}</p>
+                   </div>
+                </td>
+                <td class="p-4"><span class="bg-purple-500/20 text-purple-300 px-2 py-1 rounded text-xs font-bold border border-purple-500/20">Super Admin</span></td>
+                <td class="p-4"><span class="flex items-center gap-1.5 text-emerald-400 text-xs"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active</span></td>
+                <td class="p-4 text-right text-slate-500 text-xs italic">Owner</td>
+            </tr>
+        `;
+
+        try {
+            const snapshot = await getDocs(collection(db, "admins"));
+            if (snapshot.empty) {
+                // Just append empty state if needed, but we have owner above
+            } else {
+                snapshot.forEach((docSnap) => {
+                    const user = docSnap.data();
+                    const initials = user.name ? user.name.charAt(0).toUpperCase() : "?";
+                    
+                    html += `
+                        <tr class="hover:bg-white/5 transition-colors group">
+                            <td class="p-4 flex items-center gap-3">
+                               <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 font-bold text-xs">${initials}</div>
+                               <div>
+                                  <p class="text-white font-medium">${user.name}</p>
+                                  <p class="text-slate-500 text-xs">${user.email}</p>
+                               </div>
+                            </td>
+                            <td class="p-4"><span class="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs font-bold border border-blue-500/20">${user.role}</span></td>
+                            <td class="p-4"><span class="flex items-center gap-1.5 text-emerald-400 text-xs"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active</span></td>
+                            <td class="p-4 text-right">
+                               <button onclick="deleteUser('${docSnap.id}')" class="text-slate-400 hover:text-red-400 p-1 transition-colors" title="Delete User"><i data-feather="trash" class="w-4 h-4"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+            userTableBody.innerHTML = html;
+            feather.replace();
+        } catch (e) {
+            console.error("Error loading users", e);
+            userTableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-400">Error loading users.</td></tr>`;
+        }
+    }
+
+    // 2. Add User
+    const modal = document.getElementById('addUserModal');
+    const modalContent = document.getElementById('modalContent');
+    
+    window.openAddUserModal = function() {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    window.closeAddUserModal = function() {
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 300);
+    }
+
+    document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('newUserName').value;
+        const email = document.getElementById('newUserEmail').value;
+        const role = document.getElementById('newUserRole').value;
+
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerText;
+        btn.innerText = "Adding...";
+        btn.disabled = true;
+
+        try {
+            await addDoc(collection(db, "admins"), {
+                name: name,
+                email: email.toLowerCase(),
+                role: role,
+                createdAt: Timestamp.now()
+            });
+            
+            closeAddUserModal();
+            e.target.reset();
+            loadUsers(); // Refresh table
+            fetchAnalyticsData(); // Update stats
+            alert("User added successfully!");
+        } catch (err) {
+            alert("Error adding user: " + err.message);
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+
+    // 3. Delete User
+    window.deleteUser = async function(docId) {
+        if(confirm("Are you sure you want to remove this moderator/admin?")) {
+            try {
+                await deleteDoc(doc(db, "admins", docId));
+                loadUsers();
+                fetchAnalyticsData();
+            } catch (e) {
+                alert("Failed to delete user.");
+            }
+        }
+    }
+
     // --- DATABASE ACTIONS ---
     window.clearPosts = async function() {
-        if(confirm("⚠️ CRITICAL WARNING: Are you absolutely sure you want to DELETE ALL BLOG POSTS? This cannot be undone.")) {
+        if(confirm("⚠️ DELETE ALL BLOG POSTS? This cannot be undone.")) {
             try {
-                const querySnapshot = await getDocs(collection(db, "blogPosts"));
-                const promises = querySnapshot.docs.map(docItem => deleteDoc(doc(db, "blogPosts", docItem.id)));
+                const snap = await getDocs(collection(db, "blogPosts"));
+                const promises = snap.docs.map(d => deleteDoc(doc(db, "blogPosts", d.id)));
                 await Promise.all(promises);
-                
-                alert("✅ Database Wiped Successfully!");
-                fetchAnalyticsData(); 
-            } catch(e) {
-                alert("❌ Error deleting posts: " + e.message);
-            }
+                alert("All posts deleted.");
+                fetchAnalyticsData();
+            } catch(e) { alert("Error: " + e.message); }
+        }
+    }
+
+    window.clearUsers = async function() {
+        if(confirm("⚠️ DELETE ALL MODERATORS? (Owner account will remain)")) {
+            try {
+                const snap = await getDocs(collection(db, "admins"));
+                const promises = snap.docs.map(d => deleteDoc(doc(db, "admins", d.id)));
+                await Promise.all(promises);
+                alert("All moderators removed.");
+                loadUsers();
+                fetchAnalyticsData();
+            } catch(e) { alert("Error: " + e.message); }
         }
     }
   </script>

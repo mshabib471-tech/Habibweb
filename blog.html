@@ -20,17 +20,14 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     
-    /* Hide scrollbar for neatness */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Custom Scrollbar for Desktop */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #9E1B32; }
 
-    /* Animations */
     @keyframes fade-in-up {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -44,16 +41,45 @@
     }
     .animate-heart { animation: heart-beat 0.3s ease-in-out; }
 
-    /* Glassmorphism Utilities */
+    @keyframes double-tap-heart {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+    .animate-double-tap { animation: double-tap-heart 0.8s ease-out forwards; }
+
     .glass-panel {
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(30, 41, 59, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 9999;
+      transition: transform 0.3s ease;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a]">
+
+  <!-- Toast Container -->
+  <div id="toast" class="toast"></div>
 
   <!-- ================= ANIMATED BACKGROUND ================= -->
   <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
@@ -61,11 +87,10 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-blue-900/20 blur-[150px] animate-blob animation-delay-2000"></div>
   </div>
 
-  <!-- ================= HEADER (Glass) ================= -->
+  <!-- ================= HEADER ================= -->
   <header class="fixed top-0 left-0 right-0 z-50 glass-panel transition-all duration-300 py-3">
     <div class="max-w-[900px] mx-auto px-4 flex items-center justify-between">
       
-      <!-- Logo -->
       <a href="index.html" class="flex items-center gap-2 cursor-pointer group">
         <div class="w-9 h-9 rounded-lg overflow-hidden border border-white/20 bg-white/10 shadow-lg flex items-center justify-center group-hover:border-rose-500/50 transition-colors">
           <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover">
@@ -73,20 +98,17 @@
         <span class="font-bold text-xl tracking-tight text-white hidden sm:block">Habib<span class="text-slate-400 font-medium">iFix</span></span>
       </a>
 
-      <!-- Navigation & Auth -->
-      <div class="flex items-center gap-4">
-        <nav class="flex items-center gap-4 text-slate-300">
-          <a href="index.html" class="hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg"><i data-feather="home" class="w-6 h-6"></i></a>
-          <a href="blog.html" class="text-white transition-colors p-2 bg-white/10 rounded-lg shadow-inner"><i data-feather="compass" class="w-6 h-6 fill-current"></i></a>
+      <div class="flex items-center gap-3">
+        <nav class="flex items-center gap-2 text-slate-300">
+          <a href="index.html" class="hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg" title="Home"><i data-feather="home" class="w-5 h-5"></i></a>
+          <a href="blog.html" class="text-white transition-colors p-2 bg-white/10 rounded-lg" title="Feed"><i data-feather="compass" class="w-5 h-5 fill-current"></i></a>
         </nav>
 
-        <!-- Auth Profile Area -->
         <div id="authProfileArea" class="relative group">
             <a href="login.html?return=blog.html" id="loginNavBtn" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-full transition-all shadow-[0_0_15px_rgba(225,29,72,0.4)] flex items-center gap-2 text-sm font-bold">
                 Login <i data-feather="log-in" class="w-4 h-4"></i>
             </a>
 
-            <!-- Avatar Dropdown -->
             <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
                 <div class="relative">
                     <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-transparent group-hover:border-rose-500 transition-all shadow-lg">
@@ -111,20 +133,18 @@
     </div>
   </header>
 
-  <!-- ================= INSTAGRAM STYLE NEWS FEED ================= -->
+  <!-- ================= MAIN FEED ================= -->
   <main class="flex-grow pt-[80px] pb-20 px-0 sm:px-4 relative z-10 flex justify-center">
     
-    <!-- Feed Container -->
     <div class="w-full max-w-[550px]">
       
-      <!-- Admin Notice & Create Post Trigger (Hidden by default) -->
+      <!-- Admin Controls -->
       <div id="adminControls" class="hidden mb-6 animate-fade-in-up">
           <div class="bg-gradient-to-r from-rose-500/10 to-purple-500/10 border border-rose-500/20 text-rose-300 p-3 rounded-2xl text-center text-sm font-medium flex items-center justify-center gap-2 backdrop-blur-md mb-4">
               <i data-feather="shield" class="w-4 h-4 text-rose-500"></i> 
-              <span>Admin Mode Active</span>
+              <span>Admin Mode Active — Full Control</span>
           </div>
           
-          <!-- Create Post Button -->
           <button onclick="openCreatePostModal()" class="w-full bg-[#1e293b] hover:bg-[#263344] border border-white/10 p-4 rounded-2xl flex items-center gap-4 transition-all shadow-lg group">
               <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-orange-500 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                   <i data-feather="plus" class="w-6 h-6"></i>
@@ -133,7 +153,7 @@
           </button>
       </div>
 
-      <!-- Stories / Highlights Placeholder (Visual Only) -->
+      <!-- Stories -->
       <div class="flex gap-4 overflow-x-auto no-scrollbar pb-6 px-2 mb-2">
          <div class="flex flex-col items-center gap-1 min-w-[70px] cursor-pointer group">
             <div class="w-[70px] h-[70px] rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 via-rose-500 to-purple-600 group-hover:scale-105 transition-transform">
@@ -143,14 +163,12 @@
             </div>
             <span class="text-xs text-slate-400">Add Story</span>
          </div>
-         <!-- Mock Story 1 -->
          <div class="flex flex-col items-center gap-1 min-w-[70px] cursor-pointer group">
             <div class="w-[70px] h-[70px] rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 via-rose-500 to-purple-600 group-hover:scale-105 transition-transform">
                <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80&w=150" class="w-full h-full rounded-full border-2 border-[#0f172a] object-cover">
             </div>
             <span class="text-xs text-slate-400">Repair Tips</span>
          </div>
-         <!-- Mock Story 2 -->
          <div class="flex flex-col items-center gap-1 min-w-[70px] cursor-pointer group">
             <div class="w-[70px] h-[70px] rounded-full p-[2px] bg-gradient-to-tr from-blue-400 to-emerald-500 group-hover:scale-105 transition-transform">
                <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=80&w=150" class="w-full h-full rounded-full border-2 border-[#0f172a] object-cover">
@@ -160,7 +178,6 @@
       </div>
 
       <div id="blog-container" class="space-y-6">
-        <!-- Skeleton Loader -->
         <div class="flex flex-col items-center justify-center py-20 space-y-4">
             <div class="w-10 h-10 border-4 border-rose-500/30 border-t-rose-500 rounded-full animate-spin"></div>
             <p class="text-slate-500 text-sm font-medium animate-pulse">Loading latest updates...</p>
@@ -170,38 +187,33 @@
     </div>
   </main>
 
-  <!-- ================= CREATE POST MODAL ================= -->
+  <!-- ================= CREATE / EDIT POST MODAL ================= -->
   <div id="createPostModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
      <div class="bg-[#1e293b] border border-white/10 w-full max-w-lg rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[90vh]" id="modalContent">
         
-        <!-- Modal Header -->
         <div class="flex items-center justify-between p-4 border-b border-white/10">
-            <h3 class="text-lg font-bold text-white">Create New Post</h3>
+            <h3 id="modalTitle" class="text-lg font-bold text-white">Create New Post</h3>
             <button onclick="closeCreatePostModal()" class="text-slate-400 hover:text-white transition-colors"><i data-feather="x" class="w-6 h-6"></i></button>
         </div>
 
-        <!-- Modal Body (Scrollable) -->
         <div class="p-6 overflow-y-auto custom-scrollbar flex-grow">
             <form id="createPostForm" class="space-y-5">
                 
-                <!-- Media Input Type Selection -->
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Media Type</label>
                     <div class="flex gap-3">
                         <button type="button" onclick="setMediaType('image')" id="btn-type-image" class="flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all">Image</button>
-                        <button type="button" onclick="setMediaType('video')" id="btn-type-video" class="flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all">Video/YouTube</button>
+                        <button type="button" onclick="setMediaType('video')" id="btn-type-video" class="flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all">Video / YouTube</button>
                     </div>
                     <input type="hidden" id="selectedMediaType" value="image">
                 </div>
 
-                <!-- Media URL Input -->
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Media URL</label>
                     <input type="url" id="postMediaUrl" required placeholder="Paste Image Link (ImgBB) or YouTube Link" class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none transition-all text-sm">
-                    <p class="text-[10px] text-slate-500 mt-1 ml-1">Upload images to ImgBB or similar and paste link here.</p>
+                    <p class="text-[10px] text-slate-500 mt-1 ml-1">For YouTube paste full link. For images use ImgBB/Direct link.</p>
                 </div>
 
-                <!-- Category -->
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Category</label>
                     <select id="postCategory" class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none transition-all text-sm appearance-none">
@@ -212,7 +224,6 @@
                     </select>
                 </div>
 
-                <!-- Caption -->
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Caption / Description</label>
                     <textarea id="postDescription" rows="4" required placeholder="Write your caption here..." class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none resize-none transition-all text-sm"></textarea>
@@ -221,7 +232,6 @@
             </form>
         </div>
 
-        <!-- Modal Footer -->
         <div class="p-4 border-t border-white/10 bg-[#1e293b] rounded-b-2xl">
             <button onclick="submitNewPost()" id="publishBtn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(225,29,72,0.3)] flex items-center justify-center gap-2">
                 <span>Publish Post</span> <i data-feather="send" class="w-4 h-4"></i>
@@ -232,10 +242,42 @@
      </div>
   </div>
 
+  <!-- ================= SHARE MODAL ================= -->
+  <div id="shareModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+     <div class="bg-[#1e293b] border border-white/10 w-full max-w-sm rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="shareModalContent">
+        <div class="flex items-center justify-between p-4 border-b border-white/10">
+            <h3 class="text-lg font-bold text-white">Share Post</h3>
+            <button onclick="closeShareModal()" class="text-slate-400 hover:text-white"><i data-feather="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="p-4 space-y-3">
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('whatsapp')">
+                <div class="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center"><i class="fab fa-whatsapp text-white text-lg"></i></div>
+                <span class="text-white font-medium">WhatsApp</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('facebook')">
+                <div class="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center"><i class="fab fa-facebook-f text-white text-lg"></i></div>
+                <span class="text-white font-medium">Facebook</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('telegram')">
+                <div class="w-10 h-10 rounded-full bg-[#0088cc] flex items-center justify-center"><i class="fab fa-telegram-plane text-white text-lg"></i></div>
+                <span class="text-white font-medium">Telegram</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('twitter')">
+                <div class="w-10 h-10 rounded-full bg-[#1DA1F2] flex items-center justify-center"><i class="fab fa-twitter text-white text-lg"></i></div>
+                <span class="text-white font-medium">Twitter / X</span>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('copy')">
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center"><i data-feather="copy" class="text-white w-5 h-5"></i></div>
+                <span class="text-white font-medium">Copy Link</span>
+            </div>
+        </div>
+     </div>
+  </div>
+
   <!-- Firebase & App Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -259,12 +301,22 @@
     let globalUserEmail = null;
     let globalUserAvatar = 'https://www.svgrepo.com/show/5125/avatar.svg';
     let isAdmin = false;
+    let editingPostId = null; // Track which post is being edited
     const ALLOWED_ADMIN_EMAIL = "tec.habiburrahman@gmail.com".toLowerCase();
 
-    // Store local state of likes
     window.postLikesState = {};
+    let currentSharePostId = null;
 
-    // Auth State Observer
+    // --- TOAST NOTIFICATION ---
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.innerText = message;
+        toast.style.borderColor = type === 'success' ? 'rgba(34,197,94,0.5)' : type === 'error' ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.1)';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // --- AUTH STATE ---
     onAuthStateChanged(authInstance, (user) => {
         const loginBtn = document.getElementById('loginNavBtn');
         const profileMenu = document.getElementById('userProfileMenu');
@@ -278,7 +330,6 @@
             document.getElementById('headerAvatar').src = globalUserAvatar;
             globalUserEmail = user.email || user.phoneNumber;
             
-            // Check if admin
             if(user.email && user.email.toLowerCase() === ALLOWED_ADMIN_EMAIL) {
                 isAdmin = true;
                 adminControls.classList.remove('hidden');
@@ -297,50 +348,78 @@
         loadFullBlogPosts();
     });
 
-    // Profile Upload Logic
+    // Profile Upload
     const picInput = document.getElementById('profilePicInput');
     if (picInput) {
         picInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if(!file || !authInstance.currentUser) return;
-            
             document.getElementById('headerAvatar').src = "https://www.svgrepo.com/show/285573/loading-spinner.svg";
-            
             try {
                 const storageRef = ref(storageInstance, 'avatars/' + authInstance.currentUser.uid);
                 await uploadBytes(storageRef, file);
                 const photoURL = await getDownloadURL(storageRef);
-                
                 await updateProfile(authInstance.currentUser, { photoURL: photoURL });
                 document.getElementById('headerAvatar').src = photoURL;
                 globalUserAvatar = photoURL;
-                alert("Profile picture updated!");
+                showToast("Profile picture updated!");
             } catch (error) {
-                alert("Upload failed: " + error.message);
+                showToast("Upload failed: " + error.message, 'error');
                 document.getElementById('headerAvatar').src = globalUserAvatar;
             }
         });
     }
 
-    // Logout
     window.logoutCurrentUser = function() {
-        signOut(authInstance).then(() => {
-            window.location.reload();
-        });
+        signOut(authInstance).then(() => window.location.reload());
     };
 
-    // --- CREATE POST LOGIC ---
+    // --- CREATE / EDIT POST MODAL ---
     const modal = document.getElementById('createPostModal');
     const modalContent = document.getElementById('modalContent');
 
     window.openCreatePostModal = function() {
         if(!isAdmin) return;
+        editingPostId = null;
+        document.getElementById('modalTitle').innerText = 'Create New Post';
+        document.getElementById('publishBtn').querySelector('span').innerText = 'Publish Post';
+        document.getElementById('createPostForm').reset();
+        setMediaType('image');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         setTimeout(() => {
             modalContent.classList.remove('scale-95', 'opacity-0');
             modalContent.classList.add('scale-100', 'opacity-100');
         }, 10);
+    }
+
+    window.openEditPostModal = function(postId) {
+        if(!isAdmin) return;
+        editingPostId = postId;
+        
+        // Get current post data from DOM/state
+        const postRef = doc(db, "blogPosts", postId);
+        getDoc(postRef).then(docSnap => {
+            if(docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('modalTitle').innerText = 'Edit Post';
+                document.getElementById('publishBtn').querySelector('span').innerText = 'Save Changes';
+                document.getElementById('postMediaUrl').value = data.mediaLink || '';
+                document.getElementById('postCategory').value = data.category || 'Update';
+                document.getElementById('postDescription').value = data.description || '';
+                
+                // Detect media type
+                const isYoutube = data.mediaLink && (data.mediaLink.includes('youtube.com') || data.mediaLink.includes('youtu.be'));
+                setMediaType(isYoutube ? 'video' : 'image');
+                
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalContent.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            }
+        });
     }
 
     window.closeCreatePostModal = function() {
@@ -351,7 +430,8 @@
             modal.classList.remove('flex');
             document.getElementById('createPostForm').reset();
             document.getElementById('postStatus').classList.add('hidden');
-            setMediaType('image'); // Reset to image
+            setMediaType('image');
+            editingPostId = null;
         }, 300);
     }
 
@@ -364,7 +444,7 @@
         if(type === 'image') {
             btnImg.className = "flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all";
             btnVid.className = "flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all";
-            input.placeholder = "Paste Image Link (e.g. ImgBB, Flickr)...";
+            input.placeholder = "Paste Image Link (e.g. ImgBB, Direct URL)...";
         } else {
             btnVid.className = "flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all";
             btnImg.className = "flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all";
@@ -387,46 +467,109 @@
             return;
         }
 
-        // UI Loading State
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Publishing...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> ' + (editingPostId ? 'Saving...' : 'Publishing...');
         statusDiv.classList.add('hidden');
 
         try {
-            await addDoc(collection(db, "blogPosts"), {
-                mediaLink: mediaUrl,
-                mediaType: mediaType === 'video' ? 'video/youtube' : 'image', // Simplified type logic
-                category: category,
-                description: description,
-                date: new Date().toLocaleDateString(),
-                timestamp: serverTimestamp(),
-                likedBy: [],
-                comments: []
-            });
-
-            statusDiv.innerText = "✅ Post published successfully!";
-            statusDiv.className = "mt-3 text-center text-sm font-medium text-green-400";
-            statusDiv.classList.remove('hidden');
+            if(editingPostId) {
+                // UPDATE existing post
+                const postRef = doc(db, "blogPosts", editingPostId);
+                await updateDoc(postRef, {
+                    mediaLink: mediaUrl,
+                    mediaType: mediaType === 'video' ? 'video/youtube' : 'image',
+                    category: category,
+                    description: description,
+                    date: new Date().toLocaleDateString(),
+                });
+                showToast("✅ Post updated successfully!");
+            } else {
+                // CREATE new post
+                await addDoc(collection(db, "blogPosts"), {
+                    mediaLink: mediaUrl,
+                    mediaType: mediaType === 'video' ? 'video/youtube' : 'image',
+                    category: category,
+                    description: description,
+                    date: new Date().toLocaleDateString(),
+                    timestamp: serverTimestamp(),
+                    likes: 0,
+                    likedBy: [],
+                    comments: []
+                });
+                showToast("✅ Post published successfully!");
+            }
 
             setTimeout(() => {
                 closeCreatePostModal();
-                loadFullBlogPosts(); // Refresh feed
+                loadFullBlogPosts();
                 btn.disabled = false;
                 btn.innerHTML = '<span>Publish Post</span> <i data-feather="send" class="w-4 h-4"></i>';
                 feather.replace();
-            }, 1500);
+            }, 1000);
 
         } catch (error) {
-            console.error("Error creating post:", error);
+            console.error("Error:", error);
             statusDiv.innerText = "❌ Error: " + error.message;
             statusDiv.className = "mt-3 text-center text-sm font-medium text-red-400";
             statusDiv.classList.remove('hidden');
             btn.disabled = false;
-            btn.innerHTML = '<span>Publish Post</span> <i data-feather="send" class="w-4 h-4"></i>';
+            btn.innerHTML = '<span>' + (editingPostId ? 'Save Changes' : 'Publish Post') + '</span> <i data-feather="send" class="w-4 h-4"></i>';
         }
     }
 
-    // --- FEED LOADING LOGIC ---
+    // --- SHARE MODAL ---
+    const shareModal = document.getElementById('shareModal');
+    const shareModalContent = document.getElementById('shareModalContent');
+
+    window.openShareModal = function(postId) {
+        currentSharePostId = postId;
+        shareModal.classList.remove('hidden');
+        shareModal.classList.add('flex');
+        setTimeout(() => {
+            shareModalContent.classList.remove('scale-95', 'opacity-0');
+            shareModalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+        feather.replace();
+    }
+
+    window.closeShareModal = function() {
+        shareModalContent.classList.remove('scale-100', 'opacity-100');
+        shareModalContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            shareModal.classList.add('hidden');
+            shareModal.classList.remove('flex');
+        }, 300);
+    }
+
+    window.shareVia = function(platform) {
+        const url = window.location.href;
+        const text = "Check out this post from Habib iFix! 🔧";
+        
+        switch(platform) {
+            case 'whatsapp':
+                window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+                break;
+            case 'facebook':
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                break;
+            case 'telegram':
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+                break;
+            case 'twitter':
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+                break;
+            case 'copy':
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast("📋 Link copied to clipboard!");
+                }).catch(() => {
+                    showToast("Failed to copy link", 'error');
+                });
+                break;
+        }
+        closeShareModal();
+    }
+
+    // --- FEED LOADING ---
     async function loadFullBlogPosts() {
       const blogContainer = document.getElementById('blog-container');
       
@@ -453,45 +596,81 @@
           const post = documentSnapshot.data();
           const postId = documentSnapshot.id;
           
-          // Media Handling
+          // --- MEDIA HANDLING (FIXED YOUTUBE) ---
           let mediaHTML = '';
-          const isYoutube = post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'));
+          const link = post.mediaLink || '';
+          const isYoutube = link.includes('youtube.com') || link.includes('youtu.be');
           
           if (isYoutube) {
-             const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
-             mediaHTML = `<div class="relative aspect-video bg-black"><iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+             // Extract video ID properly
+             let videoId = '';
+             if(link.includes('youtu.be/')) {
+                 videoId = link.split('youtu.be/')[1].split('?')[0].substring(0, 11);
+             } else if(link.includes('v=')) {
+                 videoId = link.split('v=')[1].split('&')[0].substring(0, 11);
+             } else if(link.includes('embed/')) {
+                 videoId = link.split('embed/')[1].split('?')[0].substring(0, 11);
+             }
+             
+             if(videoId) {
+                 mediaHTML = `<div class="relative aspect-video bg-black">
+                    <iframe class="w-full h-full absolute inset-0" 
+                        src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                 </div>`;
+             } else {
+                 mediaHTML = `<div class="aspect-video bg-slate-800 flex items-center justify-center text-slate-500"><i data-feather="alert-circle" class="w-10 h-10"></i><p class="ml-2">Invalid YouTube URL</p></div>`;
+             }
           } else if (post.mediaType && post.mediaType.startsWith('video')) {
-             mediaHTML = `<video class="w-full max-h-[600px] object-cover bg-black" controls controlsList="nodownload"><source src="${post.mediaLink}" type="video/mp4"></video>`;
+             mediaHTML = `<video class="w-full max-h-[600px] object-cover bg-black" controls preload="metadata"><source src="${link}" type="video/mp4">Your browser does not support video.</video>`;
           } else {
-             mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full max-h-[600px] object-cover bg-[#1e293b]" alt="Post Media" loading="lazy">`;
+             mediaHTML = `<img src="${link || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full max-h-[600px] object-cover bg-[#1e293b]" alt="Post Media" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'">`;
           }
 
-          // Like Logic Setup
+          // --- LIKE LOGIC (ADMIN = UNLIMITED) ---
           const likedByArray = post.likedBy || [];
+          const likeCount = post.likes !== undefined ? post.likes : likedByArray.length;
           const isLiked = globalUserEmail && likedByArray.includes(globalUserEmail);
-          window.postLikesState[postId] = { likedBy: [...likedByArray] };
+          
+          window.postLikesState[postId] = { likedBy: [...likedByArray], count: likeCount };
           
           const heartFill = isLiked ? '#f43f5e' : 'none';
-          const heartColor = isLiked ? '#f43f5e' : 'currentColor';
+          const heartStroke = isLiked ? '#f43f5e' : 'white';
           const heartClass = isLiked ? 'text-rose-500' : 'text-white hover:text-slate-400';
 
-          // Comments Setup
+          // --- COMMENTS ---
           const commentsArray = post.comments || [];
-          let commentsHTML = commentsArray.map(c => `
-             <div class="mb-2 text-sm leading-snug animate-fade-in-up">
-                <span class="font-bold text-white mr-2 cursor-pointer hover:underline">${c.user}</span>
-                <span class="text-slate-300">${c.text}</span>
-                <div class="text-[10px] text-slate-500 mt-0.5 ml-1 flex gap-3">
-                    <span>${c.date || 'Now'}</span>
+          let commentsHTML = commentsArray.map((c, idx) => `
+             <div class="mb-2 text-sm leading-snug animate-fade-in-up group/comment flex justify-between items-start gap-2" id="comment-${postId}-${idx}">
+                <div>
+                    <span class="font-bold text-white mr-2 cursor-pointer hover:underline">${c.user}</span>
+                    <span class="text-slate-300">${c.text}</span>
+                    <div class="text-[10px] text-slate-500 mt-0.5 ml-1 flex gap-3">
+                        <span>${c.date || 'Now'}</span>
+                    </div>
                 </div>
+                ${isAdmin ? `<button onclick="deleteComment('${postId}', ${idx})" class="opacity-0 group-hover/comment:opacity-100 text-slate-500 hover:text-red-400 transition-all p-1 shrink-0" title="Delete Comment"><i data-feather="x" class="w-3 h-3"></i></button>` : ''}
              </div>
           `).join('');
 
-          // Delete Button (Admin Only)
-          const deleteBtnHTML = isAdmin ? `
-             <button onclick="deleteSinglePost('${postId}')" class="text-slate-500 hover:text-red-500 p-2 transition-colors rounded-full hover:bg-red-500/10" title="Delete Post">
-                 <i data-feather="trash-2" class="w-5 h-5"></i>
-             </button>` : `<button class="text-slate-400 hover:text-white p-2 transition-colors rounded-full hover:bg-white/10"><i data-feather="more-horizontal" class="w-5 h-5"></i></button>`;
+          // --- ADMIN ACTIONS (Edit + Delete) ---
+          let adminActionsHTML = '';
+          if(isAdmin) {
+              adminActionsHTML = `
+                <div class="flex items-center gap-1">
+                    <button onclick="openEditPostModal('${postId}')" class="text-slate-500 hover:text-blue-400 p-2 transition-colors rounded-full hover:bg-blue-500/10" title="Edit Post">
+                        <i data-feather="edit-2" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="deleteSinglePost('${postId}')" class="text-slate-500 hover:text-red-500 p-2 transition-colors rounded-full hover:bg-red-500/10" title="Delete Post">
+                        <i data-feather="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>`;
+          } else {
+              adminActionsHTML = `<button class="text-slate-400 hover:text-white p-2 transition-colors rounded-full hover:bg-white/10"><i data-feather="more-horizontal" class="w-5 h-5"></i></button>`;
+          }
 
           const postElement = document.createElement('article');
           postElement.className = "bg-[#0f172a] sm:rounded-2xl border border-white/10 shadow-xl overflow-hidden animate-fade-in-up mb-8";
@@ -504,16 +683,22 @@
                         <img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" class="w-full h-full rounded-full object-cover">
                     </div>
                     <div class="flex flex-col leading-tight">
-                        <span class="font-bold text-sm text-white flex items-center gap-1">Habib Tec. <i data-feather="check-circle" class="w-3 h-3 text-blue-400 fill-blue-400"></i></span>
-                        <span class="text-[11px] text-slate-500 font-medium">${post.date} • ${post.category || 'Update'}</span>
+                        <span class="font-bold text-sm text-white flex items-center gap-1">Habib Tec. <svg class="w-3.5 h-3.5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg></span>
+                        <span class="text-[11px] text-slate-500 font-medium">${post.date || 'Today'} • ${post.category || 'Update'}</span>
                     </div>
                 </div>
-                <div>${deleteBtnHTML}</div>
+                <div>${adminActionsHTML}</div>
             </div>
 
-            <!-- Media Content -->
-            <div class="w-full bg-black border-y border-white/5 relative group">
+            <!-- Media Content with Double Tap Like -->
+            <div class="w-full bg-black border-y border-white/5 relative group" ondblclick="doubleTapLike('${postId}')">
                 ${mediaHTML}
+                <!-- Double tap heart animation overlay -->
+                <div id="double-tap-heart-${postId}" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="#f43f5e" stroke="#f43f5e" stroke-width="2" class="drop-shadow-2xl">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </div>
             </div>
             
             <!-- Actions & Content -->
@@ -522,25 +707,25 @@
                 <!-- Action Icons -->
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-4">
-                        <button onclick="toggleLike('${postId}')" class="focus:outline-none transform active:scale-75 transition-transform duration-200">
-                            <svg id="heart-icon-${postId}" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="${heartFill}" stroke="${heartColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${heartClass} transition-colors duration-200">
+                        <button onclick="toggleLike('${postId}')" class="focus:outline-none transform active:scale-75 transition-transform duration-200" id="like-btn-${postId}">
+                            <svg id="heart-icon-${postId}" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="${heartFill}" stroke="${heartStroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${heartClass} transition-colors duration-200">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                             </svg>
                         </button>
                         <button onclick="focusComment('${postId}')" class="text-white hover:text-slate-400 focus:outline-none transition-colors transform active:scale-90">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                         </button>
-                        <button class="text-white hover:text-slate-400 focus:outline-none transition-colors transform active:scale-90">
+                        <button onclick="openShareModal('${postId}')" class="text-white hover:text-slate-400 focus:outline-none transition-colors transform active:scale-90">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                         </button>
                     </div>
-                    <button class="text-white hover:text-slate-400 focus:outline-none transition-colors">
+                    <button class="text-white hover:text-slate-400 focus:outline-none transition-colors" onclick="showToast('Saved to bookmarks!')">
                          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                     </button>
                 </div>
 
                 <!-- Likes Count -->
-                <p class="font-bold text-sm text-white mb-2" id="like-count-${postId}">${likedByArray.length.toLocaleString()} likes</p>
+                <p class="font-bold text-sm text-white mb-2" id="like-count-${postId}">${likeCount.toLocaleString()} likes</p>
 
                 <!-- Caption -->
                 <div class="text-sm text-slate-200 mb-3 leading-relaxed">
@@ -548,7 +733,7 @@
                 </div>
 
                 <!-- Comments Toggle -->
-                ${commentsArray.length > 0 ? `<button onclick="toggleComments('${postId}')" class="text-sm text-slate-500 mb-3 focus:outline-none cursor-pointer hover:text-slate-400">View all ${commentsArray.length} comments</button>` : ''}
+                ${commentsArray.length > 0 ? `<button onclick="toggleComments('${postId}')" class="text-sm text-slate-500 mb-3 focus:outline-none cursor-pointer hover:text-slate-400" id="view-comments-btn-${postId}">View all ${commentsArray.length} comments</button>` : ''}
 
                 <!-- Comments Display Box -->
                 <div id="comment-section-${postId}" class="hidden flex-col gap-1 mb-3 max-h-48 overflow-y-auto no-scrollbar pr-2">
@@ -558,8 +743,8 @@
                 <!-- Add Comment Input -->
                 <div class="flex items-center gap-3 border-t border-white/10 pt-3 mt-1">
                     <img src="${globalUserAvatar}" class="w-7 h-7 rounded-full object-cover border border-white/10">
-                    <input type="text" id="comment-input-${postId}" placeholder="Add a comment..." class="bg-transparent flex-grow text-sm text-white focus:outline-none placeholder-slate-500" onclick="checkAuthBeforeAction()">
-                    <button onclick="submitComment('${postId}')" class="text-blue-400 font-bold text-sm hover:text-white transition-colors focus:outline-none disabled:opacity-50">Post</button>
+                    <input type="text" id="comment-input-${postId}" placeholder="Add a comment..." class="bg-transparent flex-grow text-sm text-white focus:outline-none placeholder-slate-500" onkeypress="if(event.key==='Enter')submitComment('${postId}')">
+                    <button onclick="submitComment('${postId}')" class="text-blue-400 font-bold text-sm hover:text-white transition-colors focus:outline-none">Post</button>
                 </div>
 
             </div>
@@ -569,11 +754,11 @@
         feather.replace();
       } catch (error) {
         console.log("Error loading posts:", error);
-        blogContainer.innerHTML = `<p class="text-center text-red-400">Failed to load feed.</p>`;
+        blogContainer.innerHTML = `<p class="text-center text-red-400 py-10">Failed to load feed. Please refresh.</p>`;
       }
     }
 
-    // --- INTERACTION HELPERS ---
+    // --- INTERACTION FUNCTIONS ---
     window.checkAuthBeforeAction = function() {
         if (!globalUserEmail) {
             window.location.href = 'login.html?return=blog.html';
@@ -588,6 +773,7 @@
         toggleComments(postId, true);
     }
 
+    // --- LIKE SYSTEM (ADMIN = UNLIMITED) ---
     window.toggleLike = async function(postId) {
         if (!checkAuthBeforeAction()) return;
 
@@ -596,33 +782,89 @@
         const postRef = doc(db, "blogPosts", postId);
         
         const heartIcon = document.getElementById(`heart-icon-${postId}`);
-        const likeCount = document.getElementById(`like-count-${postId}`);
+        const likeCountEl = document.getElementById(`like-count-${postId}`);
 
-        if (hasLiked) {
-            heartIcon.setAttribute('fill', 'none');
-            heartIcon.setAttribute('stroke', 'currentColor');
-            heartIcon.classList.remove('text-rose-500');
-            heartIcon.classList.add('text-white');
-            state.likedBy = state.likedBy.filter(e => e !== globalUserEmail);
-        } else {
-            heartIcon.setAttribute('fill', '#f43f5e'); 
-            heartIcon.setAttribute('stroke', '#f43f5e');
-            heartIcon.classList.remove('text-white');
-            heartIcon.classList.add('text-rose-500');
-            heartIcon.classList.add('animate-heart');
-            setTimeout(() => heartIcon.classList.remove('animate-heart'), 300);
-            state.likedBy.push(globalUserEmail);
-        }
-        likeCount.innerText = `${state.likedBy.length.toLocaleString()} likes`;
-
-        try {
-            if (hasLiked) {
-                await updateDoc(postRef, { likedBy: arrayRemove(globalUserEmail) });
+        if(isAdmin) {
+            // ADMIN: Unlimited likes - just increment/decrement counter
+            if(hasLiked) {
+                // Unlike
+                state.count = Math.max(0, state.count - 1);
+                state.likedBy = state.likedBy.filter(e => e !== globalUserEmail);
+                heartIcon.setAttribute('fill', 'none');
+                heartIcon.setAttribute('stroke', 'white');
+                heartIcon.classList.remove('text-rose-500');
+                heartIcon.classList.add('text-white');
+                await updateDoc(postRef, { 
+                    likedBy: arrayRemove(globalUserEmail),
+                    likes: state.count
+                });
             } else {
-                await updateDoc(postRef, { likedBy: arrayUnion(globalUserEmail) });
+                // Like (admin can like multiple times conceptually, but we track one entry + extra count)
+                state.count += 1;
+                if(!state.likedBy.includes(globalUserEmail)) {
+                    state.likedBy.push(globalUserEmail);
+                    await updateDoc(postRef, { 
+                        likedBy: arrayUnion(globalUserEmail),
+                        likes: state.count
+                    });
+                } else {
+                    // Already in likedBy but admin wants to add more
+                    await updateDoc(postRef, { likes: state.count });
+                }
+                heartIcon.setAttribute('fill', '#f43f5e'); 
+                heartIcon.setAttribute('stroke', '#f43f5e');
+                heartIcon.classList.remove('text-white');
+                heartIcon.classList.add('text-rose-500');
+                heartIcon.classList.add('animate-heart');
+                setTimeout(() => heartIcon.classList.remove('animate-heart'), 300);
             }
-        } catch (error) {
-            console.error("Error updating like:", error);
+        } else {
+            // NORMAL USER: One like only
+            if(hasLiked) {
+                state.count = Math.max(0, state.count - 1);
+                state.likedBy = state.likedBy.filter(e => e !== globalUserEmail);
+                heartIcon.setAttribute('fill', 'none');
+                heartIcon.setAttribute('stroke', 'white');
+                heartIcon.classList.remove('text-rose-500');
+                heartIcon.classList.add('text-white');
+                await updateDoc(postRef, { 
+                    likedBy: arrayRemove(globalUserEmail),
+                    likes: state.count
+                });
+            } else {
+                state.count += 1;
+                state.likedBy.push(globalUserEmail);
+                heartIcon.setAttribute('fill', '#f43f5e'); 
+                heartIcon.setAttribute('stroke', '#f43f5e');
+                heartIcon.classList.remove('text-white');
+                heartIcon.classList.add('text-rose-500');
+                heartIcon.classList.add('animate-heart');
+                setTimeout(() => heartIcon.classList.remove('animate-heart'), 300);
+                await updateDoc(postRef, { 
+                    likedBy: arrayUnion(globalUserEmail),
+                    likes: state.count
+                });
+            }
+        }
+        
+        likeCountEl.innerText = `${state.count.toLocaleString()} likes`;
+    }
+
+    // Double tap to like
+    window.doubleTapLike = function(postId) {
+        const heartOverlay = document.getElementById(`double-tap-heart-${postId}`);
+        heartOverlay.style.opacity = '1';
+        heartOverlay.querySelector('svg').classList.add('animate-double-tap');
+        
+        setTimeout(() => {
+            heartOverlay.style.opacity = '0';
+            heartOverlay.querySelector('svg').classList.remove('animate-double-tap');
+        }, 800);
+
+        // Auto like if not already liked
+        const state = window.postLikesState[postId];
+        if(state && !state.likedBy.includes(globalUserEmail)) {
+            toggleLike(postId);
         }
     }
 
@@ -657,15 +899,21 @@
         list.classList.remove('hidden');
         list.classList.add('flex');
         
+        const commentIdx = list.children.length;
         const commentDiv = document.createElement('div');
-        commentDiv.className = "mb-2 text-sm leading-snug animate-fade-in-up";
+        commentDiv.className = "mb-2 text-sm leading-snug animate-fade-in-up group/comment flex justify-between items-start gap-2";
+        commentDiv.id = `comment-${postId}-${commentIdx}`;
         commentDiv.innerHTML = `
-            <span class="font-bold text-white mr-2">${newComment.user}</span>
-            <span class="text-slate-300">${newComment.text}</span>
-            <div class="text-[10px] text-slate-500 mt-0.5 ml-1">Just now</div>
+            <div>
+                <span class="font-bold text-white mr-2">${newComment.user}</span>
+                <span class="text-slate-300">${newComment.text}</span>
+                <div class="text-[10px] text-slate-500 mt-0.5 ml-1">Just now</div>
+            </div>
+            ${isAdmin ? `<button onclick="deleteComment('${postId}', ${commentIdx})" class="opacity-0 group-hover/comment:opacity-100 text-slate-500 hover:text-red-400 transition-all p-1 shrink-0" title="Delete Comment"><i data-feather="x" class="w-3 h-3"></i></button>` : ''}
         `;
         list.appendChild(commentDiv);
-        list.scrollTop = list.scrollHeight; 
+        list.scrollTop = list.scrollHeight;
+        feather.replace();
 
         try {
             const postRef = doc(db, "blogPosts", postId);
@@ -674,19 +922,51 @@
             });
         } catch (error) {
             console.error("Error posting comment: ", error);
-            alert("Failed to post comment.");
+            showToast("Failed to post comment.", 'error');
         }
     }
 
+    // --- ADMIN: DELETE COMMENT ---
+    window.deleteComment = async function(postId, commentIndex) {
+        if(!isAdmin) return;
+        if(!confirm("Delete this comment?")) return;
+
+        try {
+            const postRef = doc(db, "blogPosts", postId);
+            const postSnap = await getDoc(postRef);
+            if(postSnap.exists()) {
+                const comments = postSnap.data().comments || [];
+                comments.splice(commentIndex, 1);
+                await updateDoc(postRef, { comments: comments });
+                
+                // Remove from DOM
+                const commentEl = document.getElementById(`comment-${postId}-${commentIndex}`);
+                if(commentEl) commentEl.remove();
+                
+                showToast("Comment deleted.");
+            }
+        } catch(error) {
+            showToast("Failed to delete comment.", 'error');
+        }
+    }
+
+    // --- ADMIN: DELETE POST ---
     window.deleteSinglePost = async function(postId) {
         if (!isAdmin) return;
         
-        if (confirm("Are you SURE you want to delete this specific post? This cannot be undone.")) {
+        if (confirm("Are you SURE you want to delete this post? This cannot be undone.")) {
             try {
                 await deleteDoc(doc(db, "blogPosts", postId));
-                event.target.closest('article').remove();
+                // Find and remove the article element
+                const articles = document.querySelectorAll('article');
+                articles.forEach(article => {
+                    if(article.innerHTML.includes(postId)) article.remove();
+                });
+                // Fallback: reload
+                loadFullBlogPosts();
+                showToast("Post deleted successfully.");
             } catch (error) {
-                alert("Failed to delete post: " + error.message);
+                showToast("Failed to delete post: " + error.message, 'error');
             }
         }
     }

@@ -55,7 +55,6 @@
       border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* Toast notification */
     .toast {
       position: fixed;
       bottom: 30px;
@@ -74,6 +73,35 @@
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Reel/Short vertical video container */
+    .reel-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      aspect-ratio: 9/16;
+      max-height: 700px;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .reel-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .landscape-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+    .landscape-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
   </style>
 </head>
 <body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a]">
@@ -199,21 +227,42 @@
         <div class="p-6 overflow-y-auto custom-scrollbar flex-grow">
             <form id="createPostForm" class="space-y-5">
                 
+                <!-- Media Type Selection -->
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Media Type</label>
-                    <div class="flex gap-3">
-                        <button type="button" onclick="setMediaType('image')" id="btn-type-image" class="flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all">Image</button>
-                        <button type="button" onclick="setMediaType('video')" id="btn-type-video" class="flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all">Video / YouTube</button>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" onclick="setMediaType('image')" id="btn-type-image" class="py-2.5 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-xs font-bold transition-all flex flex-col items-center gap-1">
+                            <i data-feather="image" class="w-4 h-4"></i> Image
+                        </button>
+                        <button type="button" onclick="setMediaType('video')" id="btn-type-video" class="py-2.5 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-xs font-bold hover:bg-white/10 transition-all flex flex-col items-center gap-1">
+                            <i data-feather="video" class="w-4 h-4"></i> Video
+                        </button>
+                        <button type="button" onclick="setMediaType('reel')" id="btn-type-reel" class="py-2.5 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-xs font-bold hover:bg-white/10 transition-all flex flex-col items-center gap-1">
+                            <i data-feather="film" class="w-4 h-4"></i> Reel/Short
+                        </button>
                     </div>
                     <input type="hidden" id="selectedMediaType" value="image">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Media URL</label>
-                    <input type="url" id="postMediaUrl" required placeholder="Paste Image Link (ImgBB) or YouTube Link" class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none transition-all text-sm">
-                    <p class="text-[10px] text-slate-500 mt-1 ml-1">For YouTube paste full link. For images use ImgBB/Direct link.</p>
+                <!-- Platform hint -->
+                <div id="platformHint" class="hidden bg-blue-500/10 border border-blue-500/20 rounded-xl p-3">
+                    <p class="text-xs text-blue-300 font-medium mb-2"><i data-feather="info" class="w-3 h-3 inline mr-1"></i> Supported Platforms:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-[10px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded-full border border-red-500/20"><i class="fab fa-youtube mr-1"></i>YouTube Shorts</span>
+                        <span class="text-[10px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full border border-pink-500/20"><i class="fab fa-instagram mr-1"></i>Instagram Reels</span>
+                        <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/20"><i class="fab fa-tiktok mr-1"></i>TikTok</span>
+                        <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/20"><i class="fab fa-facebook mr-1"></i>Facebook Reels</span>
+                    </div>
                 </div>
 
+                <!-- Media URL Input -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" id="mediaUrlLabel">Media URL</label>
+                    <input type="url" id="postMediaUrl" required placeholder="Paste Image Link (ImgBB) or YouTube Link" class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none transition-all text-sm">
+                    <p class="text-[10px] text-slate-500 mt-1 ml-1" id="mediaUrlHint">For YouTube paste full link. For images use ImgBB/Direct link.</p>
+                </div>
+
+                <!-- Category -->
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Category</label>
                     <select id="postCategory" class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none transition-all text-sm appearance-none">
@@ -221,9 +270,11 @@
                         <option value="Repair Tip" class="bg-slate-900">Repair Tip</option>
                         <option value="Review" class="bg-slate-900">Product Review</option>
                         <option value="Offer" class="bg-slate-900">Special Offer</option>
+                        <option value="Reel" class="bg-slate-900">Reel / Short Video</option>
                     </select>
                 </div>
 
+                <!-- Caption -->
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Caption / Description</label>
                     <textarea id="postDescription" rows="4" required placeholder="Write your caption here..." class="w-full bg-[#0f172a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-rose-500 outline-none resize-none transition-all text-sm"></textarea>
@@ -301,19 +352,182 @@
     let globalUserEmail = null;
     let globalUserAvatar = 'https://www.svgrepo.com/show/5125/avatar.svg';
     let isAdmin = false;
-    let editingPostId = null; // Track which post is being edited
+    let editingPostId = null;
     const ALLOWED_ADMIN_EMAIL = "tec.habiburrahman@gmail.com".toLowerCase();
 
     window.postLikesState = {};
     let currentSharePostId = null;
 
-    // --- TOAST NOTIFICATION ---
+    // --- TOAST ---
     function showToast(message, type = 'success') {
         const toast = document.getElementById('toast');
         toast.innerText = message;
         toast.style.borderColor = type === 'success' ? 'rgba(34,197,94,0.5)' : type === 'error' ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.1)';
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ============================================================
+    // UNIVERSAL VIDEO URL PARSER - Supports ALL platforms
+    // ============================================================
+    function parseVideoUrl(url) {
+        if (!url) return { type: 'unknown', embedUrl: '', isVertical: false };
+        
+        url = url.trim();
+        
+        // --- YOUTUBE (Regular + Shorts) ---
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            let videoId = '';
+            
+            // youtube.com/shorts/VIDEO_ID
+            if (url.includes('/shorts/')) {
+                videoId = url.split('/shorts/')[1].split('?')[0].split('/')[0];
+                return { type: 'youtube', embedUrl: `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`, isVertical: true };
+            }
+            // youtu.be/VIDEO_ID
+            if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1].split('?')[0].substring(0, 11);
+                return { type: 'youtube', embedUrl: `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`, isVertical: false };
+            }
+            // youtube.com/watch?v=VIDEO_ID
+            if (url.includes('v=')) {
+                videoId = url.split('v=')[1].split('&')[0].substring(0, 11);
+                return { type: 'youtube', embedUrl: `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`, isVertical: false };
+            }
+            // youtube.com/embed/VIDEO_ID
+            if (url.includes('/embed/')) {
+                videoId = url.split('/embed/')[1].split('?')[0].substring(0, 11);
+                return { type: 'youtube', embedUrl: `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`, isVertical: false };
+            }
+            
+            return { type: 'youtube', embedUrl: '', isVertical: false };
+        }
+        
+        // --- TIKTOK ---
+        if (url.includes('tiktok.com')) {
+            // Extract video ID from URL like https://www.tiktok.com/@user/video/7123456789
+            const tiktokMatch = url.match(/video\/(\d+)/);
+            if (tiktokMatch) {
+                const videoId = tiktokMatch[1];
+                return { type: 'tiktok', embedUrl: `https://www.tiktok.com/embed/v2/${videoId}`, isVertical: true };
+            }
+            // Try alternate format
+            const tiktokMatch2 = url.match(/tiktok\.com\/.*\/(\d+)/);
+            if (tiktokMatch2) {
+                return { type: 'tiktok', embedUrl: `https://www.tiktok.com/embed/v2/${tiktokMatch2[1]}`, isVertical: true };
+            }
+            return { type: 'tiktok', embedUrl: url, isVertical: true }; // Fallback: use direct URL in iframe
+        }
+        
+        // --- INSTAGRAM (Reels + Posts) ---
+        if (url.includes('instagram.com')) {
+            // instagram.com/reel/CODE/
+            const reelMatch = url.match(/instagram\.com\/reel\/([^\/\?]+)/);
+            if (reelMatch) {
+                const code = reelMatch[1];
+                return { type: 'instagram', embedUrl: `https://www.instagram.com/reel/${code}/embed/`, isVertical: true };
+            }
+            // instagram.com/p/CODE/ (regular post with video)
+            const postMatch = url.match(/instagram\.com\/p\/([^\/\?]+)/);
+            if (postMatch) {
+                const code = postMatch[1];
+                return { type: 'instagram', embedUrl: `https://www.instagram.com/p/${code}/embed/`, isVertical: false };
+            }
+            // If URL already has /embed/ in it
+            if (url.includes('/embed')) {
+                return { type: 'instagram', embedUrl: url, isVertical: url.includes('/reel/') };
+            }
+            return { type: 'instagram', embedUrl: url + (url.endsWith('/') ? 'embed/' : '/embed/'), isVertical: url.includes('/reel/') };
+        }
+        
+        // --- FACEBOOK (Reels + Videos) ---
+        if (url.includes('facebook.com') || url.includes('fb.watch') || url.includes('fb.com')) {
+            // fb.watch/SHORT_CODE
+            if (url.includes('fb.watch/')) {
+                return { type: 'facebook', embedUrl: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0`, isVertical: false };
+            }
+            // facebook.com/reel/ID
+            const fbReelMatch = url.match(/facebook\.com\/reel\/(\d+)/);
+            if (fbReelMatch) {
+                return { type: 'facebook', embedUrl: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0`, isVertical: true };
+            }
+            // facebook.com/.../videos/ID or watch?v=ID
+            return { type: 'facebook', embedUrl: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0`, isVertical: false };
+        }
+        
+        // --- DIRECT VIDEO FILE (.mp4, .webm, etc) ---
+        if (url.match(/\.(mp4|webm|ogg|mov)(\?|$)/i)) {
+            return { type: 'direct', embedUrl: url, isVertical: false };
+        }
+        
+        // --- UNKNOWN / DIRECT IMAGE ---
+        return { type: 'unknown', embedUrl: url, isVertical: false };
+    }
+
+    // Generate media HTML based on parsed video info
+    function generateMediaHTML(post) {
+        const link = post.mediaLink || '';
+        const mediaType = post.mediaType || '';
+        const parsed = parseVideoUrl(link);
+        
+        // If it's a known video platform
+        if (['youtube', 'tiktok', 'instagram', 'facebook'].includes(parsed.type)) {
+            if (parsed.isVertical) {
+                // Vertical/Reel style
+                return `<div class="reel-container">
+                    <iframe src="${parsed.embedUrl}" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen 
+                        loading="lazy"
+                        scrolling="no">
+                    </iframe>
+                </div>`;
+            } else {
+                // Landscape style
+                return `<div class="landscape-container">
+                    <iframe src="${parsed.embedUrl}" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen 
+                        loading="lazy"
+                        scrolling="no">
+                    </iframe>
+                </div>`;
+            }
+        }
+        
+        // Direct video file
+        if (parsed.type === 'direct' || (mediaType && mediaType.startsWith('video'))) {
+            return `<video class="w-full max-h-[600px] object-cover bg-black" controls preload="metadata" playsinline>
+                <source src="${link}" type="video/mp4">
+                Your browser does not support video.
+            </video>`;
+        }
+        
+        // Image (default)
+        return `<img src="${link || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" 
+            class="w-full max-h-[600px] object-cover bg-[#1e293b]" 
+            alt="Post Media" 
+            loading="lazy" 
+            onerror="this.src='https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'">`;
+    }
+
+    // Get platform icon/badge
+    function getPlatformBadge(url) {
+        if (!url) return '';
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            if (url.includes('/shorts/')) return '<span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full border border-red-500/20 font-bold"><i class="fab fa-youtube mr-1"></i>Shorts</span>';
+            return '<span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full border border-red-500/20 font-bold"><i class="fab fa-youtube mr-1"></i>YouTube</span>';
+        }
+        if (url.includes('tiktok.com')) return '<span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/20 font-bold"><i class="fab fa-tiktok mr-1"></i>TikTok</span>';
+        if (url.includes('instagram.com')) {
+            if (url.includes('/reel/')) return '<span class="text-[10px] bg-pink-500/20 text-pink-400 px-2 py-0.5 rounded-full border border-pink-500/20 font-bold"><i class="fab fa-instagram mr-1"></i>Reel</span>';
+            return '<span class="text-[10px] bg-pink-500/20 text-pink-400 px-2 py-0.5 rounded-full border border-pink-500/20 font-bold"><i class="fab fa-instagram mr-1"></i>Instagram</span>';
+        }
+        if (url.includes('facebook.com') || url.includes('fb.watch') || url.includes('fb.com')) {
+            if (url.includes('/reel/')) return '<span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20 font-bold"><i class="fab fa-facebook mr-1"></i>Reel</span>';
+            return '<span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20 font-bold"><i class="fab fa-facebook mr-1"></i>Facebook</span>';
+        }
+        return '';
     }
 
     // --- AUTH STATE ---
@@ -391,13 +605,13 @@
             modalContent.classList.remove('scale-95', 'opacity-0');
             modalContent.classList.add('scale-100', 'opacity-100');
         }, 10);
+        feather.replace();
     }
 
     window.openEditPostModal = function(postId) {
         if(!isAdmin) return;
         editingPostId = postId;
         
-        // Get current post data from DOM/state
         const postRef = doc(db, "blogPosts", postId);
         getDoc(postRef).then(docSnap => {
             if(docSnap.exists()) {
@@ -409,8 +623,14 @@
                 document.getElementById('postDescription').value = data.description || '';
                 
                 // Detect media type
-                const isYoutube = data.mediaLink && (data.mediaLink.includes('youtube.com') || data.mediaLink.includes('youtu.be'));
-                setMediaType(isYoutube ? 'video' : 'image');
+                const parsed = parseVideoUrl(data.mediaLink);
+                if (['youtube', 'tiktok', 'instagram', 'facebook'].includes(parsed.type)) {
+                    setMediaType(parsed.isVertical ? 'reel' : 'video');
+                } else if (data.mediaType && data.mediaType.startsWith('video')) {
+                    setMediaType('video');
+                } else {
+                    setMediaType('image');
+                }
                 
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -418,6 +638,7 @@
                     modalContent.classList.remove('scale-95', 'opacity-0');
                     modalContent.classList.add('scale-100', 'opacity-100');
                 }, 10);
+                feather.replace();
             }
         });
     }
@@ -439,17 +660,35 @@
         document.getElementById('selectedMediaType').value = type;
         const btnImg = document.getElementById('btn-type-image');
         const btnVid = document.getElementById('btn-type-video');
+        const btnReel = document.getElementById('btn-type-reel');
         const input = document.getElementById('postMediaUrl');
+        const hint = document.getElementById('mediaUrlHint');
+        const platformHint = document.getElementById('platformHint');
+        
+        const activeClass = "py-2.5 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-xs font-bold transition-all flex flex-col items-center gap-1";
+        const inactiveClass = "py-2.5 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-xs font-bold hover:bg-white/10 transition-all flex flex-col items-center gap-1";
+        
+        btnImg.className = inactiveClass;
+        btnVid.className = inactiveClass;
+        btnReel.className = inactiveClass;
+        platformHint.classList.add('hidden');
 
         if(type === 'image') {
-            btnImg.className = "flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all";
-            btnVid.className = "flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all";
+            btnImg.className = activeClass;
             input.placeholder = "Paste Image Link (e.g. ImgBB, Direct URL)...";
-        } else {
-            btnVid.className = "flex-1 py-2 rounded-lg border border-rose-500 bg-rose-500/20 text-rose-400 text-sm font-bold transition-all";
-            btnImg.className = "flex-1 py-2 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm font-bold hover:bg-white/10 transition-all";
-            input.placeholder = "Paste YouTube or Video Link...";
+            hint.innerText = "Upload to ImgBB or any image host and paste the direct link here.";
+        } else if(type === 'video') {
+            btnVid.className = activeClass;
+            input.placeholder = "Paste YouTube, FB Video, or direct .mp4 link...";
+            hint.innerText = "Supports YouTube, Facebook Videos, or direct video file URLs.";
+            platformHint.classList.remove('hidden');
+        } else if(type === 'reel') {
+            btnReel.className = activeClass;
+            input.placeholder = "Paste YouTube Shorts, IG Reel, TikTok, or FB Reel link...";
+            hint.innerText = "Paste the full URL of any short/reel video from supported platforms.";
+            platformHint.classList.remove('hidden');
         }
+        feather.replace();
     }
 
     window.submitNewPost = async function() {
@@ -472,22 +711,29 @@
         statusDiv.classList.add('hidden');
 
         try {
+            // Determine the stored media type
+            let storedMediaType = 'image';
+            const parsed = parseVideoUrl(mediaUrl);
+            if (['youtube', 'tiktok', 'instagram', 'facebook'].includes(parsed.type)) {
+                storedMediaType = parsed.isVertical ? 'video/reel' : 'video/embed';
+            } else if (mediaType === 'video' || mediaType === 'reel') {
+                storedMediaType = 'video/direct';
+            }
+
             if(editingPostId) {
-                // UPDATE existing post
                 const postRef = doc(db, "blogPosts", editingPostId);
                 await updateDoc(postRef, {
                     mediaLink: mediaUrl,
-                    mediaType: mediaType === 'video' ? 'video/youtube' : 'image',
+                    mediaType: storedMediaType,
                     category: category,
                     description: description,
                     date: new Date().toLocaleDateString(),
                 });
                 showToast("✅ Post updated successfully!");
             } else {
-                // CREATE new post
                 await addDoc(collection(db, "blogPosts"), {
                     mediaLink: mediaUrl,
-                    mediaType: mediaType === 'video' ? 'video/youtube' : 'image',
+                    mediaType: storedMediaType,
                     category: category,
                     description: description,
                     date: new Date().toLocaleDateString(),
@@ -596,41 +842,11 @@
           const post = documentSnapshot.data();
           const postId = documentSnapshot.id;
           
-          // --- MEDIA HANDLING (FIXED YOUTUBE) ---
-          let mediaHTML = '';
-          const link = post.mediaLink || '';
-          const isYoutube = link.includes('youtube.com') || link.includes('youtu.be');
-          
-          if (isYoutube) {
-             // Extract video ID properly
-             let videoId = '';
-             if(link.includes('youtu.be/')) {
-                 videoId = link.split('youtu.be/')[1].split('?')[0].substring(0, 11);
-             } else if(link.includes('v=')) {
-                 videoId = link.split('v=')[1].split('&')[0].substring(0, 11);
-             } else if(link.includes('embed/')) {
-                 videoId = link.split('embed/')[1].split('?')[0].substring(0, 11);
-             }
-             
-             if(videoId) {
-                 mediaHTML = `<div class="relative aspect-video bg-black">
-                    <iframe class="w-full h-full absolute inset-0" 
-                        src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                 </div>`;
-             } else {
-                 mediaHTML = `<div class="aspect-video bg-slate-800 flex items-center justify-center text-slate-500"><i data-feather="alert-circle" class="w-10 h-10"></i><p class="ml-2">Invalid YouTube URL</p></div>`;
-             }
-          } else if (post.mediaType && post.mediaType.startsWith('video')) {
-             mediaHTML = `<video class="w-full max-h-[600px] object-cover bg-black" controls preload="metadata"><source src="${link}" type="video/mp4">Your browser does not support video.</video>`;
-          } else {
-             mediaHTML = `<img src="${link || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'}" class="w-full max-h-[600px] object-cover bg-[#1e293b]" alt="Post Media" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=80'">`;
-          }
+          // Generate media HTML using universal parser
+          const mediaHTML = generateMediaHTML(post);
+          const platformBadge = getPlatformBadge(post.mediaLink);
 
-          // --- LIKE LOGIC (ADMIN = UNLIMITED) ---
+          // Like Logic
           const likedByArray = post.likedBy || [];
           const likeCount = post.likes !== undefined ? post.likes : likedByArray.length;
           const isLiked = globalUserEmail && likedByArray.includes(globalUserEmail);
@@ -641,7 +857,7 @@
           const heartStroke = isLiked ? '#f43f5e' : 'white';
           const heartClass = isLiked ? 'text-rose-500' : 'text-white hover:text-slate-400';
 
-          // --- COMMENTS ---
+          // Comments
           const commentsArray = post.comments || [];
           let commentsHTML = commentsArray.map((c, idx) => `
              <div class="mb-2 text-sm leading-snug animate-fade-in-up group/comment flex justify-between items-start gap-2" id="comment-${postId}-${idx}">
@@ -656,7 +872,7 @@
              </div>
           `).join('');
 
-          // --- ADMIN ACTIONS (Edit + Delete) ---
+          // Admin Actions
           let adminActionsHTML = '';
           if(isAdmin) {
               adminActionsHTML = `
@@ -684,16 +900,18 @@
                     </div>
                     <div class="flex flex-col leading-tight">
                         <span class="font-bold text-sm text-white flex items-center gap-1">Habib Tec. <svg class="w-3.5 h-3.5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg></span>
-                        <span class="text-[11px] text-slate-500 font-medium">${post.date || 'Today'} • ${post.category || 'Update'}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[11px] text-slate-500 font-medium">${post.date || 'Today'} • ${post.category || 'Update'}</span>
+                            ${platformBadge}
+                        </div>
                     </div>
                 </div>
                 <div>${adminActionsHTML}</div>
             </div>
 
-            <!-- Media Content with Double Tap Like -->
+            <!-- Media Content -->
             <div class="w-full bg-black border-y border-white/5 relative group" ondblclick="doubleTapLike('${postId}')">
                 ${mediaHTML}
-                <!-- Double tap heart animation overlay -->
                 <div id="double-tap-heart-${postId}" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="#f43f5e" stroke="#f43f5e" stroke-width="2" class="drop-shadow-2xl">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -704,7 +922,6 @@
             <!-- Actions & Content -->
             <div class="p-3 md:p-4 pt-4">
                 
-                <!-- Action Icons -->
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-4">
                         <button onclick="toggleLike('${postId}')" class="focus:outline-none transform active:scale-75 transition-transform duration-200" id="like-btn-${postId}">
@@ -724,23 +941,18 @@
                     </button>
                 </div>
 
-                <!-- Likes Count -->
                 <p class="font-bold text-sm text-white mb-2" id="like-count-${postId}">${likeCount.toLocaleString()} likes</p>
 
-                <!-- Caption -->
                 <div class="text-sm text-slate-200 mb-3 leading-relaxed">
                     <span class="font-bold text-white mr-2">Habib Tec.</span> ${post.description}
                 </div>
 
-                <!-- Comments Toggle -->
-                ${commentsArray.length > 0 ? `<button onclick="toggleComments('${postId}')" class="text-sm text-slate-500 mb-3 focus:outline-none cursor-pointer hover:text-slate-400" id="view-comments-btn-${postId}">View all ${commentsArray.length} comments</button>` : ''}
+                ${commentsArray.length > 0 ? `<button onclick="toggleComments('${postId}')" class="text-sm text-slate-500 mb-3 focus:outline-none cursor-pointer hover:text-slate-400">View all ${commentsArray.length} comments</button>` : ''}
 
-                <!-- Comments Display Box -->
                 <div id="comment-section-${postId}" class="hidden flex-col gap-1 mb-3 max-h-48 overflow-y-auto no-scrollbar pr-2">
                     ${commentsHTML}
                 </div>
 
-                <!-- Add Comment Input -->
                 <div class="flex items-center gap-3 border-t border-white/10 pt-3 mt-1">
                     <img src="${globalUserAvatar}" class="w-7 h-7 rounded-full object-cover border border-white/10">
                     <input type="text" id="comment-input-${postId}" placeholder="Add a comment..." class="bg-transparent flex-grow text-sm text-white focus:outline-none placeholder-slate-500" onkeypress="if(event.key==='Enter')submitComment('${postId}')">
@@ -773,7 +985,7 @@
         toggleComments(postId, true);
     }
 
-    // --- LIKE SYSTEM (ADMIN = UNLIMITED) ---
+    // --- LIKE SYSTEM ---
     window.toggleLike = async function(postId) {
         if (!checkAuthBeforeAction()) return;
 
@@ -785,30 +997,20 @@
         const likeCountEl = document.getElementById(`like-count-${postId}`);
 
         if(isAdmin) {
-            // ADMIN: Unlimited likes - just increment/decrement counter
             if(hasLiked) {
-                // Unlike
                 state.count = Math.max(0, state.count - 1);
                 state.likedBy = state.likedBy.filter(e => e !== globalUserEmail);
                 heartIcon.setAttribute('fill', 'none');
                 heartIcon.setAttribute('stroke', 'white');
                 heartIcon.classList.remove('text-rose-500');
                 heartIcon.classList.add('text-white');
-                await updateDoc(postRef, { 
-                    likedBy: arrayRemove(globalUserEmail),
-                    likes: state.count
-                });
+                await updateDoc(postRef, { likedBy: arrayRemove(globalUserEmail), likes: state.count });
             } else {
-                // Like (admin can like multiple times conceptually, but we track one entry + extra count)
                 state.count += 1;
                 if(!state.likedBy.includes(globalUserEmail)) {
                     state.likedBy.push(globalUserEmail);
-                    await updateDoc(postRef, { 
-                        likedBy: arrayUnion(globalUserEmail),
-                        likes: state.count
-                    });
+                    await updateDoc(postRef, { likedBy: arrayUnion(globalUserEmail), likes: state.count });
                 } else {
-                    // Already in likedBy but admin wants to add more
                     await updateDoc(postRef, { likes: state.count });
                 }
                 heartIcon.setAttribute('fill', '#f43f5e'); 
@@ -819,7 +1021,6 @@
                 setTimeout(() => heartIcon.classList.remove('animate-heart'), 300);
             }
         } else {
-            // NORMAL USER: One like only
             if(hasLiked) {
                 state.count = Math.max(0, state.count - 1);
                 state.likedBy = state.likedBy.filter(e => e !== globalUserEmail);
@@ -827,10 +1028,7 @@
                 heartIcon.setAttribute('stroke', 'white');
                 heartIcon.classList.remove('text-rose-500');
                 heartIcon.classList.add('text-white');
-                await updateDoc(postRef, { 
-                    likedBy: arrayRemove(globalUserEmail),
-                    likes: state.count
-                });
+                await updateDoc(postRef, { likedBy: arrayRemove(globalUserEmail), likes: state.count });
             } else {
                 state.count += 1;
                 state.likedBy.push(globalUserEmail);
@@ -840,17 +1038,13 @@
                 heartIcon.classList.add('text-rose-500');
                 heartIcon.classList.add('animate-heart');
                 setTimeout(() => heartIcon.classList.remove('animate-heart'), 300);
-                await updateDoc(postRef, { 
-                    likedBy: arrayUnion(globalUserEmail),
-                    likes: state.count
-                });
+                await updateDoc(postRef, { likedBy: arrayUnion(globalUserEmail), likes: state.count });
             }
         }
         
         likeCountEl.innerText = `${state.count.toLocaleString()} likes`;
     }
 
-    // Double tap to like
     window.doubleTapLike = function(postId) {
         const heartOverlay = document.getElementById(`double-tap-heart-${postId}`);
         heartOverlay.style.opacity = '1';
@@ -861,9 +1055,8 @@
             heartOverlay.querySelector('svg').classList.remove('animate-double-tap');
         }, 800);
 
-        // Auto like if not already liked
         const state = window.postLikesState[postId];
-        if(state && !state.likedBy.includes(globalUserEmail)) {
+        if(state && globalUserEmail && !state.likedBy.includes(globalUserEmail)) {
             toggleLike(postId);
         }
     }
@@ -889,11 +1082,7 @@
         inputField.value = ''; 
         let displayName = globalUserEmail.includes('@') ? globalUserEmail.split('@')[0] : "User_" + globalUserEmail.substring(globalUserEmail.length - 4);
 
-        const newComment = {
-            user: displayName, 
-            text: text,
-            date: new Date().toLocaleDateString()
-        };
+        const newComment = { user: displayName, text: text, date: new Date().toLocaleDateString() };
 
         const list = document.getElementById(`comment-section-${postId}`);
         list.classList.remove('hidden');
@@ -917,20 +1106,16 @@
 
         try {
             const postRef = doc(db, "blogPosts", postId);
-            await updateDoc(postRef, {
-                comments: arrayUnion(newComment)
-            });
+            await updateDoc(postRef, { comments: arrayUnion(newComment) });
         } catch (error) {
             console.error("Error posting comment: ", error);
             showToast("Failed to post comment.", 'error');
         }
     }
 
-    // --- ADMIN: DELETE COMMENT ---
     window.deleteComment = async function(postId, commentIndex) {
         if(!isAdmin) return;
         if(!confirm("Delete this comment?")) return;
-
         try {
             const postRef = doc(db, "blogPosts", postId);
             const postSnap = await getDoc(postRef);
@@ -938,11 +1123,8 @@
                 const comments = postSnap.data().comments || [];
                 comments.splice(commentIndex, 1);
                 await updateDoc(postRef, { comments: comments });
-                
-                // Remove from DOM
                 const commentEl = document.getElementById(`comment-${postId}-${commentIndex}`);
                 if(commentEl) commentEl.remove();
-                
                 showToast("Comment deleted.");
             }
         } catch(error) {
@@ -950,19 +1132,11 @@
         }
     }
 
-    // --- ADMIN: DELETE POST ---
     window.deleteSinglePost = async function(postId) {
         if (!isAdmin) return;
-        
-        if (confirm("Are you SURE you want to delete this post? This cannot be undone.")) {
+        if (confirm("Are you SURE you want to delete this post?")) {
             try {
                 await deleteDoc(doc(db, "blogPosts", postId));
-                // Find and remove the article element
-                const articles = document.querySelectorAll('article');
-                articles.forEach(article => {
-                    if(article.innerHTML.includes(postId)) article.remove();
-                });
-                // Fallback: reload
                 loadFullBlogPosts();
                 showToast("Post deleted successfully.");
             } catch (error) {

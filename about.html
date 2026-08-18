@@ -1,482 +1,859 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us - Habib iFix</title>
   
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Feather Icons -->
   <script src="https://unpkg.com/feather-icons"></script>
+  
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts (Inter) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
-    /* Custom Scrollbar & Accordion Transitions */
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    body { font-family: 'Inter', sans-serif; }
     
-    .accordion-content {
-      transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #9E1B32; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #be2e4c; }
+
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
     }
-    .accordion-content.active {
-      max-height: 200px;
+    .animate-blob { animation: blob 7s infinite; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fade-in-up 0.7s ease-out forwards; }
+
+    @keyframes fade-in-left {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .animate-fade-in-left { animation: fade-in-left 0.7s ease-out forwards; }
+
+    @keyframes fade-in-right {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .animate-fade-in-right { animation: fade-in-right 0.7s ease-out forwards; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+
+    @keyframes count-up {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      50% { transform: scale(1); opacity: 0.2; }
+      100% { transform: scale(0.8); opacity: 0.5; }
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-card-hover {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(158, 27, 50, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(158, 27, 50, 0.15);
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.active {
       opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal-left.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal-right.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Timeline */
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, #9E1B32, transparent);
+      transform: translateX(-50%);
+    }
+    @media (max-width: 768px) {
+      .timeline-line { left: 20px; }
+    }
+
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+      background: #9E1B32;
+      border-radius: 50%;
+      border: 3px solid #0f172a;
+      box-shadow: 0 0 0 3px #9E1B32, 0 0 20px rgba(158, 27, 50, 0.5);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    @media (max-width: 768px) {
+      .timeline-dot { left: 20px; }
+    }
+
+    /* Image hover effect */
+    .img-hover-zoom {
+      overflow: hidden;
+      border-radius: 24px;
+    }
+    .img-hover-zoom img {
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .img-hover-zoom:hover img {
+      transform: scale(1.08);
     }
   </style>
 </head>
-<body class="min-h-screen text-slate-200 bg-[#0f172a] selection:bg-[#9E1B32] selection:text-white relative flex flex-col">
+<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a] overflow-x-hidden">
 
-  <!-- ================= ANIMATED GLASS BACKGROUND ================= -->
+  <!-- ================= ANIMATED BACKGROUND ================= -->
   <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[#9E1B32]/30 blur-[120px] animate-blob"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/40 blur-[150px] animate-blob animation-delay-2000"></div>
-    <div class="absolute top-[40%] left-[30%] w-[400px] h-[400px] rounded-full bg-blue-900/20 blur-[120px] animate-blob animation-delay-4000"></div>
+    <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#9E1B32]/30 blur-[120px] animate-blob mix-blend-screen"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/40 blur-[150px] animate-blob animation-delay-2000 mix-blend-screen"></div>
+    <div class="absolute top-[40%] left-[30%] w-[500px] h-[500px] rounded-full bg-blue-900/20 blur-[120px] animate-blob animation-delay-4000 mix-blend-screen"></div>
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
   </div>
 
-  <!-- ================= HEADER (Glass) ================= -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#0f172a]/80 backdrop-blur-xl border-b border-white/10 shadow-lg py-3">
+  <!-- ================= HEADER ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-3 cursor-pointer">
-        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center">
+      <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-rose-500/50 transition-colors">
           <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" class="w-full h-full object-cover">
         </div>
-        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium">iFix</span></span>
+        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium group-hover:text-rose-400 transition-colors">iFix</span></span>
       </a>
 
-      <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
-        <a href="index.html" class="hover:text-rose-400 transition-colors">Home</a>
-        <a href="about.html" class="text-rose-400 font-semibold border-b-2 border-rose-400 pb-1">About Us</a>
-        <a href="blog.html" class="hover:text-rose-400 transition-colors">Our Blog</a>
-        <a href="contact.html" class="hover:text-rose-400 transition-colors">Contact Us</a>
-        
-        <!-- Auth Profile Area -->
-        <div id="authProfileArea" class="relative group">
-            <a href="login.html?return=about.html" id="loginNavBtn" class="bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2 rounded-lg transition-colors flex items-center gap-2 cursor-pointer font-bold">
-                Login <i data-feather="user" class="w-4 h-4"></i>
-            </a>
-            <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
-                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-rose-400 shadow-lg">
-                <i data-feather="chevron-down" class="w-4 h-4 text-slate-300"></i>
-                <!-- Dropdown -->
-                <div class="absolute top-full right-0 mt-3 w-48 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col z-50">
-                    <button onclick="logoutCurrentUser()" class="px-4 py-3 text-sm text-red-400 hover:bg-white/10 text-left flex items-center gap-2 transition-colors">
-                        <i data-feather="log-out" class="w-4 h-4"></i> Logout
-                    </button>
-                </div>
-            </div>
-        </div>
+        <a href="index.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Home</a>
+        <a href="about.html" class="text-rose-400 font-semibold relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-rose-500">About Us</a>
+        <a href="services.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Services</a>
+        <a href="blog.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Blog</a>
+        <a href="contact.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Contact</a>
       </nav>
 
-      <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/10 p-2 rounded-lg border border-white/20 backdrop-blur-md">
-        <i data-feather="menu" class="w-6 h-6"></i>
-      </button>
+      <div class="flex items-center gap-4">
+        <a href="tel:+8801868461577" class="hidden md:flex bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 hover:border-rose-500/30">
+          <i data-feather="phone" class="w-4 h-4 text-rose-400"></i>
+          <span>+880 1868 461577</span>
+        </a>
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
+          <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-2xl border-t border-white/10 flex flex-col px-6 py-8 gap-5 shadow-2xl transition-all duration-300 z-40 min-h-screen">
+      <a href="index.html" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Home</a>
+      <a href="about.html" class="text-rose-400 font-semibold text-xl border-l-2 border-rose-500 pl-4" onclick="closeMobileMenu()">About Us</a>
+      <a href="services.html" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Services</a>
+      <a href="blog.html" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Blog</a>
+      <a href="contact.html" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Contact Us</a>
+      <a href="tel:+8801868461577" class="mt-4 text-center w-full bg-rose-600/20 border border-rose-500/30 py-3 rounded-xl text-rose-400 font-medium flex items-center justify-center gap-2" onclick="closeMobileMenu()">
+        <i data-feather="phone" class="w-4 h-4"></i> +880 1868 461577
+      </a>
     </div>
   </header>
 
-  <main class="flex-grow pt-[120px] pb-20">
-    
-    <!-- ================= HERO BENTO GRID ================= -->
-    <section class="max-w-[1280px] mx-auto px-4 md:px-6 mb-20">
-      <div class="flex flex-col lg:flex-row gap-12 items-center">
-        
-        <!-- Left Content -->
-        <div class="lg:w-1/2">
-          <div class="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full mb-6">
-            <i data-feather="home" class="w-3 h-3"></i> Home <span class="text-slate-600">/</span> <span class="text-rose-400">About</span>
+  <main class="flex-grow">
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="relative w-full min-h-[80vh] flex items-center pt-20 overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/100e66d5c-00fe-471a-bd2a-5f052b7962cd.png" alt="Technician at work" class="w-full h-full object-cover opacity-25" />
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0f172a]/70 via-[#0f172a]/50 to-[#0f172a]"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0f172a]/80 to-transparent"></div>
+      </div>
+      
+      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs font-bold uppercase tracking-wider mb-6 animate-fade-in-up">
+            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> About Habib iFix
           </div>
-          <h1 class="text-5xl md:text-6xl font-bold text-white leading-tight mb-6 tracking-tight">
-            Simplifying Gadget Repair Through Expertise
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+            We Breathe Life<br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-purple-500">Back Into Tech</span>
           </h1>
-          <p class="text-lg text-slate-300 mb-8 leading-relaxed max-w-lg">
-            Driven by precision. Powered by experience. We help our customers unlock the full lifespan of their electronic devices with reliable, scalable, and user-first technology solutions.
+          <p class="text-slate-300 text-lg md:text-xl max-w-2xl font-light leading-relaxed mb-10 animate-fade-in-up" style="animation-delay: 0.2s;">
+            Born from passion and precision — Habib iFix is more than a repair shop. We are a team of dedicated technicians who believe every device deserves a second chance.
           </p>
-          <a href="contact.html" class="inline-flex bg-[#9E1B32]/90 hover:bg-[#9E1B32] text-white font-bold px-8 py-3.5 rounded-xl shadow-[0_0_20px_rgba(158,27,50,0.4)] transition-all hover:-translate-y-1">
-            Get a Service
-          </a>
+          <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
+            <a href="#story" class="bg-gradient-to-r from-[#9E1B32] to-rose-600 hover:from-rose-600 hover:to-[#9E1B32] text-white px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 shadow-[0_10px_30px_-10px_rgba(158,27,50,0.6)] flex items-center justify-center gap-2">
+              Our Story <i data-feather="arrow-down" class="w-4 h-4"></i>
+            </a>
+            <a href="contact.html" class="bg-white/5 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 inline-flex items-center justify-center gap-2">
+              <i data-feather="message-circle" class="w-4 h-4 text-rose-400"></i> Get in Touch
+            </a>
+          </div>
         </div>
+      </div>
 
-        <!-- Right Bento Box Grid -->
-        <div class="lg:w-1/2 grid grid-cols-2 gap-4 w-full">
-          <!-- Card 1: Circular Progress -->
-          <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center">
-             <div class="relative w-24 h-24 mb-4">
-                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                  <path class="text-white/10" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/>
-                  <path class="text-rose-500" stroke-dasharray="99, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"/>
-                </svg>
-                <div class="absolute inset-0 flex items-center justify-center font-bold text-2xl text-white">99%</div>
-             </div>
-             <p class="text-sm text-slate-400 font-medium">Repair Success Rate</p>
-             <div class="flex -space-x-2 justify-center mt-3">
-                <img class="w-8 h-8 rounded-full border-2 border-[#0f172a] object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="User">
-                <img class="w-8 h-8 rounded-full border-2 border-[#0f172a] object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100" alt="User">
-                <img class="w-8 h-8 rounded-full border-2 border-[#0f172a] object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="User">
-             </div>
-          </div>
-          
-          <!-- Card 2: Chart / Analytics -->
-          <div class="bg-gradient-to-br from-white/10 to-transparent backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-lg flex flex-col justify-between">
-              <div class="flex justify-between items-start mb-4">
-                  <div class="w-10 h-10 bg-green-500/20 text-green-400 rounded-xl flex items-center justify-center"><i data-feather="check-circle"></i></div>
-                  <span class="text-xs font-bold bg-white/10 px-2 py-1 rounded text-slate-300">This Month</span>
-              </div>
-              <div>
-                  <h3 class="text-3xl font-bold text-white mb-1">520+</h3>
-                  <p class="text-sm text-slate-400">Total Devices Fixed</p>
-              </div>
-          </div>
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <div class="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5">
+          <div class="w-1.5 h-3 rounded-full bg-rose-400 animate-pulse"></div>
+        </div>
+      </div>
+    </section>
 
-          <!-- Card 3: Gradient Info -->
-          <div class="bg-gradient-to-tr from-[#9E1B32]/80 to-[#4A154B]/80 backdrop-blur-xl border border-white/20 p-6 rounded-3xl shadow-lg flex flex-col justify-end min-h-[160px]">
-              <p class="text-white/80 font-medium mb-1">Expert Technician Team</p>
-              <h3 class="text-4xl font-bold text-white">10+ Years</h3>
+    <!-- ================= STATS BAR ================= -->
+    <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-12 md:-mt-16">
+      <div class="glass-panel rounded-[32px] p-8 shadow-2xl border-t border-white/20 reveal">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
+          <div class="p-2 group">
+            <div class="text-4xl md:text-5xl font-extrabold text-white mb-1 group-hover:text-rose-400 transition-colors">5<span class="text-rose-500 text-2xl">+</span></div>
+            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Years Experience</p>
           </div>
-
-          <!-- Card 4: Image -->
-          <div class="rounded-3xl overflow-hidden border border-white/10 shadow-lg relative h-full min-h-[160px]">
-              <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80" alt="Gadget Repair" class="absolute inset-0 w-full h-full object-cover">
+          <div class="p-2 group">
+            <div class="text-4xl md:text-5xl font-extrabold text-white mb-1 group-hover:text-rose-400 transition-colors">500<span class="text-rose-500 text-2xl">+</span></div>
+            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Happy Customers</p>
+          </div>
+          <div class="p-2 group">
+            <div class="text-4xl md:text-5xl font-extrabold text-white mb-1 group-hover:text-rose-400 transition-colors">620<span class="text-rose-500 text-2xl">+</span></div>
+            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Devices Repaired</p>
+          </div>
+          <div class="p-2 group">
+            <div class="text-4xl md:text-5xl font-extrabold text-white mb-1 group-hover:text-rose-400 transition-colors">99<span class="text-rose-500 text-2xl">%</span></div>
+            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Satisfaction Rate</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= LOGO STRIP ================= -->
-    <section class="max-w-[1280px] mx-auto px-4 md:px-6 mb-24">
-        <p class="text-center text-slate-400 text-sm font-semibold mb-8">Trusted by users of top brands</p>
-        <div class="flex flex-wrap justify-center items-center gap-10 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-            <i class="fab fa-apple text-3xl md:text-4xl text-white"></i>
-            <i class="fab fa-android text-3xl md:text-4xl text-green-500"></i>
-            <i class="fab fa-windows text-3xl md:text-4xl text-blue-400"></i>
-            <div class="flex items-center gap-2 text-xl font-bold text-white"><i class="fa-brands fa-usb text-2xl"></i> TechGadgets</div>
-        </div>
-    </section>
-
-    <!-- ================= FRUSTRATION / STORY & STATS ================= -->
-    <section class="max-w-[1000px] mx-auto px-4 md:px-6 text-center mb-20">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">It All Started with a Frustration</h2>
-        <p class="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed mb-16">
-            We were tired of local repair shops providing temporary fixes, using duplicate parts, and overcharging. So we created a better way — combining expert knowledge, genuine parts, and transparent pricing. What began as a small initiative is now a trusted repair platform for thousands.
-        </p>
+    <!-- ================= OUR STORY ================= -->
+    <section id="story" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-left">
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl">
-                <p class="text-sm text-slate-400 font-medium mb-3">Hardworking group.</p>
-                <h3 class="text-4xl font-bold text-white">50+</h3>
+        <!-- Left: Images -->
+        <div class="relative reveal-left">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="img-hover-zoom border border-white/10 shadow-2xl mt-12">
+              <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/100e66d5c-00fe-471a-bd2a-5f052b7962cd.png" alt="Technician working" class="w-full h-[280px] object-cover" />
             </div>
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl">
-                <p class="text-sm text-slate-400 font-medium mb-3">Users satisfied</p>
-                <h3 class="text-4xl font-bold text-white">25,000+</h3>
+            <div class="img-hover-zoom border border-white/10 shadow-2xl">
+              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=600" alt="Circuit board" class="w-full h-[280px] object-cover" />
             </div>
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl">
-                <p class="text-sm text-slate-400 font-medium mb-3">Satisfaction rate</p>
-                <h3 class="text-4xl font-bold text-white">99%</h3>
-            </div>
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl">
-                <p class="text-sm text-slate-400 font-medium mb-3">Daily Repairs</p>
-                <h3 class="text-4xl font-bold text-white">100+</h3>
-            </div>
-        </div>
-    </section>
+          </div>
+          
+          <!-- Floating quote card -->
+          <div class="absolute -bottom-6 md:bottom-8 -left-4 md:-left-8 glass-panel bg-[#9E1B32]/80 text-white p-6 rounded-2xl max-w-[260px] shadow-[0_20px_50px_-12px_rgba(158,27,50,0.5)] border border-white/20 backdrop-blur-xl animate-float">
+            <span class="text-rose-200 text-5xl leading-none font-serif opacity-50 absolute top-2 left-4">"</span>
+            <p class="font-bold text-lg leading-tight mt-4 relative z-10">We fix it till we make it perfect.</p>
+            <p class="text-rose-200 text-xs mt-2 font-medium">— Our Promise</p>
+          </div>
 
-    <!-- ================= WHAT WE BELIEVE IN ================= -->
-    <section class="max-w-[1280px] mx-auto px-4 md:px-6 mb-24">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-white">What We Believe In</h2>
-            <p class="text-slate-400 text-sm max-w-xs md:text-right">
-                Our values guide everything we create — from initial diagnosis to the final delivery. We build ethical, human-centered services.
+          <!-- Experience badge -->
+          <div class="absolute -top-4 -right-4 md:top-4 md:-right-8 w-24 h-24 rounded-full bg-gradient-to-br from-rose-500 to-purple-600 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(158,27,50,0.4)] border-4 border-[#0f172a] animate-float" style="animation-delay: 1s;">
+            <span class="text-2xl font-extrabold text-white leading-none">5+</span>
+            <span class="text-[9px] text-white/80 font-bold uppercase tracking-wider">Years</span>
+          </div>
+        </div>
+
+        <!-- Right: Content -->
+        <div class="reveal-right">
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Our Story</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">From a Small Desk to<br>Your Trusted Repair Hub</h2>
+          <div class="space-y-4 text-slate-400 leading-relaxed">
+            <p>
+              Habib iFix started with a simple belief — that broken devices don't need to be thrown away. What began as a small workspace with basic tools has grown into a full-service repair center trusted by hundreds of customers across Chattogram.
             </p>
+            <p>
+              Our founder, <strong class="text-white">Habibur Rahman</strong>, spent years mastering the art of electronics repair — from smartphone micro-soldering to laptop motherboard-level fixes. His dedication to quality and transparency became the foundation of everything we do.
+            </p>
+            <p>
+              Today, we handle everything from cracked iPhone screens to complex water damage recovery, always using genuine parts and providing honest diagnostics. Every device that enters our workshop leaves better than before.
+            </p>
+          </div>
+          
+          <div class="mt-8 flex flex-wrap gap-4">
+            <div class="flex items-center gap-2 text-sm text-slate-300 bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+              <i data-feather="check-circle" class="w-4 h-4 text-green-400"></i> Certified Technicians
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-300 bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+              <i data-feather="check-circle" class="w-4 h-4 text-green-400"></i> Genuine Parts Only
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-300 bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+              <i data-feather="check-circle" class="w-4 h-4 text-green-400"></i> Transparent Pricing
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ================= MISSION & VISION ================= -->
+    <section class="py-24 relative z-10 bg-black/20 border-y border-white/5">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">What Drives Us</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">Mission & Vision</h2>
+          <p class="text-slate-400 text-lg">The core values that guide every repair, every interaction, and every decision we make.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Mission -->
+          <div class="glass-panel glass-card-hover rounded-[32px] p-8 md:p-10 reveal relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-rose-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-rose-500/20 transition-colors"></div>
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center mb-6">
+              <i data-feather="target" class="text-rose-400 w-8 h-8"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">Our Mission</h3>
+            <p class="text-slate-400 leading-relaxed mb-6">
+              To provide the most reliable, affordable, and transparent gadget repair services in Chattogram. We aim to reduce electronic waste by giving every device a second life through expert craftsmanship.
+            </p>
+            <div class="space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-rose-500/20 flex items-center justify-center shrink-0 mt-0.5"><i data-feather="check" class="w-3 h-3 text-rose-400"></i></div>
+                <span class="text-sm text-slate-300">Deliver same-day repairs whenever possible</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-rose-500/20 flex items-center justify-center shrink-0 mt-0.5"><i data-feather="check" class="w-3 h-3 text-rose-400"></i></div>
+                <span class="text-sm text-slate-300">Use only genuine, quality-tested components</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-rose-500/20 flex items-center justify-center shrink-0 mt-0.5"><i data-feather="check" class="w-3 h-3 text-rose-400"></i></div>
+                <span class="text-sm text-slate-300">Maintain 100% transparency in pricing & process</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vision -->
+          <div class="glass-panel glass-card-hover rounded-[32px] p-8 md:p-10 reveal relative overflow-hidden group" style="animation-delay: 0.15s;">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-purple-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-purple-500/20 transition-colors"></div>
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/10 flex items-center justify-center mb-6">
+              <i data-feather="eye" class="text-purple-400 w-8 h-8"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">Our Vision</h3>
+            <p class="text-slate-400 leading-relaxed mb-6">
+              To become Bangladesh's most trusted name in gadget repair — known for innovation, integrity, and customer-first service. We envision a future where no device is discarded unnecessarily.
+            </p>
+            <div class="space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0 mt-0.5"><i data-feather="check" class="w-3 h-3 text-purple-400"></i></div>
+                <span class="text-sm text-slate-300">Expand to multiple locations across Bangladesh</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0 mt-0.5"><i data-feather="check" class="w-3 h-3 text-purple-400"></i></div>
+                <span class="text-sm text-slate-300">Train the next generation of repair technicians</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0 mt-0.5"><i data-feather="check" class="w-3 h-3 text-purple-400"></i></div>
+                <span class="text-sm text-slate-300">Promote sustainable electronics through repair culture</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MEET THE FOUNDER ================= -->
+    <section class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] hover:-translate-y-1 transition-transform">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500/40 to-rose-500/10 flex items-center justify-center mb-6 shadow-lg border border-rose-500/20">
-                    <i data-feather="users" class="text-rose-400 w-6 h-6"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3">User-First Always</h3>
-                <p class="text-slate-400 text-sm leading-relaxed">We prioritize your data privacy, device safety, and overall experience above everything else.</p>
-            </div>
-            <div class="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] hover:-translate-y-1 transition-transform">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/40 to-blue-500/10 flex items-center justify-center mb-6 shadow-lg border border-blue-500/20">
-                    <i data-feather="tool" class="text-blue-400 w-6 h-6"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3">Build What Matters</h3>
-                <p class="text-slate-400 text-sm leading-relaxed">We don't do superficial fixes. We solve the root core of hardware problems to extend device life.</p>
-            </div>
-            <div class="bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] hover:-translate-y-1 transition-transform">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/40 to-purple-500/10 flex items-center justify-center mb-6 shadow-lg border border-purple-500/20">
-                    <i data-feather="cpu" class="text-purple-400 w-6 h-6"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3">Stay Curious</h3>
-                <p class="text-slate-400 text-sm leading-relaxed">Technology evolves fast, and so do we. Our team is constantly learning the latest repair techniques.</p>
-            </div>
-        </div>
-    </section>
+        <!-- Left: Content -->
+        <div class="order-2 lg:order-1 reveal-left">
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Meet The Founder</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">Habibur Rahman</h2>
+          <p class="text-rose-400 font-semibold text-sm uppercase tracking-widest mb-6">Founder & Lead Technician</p>
+          
+          <div class="space-y-4 text-slate-400 leading-relaxed">
+            <p>
+              With over 5 years of hands-on experience in electronics repair, Habibur Rahman founded Habib iFix with a mission to bring world-class repair services to Chattogram at affordable prices.
+            </p>
+            <p>
+              His expertise spans across smartphone micro-soldering, laptop motherboard repair, data recovery, and camera servicing. He personally oversees every complex repair to ensure the highest quality standards.
+            </p>
+            <p>
+              When he's not fixing devices, Habibur creates educational content about tech repair on YouTube, sharing his knowledge with aspiring technicians across Bangladesh.
+            </p>
+          </div>
 
-    <!-- ================= TESTIMONIALS (MASONRY GRID STYLE) ================= -->
-    <section class="max-w-[1280px] mx-auto px-4 md:px-6 mb-24">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Proven by People Who Use It</h2>
-            <p class="text-slate-400">Join thousands of satisfied users who trust us to power their devices every day.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-            
-            <!-- Column 1 -->
-            <div class="flex flex-col gap-6">
-                <div class="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                    <div class="flex text-rose-400 text-xs mb-3 gap-1">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-slate-300 text-sm leading-relaxed mb-6">"Everything just works — and that's rare. I've tried multiple repair shops for my Macbook, but this one stood out for its clarity and genuine parts. The service is exceptional."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Sarah M</h4>
-                            <p class="text-xs text-slate-500">Product Manager</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                    <div class="flex text-rose-400 text-xs mb-3 gap-1">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-slate-300 text-sm leading-relaxed mb-6">"We've used a lot of tools in the past, but the ability of this team to quickly diagnose motherboard issues has been a huge productivity boost for our company."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="w-10 h-10 rounded-full object-cover opacity-80">
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Devon K.</h4>
-                            <p class="text-xs text-slate-500">Marketing Director</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Column 2 (Middle - Has Large Image) -->
-            <div class="flex flex-col gap-6">
-                <!-- Large Image/Video Card -->
-                <div class="bg-[#1e293b] border border-white/10 rounded-3xl overflow-hidden relative group">
-                    <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80" alt="Happy User" class="w-full h-[300px] object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-16 h-16 bg-white/20 backdrop-blur-md border border-white/40 rounded-full flex items-center justify-center pl-1 text-white shadow-lg cursor-pointer hover:scale-110 transition-transform">
-                            <i data-feather="play" class="w-6 h-6 fill-current"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- Small Review -->
-                <div class="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                    <div class="flex text-rose-400 text-xs mb-3 gap-1">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-slate-300 text-sm leading-relaxed mb-6">"What impressed me most wasn't just the fix — though it's excellent — but how the team behind it listens. Since we started using Habib Tec, my gadgets run like new."</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-slate-700"></div> <!-- Placeholder -->
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Carlos B.</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Column 3 -->
-            <div class="flex flex-col gap-6">
-                <div class="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                    <div class="flex text-rose-400 text-xs mb-3 gap-1">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-slate-300 text-sm leading-relaxed mb-6">"As a fast-scaling startup, we needed a support partner that could grow with us. Habib Tec delivered. We were able to get all our office hardware maintained flawlessly."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Leo J.</h4>
-                            <p class="text-xs text-slate-500">CTO</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white/5 border border-white/10 p-6 rounded-3xl">
-                    <div class="flex text-rose-400 text-xs mb-3 gap-1">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-slate-300 text-sm leading-relaxed mb-6">"Our team handles dozens of tasks across multiple departments. Since switching to Habib Tec for IT maintenance, we've automated 40% of our hardware downtime issues."</p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100" class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Anita R.</h4>
-                            <p class="text-xs text-slate-500">Operations Lead</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ================= TEAM SECTION ================= -->
-    <section class="max-w-[1280px] mx-auto px-4 md:px-6 mb-24">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4 border-t border-white/10 pt-16">
-            <div class="max-w-xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Meet the People Behind the Product</h2>
-                <p class="text-slate-400 text-sm">
-                    We're a diverse group of engineers, technicians, and thinkers united by one mission: building technology that makes life simpler, smarter, and more human.
-                </p>
-            </div>
-            <a href="contact.html" class="bg-gradient-to-r from-rose-500 to-rose-600 text-white font-semibold px-6 py-2.5 rounded-full hover:shadow-[0_0_15px_rgba(244,63,94,0.5)] transition-all">
-                View More
+          <div class="mt-8 flex items-center gap-4">
+            <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] transition-all duration-300 text-slate-400 hover:text-white">
+              <i class="fab fa-facebook-f"></i>
             </a>
+            <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#0088cc] hover:border-[#0088cc] transition-all duration-300 text-slate-400 hover:text-white">
+              <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a href="https://wa.me/8801868461577" target="_blank" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-all duration-300 text-slate-400 hover:text-white">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="mailto:tec.habiburrahman@gmail.com" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-rose-600 hover:border-rose-600 transition-all duration-300 text-slate-400 hover:text-white">
+              <i data-feather="mail" class="w-4 h-4"></i>
+            </a>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <!-- Member 1: Founder -->
-            <div class="relative rounded-[32px] overflow-hidden group h-[400px]">
-                <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80" alt="Habibur Rahman" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/40 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 class="text-2xl font-bold text-white mb-1">Habibur Rahman</h3>
-                    <p class="text-rose-400 text-sm font-semibold mb-4">Founder & Lead Engineer</p>
-                    <div class="flex gap-4 text-slate-300">
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
-                    </div>
-                </div>
+        <!-- Right: Image -->
+        <div class="order-1 lg:order-2 relative reveal-right">
+          <div class="img-hover-zoom border border-white/10 shadow-2xl rounded-[32px] overflow-hidden">
+            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1142a27b5-23bf-4846-9853-41e7c5308683.png" alt="Habibur Rahman - Founder" class="w-full h-[500px] object-cover" />
+          </div>
+          
+          <!-- Floating info card -->
+          <div class="absolute -bottom-6 -left-4 md:-left-8 glass-panel p-5 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl animate-float" style="animation-delay: 0.5s;">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-purple-600 flex items-center justify-center">
+                <i data-feather="award" class="text-white w-6 h-6"></i>
+              </div>
+              <div>
+                <p class="text-white font-bold text-sm">5+ Years</p>
+                <p class="text-slate-400 text-xs">Expert Experience</p>
+              </div>
             </div>
-            <!-- Member 2 -->
-            <div class="relative rounded-[32px] overflow-hidden group h-[400px]">
-                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80" alt="Ethan Malik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/20 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 class="text-2xl font-bold text-white mb-1">Ethan Malik</h3>
-                    <p class="text-slate-300 text-sm font-semibold">Chief Technology Officer</p>
-                </div>
-            </div>
-            <!-- Member 3 -->
-            <div class="relative rounded-[32px] overflow-hidden group h-[400px]">
-                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80" alt="Sophia Bennett" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/20 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 class="text-2xl font-bold text-white mb-1">Sophia Bennett</h3>
-                    <p class="text-slate-300 text-sm font-semibold">Customer Relations</p>
-                </div>
-            </div>
+          </div>
+
+          <!-- Decorative ring -->
+          <div class="absolute -top-6 -right-6 w-32 h-32 rounded-full border-2 border-rose-500/20 animate-pulse" style="animation: pulse-ring 3s ease-in-out infinite;"></div>
         </div>
+      </div>
     </section>
 
-    <!-- ================= FAQ SECTION ================= -->
-    <section class="max-w-[800px] mx-auto px-4 md:px-6 text-center border-t border-white/10 pt-16">
-        <h2 class="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
-        <p class="text-slate-400 mb-10">Everything you need to know about our product, pricing, features, and support — all in one place.</p>
-        
-        <div class="text-left space-y-4">
-            <!-- FAQ Item 1 -->
-            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
-                <div class="p-5 flex justify-between items-center">
-                    <h4 class="font-bold text-white text-lg">What kind of devices do you repair?</h4>
-                    <i data-feather="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300 faq-icon"></i>
-                </div>
-                <div class="accordion-content bg-[#0f172a]/50 px-5">
-                    <p class="text-slate-400 pb-5 text-sm leading-relaxed">We repair all major electronics including smartphones (Apple, Android), laptops, desktops, tablets, and smartwatches. Our team is equipped to handle both hardware replacements and software diagnostics.</p>
-                </div>
-            </div>
-            <!-- FAQ Item 2 -->
-            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
-                <div class="p-5 flex justify-between items-center">
-                    <h4 class="font-bold text-white text-lg">Do you use original replacement parts?</h4>
-                    <i data-feather="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300 faq-icon"></i>
-                </div>
-                <div class="accordion-content bg-[#0f172a]/50 px-5">
-                    <p class="text-slate-400 pb-5 text-sm leading-relaxed">Yes, we strictly source 100% genuine and high-grade OEM parts directly from authorized suppliers to ensure your device functions perfectly and lasts longer.</p>
-                </div>
-            </div>
-            <!-- FAQ Item 3 -->
-            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
-                <div class="p-5 flex justify-between items-center">
-                    <h4 class="font-bold text-white text-lg">How long does a typical repair take?</h4>
-                    <i data-feather="chevron-down" class="text-slate-400 w-5 h-5 transition-transform duration-300 faq-icon"></i>
-                </div>
-                <div class="accordion-content bg-[#0f172a]/50 px-5">
-                    <p class="text-slate-400 pb-5 text-sm leading-relaxed">Most standard repairs (like screen or battery replacements) are completed within 1-2 hours on the same day. Complex motherboard issues may take 2-3 business days.</p>
-                </div>
-            </div>
+    <!-- ================= WHY CHOOSE US ================= -->
+    <section class="py-24 relative z-10 bg-black/20 border-y border-white/5">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Why Habib iFix</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">What Makes Us Different</h2>
+          <p class="text-slate-400 text-lg">We don't just fix devices — we build trust with every repair.</p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 text-center reveal group">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500/20 to-transparent border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300">
+              <i data-feather="zap" class="text-rose-400 w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Lightning Fast</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Most repairs completed within hours. We respect your time and get your device back to you ASAP.</p>
+          </div>
+
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 text-center reveal group" style="animation-delay: 0.1s;">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500/20 to-transparent border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300">
+              <i data-feather="shield" class="text-rose-400 w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Warranty Included</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Every repair comes with a service warranty. If something goes wrong, we fix it again — free of charge.</p>
+          </div>
+
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 text-center reveal group" style="animation-delay: 0.2s;">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500/20 to-transparent border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300">
+              <i data-feather="dollar-sign" class="text-rose-400 w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Honest Pricing</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">No hidden fees, no surprise charges. We diagnose first, quote transparently, and repair only with your approval.</p>
+          </div>
+
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 text-center reveal group">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500/20 to-transparent border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300">
+              <i data-feather="cpu" class="text-rose-400 w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Genuine Parts</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">We source only original or top-tier replacement components to ensure maximum lifespan for your device.</p>
+          </div>
+
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 text-center reveal group" style="animation-delay: 0.1s;">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500/20 to-transparent border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300">
+              <i data-feather="lock" class="text-rose-400 w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Data Security</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Your privacy matters. We never access personal data during repairs and follow strict confidentiality protocols.</p>
+          </div>
+
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 text-center reveal group" style="animation-delay: 0.2s;">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500/20 to-transparent border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300">
+              <i data-feather="heart" class="text-rose-400 w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Customer First</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">From diagnosis to delivery, every step is designed around your convenience. 24/7 online support available.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= OUR JOURNEY / TIMELINE ================= -->
+    <section class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+        <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Our Journey</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">Milestones Along The Way</h2>
+        <p class="text-slate-400 text-lg">From humble beginnings to becoming a trusted name in gadget repair.</p>
+      </div>
+
+      <div class="relative">
+        <div class="timeline-line hidden md:block"></div>
+        
+        <!-- Timeline Item 1 -->
+        <div class="relative flex flex-col md:flex-row items-center mb-16 reveal">
+          <div class="md:w-1/2 md:pr-16 md:text-right mb-6 md:mb-0">
+            <span class="text-rose-500 font-bold text-sm uppercase tracking-wider">2020 — The Beginning</span>
+            <h3 class="text-xl font-bold text-white mt-2 mb-3">Started From a Small Desk</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Habibur Rahman began repairing phones and laptops from a small workspace in Gachbaria, Chattogram — driven purely by passion for technology.</p>
+          </div>
+          <div class="timeline-dot hidden md:block" style="top: 20px;"></div>
+          <div class="md:w-1/2 md:pl-16">
+            <div class="glass-panel rounded-2xl p-6 inline-block">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center"><i data-feather="tool" class="text-rose-400 w-5 h-5"></i></div>
+                <span class="text-white font-bold">First 50 Repairs Completed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline Item 2 -->
+        <div class="relative flex flex-col md:flex-row-reverse items-center mb-16 reveal">
+          <div class="md:w-1/2 md:pl-16 mb-6 md:mb-0">
+            <span class="text-rose-500 font-bold text-sm uppercase tracking-wider">2022 — Growth</span>
+            <h3 class="text-xl font-bold text-white mt-2 mb-3">Expanded Services & Workspace</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Added camera repair, smartwatch servicing, and custom PC builds. Moved to a larger dedicated workspace with professional-grade equipment.</p>
+          </div>
+          <div class="timeline-dot hidden md:block" style="top: 20px;"></div>
+          <div class="md:w-1/2 md:pr-16 md:text-right">
+            <div class="glass-panel rounded-2xl p-6 inline-block">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center"><i data-feather="trending-up" class="text-purple-400 w-5 h-5"></i></div>
+                <span class="text-white font-bold">200+ Happy Customers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline Item 3 -->
+        <div class="relative flex flex-col md:flex-row items-center mb-16 reveal">
+          <div class="md:w-1/2 md:pr-16 md:text-right mb-6 md:mb-0">
+            <span class="text-rose-500 font-bold text-sm uppercase tracking-wider">2024 — Digital Presence</span>
+            <h3 class="text-xl font-bold text-white mt-2 mb-3">Launched Online Platform</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Built a full website with online booking, blog, and AI-powered customer support. Started creating YouTube content to educate aspiring technicians.</p>
+          </div>
+          <div class="timeline-dot hidden md:block" style="top: 20px;"></div>
+          <div class="md:w-1/2 md:pl-16">
+            <div class="glass-panel rounded-2xl p-6 inline-block">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center"><i data-feather="globe" class="text-blue-400 w-5 h-5"></i></div>
+                <span class="text-white font-bold">Website & Blog Launched</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline Item 4 -->
+        <div class="relative flex flex-col md:flex-row-reverse items-center reveal">
+          <div class="md:w-1/2 md:pl-16 mb-6 md:mb-0">
+            <span class="text-rose-500 font-bold text-sm uppercase tracking-wider">2026 — Today</span>
+            <h3 class="text-xl font-bold text-white mt-2 mb-3">Trusted by 500+ Customers</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Now serving hundreds of satisfied customers with a 99% satisfaction rate. Continuing to innovate with new services, better tools, and a growing community.</p>
+          </div>
+          <div class="timeline-dot hidden md:block" style="top: 20px;"></div>
+          <div class="md:w-1/2 md:pr-16 md:text-right">
+            <div class="glass-panel rounded-2xl p-6 inline-block">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center"><i data-feather="award" class="text-green-400 w-5 h-5"></i></div>
+                <span class="text-white font-bold">500+ Devices Repaired</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+    <section class="py-24 relative z-10 bg-black/20 border-y border-white/5">
+      <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Testimonials</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">What Our Customers Say</h2>
+          <p class="text-slate-400 text-lg">Real feedback from real people who trusted us with their devices.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 reveal relative">
+            <div class="text-rose-500/20 text-6xl font-serif absolute top-4 right-6">"</div>
+            <div class="flex text-yellow-400 text-sm gap-1 mb-4">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6 italic">"My iPhone screen was completely shattered. Habib iFix fixed it in under an hour and it looks brand new. Incredible service and very fair pricing!"</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center text-white font-bold text-sm">RA</div>
+              <div>
+                <p class="text-white font-bold text-sm">Rafiq Ahmed</p>
+                <p class="text-slate-500 text-xs">iPhone 14 Pro Repair</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 reveal relative" style="animation-delay: 0.1s;">
+            <div class="text-rose-500/20 text-6xl font-serif absolute top-4 right-6">"</div>
+            <div class="flex text-yellow-400 text-sm gap-1 mb-4">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6 italic">"I thought my laptop was dead after a coffee spill. Habib recovered all my data AND fixed the motherboard. I can't thank him enough. True professional!"</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm">SK</div>
+              <div>
+                <p class="text-white font-bold text-sm">Sumaiya Khan</p>
+                <p class="text-slate-500 text-xs">Laptop Water Damage</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-panel glass-card-hover rounded-3xl p-8 reveal relative" style="animation-delay: 0.2s;">
+            <div class="text-rose-500/20 text-6xl font-serif absolute top-4 right-6">"</div>
+            <div class="flex text-yellow-400 text-sm gap-1 mb-4">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6 italic">"Best repair shop in Chattogram! Fixed my Samsung Galaxy Watch screen perfectly. The price was much lower than what other shops quoted. Highly recommended."</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold text-sm">TH</div>
+              <div>
+                <p class="text-white font-bold text-sm">Tanvir Hasan</p>
+                <p class="text-slate-500 text-xs">Galaxy Watch Repair</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CTA SECTION ================= -->
+    <section class="relative py-24 md:py-32">
+      <div class="absolute inset-0 z-0">
+        <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/100e66d5c-00fe-471a-bd2a-5f052b7962cd.png" alt="Background" class="w-full h-full object-cover blur-sm scale-105" />
+        <div class="absolute inset-0 bg-[#4A154B]/90 backdrop-blur-md mix-blend-multiply"></div>
+      </div>
+      <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 text-center">
+        <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight reveal">Ready to Give Your<br>Device a Second Life?</h2>
+        <p class="text-white/80 text-xl max-w-2xl mx-auto mb-10 reveal">Whether it's a cracked screen or a complex motherboard issue — we've got you covered. Contact us today for a free diagnosis.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
+          <a href="contact.html" class="bg-white text-[#0f172a] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:-translate-y-1 flex items-center justify-center gap-2">
+            <i data-feather="send" class="w-5 h-5"></i> Book a Repair Now
+          </a>
+          <a href="services.html" class="bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold px-10 py-4 rounded-full hover:bg-white/20 transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
+            <i data-feather="tool" class="w-5 h-5 text-rose-400"></i> View Our Services
+          </a>
+        </div>
+      </div>
     </section>
 
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#0f172a]/80 backdrop-blur-xl border-t border-white/10 text-slate-400 py-8 relative z-10 mt-auto">
-    <div class="max-w-[1280px] mx-auto px-4 md:px-6 text-center text-sm">
-      <p>&copy; 2026 Habib iFix All Rights Reserved.</p>
+  <footer class="bg-[#050a14] text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-white/10">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      
+      <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-rose-500/20 blur-[100px] pointer-events-none group-hover:bg-rose-500/30 transition-colors"></div>
+        <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">Need Help Right Now?</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">
+          Our team is available to answer your questions and schedule your repair appointment.
+        </p>
+        <a href="contact.html" class="inline-block bg-white text-[#0f172a] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">
+          Contact Us Today
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
+        <div class="col-span-2 space-y-6">
+          <a href="index.html" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
+              <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover">
+            </div>
+            <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span>
+          </a>
+          <p class="text-slate-500 leading-relaxed pr-8">Your trusted partner for fast and reliable gadget repair services and component solutions.</p>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4>
+          <ul class="space-y-4">
+            <li><a href="services.html" class="hover:text-rose-400 transition-colors">Phone Repair</a></li>
+            <li><a href="services.html" class="hover:text-rose-400 transition-colors">Laptop Fix</a></li>
+            <li><a href="services.html" class="hover:text-rose-400 transition-colors">Tablet Service</a></li>
+            <li><a href="services.html" class="hover:text-rose-400 transition-colors">Data Recovery</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
+          <ul class="space-y-4">
+            <li><a href="index.html" class="hover:text-rose-400 transition-colors">Home</a></li>
+            <li><a href="about.html" class="hover:text-rose-400 transition-colors">About Us</a></li>
+            <li><a href="blog.html" class="hover:text-rose-400 transition-colors">Blog</a></li>
+            <li><a href="contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4>
+          <ul class="space-y-4">
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-rose-400 transition-colors">Warranty Policy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4>
+          <div class="flex flex-col gap-4">
+             <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
+             <a href="https://wa.me/8801868461577" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp</a>
+             <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-telegram text-lg"></i> Telegram</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
+        <div class="flex items-center gap-6">
+          <p>&copy; 2026 Habib iFix. All Rights Reserved.</p>
+          <span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> All Systems Operational
+          </span>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <!-- Firebase & App Script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
-      authDomain: "habib-yt.firebaseapp.com",
-      projectId: "habib-yt",
-      storageBucket: "habib-yt.firebasestorage.app",
-      messagingSenderId: "656628491244",
-      appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
-      measurementId: "G-GNY1T88D34"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const authInstance = getAuth(app);
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
     feather.replace();
 
-    // Mobile Menu
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    menuBtn.addEventListener('click', () => {
-        // Simple toggle or redirect to mobile menu logic
-        alert("Mobile menu clicked!"); 
+    // --- SCROLL REVEAL ---
+    function revealOnScroll() {
+      const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+      reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        const revealPoint = 120;
+        if (elementTop < windowHeight - revealPoint) {
+          el.classList.add('active');
+        }
+      });
+    }
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+
+    // --- HEADER SCROLL ---
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
+        header.classList.remove('bg-transparent', 'py-4');
+      } else {
+        header.classList.add('bg-transparent', 'py-4');
+        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
+      }
     });
 
-    // FAQ Toggle Logic
-    window.toggleFaq = function(element) {
-        const content = element.querySelector('.accordion-content');
-        const icon = element.querySelector('.faq-icon');
-        
-        if (content.classList.contains('active')) {
-            content.classList.remove('active');
-            icon.style.transform = 'rotate(0deg)';
-        } else {
-            // Close all others
-            document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.faq-icon').forEach(el => el.style.transform = 'rotate(0deg)');
-            
-            // Open clicked
-            content.classList.add('active');
-            icon.style.transform = 'rotate(180deg)';
-        }
+    // --- MOBILE MENU ---
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let isMenuOpen = false;
+
+    function closeMobileMenu() {
+      isMenuOpen = false;
+      mobileMenu.classList.add('hidden');
+      menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6"></i>';
+      feather.replace();
     }
 
-    // Auth State
-    onAuthStateChanged(authInstance, (user) => {
-        const loginBtn = document.getElementById('loginNavBtn');
-        const profileMenu = document.getElementById('userProfileMenu');
-        
-        if (user) {
-            loginBtn.classList.add('hidden');
-            profileMenu.classList.remove('hidden');
-            document.getElementById('headerAvatar').src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
-        } else {
-            loginBtn.classList.remove('hidden');
-            profileMenu.classList.add('hidden');
-        }
+    menuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      if (isMenuOpen) {
+        mobileMenu.classList.remove('hidden');
+        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6"></i>';
+      } else {
+        closeMobileMenu();
+      }
+      feather.replace();
     });
 
-    window.logoutCurrentUser = function() {
-        signOut(authInstance).then(() => {
-            window.location.reload();
-        });
-    };
+    // --- COUNTER ANIMATION ---
+    function animateCounters() {
+      const counters = document.querySelectorAll('[data-count]');
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-count'));
+        const duration = 2000;
+        const start = 0;
+        const startTime = performance.now();
+        
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          counter.innerText = Math.floor(eased * target);
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      });
+    }
+
+    // Trigger counters when stats section is visible
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const statsSection = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-4');
+    if (statsSection) statsObserver.observe(statsSection);
+
   </script>
 </body>
 </html>

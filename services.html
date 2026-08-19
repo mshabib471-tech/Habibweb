@@ -5,25 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Services - Habib iFix</title>
 
-  <!-- Preconnect -->
+  <!-- CRITICAL: Tailwind MUST load synchronously (no defer) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com">
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  <link rel="dns-prefetch" href="https://images.unsplash.com">
-  <link rel="dns-prefetch" href="https://i.ibb.co.com">
-
-  <!-- Tailwind CSS (deferred) -->
-  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
-  <!-- FontAwesome (non-critical) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-  
-  <!-- Google Fonts (optimized) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-
-  <!-- Main styles -->
-  <style id="main-styles" media="print" onload="this.media='all'">
+  <style>
     body { font-family: 'Inter', sans-serif; }
     
     ::-webkit-scrollbar { width: 8px; }
@@ -31,32 +27,74 @@
     ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
 
-    @keyframes blob { 0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-50px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.9)}100%{transform:translate(0,0) scale(1)} }
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
     .animate-blob { animation: blob 7s infinite; }
     .animation-delay-2000 { animation-delay: 2s; }
     .animation-delay-4000 { animation-delay: 4s; }
 
-    @keyframes fade-in-up { from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)} }
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     .animate-fade-in-up { animation: fade-in-up 0.7s ease-out forwards; }
 
-    @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)} }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
     .animate-float { animation: float 3s ease-in-out infinite; }
 
-    @keyframes shimmer { 0%{background-position:-200% 0}100%{background-position:200% 0} }
-    .text-shimmer { background:linear-gradient(90deg,#06b6d4,#8b5cf6,#06b6d4);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite; }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .text-shimmer {
+      background: linear-gradient(90deg, #06b6d4, #8b5cf6, #06b6d4);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
+    }
 
-    .glass-panel { background:rgba(255,255,255,.03);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08); }
-    .glass-card-hover { transition:all .5s cubic-bezier(.4,0,.2,1); }
-    .glass-card-hover:hover { transform:translateY(-10px);background:rgba(255,255,255,.07);border-color:rgba(6,182,212,.5);box-shadow:0 25px 50px -12px rgba(0,0,0,.5),0 0 30px rgba(6,182,212,.15); }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-card-hover {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(6, 182, 212, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(6, 182, 212, 0.15);
+    }
 
-    .service-img-zoom { transition:transform .7s cubic-bezier(.4,0,.2,1); }
-    .group:hover .service-img-zoom { transform:scale(1.1); }
+    .service-img-zoom {
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .group:hover .service-img-zoom {
+      transform: scale(1.1);
+    }
 
-    .reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.4,0,.2,1)}.reveal.active{opacity:1;transform:translateY(0)}
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
-
-  <!-- Fallback: if CSS doesn't load, show content anyway -->
-  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body class="min-h-screen text-slate-200 selection:bg-cyan-500 selection:text-white relative flex flex-col bg-[#0a0f1e] overflow-x-hidden">
 
@@ -72,7 +110,7 @@
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
         <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-cyan-400/50 transition-colors">
-          <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40">
+          <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" class="w-full h-full object-cover">
         </div>
         <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium group-hover:text-cyan-400 transition-colors">iFix</span></span>
       </a>
@@ -86,29 +124,35 @@
       </nav>
 
       <div class="flex items-center gap-4">
-        <a href="tel:+8801868461577" class="hidden md:flex bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 hover:border-cyan-400/30">📞 <span>+880 1868 461577</span></a>
-        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors" aria-label="Menu">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <a href="tel:+8801868461577" class="hidden md:flex bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-white px-6 py-2.5 rounded-full font-medium items-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 hover:border-cyan-400/30">
+          <i data-feather="phone" class="w-4 h-4 text-cyan-400"></i>
+          <span>+880 1868 461577</span>
+        </a>
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
+          <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
         </button>
       </div>
     </div>
 
+    <!-- Mobile Nav -->
     <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0a0f1e]/95 backdrop-blur-2xl border-t border-white/10 flex flex-col px-6 py-8 gap-5 shadow-2xl transition-all duration-300 z-40 min-h-screen overflow-y-auto pb-32">
       <a href="index.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4 transition-colors" onclick="closeMobileMenu()">Home</a>
       <a href="about.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4 transition-colors" onclick="closeMobileMenu()">About Us</a>
       <a href="services.html" class="text-cyan-400 font-semibold text-xl border-l-2 border-cyan-400 pl-4" onclick="closeMobileMenu()">Services</a>
       <a href="blog.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4 transition-colors" onclick="closeMobileMenu()">Blog</a>
       <a href="contact.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4 transition-colors" onclick="closeMobileMenu()">Contact Us</a>
-      <a href="tel:+8801868461577" class="mt-4 text-center w-full bg-cyan-600/20 border border-cyan-500/30 py-3 rounded-xl text-cyan-400 font-medium flex items-center justify-center gap-2" onclick="closeMobileMenu()">📞 +880 1868 461577</a>
+      <a href="tel:+8801868461577" class="mt-4 text-center w-full bg-cyan-600/20 border border-cyan-500/30 py-3 rounded-xl text-cyan-400 font-medium flex items-center justify-center gap-2" onclick="closeMobileMenu()">
+        <i data-feather="phone" class="w-4 h-4"></i> +880 1868 461577
+      </a>
     </div>
   </header>
 
   <main class="flex-grow">
 
-    <!-- ================= HERO ================= -->
+    <!-- ================= HERO SECTION ================= -->
     <section class="relative w-full min-h-[70vh] flex items-center pt-20 overflow-hidden">
       <div class="absolute inset-0 z-0">
-        <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/16dbd1804-354c-4ad6-b0da-12e846122c45.png" alt="Phone Repair" class="w-full h-full object-cover opacity-25" loading="eager" width="1280" height="720">
+        <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/16dbd1804-354c-4ad6-b0da-12e846122c45.png" alt="Phone Repair" class="w-full h-full object-cover opacity-25" />
         <div class="absolute inset-0 bg-gradient-to-b from-[#0a0f1e]/80 via-[#0a0f1e]/60 to-[#0a0f1e]"></div>
       </div>
       
@@ -117,15 +161,20 @@
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-6 animate-fade-in-up">
             <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> Professional Repair Services
           </div>
-          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 animate-fade-in-up" style="animation-delay:.1s">
-            We Fix <span class="text-shimmer">Everything</span><br>You Love
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+            We Fix <span class="text-shimmer">Everything</span><br>
+            You Love
           </h1>
-          <p class="text-slate-300 text-lg md:text-xl max-w-2xl font-light leading-relaxed mb-10 animate-fade-in-up" style="animation-delay:.2s">
+          <p class="text-slate-300 text-lg md:text-xl max-w-2xl font-light leading-relaxed mb-10 animate-fade-in-up" style="animation-delay: 0.2s;">
             From cracked screens to complex motherboard issues — our expert technicians handle it all with precision, genuine parts, and a warranty you can trust.
           </p>
-          <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style="animation-delay:.3s">
-            <a href="contact.html" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-600 hover:to-cyan-500 text-white px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 shadow-[0_10px_30px_-10px_rgba(6,182,212,0.5)] flex items-center justify-center gap-2">Book a Repair →</a>
-            <a href="#services-grid" class="bg-white/5 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 inline-flex items-center justify-center gap-2">↓ Explore Services</a>
+          <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
+            <a href="contact.html" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-600 hover:to-cyan-500 text-white px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 shadow-[0_10px_30px_-10px_rgba(6,182,212,0.5)] flex items-center justify-center gap-2">
+              Book a Repair <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <a href="#services-grid" class="bg-white/5 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 inline-flex items-center justify-center gap-2">
+              <i data-feather="chevron-down" class="w-4 h-4 text-cyan-400"></i> Explore Services
+            </a>
           </div>
         </div>
       </div>
@@ -135,10 +184,42 @@
     <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-12 md:-mt-16">
       <div class="glass-panel rounded-[32px] p-8 shadow-2xl border-t border-white/20 reveal">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-white divide-y md:divide-y-0 md:divide-x divide-white/10">
-          <div class="flex items-center gap-4 p-2 group"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg text-2xl">📱</div><div><h3 class="font-bold text-lg text-white">6+</h3><p class="text-sm text-slate-400">Service Categories</p></div></div>
-          <div class="flex items-center gap-4 p-2 group"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg text-2xl">⚡</div><div><h3 class="font-bold text-lg text-white">Same Day</h3><p class="text-sm text-slate-400">Fast Turnaround</p></div></div>
-          <div class="flex items-center gap-4 p-2 group"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg text-2xl">🛡️</div><div><h3 class="font-bold text-lg text-white">Warranty</h3><p class="text-sm text-slate-400">Guaranteed Quality</p></div></div>
-          <div class="flex items-center gap-4 p-2 group"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg text-2xl">🏆</div><div><h3 class="font-bold text-lg text-white">500+</h3><p class="text-sm text-slate-400">Happy Customers</p></div></div>
+          <div class="flex items-center gap-4 p-2 group">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg">
+              <i data-feather="smartphone" class="text-cyan-400 w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-white">6+</h3>
+              <p class="text-sm text-slate-400">Service Categories</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-2 group">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg">
+              <i data-feather="clock" class="text-cyan-400 w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-white">Same Day</h3>
+              <p class="text-sm text-slate-400">Fast Turnaround</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-2 group">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg">
+              <i data-feather="shield" class="text-cyan-400 w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-white">Warranty</h3>
+              <p class="text-sm text-slate-400">Guaranteed Quality</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 p-2 group">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg">
+              <i data-feather="award" class="text-cyan-400 w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-white">500+</h3>
+              <p class="text-sm text-slate-400">Happy Customers</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -153,14 +234,21 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
-        <!-- Mobile Phone -->
+        <!-- Service 1: Mobile Phone -->
         <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" onclick="openServiceModal('mobile')">
           <div class="relative h-64 overflow-hidden">
-            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/16dbd1804-354c-4ad6-b0da-12e846122c45.png" alt="Mobile Phone Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256">
+            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/16dbd1804-354c-4ad6-b0da-12e846122c45.png" alt="Mobile Phone Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-[#0a0f1e]/40 to-transparent"></div>
-            <div class="absolute top-4 right-4"><span class="bg-cyan-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-cyan-400/30">⭐ Popular</span></div>
+            <div class="absolute top-4 right-4">
+              <span class="bg-cyan-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-cyan-400/30">Popular</span>
+            </div>
             <div class="absolute bottom-4 left-4 right-4">
-              <div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl">📱</div><h3 class="text-xl font-bold text-white">Mobile Phone Repair</h3></div>
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                  <i data-feather="smartphone" class="text-cyan-400 w-5 h-5"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Mobile Phone Repair</h3>
+              </div>
               <p class="text-slate-300 text-sm line-clamp-2">Screen replacement, battery swap, water damage fix & more for all brands.</p>
             </div>
           </div>
@@ -172,18 +260,28 @@
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Huawei</span>
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">OnePlus</span>
             </div>
-            <div class="flex items-center justify-between"><span class="text-cyan-400 font-bold text-sm">Starting from ৳500</span><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details →</span></div>
+            <div class="flex items-center justify-between">
+              <span class="text-cyan-400 font-bold text-sm">Starting from ৳500</span>
+              <span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details <i data-feather="arrow-right" class="w-4 h-4"></i></span>
+            </div>
           </div>
         </div>
 
-        <!-- Laptop -->
-        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="transition-delay:.1s" onclick="openServiceModal('laptop')">
+        <!-- Service 2: Laptop -->
+        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="animation-delay: 0.1s;" onclick="openServiceModal('laptop')">
           <div class="relative h-64 overflow-hidden">
-            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1dcd22e81-0199-40af-b3da-f3e07c5b1683.png" alt="Laptop Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256">
+            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1dcd22e81-0199-40af-b3da-f3e07c5b1683.png" alt="Laptop Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-[#0a0f1e]/40 to-transparent"></div>
-            <div class="absolute top-4 right-4"><span class="bg-blue-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-blue-400/30">🔧 Expert</span></div>
+            <div class="absolute top-4 right-4">
+              <span class="bg-blue-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-blue-400/30">Expert</span>
+            </div>
             <div class="absolute bottom-4 left-4 right-4">
-              <div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl">💻</div><h3 class="text-xl font-bold text-white">Laptop Repair</h3></div>
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                  <i data-feather="laptop" class="text-cyan-400 w-5 h-5"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Laptop Repair</h3>
+              </div>
               <p class="text-slate-300 text-sm line-clamp-2">Motherboard repair, screen replacement, SSD upgrade & OS installation.</p>
             </div>
           </div>
@@ -195,17 +293,25 @@
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Lenovo</span>
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Asus</span>
             </div>
-            <div class="flex items-center justify-between"><span class="text-cyan-400 font-bold text-sm">Starting from ৳800</span><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details →</span></div>
+            <div class="flex items-center justify-between">
+              <span class="text-cyan-400 font-bold text-sm">Starting from ৳800</span>
+              <span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details <i data-feather="arrow-right" class="w-4 h-4"></i></span>
+            </div>
           </div>
         </div>
 
-        <!-- Tablet -->
-        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="transition-delay:.2s" onclick="openServiceModal('tablet')">
+        <!-- Service 3: Tablet -->
+        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="animation-delay: 0.2s;" onclick="openServiceModal('tablet')">
           <div class="relative h-64 overflow-hidden">
-            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1638b5a43-ff2e-4cad-8f77-aaf377eb8ceb.png" alt="Tablet Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256">
+            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1638b5a43-ff2e-4cad-8f77-aaf377eb8ceb.png" alt="Tablet Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-[#0a0f1e]/40 to-transparent"></div>
             <div class="absolute bottom-4 left-4 right-4">
-              <div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl">📋</div><h3 class="text-xl font-bold text-white">Tablet Repair</h3></div>
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                  <i data-feather="tablet" class="text-cyan-400 w-5 h-5"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Tablet Repair</h3>
+              </div>
               <p class="text-slate-300 text-sm line-clamp-2">iPad & Android tablet screen fix, charging port repair & battery replacement.</p>
             </div>
           </div>
@@ -215,18 +321,28 @@
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Samsung Tab</span>
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Huawei Tab</span>
             </div>
-            <div class="flex items-center justify-between"><span class="text-cyan-400 font-bold text-sm">Starting from ৳600</span><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details →</span></div>
+            <div class="flex items-center justify-between">
+              <span class="text-cyan-400 font-bold text-sm">Starting from ৳600</span>
+              <span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details <i data-feather="arrow-right" class="w-4 h-4"></i></span>
+            </div>
           </div>
         </div>
 
-        <!-- Desktop PC -->
-        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="transition-delay:.05s" onclick="openServiceModal('desktop')">
+        <!-- Service 4: Desktop PC -->
+        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" onclick="openServiceModal('desktop')">
           <div class="relative h-64 overflow-hidden">
-            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1c0542659-ca69-4f9f-a625-77a285948f56.png" alt="Desktop PC" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256">
+            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1c0542659-ca69-4f9f-a625-77a285948f56.png" alt="Desktop PC Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-[#0a0f1e]/40 to-transparent"></div>
-            <div class="absolute top-4 right-4"><span class="bg-violet-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-violet-400/30">🎮 Gaming</span></div>
+            <div class="absolute top-4 right-4">
+              <span class="bg-purple-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-purple-400/30">Gaming</span>
+            </div>
             <div class="absolute bottom-4 left-4 right-4">
-              <div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl">🖥️</div><h3 class="text-xl font-bold text-white">Desktop PC</h3></div>
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                  <i data-feather="monitor" class="text-cyan-400 w-5 h-5"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Desktop PC</h3>
+              </div>
               <p class="text-slate-300 text-sm line-clamp-2">Custom PC builds, hardware upgrades, deep cleaning & performance tuning.</p>
             </div>
           </div>
@@ -236,18 +352,28 @@
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">GPU Upgrade</span>
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">SSD/RAM</span>
             </div>
-            <div class="flex items-center justify-between"><span class="text-cyan-400 font-bold text-sm">Starting from ৳1000</span><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details →</span></div>
+            <div class="flex items-center justify-between">
+              <span class="text-cyan-400 font-bold text-sm">Starting from ৳1000</span>
+              <span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details <i data-feather="arrow-right" class="w-4 h-4"></i></span>
+            </div>
           </div>
         </div>
 
-        <!-- Camera -->
-        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="transition-delay:.15s" onclick="openServiceModal('camera')">
+        <!-- Service 5: Camera -->
+        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="animation-delay: 0.1s;" onclick="openServiceModal('camera')">
           <div class="relative h-64 overflow-hidden">
-            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/122f59045-63b0-4a19-ac74-eda76d31b972.png" alt="Camera Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256">
+            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/122f59045-63b0-4a19-ac74-eda76d31b972.png" alt="Camera Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-[#0a0f1e]/40 to-transparent"></div>
-            <div class="absolute top-4 right-4"><span class="bg-amber-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-amber-400/30">📷 Pro</span></div>
+            <div class="absolute top-4 right-4">
+              <span class="bg-amber-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-amber-400/30">Pro</span>
+            </div>
             <div class="absolute bottom-4 left-4 right-4">
-              <div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl">📷</div><h3 class="text-xl font-bold text-white">Camera Repair</h3></div>
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                  <i data-feather="camera" class="text-cyan-400 w-5 h-5"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Camera Repair</h3>
+              </div>
               <p class="text-slate-300 text-sm line-clamp-2">DSLR & Mirrorless sensor cleaning, lens fix, shutter repair & calibration.</p>
             </div>
           </div>
@@ -258,18 +384,28 @@
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Sony</span>
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Fujifilm</span>
             </div>
-            <div class="flex items-center justify-between"><span class="text-cyan-400 font-bold text-sm">Starting from ৳1500</span><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details →</span></div>
+            <div class="flex items-center justify-between">
+              <span class="text-cyan-400 font-bold text-sm">Starting from ৳1500</span>
+              <span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details <i data-feather="arrow-right" class="w-4 h-4"></i></span>
+            </div>
           </div>
         </div>
 
-        <!-- Smartwatch -->
-        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="transition-delay:.25s" onclick="openServiceModal('watch')">
+        <!-- Service 6: Smartwatch -->
+        <div class="glass-panel glass-card-hover rounded-[32px] overflow-hidden group cursor-pointer reveal" style="animation-delay: 0.2s;" onclick="openServiceModal('watch')">
           <div class="relative h-64 overflow-hidden">
-            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/19214a22c-8a44-41f4-9887-85be5dc65bff.png" alt="Smartwatch Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256">
+            <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/19214a22c-8a44-41f4-9887-85be5dc65bff.png" alt="Smartwatch Repair" class="w-full h-full object-cover service-img-zoom" loading="lazy" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-[#0a0f1e]/40 to-transparent"></div>
-            <div class="absolute top-4 right-4"><span class="bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-400/30">🆕 New</span></div>
+            <div class="absolute top-4 right-4">
+              <span class="bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-400/30">New</span>
+            </div>
             <div class="absolute bottom-4 left-4 right-4">
-              <div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-xl">⌚</div><h3 class="text-xl font-bold text-white">Smartwatch Repair</h3></div>
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                  <i data-feather="watch" class="text-cyan-400 w-5 h-5"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Smartwatch Repair</h3>
+              </div>
               <p class="text-slate-300 text-sm line-clamp-2">Apple Watch, Galaxy Watch screen replacement, battery fix & software restore.</p>
             </div>
           </div>
@@ -279,14 +415,17 @@
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Galaxy Watch</span>
               <span class="text-[10px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">Amazfit</span>
             </div>
-            <div class="flex items-center justify-between"><span class="text-cyan-400 font-bold text-sm">Starting from ৳700</span><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details →</span></div>
+            <div class="flex items-center justify-between">
+              <span class="text-cyan-400 font-bold text-sm">Starting from ৳700</span>
+              <span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Details <i data-feather="arrow-right" class="w-4 h-4"></i></span>
+            </div>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- ================= DETAILED BREAKDOWN ================= -->
+    <!-- ================= DETAILED SERVICE BREAKDOWN ================= -->
     <section class="py-24 relative z-10 bg-black/20 border-y border-white/5">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="text-center max-w-3xl mx-auto mb-16 reveal">
@@ -294,55 +433,81 @@
           <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">What Exactly We Fix</h2>
           <p class="text-slate-400 text-lg">A comprehensive list of common issues we resolve every day.</p>
         </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
           <div class="glass-panel rounded-2xl p-8 reveal">
-            <div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-2xl">📱</div><h3 class="text-xl font-bold text-white">Phone Issues We Fix</h3></div>
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                <i data-feather="smartphone" class="text-cyan-400 w-6 h-6"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white">Phone Issues We Fix</h3>
+            </div>
             <div class="grid grid-cols-2 gap-3">
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Cracked Screen</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Battery Replace</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Water Damage</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Charging Port</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Speaker Issue</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Camera Fix</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Software Reset</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Face/Touch ID</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Cracked Screen</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Battery Replace</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Water Damage</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Charging Port</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Speaker Issue</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Camera Fix</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Software Reset</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Face/Touch ID</div>
             </div>
           </div>
-          <div class="glass-panel rounded-2xl p-8 reveal" style="transition-delay:.1s">
-            <div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl">💻</div><h3 class="text-xl font-bold text-white">Laptop Issues We Fix</h3></div>
+
+          <div class="glass-panel rounded-2xl p-8 reveal" style="animation-delay: 0.1s;">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                <i data-feather="laptop" class="text-blue-400 w-6 h-6"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white">Laptop Issues We Fix</h3>
+            </div>
             <div class="grid grid-cols-2 gap-3">
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Screen Replace</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Keyboard Fix</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Motherboard</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> SSD Upgrade</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> RAM Upgrade</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> OS Install</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Hinge Repair</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Overheating</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Screen Replace</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Keyboard Fix</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Motherboard</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> SSD Upgrade</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> RAM Upgrade</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> OS Install</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Hinge Repair</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Overheating</div>
             </div>
           </div>
-          <div class="glass-panel rounded-2xl p-8 reveal" style="transition-delay:.05s">
-            <div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center text-2xl">📋</div><h3 class="text-xl font-bold text-white">Tablet Issues We Fix</h3></div>
+
+          <div class="glass-panel rounded-2xl p-8 reveal">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                <i data-feather="tablet" class="text-purple-400 w-6 h-6"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white">Tablet Issues We Fix</h3>
+            </div>
             <div class="grid grid-cols-2 gap-3">
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Touch Screen</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> LCD Replace</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Battery Swap</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Charging Port</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Home Button</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Software Fix</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Touch Screen</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> LCD Replace</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Battery Swap</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Charging Port</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Home Button</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Software Fix</div>
             </div>
           </div>
-          <div class="glass-panel rounded-2xl p-8 reveal" style="transition-delay:.15s">
-            <div class="flex items-center gap-4 mb-6"><div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-2xl">🔧</div><h3 class="text-xl font-bold text-white">Other Devices</h3></div>
+
+          <div class="glass-panel rounded-2xl p-8 reveal" style="animation-delay: 0.1s;">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
+                <i data-feather="cpu" class="text-amber-400 w-6 h-6"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white">Other Devices</h3>
+            </div>
             <div class="grid grid-cols-2 gap-3">
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> DSLR Sensor Clean</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Lens Repair</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Watch Screen</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Watch Battery</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> PC Custom Build</div>
-              <div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> Data Recovery</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> DSLR Sensor Clean</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Lens Repair</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Watch Screen</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Watch Battery</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> PC Custom Build</div>
+              <div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> Data Recovery</div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -354,11 +519,36 @@
         <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">How It Works</h2>
         <p class="text-slate-400 text-lg">Getting your device fixed is as easy as 1-2-3-4.</p>
       </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div class="text-center reveal"><div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 animate-float text-3xl font-extrabold text-cyan-400">01</div><h3 class="text-xl font-bold text-white mb-3">Contact Us</h3><p class="text-slate-400 text-sm">Reach out via phone, email, or visit our shop. Describe your device issue.</p></div>
-        <div class="text-center reveal" style="transition-delay:.1s"><div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 animate-float text-3xl font-extrabold text-cyan-400" style="animation-delay:.5s">02</div><h3 class="text-xl font-bold text-white mb-3">Free Diagnosis</h3><p class="text-slate-400 text-sm">We inspect your device and provide a transparent quote — no hidden fees.</p></div>
-        <div class="text-center reveal" style="transition-delay:.2s"><div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 animate-float text-3xl font-extrabold text-cyan-400" style="animation-delay:1s">03</div><h3 class="text-xl font-bold text-white mb-3">Expert Repair</h3><p class="text-slate-400 text-sm">Our certified technicians fix your device using genuine quality parts.</p></div>
-        <div class="text-center reveal" style="transition-delay:.3s"><div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 animate-float text-3xl font-extrabold text-cyan-400" style="animation-delay:1.5s">04</div><h3 class="text-xl font-bold text-white mb-3">Pick Up & Go</h3><p class="text-slate-400 text-sm">Collect your fully repaired device with warranty. Most repairs done same day!</p></div>
+        <div class="text-center reveal">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 animate-float">
+            <span class="text-3xl font-extrabold text-cyan-400">01</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Contact Us</h3>
+          <p class="text-slate-400 text-sm">Reach out via phone, email, or visit our shop. Describe your device issue.</p>
+        </div>
+        <div class="text-center reveal" style="animation-delay: 0.1s;">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 animate-float" style="animation-delay: 0.5s;">
+            <span class="text-3xl font-extrabold text-cyan-400">02</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Free Diagnosis</h3>
+          <p class="text-slate-400 text-sm">We inspect your device and provide a transparent quote — no hidden fees.</p>
+        </div>
+        <div class="text-center reveal" style="animation-delay: 0.2s;">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 animate-float" style="animation-delay: 1s;">
+            <span class="text-3xl font-extrabold text-cyan-400">03</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Expert Repair</h3>
+          <p class="text-slate-400 text-sm">Our certified technicians fix your device using genuine quality parts.</p>
+        </div>
+        <div class="text-center reveal" style="animation-delay: 0.3s;">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 animate-float" style="animation-delay: 1.5s;">
+            <span class="text-3xl font-extrabold text-cyan-400">04</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">Pick Up & Go</h3>
+          <p class="text-slate-400 text-sm">Collect your fully repaired device with warranty. Most repairs done same day!</p>
+        </div>
       </div>
     </section>
 
@@ -370,36 +560,88 @@
           <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">Service Price Guide</h2>
           <p class="text-slate-400 text-lg">Estimated prices. Final cost depends on device model and issue severity.</p>
         </div>
+
         <div class="overflow-x-auto reveal">
           <table class="w-full text-left border-collapse">
-            <thead><tr class="bg-white/5 text-slate-400 text-xs uppercase tracking-wider border-b border-white/10"><th class="p-5 rounded-tl-2xl">Service</th><th class="p-5">Device Type</th><th class="p-5">Est. Time</th><th class="p-5 rounded-tr-2xl text-right">Price Range</th></tr></thead>
+            <thead>
+              <tr class="bg-white/5 text-slate-400 text-xs uppercase tracking-wider border-b border-white/10">
+                <th class="p-5 rounded-tl-2xl">Service</th>
+                <th class="p-5">Device Type</th>
+                <th class="p-5">Est. Time</th>
+                <th class="p-5 rounded-tr-2xl text-right">Price Range</th>
+              </tr>
+            </thead>
             <tbody class="divide-y divide-white/5 text-sm">
-              <tr class="hover:bg-white/5 transition-colors"><td class="p-5 font-medium text-white flex items-center gap-3">📱 Screen Replacement</td><td class="p-5 text-slate-400">iPhone / Samsung / Xiaomi</td><td class="p-5"><span class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-xs font-bold">30-60 min</span></td><td class="p-5 text-right text-white font-bold">৳500 - ৳3,500</td></tr>
-              <tr class="hover:bg-white/5 transition-colors"><td class="p-5 font-medium text-white flex items-center gap-3">🔋 Battery Replacement</td><td class="p-5 text-slate-400">All Smartphones</td><td class="p-5"><span class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-xs font-bold">20-40 min</span></td><td class="p-5 text-right text-white font-bold">৳400 - ৳1,500</td></tr>
-              <tr class="hover:bg-white/5 transition-colors"><td class="p-5 font-medium text-white flex items-center gap-3">💻 Laptop Screen Fix</td><td class="p-5 text-slate-400">All Laptop Brands</td><td class="p-5"><span class="bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded text-xs font-bold">1-3 hours</span></td><td class="p-5 text-right text-white font-bold">৳1,500 - ৳5,000</td></tr>
-              <tr class="hover:bg-white/5 transition-colors"><td class="p-5 font-medium text-white flex items-center gap-3">💾 SSD/RAM Upgrade</td><td class="p-5 text-slate-400">Laptop / Desktop</td><td class="p-5"><span class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-xs font-bold">30-60 min</span></td><td class="p-5 text-right text-white font-bold">৳800 - ৳4,000</td></tr>
-              <tr class="hover:bg-white/5 transition-colors"><td class="p-5 font-medium text-white flex items-center gap-3">💧 Water Damage Repair</td><td class="p-5 text-slate-400">Phone / Tablet</td><td class="p-5"><span class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-xs font-bold">1-2 days</span></td><td class="p-5 text-right text-white font-bold">৳1,000 - ৳4,000</td></tr>
-              <tr class="hover:bg-white/5 transition-colors"><td class="p-5 font-medium text-white flex items-center gap-3">📷 Camera Sensor Clean</td><td class="p-5 text-slate-400">DSLR / Mirrorless</td><td class="p-5"><span class="bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded text-xs font-bold">1-2 hours</span></td><td class="p-5 text-right text-white font-bold">৳1,500 - ৳3,000</td></tr>
-              <tr class="hover:bg-white/5 transition-colors"><td class="p-5 font-medium text-white flex items-center gap-3">⌚ Smartwatch Screen</td><td class="p-5 text-slate-400">Apple / Galaxy Watch</td><td class="p-5"><span class="bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded text-xs font-bold">1-3 hours</span></td><td class="p-5 text-right text-white font-bold">৳700 - ৳2,500</td></tr>
-              <tr class="hover:bg-white/5 transition-colors"><td class="p-5 font-medium text-white flex items-center gap-3 rounded-bl-2xl">🗄️ Data Recovery</td><td class="p-5 text-slate-400">All Devices</td><td class="p-5"><span class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-xs font-bold">1-3 days</span></td><td class="p-5 text-right text-white font-bold rounded-br-2xl">৳1,000 - ৳5,000</td></tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-5 font-medium text-white flex items-center gap-3"><i data-feather="smartphone" class="w-4 h-4 text-cyan-400"></i> Screen Replacement</td>
+                <td class="p-5 text-slate-400">iPhone / Samsung / Xiaomi</td>
+                <td class="p-5"><span class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-xs font-bold">30-60 min</span></td>
+                <td class="p-5 text-right text-white font-bold">৳500 - ৳3,500</td>
+              </tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-5 font-medium text-white flex items-center gap-3"><i data-feather="battery" class="w-4 h-4 text-cyan-400"></i> Battery Replacement</td>
+                <td class="p-5 text-slate-400">All Smartphones</td>
+                <td class="p-5"><span class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-xs font-bold">20-40 min</span></td>
+                <td class="p-5 text-right text-white font-bold">৳400 - ৳1,500</td>
+              </tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-5 font-medium text-white flex items-center gap-3"><i data-feather="laptop" class="w-4 h-4 text-cyan-400"></i> Laptop Screen Fix</td>
+                <td class="p-5 text-slate-400">All Laptop Brands</td>
+                <td class="p-5"><span class="bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded text-xs font-bold">1-3 hours</span></td>
+                <td class="p-5 text-right text-white font-bold">৳1,500 - ৳5,000</td>
+              </tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-5 font-medium text-white flex items-center gap-3"><i data-feather="hard-drive" class="w-4 h-4 text-cyan-400"></i> SSD/RAM Upgrade</td>
+                <td class="p-5 text-slate-400">Laptop / Desktop</td>
+                <td class="p-5"><span class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-xs font-bold">30-60 min</span></td>
+                <td class="p-5 text-right text-white font-bold">৳800 - ৳4,000</td>
+              </tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-5 font-medium text-white flex items-center gap-3"><i data-feather="droplet" class="w-4 h-4 text-cyan-400"></i> Water Damage Repair</td>
+                <td class="p-5 text-slate-400">Phone / Tablet</td>
+                <td class="p-5"><span class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-xs font-bold">1-2 days</span></td>
+                <td class="p-5 text-right text-white font-bold">৳1,000 - ৳4,000</td>
+              </tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-5 font-medium text-white flex items-center gap-3"><i data-feather="camera" class="w-4 h-4 text-cyan-400"></i> Camera Sensor Clean</td>
+                <td class="p-5 text-slate-400">DSLR / Mirrorless</td>
+                <td class="p-5"><span class="bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded text-xs font-bold">1-2 hours</span></td>
+                <td class="p-5 text-right text-white font-bold">৳1,500 - ৳3,000</td>
+              </tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-5 font-medium text-white flex items-center gap-3"><i data-feather="watch" class="w-4 h-4 text-cyan-400"></i> Smartwatch Screen</td>
+                <td class="p-5 text-slate-400">Apple / Galaxy Watch</td>
+                <td class="p-5"><span class="bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded text-xs font-bold">1-3 hours</span></td>
+                <td class="p-5 text-right text-white font-bold">৳700 - ৳2,500</td>
+              </tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-5 font-medium text-white flex items-center gap-3 rounded-bl-2xl"><i data-feather="database" class="w-4 h-4 text-cyan-400"></i> Data Recovery</td>
+                <td class="p-5 text-slate-400">All Devices</td>
+                <td class="p-5"><span class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-xs font-bold">1-3 days</span></td>
+                <td class="p-5 text-right text-white font-bold rounded-br-2xl">৳1,000 - ৳5,000</td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- ================= CTA ================= -->
+    <!-- ================= CTA SECTION ================= -->
     <section class="relative py-24 md:py-32">
       <div class="absolute inset-0 z-0">
-        <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1dcd22e81-0199-40af-b3da-f3e07c5b1683.png" alt="Background" class="w-full h-full object-cover blur-sm scale-105" loading="lazy" width="1280" height="600">
+        <img src="https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1dcd22e81-0199-40af-b3da-f3e07c5b1683.png" alt="Background" class="w-full h-full object-cover blur-sm scale-105" loading="lazy" />
         <div class="absolute inset-0 bg-[#0c1a3a]/90 backdrop-blur-md mix-blend-multiply"></div>
       </div>
       <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 text-center">
         <h2 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight reveal">Ready to Get Your<br>Device Fixed?</h2>
         <p class="text-white/80 text-xl max-w-2xl mx-auto mb-10 reveal">Contact us now for a free diagnosis. Most repairs completed the same day with genuine parts and warranty.</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
-          <a href="contact.html" class="bg-white text-[#0a0f1e] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:-translate-y-1 flex items-center justify-center gap-2">📩 Book a Repair Now</a>
-          <a href="tel:+8801868461577" class="bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold px-10 py-4 rounded-full hover:bg-white/20 transition-all hover:-translate-y-1 flex items-center justify-center gap-2">📞 Call: +880 1868 461577</a>
+          <a href="contact.html" class="bg-white text-[#0a0f1e] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:-translate-y-1 flex items-center justify-center gap-2">
+            <i data-feather="send" class="w-5 h-5"></i> Book a Repair Now
+          </a>
+          <a href="tel:+8801868461577" class="bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold px-10 py-4 rounded-full hover:bg-white/20 transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
+            <i data-feather="phone" class="w-5 h-5 text-cyan-400"></i> Call: +880 1868 461577
+          </a>
         </div>
       </div>
     </section>
@@ -409,114 +651,259 @@
   <!-- ================= FOOTER ================= -->
   <footer class="bg-[#060a14] text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-white/10">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      
       <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-cyan-500/15 blur-[100px] pointer-events-none group-hover:bg-cyan-500/25 transition-colors"></div>
         <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Need Help Right Now?</h2>
-        <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">Our team is available to answer your questions and schedule your repair appointment.</p>
-        <a href="contact.html" class="inline-block bg-white text-[#0a0f1e] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">Contact Us Today</a>
+        <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">
+          Our team is available to answer your questions and schedule your repair appointment.
+        </p>
+        <a href="contact.html" class="inline-block bg-white text-[#0a0f1e] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">
+          Contact Us Today
+        </a>
       </div>
+
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
         <div class="col-span-2 space-y-6">
-          <a href="index.html" class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center"><img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40" loading="lazy"></div><span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span></a>
+          <a href="index.html" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
+              <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover">
+            </div>
+            <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span>
+          </a>
           <p class="text-slate-500 leading-relaxed pr-8">Your trusted partner for fast and reliable gadget repair services and component solutions.</p>
         </div>
-        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4><ul class="space-y-4"><li><a href="#services-grid" class="hover:text-cyan-400 transition-colors">Phone Repair</a></li><li><a href="#services-grid" class="hover:text-cyan-400 transition-colors">Laptop Fix</a></li><li><a href="#services-grid" class="hover:text-cyan-400 transition-colors">Tablet Service</a></li><li><a href="#services-grid" class="hover:text-cyan-400 transition-colors">Data Recovery</a></li></ul></div>
-        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4><ul class="space-y-4"><li><a href="index.html" class="hover:text-cyan-400 transition-colors">Home</a></li><li><a href="about.html" class="hover:text-cyan-400 transition-colors">About Us</a></li><li><a href="blog.html" class="hover:text-cyan-400 transition-colors">Blog</a></li><li><a href="contact.html" class="hover:text-cyan-400 transition-colors">Contact</a></li></ul></div>
-        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4><ul class="space-y-4"><li><a href="#" class="hover:text-cyan-400 transition-colors">Privacy Policy</a></li><li><a href="#" class="hover:text-cyan-400 transition-colors">Terms of Service</a></li><li><a href="#" class="hover:text-cyan-400 transition-colors">Warranty Policy</a></li></ul></div>
-        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4><div class="flex flex-col gap-4"><a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a><a href="https://wa.me/8801868461577" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp</a><a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-telegram text-lg"></i> Telegram</a></div></div>
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4>
+          <ul class="space-y-4">
+            <li><a href="#services-grid" class="hover:text-cyan-400 transition-colors">Phone Repair</a></li>
+            <li><a href="#services-grid" class="hover:text-cyan-400 transition-colors">Laptop Fix</a></li>
+            <li><a href="#services-grid" class="hover:text-cyan-400 transition-colors">Tablet Service</a></li>
+            <li><a href="#services-grid" class="hover:text-cyan-400 transition-colors">Data Recovery</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
+          <ul class="space-y-4">
+            <li><a href="index.html" class="hover:text-cyan-400 transition-colors">Home</a></li>
+            <li><a href="about.html" class="hover:text-cyan-400 transition-colors">About Us</a></li>
+            <li><a href="blog.html" class="hover:text-cyan-400 transition-colors">Blog</a></li>
+            <li><a href="contact.html" class="hover:text-cyan-400 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4>
+          <ul class="space-y-4">
+            <li><a href="#" class="hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-cyan-400 transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-cyan-400 transition-colors">Warranty Policy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4>
+          <div class="flex flex-col gap-4">
+             <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
+             <a href="https://wa.me/8801868461577" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp</a>
+             <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-telegram text-lg"></i> Telegram</a>
+          </div>
+        </div>
       </div>
+
       <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
-        <div class="flex items-center gap-6"><p>&copy; 2026 Habib iFix. All Rights Reserved.</p><span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> All Systems Operational</span></div>
+        <div class="flex items-center gap-6">
+          <p>&copy; 2026 Habib iFix. All Rights Reserved.</p>
+          <span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> All Systems Operational
+          </span>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- ================= SERVICE MODAL ================= -->
+  <!-- ================= SERVICE DETAIL MODAL ================= -->
   <div id="serviceModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
     <div class="absolute inset-0 bg-[#0a0f1e]/80 backdrop-blur-sm" onclick="closeServiceModal()"></div>
     <div id="modalContent" class="relative bg-[#0a0f1e] border border-white/10 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[32px] shadow-2xl transform scale-95 opacity-0 transition-all duration-300">
-      <button onclick="closeServiceModal()" class="absolute top-5 right-5 z-10 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 border border-white/10 transition-colors text-xl">✕</button>
+      
+      <button onclick="closeServiceModal()" class="absolute top-5 right-5 z-10 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 border border-white/10 transition-colors">
+        <i data-feather="x" class="w-5 h-5"></i>
+      </button>
+
       <div class="relative h-56 md:h-72 overflow-hidden rounded-t-[32px]">
-        <img id="modalImage" src="" alt="Service" class="w-full h-full object-cover" loading="lazy" width="600" height="300">
+        <img id="modalImage" src="" alt="Service" class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] to-transparent"></div>
         <div class="absolute bottom-6 left-6 right-6">
           <div class="flex items-center gap-3 mb-2">
-            <div id="modalIconBox" class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl">🔧</div>
+            <div id="modalIconBox" class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+              <i data-feather="tool" id="modalIcon" class="text-cyan-400 w-6 h-6"></i>
+            </div>
             <h3 id="modalTitle" class="text-2xl md:text-3xl font-bold text-white">Service Name</h3>
           </div>
         </div>
       </div>
+
       <div class="p-6 md:p-8">
         <p id="modalDesc" class="text-slate-300 mb-6 leading-relaxed">Description...</p>
-        <h4 class="text-white font-bold mb-4 flex items-center gap-2"><span class="text-green-400">✅</span> What We Cover:</h4>
+        
+        <h4 class="text-white font-bold mb-4 flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4 text-green-400"></i> What We Cover:</h4>
         <div id="modalFeatures" class="grid grid-cols-2 gap-3 mb-8"></div>
+
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="contact.html" onclick="closeServiceModal()" class="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-[0_10px_20px_-5px_rgba(6,182,212,0.4)] hover:-translate-y-1 flex items-center justify-center gap-2">Book This Service →</a>
-          <a href="tel:+8801868461577" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">📞 Call Now</a>
+          <a href="contact.html" onclick="closeServiceModal()" class="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-[0_10px_20px_-5px_rgba(6,182,212,0.4)] hover:-translate-y-1 flex items-center justify-center gap-2">
+            Book This Service <i data-feather="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="tel:+8801868461577" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+            <i data-feather="phone" class="w-4 h-4 text-cyan-400"></i> Call Now
+          </a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Feather Icons (deferred) -->
-  <script src="https://unpkg.com/feather-icons" defer></script>
-
   <!-- ================= JAVASCRIPT ================= -->
-  <script defer>
+  <script>
+    // Initialize Feather Icons immediately
+    feather.replace();
+
+    // --- SCROLL REVEAL ---
     function revealOnScroll() {
-      document.querySelectorAll('.reveal').forEach(function(el) {
-        if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
-      });
+      var reveals = document.querySelectorAll('.reveal');
+      for (var i = 0; i < reveals.length; i++) {
+        if (reveals[i].getBoundingClientRect().top < window.innerHeight - 100) {
+          reveals[i].classList.add('active');
+        }
+      }
     }
     window.addEventListener('scroll', revealOnScroll);
     window.addEventListener('load', revealOnScroll);
+    // Run immediately in case page is already scrolled
+    revealOnScroll();
 
+    // --- HEADER SCROLL ---
     var header = document.getElementById('main-header');
     window.addEventListener('scroll', function() {
-      if (window.scrollY > 50) { header.classList.add('bg-[#0a0f1e]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3'); header.classList.remove('bg-transparent', 'py-4'); }
-      else { header.classList.add('bg-transparent', 'py-4'); header.classList.remove('bg-[#0a0f1e]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3'); }
+      if (window.scrollY > 50) {
+        header.classList.add('bg-[#0a0f1e]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
+        header.classList.remove('bg-transparent', 'py-4');
+      } else {
+        header.classList.add('bg-transparent', 'py-4');
+        header.classList.remove('bg-[#0a0f1e]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
+      }
     });
 
+    // --- MOBILE MENU ---
     var menuBtn = document.getElementById('mobile-menu-btn');
     var mobileMenu = document.getElementById('mobile-menu');
     var isMenuOpen = false;
-    function closeMobileMenu() { isMenuOpen = false; mobileMenu.classList.add('hidden'); menuBtn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>'; }
-    if (menuBtn) menuBtn.addEventListener('click', function() { isMenuOpen = !isMenuOpen; if (isMenuOpen) { mobileMenu.classList.remove('hidden'); menuBtn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'; } else closeMobileMenu(); });
 
-    var emojiMap = { smartphone:'📱', tablet:'📋', laptop:'💻', monitor:'🖥️', camera:'📷', watch:'⌚' };
+    function closeMobileMenu() {
+      isMenuOpen = false;
+      mobileMenu.classList.add('hidden');
+      menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6"></i>';
+      feather.replace();
+    }
 
+    menuBtn.addEventListener('click', function() {
+      isMenuOpen = !isMenuOpen;
+      if (isMenuOpen) {
+        mobileMenu.classList.remove('hidden');
+        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6"></i>';
+      } else {
+        closeMobileMenu();
+      }
+      feather.replace();
+    });
+
+    // --- SERVICE MODAL DATA ---
     var serviceData = {
-      mobile: { title:'Mobile Phone Repair', icon:'smartphone', image:'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/16dbd1804-354c-4ad6-b0da-12e846122c45.png', desc:'We repair all major smartphone brands including iPhone, Samsung, Xiaomi, Huawei, OnePlus, Realme, Vivo, and Oppo. From simple screen replacements to complex motherboard-level repairs, our certified technicians use only genuine quality parts.', features:['Cracked/Broken Screen','Battery Replacement','Water Damage Recovery','Charging Port Fix','Speaker/Mic Repair','Camera Module Fix','Software/OS Reset','Face ID/Touch ID','Signal/Network Issue','Back Glass Replace'] },
-      laptop: { title:'Laptop Repair', icon:'laptop', image:'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1dcd22e81-0199-40af-b3da-f3e07c5b1683.png', desc:'Expert laptop repair for all brands — MacBook, Dell, HP, Lenovo, Asus, Acer, and more. We handle everything from screen replacements to motherboard repairs, SSD upgrades, and fresh OS installations.', features:['Screen Replacement','Keyboard Repair','Motherboard Fix','SSD/HDD Upgrade','RAM Upgrade','OS Installation','Hinge Repair','Overheating Fix','Battery Replace','Charging Port'] },
-      tablet: { title:'Tablet Repair', icon:'tablet', image:'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1638b5a43-ff2e-4cad-8f77-aaf377eb8ceb.png', desc:'Professional tablet repair for iPad, Samsung Galaxy Tab, Huawei MediaPad, and all Android tablets. Quick turnaround with quality guaranteed parts.', features:['Touch Screen Fix','LCD Replacement','Battery Swap','Charging Port','Home Button Fix','Software Restore','Speaker Repair','Camera Fix'] },
-      desktop: { title:'Desktop PC Service', icon:'monitor', image:'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1c0542659-ca69-4f9f-a625-77a285948f56.png', desc:'Complete desktop PC services — from custom gaming builds to hardware upgrades, deep cleaning, and performance optimization. We build your dream PC!', features:['Custom PC Build','GPU Upgrade','SSD/RAM Install','Deep Cleaning','Cable Management','OS Setup','Power Supply Fix','Cooling Solution'] },
-      camera: { title:'Camera Repair', icon:'camera', image:'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/122f59045-63b0-4a19-ac74-eda76d31b972.png', desc:'Professional DSLR and Mirrorless camera repair for Canon, Nikon, Sony, Fujifilm, and more. Sensor cleaning, lens repair, shutter mechanism fix, and full calibration.', features:['Sensor Cleaning','Lens Repair','Shutter Fix','LCD Screen','Button/Dial Fix','Calibration','Memory Card Slot','Battery Chamber'] },
-      watch: { title:'Smartwatch Repair', icon:'watch', image:'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/19214a22c-8a44-41f4-9887-85be5dc65bff.png', desc:'Apple Watch, Samsung Galaxy Watch, Amazfit, and other smartwatch repair services. Screen replacement, battery fix, crown repair, and software restoration.', features:['Screen Replace','Battery Fix','Crown/Button','Software Restore','Charging Issue','Water Seal','Band Replace','Pairing Fix'] }
+      mobile: {
+        title: 'Mobile Phone Repair',
+        icon: 'smartphone',
+        image: 'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/16dbd1804-354c-4ad6-b0da-12e846122c45.png',
+        desc: 'We repair all major smartphone brands including iPhone, Samsung, Xiaomi, Huawei, OnePlus, Realme, Vivo, and Oppo. From simple screen replacements to complex motherboard-level repairs, our certified technicians use only genuine quality parts.',
+        features: ['Cracked/Broken Screen', 'Battery Replacement', 'Water Damage Recovery', 'Charging Port Fix', 'Speaker/Mic Repair', 'Camera Module Fix', 'Software/OS Reset', 'Face ID/Touch ID', 'Signal/Network Issue', 'Back Glass Replace']
+      },
+      laptop: {
+        title: 'Laptop Repair',
+        icon: 'laptop',
+        image: 'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1dcd22e81-0199-40af-b3da-f3e07c5b1683.png',
+        desc: 'Expert laptop repair for all brands — MacBook, Dell, HP, Lenovo, Asus, Acer, and more. We handle everything from screen replacements to motherboard repairs, SSD upgrades, and fresh OS installations.',
+        features: ['Screen Replacement', 'Keyboard Repair', 'Motherboard Fix', 'SSD/HDD Upgrade', 'RAM Upgrade', 'OS Installation', 'Hinge Repair', 'Overheating Fix', 'Battery Replace', 'Charging Port']
+      },
+      tablet: {
+        title: 'Tablet Repair',
+        icon: 'tablet',
+        image: 'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1638b5a43-ff2e-4cad-8f77-aaf377eb8ceb.png',
+        desc: 'Professional tablet repair for iPad, Samsung Galaxy Tab, Huawei MediaPad, and all Android tablets. Quick turnaround with quality guaranteed parts.',
+        features: ['Touch Screen Fix', 'LCD Replacement', 'Battery Swap', 'Charging Port', 'Home Button Fix', 'Software Restore', 'Speaker Repair', 'Camera Fix']
+      },
+      desktop: {
+        title: 'Desktop PC Service',
+        icon: 'monitor',
+        image: 'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/1c0542659-ca69-4f9f-a625-77a285948f56.png',
+        desc: 'Complete desktop PC services — from custom gaming builds to hardware upgrades, deep cleaning, and performance optimization. We build your dream PC!',
+        features: ['Custom PC Build', 'GPU Upgrade', 'SSD/RAM Install', 'Deep Cleaning', 'Cable Management', 'OS Setup', 'Power Supply Fix', 'Cooling Solution']
+      },
+      camera: {
+        title: 'Camera Repair',
+        icon: 'camera',
+        image: 'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/122f59045-63b0-4a19-ac74-eda76d31b972.png',
+        desc: 'Professional DSLR and Mirrorless camera repair for Canon, Nikon, Sony, Fujifilm, and more. Sensor cleaning, lens repair, shutter mechanism fix, and full calibration.',
+        features: ['Sensor Cleaning', 'Lens Repair', 'Shutter Fix', 'LCD Screen', 'Button/Dial Fix', 'Calibration', 'Memory Card Slot', 'Battery Chamber']
+      },
+      watch: {
+        title: 'Smartwatch Repair',
+        icon: 'watch',
+        image: 'https://image.qwenlm.ai/public_source/b24fe518-c05e-4ffe-bf6c-d5d937fb0369/19214a22c-8a44-41f4-9887-85be5dc65bff.png',
+        desc: 'Apple Watch, Samsung Galaxy Watch, Amazfit, and other smartwatch repair services. Screen replacement, battery fix, crown repair, and software restoration.',
+        features: ['Screen Replace', 'Battery Fix', 'Crown/Button', 'Software Restore', 'Charging Issue', 'Water Seal', 'Band Replace', 'Pairing Fix']
+      }
     };
 
+    // --- MODAL FUNCTIONS ---
     window.openServiceModal = function(serviceKey) {
       var data = serviceData[serviceKey];
       if (!data) return;
+
       var modal = document.getElementById('serviceModal');
       var content = document.getElementById('modalContent');
+
       document.getElementById('modalTitle').innerText = data.title;
       document.getElementById('modalDesc').innerText = data.desc;
       document.getElementById('modalImage').src = data.image;
-      document.getElementById('modalIconBox').innerHTML = emojiMap[data.icon] || '🔧';
-      var fc = document.getElementById('modalFeatures');
-      fc.innerHTML = data.features.map(function(f) { return '<div class="flex items-center gap-2 text-sm text-slate-300"><span class="text-green-400">✓</span> ' + f + '</div>'; }).join('');
-      modal.classList.remove('hidden'); modal.classList.add('flex');
-      requestAnimationFrame(function() { content.classList.remove('scale-95', 'opacity-0'); content.classList.add('scale-100', 'opacity-100'); });
+      document.getElementById('modalIconBox').innerHTML = '<i data-feather="' + data.icon + '" class="text-cyan-400 w-6 h-6"></i>';
+
+      var featuresContainer = document.getElementById('modalFeatures');
+      var featuresHTML = '';
+      for (var i = 0; i < data.features.length; i++) {
+        featuresHTML += '<div class="flex items-center gap-2 text-sm text-slate-300"><i data-feather="check" class="w-4 h-4 text-green-400 shrink-0"></i> ' + data.features[i] + '</div>';
+      }
+      featuresContainer.innerHTML = featuresHTML;
+
+      feather.replace();
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      requestAnimationFrame(function() {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+      });
     };
 
     window.closeServiceModal = function() {
       var modal = document.getElementById('serviceModal');
       var content = document.getElementById('modalContent');
-      content.classList.remove('scale-100', 'opacity-100'); content.classList.add('scale-95', 'opacity-0');
-      setTimeout(function() { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-95', 'opacity-0');
+      setTimeout(function() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300);
     };
 
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeServiceModal(); });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeServiceModal();
+    });
   </script>
 </body>
 </html>

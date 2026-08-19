@@ -5,274 +5,369 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Habib iFix - Fast repair services</title>
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136"
-     crossorigin="anonymous"></script>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Feather Icons -->
-  <script src="https://unpkg.com/feather-icons"></script>
-  
-  <!-- FontAwesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Google Fonts (Inter) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Preconnect for faster resource loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.gstatic.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
+  <!-- DNS Prefetch -->
+  <link rel="dns-prefetch" href="https://assets.mixkit.co">
+  <link rel="dns-prefetch" href="https://images.unsplash.com">
+  <link rel="dns-prefetch" href="https://i.ibb.co.com">
+
+  <!-- Critical CSS inline for preloader (no external dependency) -->
   <style>
+    /* ===== PRELOADER STYLES (Inline for instant render) ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #0a0f1e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #preloader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .preloader-logo-wrap {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 30px;
+    }
+
+    .preloader-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #06b6d4;
+      border-right-color: #8b5cf6;
+      animation: preloader-spin 1.2s linear infinite;
+    }
+    .preloader-ring:nth-child(2) {
+      inset: 8px;
+      border-top-color: #8b5cf6;
+      border-right-color: #06b6d4;
+      animation-duration: 1.8s;
+      animation-direction: reverse;
+    }
+
+    .preloader-logo-img {
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.1);
+      animation: preloader-pulse 2s ease-in-out infinite;
+    }
+    .preloader-logo-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preloader-brand {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: preloader-fadeUp 0.6s ease 0.3s forwards;
+    }
+    .preloader-brand span { color: #64748b; font-weight: 500; }
+
+    .preloader-tagline {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 13px;
+      color: #64748b;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: preloader-fadeUp 0.6s ease 0.5s forwards;
+    }
+
+    .preloader-progress {
+      width: 200px;
+      height: 3px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 3px;
+      margin-top: 30px;
+      overflow: hidden;
+      opacity: 0;
+      animation: preloader-fadeUp 0.6s ease 0.7s forwards;
+    }
+    .preloader-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+      border-radius: 3px;
+      animation: preloader-load 4.5s ease-in-out 0.5s forwards;
+    }
+
+    .preloader-percent {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 12px;
+      color: #475569;
+      margin-top: 12px;
+      opacity: 0;
+      animation: preloader-fadeUp 0.6s ease 0.7s forwards;
+    }
+
+    @keyframes preloader-spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes preloader-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+    }
+    @keyframes preloader-fadeUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes preloader-load {
+      0% { width: 0%; }
+      20% { width: 25%; }
+      50% { width: 55%; }
+      80% { width: 85%; }
+      100% { width: 100%; }
+    }
+
+    /* Hide body content until preloader done */
+    body.preloading { overflow: hidden; }
+    body.preloading > *:not(#preloader) { visibility: hidden; }
+  </style>
+
+  <!-- Google AdSense (async - non blocking) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
+  
+  <!-- Tailwind CSS (deferred) -->
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  
+  <!-- FontAwesome (non-critical, deferred) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+  
+  <!-- Google Fonts (optimized) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- Main styles (loaded after preloader) -->
+  <style id="main-styles" media="print" onload="this.media='all'">
     body { font-family: 'Inter', sans-serif; }
     
-    /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #9E1B32; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #be2e4c; }
+    ::-webkit-scrollbar-track { background: #0a0f1e; }
+    ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
 
-    /* Animations */
-    @keyframes blob {
-      0% { transform: translate(0px, 0px) scale(1); }
-      33% { transform: translate(30px, -50px) scale(1.1); }
-      66% { transform: translate(-20px, 20px) scale(0.9); }
-      100% { transform: translate(0px, 0px) scale(1); }
-    }
+    @keyframes blob { 0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-50px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.9)}100%{transform:translate(0,0) scale(1)} }
     .animate-blob { animation: blob 7s infinite; }
     .animation-delay-2000 { animation-delay: 2s; }
     .animation-delay-4000 { animation-delay: 4s; }
 
-    @keyframes fade-in-up {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fade-in-up { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
     .animate-fade-in-up { animation: fade-in-up 0.3s ease-out forwards; }
 
-    /* Glassmorphism Utilities */
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    
-    .glass-card-hover {
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .glass-card-hover:hover {
-      transform: translateY(-8px);
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(158, 27, 50, 0.5);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(158, 27, 50, 0.2);
-    }
+    @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)} }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+
+    @keyframes shimmer { 0%{background-position:-200% 0}100%{background-position:200% 0} }
+    .text-shimmer { background:linear-gradient(90deg,#06b6d4,#8b5cf6,#06b6d4);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite; }
+
+    .glass-panel { background:rgba(255,255,255,.03);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08); }
+    .glass-card-hover { transition:all .5s cubic-bezier(.4,0,.2,1); }
+    .glass-card-hover:hover { transform:translateY(-10px);background:rgba(255,255,255,.07);border-color:rgba(6,182,212,.5);box-shadow:0 25px 50px -12px rgba(0,0,0,.5),0 0 30px rgba(6,182,212,.15); }
+
+    .reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.4,0,.2,1)}.reveal.active{opacity:1;transform:translateY(0)}
+    .reveal-left{opacity:0;transform:translateX(-40px);transition:all .8s cubic-bezier(.4,0,.2,1)}.reveal-left.active{opacity:1;transform:translateX(0)}
+    .reveal-right{opacity:0;transform:translateX(40px);transition:all .8s cubic-bezier(.4,0,.2,1)}.reveal-right.active{opacity:1;transform:translateX(0)}
+
+    .img-hover-zoom{overflow:hidden;border-radius:24px}.img-hover-zoom img{transition:transform .7s cubic-bezier(.4,0,.2,1)}.img-hover-zoom:hover img{transform:scale(1.08)}
+    .service-img-zoom{transition:transform .7s cubic-bezier(.4,0,.2,1)}.group:hover .service-img-zoom{transform:scale(1.1)}
   </style>
 </head>
-<body class="min-h-screen text-slate-200 selection:bg-[#9E1B32] selection:text-white relative flex flex-col bg-[#0f172a] overflow-x-hidden">
+<body class="min-h-screen text-slate-200 selection:bg-cyan-500 selection:text-white relative flex flex-col bg-[#0a0f1e] overflow-x-hidden preloading">
+
+  <!-- ================= PRELOADER / SPLASH SCREEN ================= -->
+  <div id="preloader">
+    <div class="preloader-logo-wrap">
+      <div class="preloader-ring"></div>
+      <div class="preloader-ring"></div>
+      <div class="preloader-logo-img">
+        <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" width="84" height="84">
+      </div>
+    </div>
+    <div class="preloader-brand">Habib<span>iFix</span></div>
+    <div class="preloader-tagline">Fast Repair Services</div>
+    <div class="preloader-progress">
+      <div class="preloader-progress-bar"></div>
+    </div>
+    <div class="preloader-percent" id="preloaderPercent">Loading 0%</div>
+  </div>
 
   <!-- ================= ANIMATED BACKGROUND ================= -->
   <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-    <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#9E1B32]/30 blur-[120px] animate-blob mix-blend-screen"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[#4A154B]/40 blur-[150px] animate-blob animation-delay-2000 mix-blend-screen"></div>
-    <div class="absolute top-[40%] left-[30%] w-[500px] h-[500px] rounded-full bg-blue-900/20 blur-[120px] animate-blob animation-delay-4000 mix-blend-screen"></div>
-    <!-- Noise Texture Overlay -->
-    <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+    <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-500/20 blur-[120px] animate-blob mix-blend-screen"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-violet-600/25 blur-[150px] animate-blob animation-delay-2000 mix-blend-screen"></div>
+    <div class="absolute top-[40%] left-[30%] w-[500px] h-[500px] rounded-full bg-blue-600/15 blur-[120px] animate-blob animation-delay-4000 mix-blend-screen"></div>
   </div>
 
   <!-- ================= HEADER ================= -->
   <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
-        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-rose-500/50 transition-colors">
-          <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Habib iFix Logo" class="w-full h-full object-cover">
+      <a href="#home" class="flex items-center gap-3 cursor-pointer group">
+        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-cyan-400/50 transition-colors">
+          <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40">
         </div>
-        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium group-hover:text-rose-400 transition-colors">iFix</span></span>
+        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium group-hover:text-cyan-400 transition-colors">iFix</span></span>
       </a>
 
-      <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
-        <a href="index.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Home</a>
-        <a href="about.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">About Us</a>
-        
-        <a href="services.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Services</a>
-        
-        <!-- Pages Dropdown -->
+        <a href="#home" class="text-cyan-400 font-semibold relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-cyan-400">Home</a>
+        <a href="#about" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">About Us</a>
+        <a href="#services" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Services</a>
         <div class="group relative py-2 cursor-pointer transition-colors">
-          <div class="flex items-center gap-1 hover:text-rose-400 transition-colors">Pages <i data-feather="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i></div>
+          <div class="flex items-center gap-1 hover:text-cyan-400 transition-colors">Pages <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div>
           <div class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-56 glass-panel rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden z-50 transform translate-y-2 group-hover:translate-y-0">
-            <a href="index.html#updates" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2"><i data-feather="rss" class="w-3 h-3"></i> Updates</a>
-            <a href="index.html#vision" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2"><i data-feather="eye" class="w-3 h-3"></i> Vision & Mission</a>
-            <a href="index.html#testimonial" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"><i data-feather="message-circle" class="w-3 h-3"></i> Testimonials</a>
+            <a href="#updates" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2">📡 Updates</a>
+            <a href="#vision" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2">👁 Vision & Mission</a>
+            <a href="#testimonial" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2">💬 Testimonials</a>
           </div>
         </div>
-
-        <a href="blog.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Blog</a>
-        <a href="contact.html" class="hover:text-rose-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-rose-500 after:transition-all hover:after:w-full">Contact</a>
-        
-        <!-- Auth Area -->
+        <a href="blog.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Blog</a>
+        <a href="contact.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Contact</a>
         <div id="authProfileArea" class="relative group ml-4">
-            <a href="login.html" id="loginNavBtn" class="bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
-                Login <i data-feather="user" class="w-3 h-3"></i>
-            </a>
-
+            <a href="login.html?return=index.html" id="loginNavBtn" class="bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider">Login 👤</a>
             <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
-                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-rose-500/50 shadow-[0_0_10px_rgba(158,27,50,0.3)]">
-                <i data-feather="chevron-down" class="w-4 h-4 text-slate-300"></i>
-
+                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-cyan-400/50 shadow-[0_0_10px_rgba(6,182,212,0.3)]" width="36" height="36">
+                <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 <div class="absolute top-full right-0 mt-3 w-48 glass-panel rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50 transform origin-top-right scale-95 group-hover:scale-100">
-                    <label class="px-4 py-3 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 border-b border-white/5 transition-colors">
-                        <i data-feather="camera" class="w-4 h-4 text-rose-400"></i> Change Pic
-                        <input type="file" id="profilePicInput" accept="image/*" class="hidden">
-                    </label>
-                    <button onclick="logoutCurrentUser()" class="px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-white/10 text-left flex items-center gap-2 transition-colors w-full">
-                        <i data-feather="log-out" class="w-4 h-4"></i> Logout
-                    </button>
+                    <label class="px-4 py-3 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 border-b border-white/5 transition-colors">📷 Change Pic<input type="file" id="profilePicInput" accept="image/*" class="hidden"></label>
+                    <button onclick="logoutCurrentUser()" class="px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-white/10 text-left flex items-center gap-2 transition-colors w-full">🚪 Logout</button>
                 </div>
             </div>
         </div>
       </nav>
 
-      <!-- Mobile Toggle -->
-      <div class="flex items-center gap-4 lg:hidden">
-        <button id="mobile-menu-btn" class="text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md z-50 relative hover:bg-white/10 transition-colors">
-          <i data-feather="menu" class="w-6 h-6" id="menu-icon"></i>
+      <div class="flex items-center gap-4">
+        <a href="tel:+8801868461577" class="hidden md:flex bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-white px-5 py-2 rounded-full font-medium items-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 hover:border-cyan-400/30">📞 <span>+880 1868 461577</span></a>
+        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md z-50 relative hover:bg-white/10 transition-colors" aria-label="Menu">
+          <svg id="menu-icon-svg" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Nav Drawer -->
-    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0f172a]/95 backdrop-blur-2xl border-t border-white/10 flex flex-col px-6 py-8 gap-5 shadow-2xl transition-all duration-300 z-40 min-h-screen">
-      <a href="index.html" class="text-rose-400 font-semibold text-xl border-l-2 border-rose-500 pl-4" onclick="closeMobileMenu()">Home</a>
-      <a href="about.html" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">About Us</a>
-      <a href="services.html" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Services</a>
-      
+    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0a0f1e]/95 backdrop-blur-2xl border-t border-white/10 flex flex-col px-6 py-8 gap-5 shadow-2xl transition-all duration-300 z-40 min-h-screen overflow-y-auto pb-32">
+      <a href="#home" class="text-cyan-400 font-semibold text-xl border-l-2 border-cyan-400 pl-4" onclick="closeMobileMenu()">Home</a>
+      <a href="#about" class="text-lg text-slate-200 hover:text-cyan-400 pl-4 transition-colors" onclick="closeMobileMenu()">About Us</a>
+      <a href="#services" class="text-lg text-slate-200 hover:text-cyan-400 pl-4 transition-colors" onclick="closeMobileMenu()">Services</a>
       <div class="flex flex-col gap-3 pl-4 border-l border-white/10 my-2">
         <p class="text-slate-500 uppercase text-xs font-bold tracking-widest mb-1">Quick Links</p>
-        <a href="index.html#updates" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Latest Updates</a>
-        <a href="index.html#vision" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Vision & Mission</a>
-        <a href="index.html#testimonial" class="text-slate-300 hover:text-rose-400" onclick="closeMobileMenu()">Testimonials</a>
+        <a href="#updates" class="text-slate-300 hover:text-cyan-400" onclick="closeMobileMenu()">Latest Updates</a>
+        <a href="#vision" class="text-slate-300 hover:text-cyan-400" onclick="closeMobileMenu()">Vision & Mission</a>
+        <a href="#testimonial" class="text-slate-300 hover:text-cyan-400" onclick="closeMobileMenu()">Testimonials</a>
       </div>
-
-      <a href="contact.html" class="text-lg text-slate-200 hover:text-rose-400 pl-4 transition-colors" onclick="closeMobileMenu()">Contact Us</a>
-      <a href="login.html" class="mt-4 text-center w-full bg-white/5 border border-white/10 py-3 rounded-xl text-white font-medium" onclick="closeMobileMenu()">Login / Account</a>
+      <a href="blog.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4 transition-colors" onclick="closeMobileMenu()">Our Blog</a>
+      <a href="contact.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4 transition-colors" onclick="closeMobileMenu()">Contact Us</a>
+      <a href="login.html?return=index.html" class="mt-4 text-center w-full bg-white/5 border border-white/10 py-3 rounded-xl text-white font-medium" onclick="closeMobileMenu()">👤 Login / Account</a>
     </div>
   </header>
 
   <main class="flex-grow">
-    <!-- ================= HERO SECTION (WITH VIDEO ANIMATION) ================= -->
+
+    <!-- ================= HERO ================= -->
     <section id="home" class="relative w-full min-h-screen flex items-center pt-20 overflow-hidden">
-      <!-- Video Background -->
       <div class="absolute inset-0 z-0">
-        <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-40 scale-105 pointer-events-none">
-          <!-- Premium Tech/Repair Video Background -->
+        <!-- Video with preload="none" for performance -->
+        <video autoplay loop muted playsinline preload="none" poster="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=1200&q=60" class="w-full h-full object-cover opacity-25 scale-105 pointer-events-none">
           <source src="https://assets.mixkit.co/videos/preview/mixkit-technician-repairing-a-smartphone-macro-shot-40985-large.mp4" type="video/mp4">
         </video>
-        <!-- Gradients to blend video smoothly with the theme -->
-        <div class="absolute inset-0 bg-gradient-to-b from-[#0f172a]/90 via-[#0f172a]/50 to-[#0f172a]"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-[#9E1B32]/10 to-transparent mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0f1e]/80 via-[#0a0f1e]/50 to-[#0a0f1e]"></div>
       </div>
       
       <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full text-center flex flex-col items-center">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs font-bold uppercase tracking-wider mb-6 animate-fade-in-up backdrop-blur-md">
-          <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Professional Repair Services
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-6 animate-fade-in-up backdrop-blur-md">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> Professional Repair Services
         </div>
-        <h1 class="text-5xl md:text-6xl lg:text-8xl font-extrabold text-white max-w-5xl leading-[1.1] tracking-tight mb-6 animate-fade-in-up drop-shadow-2xl" style="animation-delay: 0.1s;">
-          Revive Your Gadgets <br />
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-purple-500">With Precision</span>
+        <h1 class="text-5xl md:text-6xl lg:text-8xl font-extrabold text-white max-w-5xl leading-[1.1] tracking-tight mb-6 animate-fade-in-up drop-shadow-2xl" style="animation-delay:.1s">
+          Revive Your Gadgets<br><span class="text-shimmer">With Precision</span>
         </h1>
-        <p class="mt-4 text-slate-200 text-lg md:text-xl max-w-2xl font-light leading-relaxed animate-fade-in-up drop-shadow-md" style="animation-delay: 0.2s;">
+        <p class="mt-4 text-slate-300 text-lg md:text-xl max-w-2xl font-light leading-relaxed animate-fade-in-up drop-shadow-md" style="animation-delay:.2s">
           Welcome to Habib iFix — your ultimate destination for professional hardware fixes, genuine components, and expert tech support.
         </p>
-        <div class="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
-          <a href="services.html" class="bg-gradient-to-r from-[#9E1B32] to-rose-600 hover:from-rose-600 hover:to-[#9E1B32] text-white px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 shadow-[0_10px_30px_-10px_rgba(158,27,50,0.6)] flex items-center justify-center gap-2">
-            Explore Services <i data-feather="arrow-right" class="w-4 h-4"></i>
-          </a>
-          <a href="contact.html" class="bg-white/5 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 inline-flex items-center justify-center gap-2">
-            <i data-feather="phone-call" class="w-4 h-4 text-rose-400"></i> Contact Now
-          </a>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up" style="animation-delay:.3s">
+          <a href="#services" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-600 hover:to-cyan-500 text-white px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 shadow-[0_10px_30px_-10px_rgba(6,182,212,0.5)] flex items-center justify-center gap-2">Explore Services →</a>
+          <a href="contact.html" class="bg-white/5 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 px-8 py-4 rounded-full font-bold transition-all hover:-translate-y-1 inline-flex items-center justify-center gap-2">📞 Contact Now</a>
         </div>
+      </div>
+
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
+        <div class="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5"><div class="w-1.5 h-3 rounded-full bg-cyan-400 animate-pulse"></div></div>
       </div>
     </section>
 
     <!-- ================= QUICK SERVICE BAR ================= -->
     <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-16 md:-mt-24">
-      <div class="glass-panel rounded-[32px] p-8 shadow-2xl border-t border-white/20">
+      <div class="glass-panel rounded-[32px] p-8 shadow-2xl border-t border-white/20 reveal">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-white divide-y sm:divide-y-0 lg:divide-x divide-white/10">
-          <div class="flex items-center gap-4 group cursor-pointer p-2">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300 shadow-lg"><i data-feather="settings" class="text-rose-400 w-6 h-6"></i></div>
-            <div><h3 class="font-bold text-lg text-white">Expert Repair</h3><p class="text-sm text-slate-400">Certified technicians</p></div>
-          </div>
-          <div class="flex items-center gap-4 group cursor-pointer p-2">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300 shadow-lg"><i data-feather="cpu" class="text-rose-400 w-6 h-6"></i></div>
-            <div><h3 class="font-bold text-lg text-white">Genuine Parts</h3><p class="text-sm text-slate-400">100% Original components</p></div>
-          </div>
-          <div class="flex items-center gap-4 group cursor-pointer p-2">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300 shadow-lg"><i data-feather="database" class="text-rose-400 w-6 h-6"></i></div>
-            <div><h3 class="font-bold text-lg text-white">Data Safety</h3><p class="text-sm text-slate-400">Secure recovery process</p></div>
-          </div>
-          <div class="flex items-center gap-4 group cursor-pointer p-2">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-rose-500/50 transition-all duration-300 shadow-lg"><i data-feather="shield" class="text-rose-400 w-6 h-6"></i></div>
-            <div><h3 class="font-bold text-lg text-white">Warranty</h3><p class="text-sm text-slate-400">Service guarantee</p></div>
-          </div>
+          <div class="flex items-center gap-4 group cursor-pointer p-2"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg text-2xl">⚙️</div><div><h3 class="font-bold text-lg text-white">Expert Repair</h3><p class="text-sm text-slate-400">Certified technicians</p></div></div>
+          <div class="flex items-center gap-4 group cursor-pointer p-2"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg text-2xl">🔧</div><div><h3 class="font-bold text-lg text-white">Genuine Parts</h3><p class="text-sm text-slate-400">100% Original components</p></div></div>
+          <div class="flex items-center gap-4 group cursor-pointer p-2"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg text-2xl">💾</div><div><h3 class="font-bold text-lg text-white">Data Safety</h3><p class="text-sm text-slate-400">Secure recovery process</p></div></div>
+          <div class="flex items-center gap-4 group cursor-pointer p-2"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg text-2xl">🛡️</div><div><h3 class="font-bold text-lg text-white">Warranty</h3><p class="text-sm text-slate-400">Service guarantee</p></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ================= DYNAMIC BLOG / VIDEO SECTION ================= -->
+    <!-- ================= BLOG / UPDATES ================= -->
     <section id="updates" class="py-24 relative z-10 scroll-mt-24">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-          <div>
-            <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-2 block">Stay Updated</span>
-            <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">Latest News &<br>Tech Insights</h2>
-          </div>
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 reveal">
+          <div><span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-2 block">Stay Updated</span><h2 class="text-4xl md:text-5xl font-extrabold max-w-lg leading-tight text-white">Latest News &<br>Tech Insights</h2></div>
           <div class="flex gap-4">
-            <a href="blog.html" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm backdrop-blur-md">
-              View All Posts <i data-feather="arrow-right" class="w-4 h-4"></i>
-            </a>
+            <a href="blog.html" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm backdrop-blur-md hover:-translate-y-0.5">View All Posts →</a>
+            <a href="admin.html" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-2.5 rounded-full font-semibold transition-colors inline-flex items-center gap-2 text-sm backdrop-blur-md hover:-translate-y-0.5">Admin Panel 🔒</a>
           </div>
         </div>
-
         <div id="blog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Content injected via JS -->
-          <div class="col-span-full flex justify-center py-12">
-             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
-          </div>
+          <div class="col-span-full flex justify-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ================= ABOUT SECTION ================= -->
-    <section id="about" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10">
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-24">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="relative">
+        <div class="relative reveal-left">
           <div class="grid grid-cols-2 gap-4">
-            <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=80" alt="Technician" class="rounded-3xl w-full h-[280px] object-cover mt-12 border border-white/10 shadow-2xl transform hover:-translate-y-2 transition-transform duration-500" />
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80" alt="Motherboard" class="rounded-3xl w-full h-[280px] object-cover border border-white/10 shadow-2xl transform hover:-translate-y-2 transition-transform duration-500" />
+            <div class="img-hover-zoom border border-white/10 shadow-2xl mt-12"><img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=75&w=400" alt="Technician" class="w-full h-[280px] object-cover" loading="lazy" width="400" height="280"></div>
+            <div class="img-hover-zoom border border-white/10 shadow-2xl"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=75&w=400" alt="Motherboard" class="w-full h-[280px] object-cover" loading="lazy" width="400" height="280"></div>
           </div>
-          <!-- Floating Badge -->
-          <div class="absolute -bottom-6 md:bottom-12 left-0 md:-left-8 glass-panel bg-[#9E1B32]/80 text-white p-6 rounded-2xl max-w-[240px] shadow-[0_20px_50px_-12px_rgba(158,27,50,0.5)] border border-white/20 backdrop-blur-xl">
-            <span class="text-rose-200 text-5xl leading-none font-serif opacity-50 absolute top-2 left-4">"</span>
+          <div class="absolute -bottom-6 md:bottom-12 left-0 md:-left-8 glass-panel bg-cyan-600/80 text-white p-6 rounded-2xl max-w-[240px] shadow-[0_20px_50px_-12px_rgba(6,182,212,0.4)] border border-white/20 backdrop-blur-xl animate-float">
+            <span class="text-cyan-200 text-5xl leading-none font-serif opacity-50 absolute top-2 left-4">"</span>
             <p class="font-bold text-xl leading-tight mt-4 relative z-10">We fix it till we make it perfect.</p>
           </div>
+          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-violet-500 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] border-4 border-[#0a0f1e] animate-float" style="animation-delay:1s"><span class="text-xl font-extrabold text-white leading-none">5+</span><span class="text-[8px] text-white/80 font-bold uppercase tracking-wider">Years</span></div>
         </div>
-        <div>
-          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Who We Are</span>
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Leading the way in <br>repair solutions</h2>
-          <p class="text-slate-400 mb-8 text-lg leading-relaxed">
-            Habib iFix delivers unmatched precision and expert care for every electronic device you bring to our workshop. We combine modern technology with traditional craftsmanship.
-          </p>
-          
+        <div class="reveal-right">
+          <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 block">Who We Are</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">Leading the way in<br>repair solutions</h2>
+          <p class="text-slate-400 mb-8 text-lg leading-relaxed">Habib iFix delivers unmatched precision and expert care for every electronic device you bring to our workshop.</p>
           <div class="space-y-4 mb-8">
-             <div class="flex items-center gap-3 text-slate-300">
-                <div class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center"><i data-feather="check" class="w-3 h-3"></i></div>
-                Certified Hardware Experts
-             </div>
-             <div class="flex items-center gap-3 text-slate-300">
-                <div class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center"><i data-feather="check" class="w-3 h-3"></i></div>
-                Transparent Pricing Model
-             </div>
+             <div class="flex items-center gap-3 text-slate-300"><span class="text-green-400">✅</span> Certified Hardware Experts</div>
+             <div class="flex items-center gap-3 text-slate-300"><span class="text-green-400">✅</span> Transparent Pricing Model</div>
+             <div class="flex items-center gap-3 text-slate-300"><span class="text-green-400">✅</span> Same-Day Repair Available</div>
           </div>
-
-          <a href="about.html" class="inline-block bg-white text-[#0f172a] hover:bg-slate-200 px-8 py-3.5 rounded-full font-bold transition-all hover:-translate-y-1 shadow-lg">Discover More</a>
+          <a href="about.html" class="inline-block bg-white text-[#0a0f1e] hover:bg-slate-200 px-8 py-3.5 rounded-full font-bold transition-all hover:-translate-y-1 shadow-lg">Discover More</a>
         </div>
       </div>
     </section>
@@ -280,185 +375,64 @@
     <!-- ================= WHY CHOOSE US ================= -->
     <section class="py-24 relative z-10 bg-black/20 border-y border-white/5">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Why Choose Us</span>
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Trusted expertise in the gadget area</h2>
-          <p class="text-slate-400">Dedicated professionals committed to bringing your devices back to peak performance with speed and reliability.</p>
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+          <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 block">Why Choose Us</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white">Trusted expertise in the gadget area</h2>
+          <p class="text-slate-400 text-lg">Dedicated professionals committed to bringing your devices back to peak performance.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Card 1 -->
-          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group">
-            <div class="h-64 overflow-hidden rounded-[20px] relative">
-              <img src="https://i.ibb.co.com/bRmHP7S2/cell-phone-repair-at-service-center-smartphone-dissasembling-and-diagnostic-repairman-workplace-top.jpg" alt="Professional" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent opacity-80"></div>
-              <div class="absolute bottom-4 left-4 right-4">
-                 <h3 class="font-bold text-white text-xl mb-1">Professional Team</h3>
-                 <p class="text-sm text-slate-300">Skilled technicians ready to help.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group">
-            <div class="h-64 overflow-hidden rounded-[20px] relative">
-              <img src="https://i.ibb.co.com/d05zkJkx/mobile-tech-training-and-service-centre-chalode-kannur-mobile-phone-repair-and-services-y8a94bsl8t.webp" alt="Same Day Repairs" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent opacity-80"></div>
-              <div class="absolute bottom-4 left-4 right-4">
-                 <h3 class="font-bold text-white text-xl mb-1">Fast Turnaround</h3>
-                 <p class="text-sm text-slate-300">Most repairs done same-day.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Card 3 -->
-          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group">
-            <div class="h-64 overflow-hidden rounded-[20px] relative">
-              <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80" alt="Genuine Parts" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent opacity-80"></div>
-              <div class="absolute bottom-4 left-4 right-4">
-                 <h3 class="font-bold text-white text-xl mb-1">Quality Assured</h3>
-                 <p class="text-sm text-slate-300">Only genuine spare parts used.</p>
-              </div>
-            </div>
-          </div>
+          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group reveal"><div class="h-64 overflow-hidden rounded-[20px] relative"><img src="https://i.ibb.co.com/bRmHP7S2/cell-phone-repair-at-service-center-smartphone-dissasembling-and-diagnostic-repairman-workplace-top.jpg" alt="Professional" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256"><div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] to-transparent opacity-80"></div><div class="absolute bottom-4 left-4 right-4"><h3 class="font-bold text-white text-xl mb-1">Professional Team</h3><p class="text-sm text-slate-300">Skilled technicians ready to help.</p></div></div></div>
+          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group reveal" style="transition-delay:.1s"><div class="h-64 overflow-hidden rounded-[20px] relative"><img src="https://i.ibb.co.com/d05zkJkx/mobile-tech-training-and-service-centre-chalode-kannur-mobile-phone-repair-and-services-y8a94bsl8t.webp" alt="Same Day" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256"><div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] to-transparent opacity-80"></div><div class="absolute bottom-4 left-4 right-4"><h3 class="font-bold text-white text-xl mb-1">Fast Turnaround</h3><p class="text-sm text-slate-300">Most repairs done same-day.</p></div></div></div>
+          <div class="glass-panel glass-card-hover rounded-3xl overflow-hidden p-1 group reveal" style="transition-delay:.2s"><div class="h-64 overflow-hidden rounded-[20px] relative"><img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=75&w=400" alt="Genuine Parts" class="w-full h-full object-cover service-img-zoom" loading="lazy" width="400" height="256"><div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] to-transparent opacity-80"></div><div class="absolute bottom-4 left-4 right-4"><h3 class="font-bold text-white text-xl mb-1">Quality Assured</h3><p class="text-sm text-slate-300">Only genuine spare parts used.</p></div></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ================= OUR SERVICES ================= -->
+    <!-- ================= SERVICES ================= -->
     <section id="services" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-24">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-        <div>
-          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Our Expertise</span>
-          <h2 class="text-4xl md:text-5xl font-bold max-w-lg leading-tight text-white">Comprehensive Gadget Services</h2>
-        </div>
+      <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal">
+        <div><span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 block">Our Expertise</span><h2 class="text-4xl md:text-5xl font-extrabold max-w-lg leading-tight text-white">Comprehensive Gadget Services</h2></div>
+        <a href="services.html" class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-2.5 rounded-full font-semibold transition-all inline-flex items-center gap-2 text-sm hover:-translate-y-0.5">View All Services →</a>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Service Item 1 -->
-        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Mobile Phone Repair', 'We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage. Get your smartphone back to life in no time!', 'smartphone')">
-          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="smartphone" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Mobile Phone</h3>
-          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Professional mobile repair services for all major brands including iPhone & Samsung.</p>
-          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
-        </div>
-
-        <!-- Service Item 2 -->
-        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Tablet Repair', 'From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates for all tablets.', 'tablet')">
-          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="tablet" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Tablet Repair</h3>
-          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Expert tablet diagnosis and quick reliable repairs for screens and batteries.</p>
-          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
-        </div>
-
-        <!-- Service Item 3 -->
-        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Laptop Repair', 'We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes for all laptop models.', 'laptop')">
-          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="laptop" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Laptop Care</h3>
-          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Hardware and software solutions for your laptops. Hinge, Screen, SSD upgrades.</p>
-          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
-        </div>
-
-        <!-- Service Item 4 -->
-        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Computer Desktop', 'Custom PC builds, hardware upgrades, SSD installation, and deep cleaning for optimal desktop performance.', 'monitor')">
-          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="monitor" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Desktop PC</h3>
-          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Full desktop maintenance, custom builds, and upgrading services for gamers.</p>
-          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
-        </div>
-
-        <!-- Service Item 5 -->
-        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Camera Repair', 'Professional cleaning, lens fixing, and sensor calibration for DSLR, Mirrorless, and digital cameras.', 'camera')">
-          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="camera" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">DSLR Camera</h3>
-          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Fixing lenses, sensors, and internal hardware of your professional cameras.</p>
-          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
-        </div>
-
-        <!-- Service Item 6 -->
-        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer" onclick="openModal('Wearable Device', 'Apple Watch, Galaxy Watch, and other smart wearables screen replacement and battery fixing services.', 'watch')">
-          <div class="w-20 h-20 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner"><i data-feather="watch" class="w-10 h-10"></i></div>
-          <h3 class="text-xl font-bold mb-3 text-white group-hover:text-rose-400 transition-colors">Smart Wearables</h3>
-          <p class="text-slate-400 mb-6 text-sm line-clamp-2">Smartwatch repair and maintenance experts for all latest models.</p>
-          <span class="text-rose-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More <i data-feather="arrow-right" class="w-4 h-4"></i></span>
-        </div>
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer reveal" onclick="openModal('Mobile Phone Repair','We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage.','smartphone')"><div class="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 text-cyan-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner text-4xl">📱</div><h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors">Mobile Phone</h3><p class="text-slate-400 mb-6 text-sm line-clamp-2">Professional mobile repair for all major brands including iPhone & Samsung.</p><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.05s" onclick="openModal('Tablet Repair','From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates.','tablet')"><div class="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 text-cyan-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner text-4xl">📋</div><h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors">Tablet Repair</h3><p class="text-slate-400 mb-6 text-sm line-clamp-2">Expert tablet diagnosis and quick reliable repairs for screens and batteries.</p><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.1s" onclick="openModal('Laptop Repair','We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes.','laptop')"><div class="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 text-cyan-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner text-4xl">💻</div><h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors">Laptop Care</h3><p class="text-slate-400 mb-6 text-sm line-clamp-2">Hardware and software solutions for your laptops. Hinge, Screen, SSD upgrades.</p><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.15s" onclick="openModal('Computer Desktop','Custom PC builds, hardware upgrades, SSD installation, and deep cleaning.','monitor')"><div class="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 text-cyan-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner text-4xl">🖥️</div><h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors">Desktop PC</h3><p class="text-slate-400 mb-6 text-sm line-clamp-2">Full desktop maintenance, custom builds, and upgrading services for gamers.</p><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.2s" onclick="openModal('Camera Repair','Professional cleaning, lens fixing, and sensor calibration for DSLR and Mirrorless cameras.','camera')"><div class="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 text-cyan-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner text-4xl">📷</div><h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors">DSLR Camera</h3><p class="text-slate-400 mb-6 text-sm line-clamp-2">Fixing lenses, sensors, and internal hardware of your professional cameras.</p><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-8 rounded-[32px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.25s" onclick="openModal('Wearable Device','Apple Watch, Galaxy Watch, and other smart wearables screen replacement and battery fixing.','watch')"><div class="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 text-cyan-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-inner text-4xl"></div><h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyan-400 transition-colors">Smart Wearables</h3><p class="text-slate-400 mb-6 text-sm line-clamp-2">Smartwatch repair and maintenance experts for all latest models.</p><span class="text-cyan-300 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
       </div>
     </section>
 
     <!-- ================= SUPPORT CTA ================= -->
-    <section id="contact" class="relative py-24 md:py-32 scroll-mt-24">
-      <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80" alt="Background" class="w-full h-full object-cover blur-sm scale-105" />
-        <div class="absolute inset-0 bg-[#4A154B]/90 backdrop-blur-md mix-blend-multiply"></div>
-      </div>
+    <section class="relative py-24 md:py-32">
+      <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=60&w=1200" alt="BG" class="w-full h-full object-cover blur-sm scale-105" loading="lazy" width="1200" height="600"><div class="absolute inset-0 bg-[#0c1a3a]/90 backdrop-blur-md mix-blend-multiply"></div></div>
       <div class="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-12">
-        <div class="text-white max-w-xl">
-          <h2 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">Need immediate help?</h2>
-          <p class="text-white/80 text-xl font-light">Reach out to Habib iFix for immediate consultation and quick device turnaround. We are available 24/7.</p>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-          <a href="contact.html" class="glass-panel bg-white/10 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer group">
-            <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center group-hover:bg-rose-500 transition-colors"><i data-feather="mail"></i></div>
-            <div>
-              <p class="text-sm text-white/70 font-medium">Email us</p>
-              <p class="font-bold text-white">tec.habiburrahman@gmail.com</p>
-            </div>
-          </a>
-          <a href="contact.html" class="glass-panel bg-white/10 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer group">
-            <div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center group-hover:bg-rose-500 transition-colors"><i data-feather="phone"></i></div>
-            <div>
-              <p class="text-sm text-white/70 font-medium">Call us</p>
-              <p class="font-bold text-white">+880 1868 461577</p>
-            </div>
-          </a>
+        <div class="text-white max-w-xl reveal-left"><span class="text-cyan-300 font-bold tracking-widest text-xs uppercase mb-3 block">24/7 Support</span><h2 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">Need immediate help?</h2><p class="text-white/80 text-xl font-light">Reach out to Habib iFix for immediate consultation and quick device turnaround.</p></div>
+        <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto reveal-right">
+          <a href="mailto:tec.habiburrahman@gmail.com" class="glass-panel bg-white/10 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer group"><div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center group-hover:bg-cyan-500 transition-colors text-xl">✉️</div><div><p class="text-sm text-white/70 font-medium">Email us</p><p class="font-bold text-white">tec.habiburrahman@gmail.com</p></div></a>
+          <a href="tel:+8801868461577" class="glass-panel bg-white/10 p-6 rounded-2xl flex items-center gap-4 flex-1 shadow-xl hover:-translate-y-1 transition-transform cursor-pointer group"><div class="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center group-hover:bg-cyan-500 transition-colors text-xl">📞</div><div><p class="text-sm text-white/70 font-medium">Call us</p><p class="font-bold text-white">+880 1868 461577</p></div></a>
         </div>
       </div>
     </section>
 
     <!-- ================= VISION & MISSION ================= -->
     <section id="vision" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-24">
-      <div class="glass-panel rounded-[40px] p-8 md:p-16 shadow-2xl">
+      <div class="glass-panel rounded-[40px] p-8 md:p-16 shadow-2xl reveal">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div class="relative rounded-3xl overflow-hidden shadow-2xl group cursor-pointer border border-white/20 aspect-[4/5] lg:aspect-auto lg:h-[500px]">
-            <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=80" alt="Technician Video" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px] group-hover:bg-black/30 transition-colors">
-              <div class="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/40 rounded-full flex items-center justify-center pl-1 text-white shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-300">
-                <i data-feather="play" class="w-8 h-8 fill-current"></i>
-              </div>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0f172a] to-transparent p-8 text-white text-center">
-              <h3 class="font-bold text-2xl">Habibur Rahman</h3>
-              <p class="text-rose-300 font-semibold text-sm mt-1 tracking-widest uppercase">Founder, Habib iFix</p>
-            </div>
+            <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?auto=format&fit=crop&q=75&w=600" alt="Founder" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" width="600" height="500">
+            <div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px] group-hover:bg-black/30 transition-colors"><div class="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/40 rounded-full flex items-center justify-center pl-1 text-white shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-300 text-3xl">▶</div></div>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0a0f1e] to-transparent p-8 text-white text-center"><h3 class="font-bold text-2xl">Habibur Rahman</h3><p class="text-cyan-300 font-semibold text-sm mt-1 tracking-widest uppercase">Founder, Habib iFix</p></div>
           </div>
-
           <div>
-            <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-3 block">Core Values</span>
-            <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">Innovate with the gadget trends</h2>
+            <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 block">Core Values</span>
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">Innovate with the gadget trends</h2>
             <p class="text-slate-400 mb-8 text-lg">Providing top-notch repair solutions and maintaining absolute transparency with every customer interaction.</p>
-            
             <div class="space-y-4">
-              <div class="accordion-item border border-rose-500/30 bg-rose-900/10 rounded-2xl p-6 cursor-pointer transition-all duration-300" onclick="toggleAccordion(this)">
-                <div class="flex justify-between items-center">
-                  <h4 class="font-bold text-lg text-rose-300">Fast & Secure Repairs</h4>
-                  <div class="w-8 h-8 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 acc-icon-box rotate-180 transition-transform duration-300">
-                     <i data-feather="chevron-down" class="w-4 h-4"></i>
-                  </div>
-                </div>
-                <div class="acc-content max-h-40 opacity-100 mt-4 overflow-hidden transition-all duration-300">
-                   <p class="text-slate-400 leading-relaxed">We provide the most efficient and secure repair process ensuring your data and device remain totally safe throughout the service.</p>
-                </div>
-              </div>
-              
-              <div class="accordion-item border border-white/10 bg-white/5 rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:border-white/20" onclick="toggleAccordion(this)">
-                <div class="flex justify-between items-center">
-                  <h4 class="font-bold text-lg text-slate-200">100% Genuine Parts</h4>
-                  <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 acc-icon-box transition-transform duration-300">
-                     <i data-feather="chevron-down" class="w-4 h-4"></i>
-                  </div>
-                </div>
-                <div class="acc-content max-h-0 opacity-0 mt-0 overflow-hidden transition-all duration-300">
-                   <p class="text-slate-400 leading-relaxed pt-4">We only source and use original or top-tier replacement parts to maximize the lifespan of your gadgets.</p>
-                </div>
-              </div>
+              <div class="accordion-item border border-cyan-500/30 bg-cyan-900/10 rounded-2xl p-6 cursor-pointer transition-all duration-300" onclick="toggleAccordion(this)"><div class="flex justify-between items-center"><h4 class="font-bold text-lg text-cyan-300">Fast & Secure Repairs</h4><div class="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 acc-icon-box rotate-180 transition-transform duration-300 text-sm">▼</div></div><div class="acc-content max-h-40 opacity-100 mt-4 overflow-hidden transition-all duration-300"><p class="text-slate-400 leading-relaxed">We provide the most efficient and secure repair process ensuring your data and device remain totally safe.</p></div></div>
+              <div class="accordion-item border border-white/10 bg-white/5 rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:border-white/20" onclick="toggleAccordion(this)"><div class="flex justify-between items-center"><h4 class="font-bold text-lg text-slate-200">100% Genuine Parts</h4><div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 acc-icon-box transition-transform duration-300 text-sm">▼</div></div><div class="acc-content max-h-0 opacity-0 mt-0 overflow-hidden transition-all duration-300"><p class="text-slate-400 leading-relaxed pt-4">We only source and use original or top-tier replacement parts to maximize the lifespan of your gadgets.</p></div></div>
+              <div class="accordion-item border border-white/10 bg-white/5 rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:border-white/20" onclick="toggleAccordion(this)"><div class="flex justify-between items-center"><h4 class="font-bold text-lg text-slate-200">Transparent Pricing</h4><div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 acc-icon-box transition-transform duration-300 text-sm">▼</div></div><div class="acc-content max-h-0 opacity-0 mt-0 overflow-hidden transition-all duration-300"><p class="text-slate-400 leading-relaxed pt-4">No hidden fees. We diagnose first, quote transparently, and repair only with your approval.</p></div></div>
             </div>
           </div>
         </div>
@@ -468,569 +442,274 @@
     <!-- ================= STATISTICS ================= -->
     <section class="py-20 relative z-10 border-y border-white/10 bg-white/[0.02]">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-white/10">
-          <div class="p-4 group">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">5<span class="text-rose-500 text-3xl">+</span></div>
-            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Years Experience</p>
-          </div>
-          <div class="p-4 group">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">500<span class="text-rose-500 text-3xl">+</span></div>
-            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Happy Clients</p>
-          </div>
-          <div class="p-4 group">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">620<span class="text-rose-500 text-3xl">+</span></div>
-            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Devices Fixed</p>
-          </div>
-          <div class="p-4 group">
-            <div class="flex items-start justify-center text-5xl md:text-6xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">99<span class="text-rose-500 text-3xl">%</span></div>
-            <p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Satisfaction Rate</p>
-          </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-white/10 reveal">
+          <div class="p-4 group"><div class="flex items-start justify-center text-5xl md:text-6xl font-extrabold text-white mb-2 group-hover:text-cyan-400 transition-colors">5<span class="text-cyan-400 text-3xl">+</span></div><p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Years Experience</p></div>
+          <div class="p-4 group"><div class="flex items-start justify-center text-5xl md:text-6xl font-extrabold text-white mb-2 group-hover:text-cyan-400 transition-colors">500<span class="text-cyan-400 text-3xl">+</span></div><p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Happy Clients</p></div>
+          <div class="p-4 group"><div class="flex items-start justify-center text-5xl md:text-6xl font-extrabold text-white mb-2 group-hover:text-cyan-400 transition-colors">620<span class="text-cyan-400 text-3xl">+</span></div><p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Devices Fixed</p></div>
+          <div class="p-4 group"><div class="flex items-start justify-center text-5xl md:text-6xl font-extrabold text-white mb-2 group-hover:text-cyan-400 transition-colors">99<span class="text-cyan-400 text-3xl">%</span></div><p class="text-slate-500 font-medium uppercase tracking-widest text-xs">Satisfaction Rate</p></div>
         </div>
       </div>
     </section>
 
     <!-- ================= TESTIMONIAL ================= -->
     <section id="testimonial" class="py-24 max-w-[1280px] mx-auto px-4 md:px-6 relative z-10 scroll-mt-24">
-      <div class="flex flex-col lg:flex-row rounded-[40px] overflow-hidden shadow-2xl border border-white/10 glass-panel">
-        <div class="p-12 md:p-20 lg:w-1/2 flex flex-col justify-center relative bg-gradient-to-br from-[#0f172a] to-[#1e1b4b]">
-          <span class="text-rose-500 font-bold tracking-widest text-xs uppercase mb-4 block">Testimonial</span>
-          <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 leading-tight">What our customers say</h2>
-          
+      <div class="flex flex-col lg:flex-row rounded-[40px] overflow-hidden shadow-2xl border border-white/10 glass-panel reveal">
+        <div class="p-12 md:p-20 lg:w-1/2 flex flex-col justify-center relative bg-gradient-to-br from-[#0a0f1e] to-[#0c1a3a]">
+          <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-4 block">Testimonial</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-12 leading-tight">What our customers say</h2>
           <div class="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl relative z-10 lg:-mr-12 transform lg:translate-x-6 transition-transform hover:-translate-y-2 duration-300">
-            <i data-feather="message-square" class="text-rose-500/20 w-12 h-12 absolute top-6 right-6"></i>
-            <p class="text-slate-300 text-xl italic mb-8 leading-relaxed">
-              "Habib iFix provided incredible service! Fixed my laptop motherboard smoothly and quickly. The pricing was transparent and the staff was very knowledgeable."
-            </p>
+            <div class="text-cyan-500/20 text-6xl absolute top-4 right-6">❝</div>
+            <div class="flex text-yellow-400 text-sm gap-1 mb-4">⭐⭐⭐⭐⭐</div>
+            <p class="text-slate-300 text-xl italic mb-8 leading-relaxed">"Habib iFix provided incredible service! Fixed my laptop motherboard smoothly and quickly. The pricing was transparent and the staff was very knowledgeable."</p>
             <div class="flex items-center gap-4">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80" alt="Customer" class="w-14 h-14 rounded-full object-cover border-2 border-rose-500/50" />
-              <div>
-                <h4 class="font-bold text-white text-lg">Kylie Store</h4>
-                <div class="flex text-yellow-400 text-sm gap-1">
-                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </div>
-              </div>
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=75&w=100" alt="Customer" class="w-14 h-14 rounded-full object-cover border-2 border-cyan-400/50" loading="lazy" width="56" height="56">
+              <div><h4 class="font-bold text-white text-lg">Kylie Store</h4><p class="text-slate-500 text-xs">Laptop Motherboard Repair</p></div>
             </div>
           </div>
         </div>
-        
-        <div class="lg:w-1/2 h-[400px] lg:h-auto relative">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80" alt="Happy Customer" class="w-full h-full object-cover" />
-          <div class="absolute inset-0 bg-rose-900/20 mix-blend-overlay"></div>
-        </div>
+        <div class="lg:w-1/2 h-[400px] lg:h-auto relative"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=75&w=600" alt="Customer" class="w-full h-full object-cover" loading="lazy" width="600" height="500"><div class="absolute inset-0 bg-cyan-900/20 mix-blend-overlay"></div></div>
       </div>
     </section>
 
   </main>
 
-<!-- ================= FOOTER ================= -->
-<footer class="bg-[#050a14] text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-white/10">
-  <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-    
-    <!-- Top Call-to-Action Card -->
-    <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-rose-500/20 blur-[100px] pointer-events-none group-hover:bg-rose-500/30 transition-colors"></div>
-      <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">Ready to fix your device?</h2>
-      <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">
-        Visit us today or contact us online. Experience the best repair service in town with Habib iFix.
-      </p>
-      <a href="contact.html" class="inline-block bg-white text-[#0f172a] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">
-        Get Started Now
-      </a>
-    </div>
-
-    <!-- Main Footer Links Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
-      
-      <!-- Brand Logo & Info -->
-      <div class="col-span-2 space-y-6">
-        <a href="index.html" class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
-            <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover">
-          </div>
-          <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span>
-        </a>
-        <p class="text-slate-500 leading-relaxed pr-8">
-          Your trusted partner for fast and reliable gadget repair services and component solutions. We breathe life back into your tech.
-        </p>
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#060a14] text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-white/10">
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-cyan-500/15 blur-[100px] pointer-events-none group-hover:bg-cyan-500/25 transition-colors"></div>
+        <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Ready to fix your device?</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">Visit us today or contact us online. Experience the best repair service in town with Habib iFix.</p>
+        <a href="contact.html" class="inline-block bg-white text-[#0a0f1e] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">Get Started Now</a>
       </div>
-
-      <!-- Column 1 -->
-      <div>
-        <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4>
-        <ul class="space-y-4">
-          <li><a href="services.html" class="hover:text-rose-400 transition-colors">Phone Repair</a></li>
-          <li><a href="services.html" class="hover:text-rose-400 transition-colors">Laptop Fix</a></li>
-          <li><a href="services.html" class="hover:text-rose-400 transition-colors">Tablet Service</a></li>
-          <li><a href="services.html" class="hover:text-rose-400 transition-colors">Data Recovery</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 2 -->
-      <div>
-        <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
-        <ul class="space-y-4">
-          <li><a href="index.html" class="hover:text-rose-400 transition-colors">Home</a></li>
-          <li><a href="about.html" class="hover:text-rose-400 transition-colors">About Us</a></li>
-          <li><a href="index.html#testimonial" class="hover:text-rose-400 transition-colors">Reviews</a></li>
-          <li><a href="contact.html" class="hover:text-rose-400 transition-colors">Contact</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 3 -->
-      <div>
-        <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4>
-        <ul class="space-y-4">
-          <li><a href="#" class="hover:text-rose-400 transition-colors">Privacy Policy</a></li>
-          <li><a href="#" class="hover:text-rose-400 transition-colors">Terms of Service</a></li>
-          <li><a href="#" class="hover:text-rose-400 transition-colors">Warranty Policy</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 4 -->
-      <div>
-        <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4>
-        <div class="flex flex-col gap-4">
-           <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
-           <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i> Instagram</a>
-           <a href="#" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-lg"></i> Twitter</a>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
+        <div class="col-span-2 space-y-6">
+          <a href="#home" class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center"><img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40" loading="lazy"></div><span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span></a>
+          <p class="text-slate-500 leading-relaxed pr-8">Your trusted partner for fast and reliable gadget repair services and component solutions.</p>
         </div>
+        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4><ul class="space-y-4"><li><a href="services.html" class="hover:text-cyan-400 transition-colors">Phone Repair</a></li><li><a href="services.html" class="hover:text-cyan-400 transition-colors">Laptop Fix</a></li><li><a href="services.html" class="hover:text-cyan-400 transition-colors">Tablet Service</a></li><li><a href="services.html" class="hover:text-cyan-400 transition-colors">Data Recovery</a></li></ul></div>
+        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4><ul class="space-y-4"><li><a href="#home" class="hover:text-cyan-400 transition-colors">Home</a></li><li><a href="about.html" class="hover:text-cyan-400 transition-colors">About Us</a></li><li><a href="#testimonial" class="hover:text-cyan-400 transition-colors">Reviews</a></li><li><a href="contact.html" class="hover:text-cyan-400 transition-colors">Contact</a></li></ul></div>
+        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4><ul class="space-y-4"><li><a href="#" class="hover:text-cyan-400 transition-colors">Privacy Policy</a></li><li><a href="#" class="hover:text-cyan-400 transition-colors">Terms of Service</a></li><li><a href="#" class="hover:text-cyan-400 transition-colors">Warranty Policy</a></li></ul></div>
+        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4><div class="flex flex-col gap-4"><a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a><a href="https://wa.me/8801868461577" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp</a><a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-telegram text-lg"></i> Telegram</a></div></div>
       </div>
-
-    </div>
-
-    <!-- Footer Bottom Bar -->
-    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
-      <div class="flex items-center gap-6">
-        <p>&copy; 2026 Habib iFix. All Rights Reserved.</p>
-        <span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Online
-        </span>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
+        <div class="flex items-center gap-6"><p>&copy; 2026 Habib iFix. All Rights Reserved.</p><span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Online</span></div>
       </div>
     </div>
+  </footer>
 
-  </div>
-</footer>
-
-  <!-- ================= POPUP MODAL ================= -->
+  <!-- ================= MODAL ================= -->
   <div id="serviceModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-[#0f172a]/80 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
-    <div id="modalContent" class="relative glass-panel bg-[#0f172a] p-8 md:p-10 rounded-[32px] shadow-2xl max-w-md w-full transform scale-95 opacity-0 transition-all duration-300 border border-white/20">
-      <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 border border-white/10 transition-colors">
-        <i data-feather="x" class="w-5 h-5"></i>
-      </button>
-      <div id="modalIconBox" class="w-24 h-24 bg-gradient-to-br from-rose-500/20 to-purple-500/20 border border-white/10 text-rose-400 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-inner">
-          <i data-feather="tool" id="modalIcon" class="w-10 h-10"></i>
-      </div>
+    <div class="absolute inset-0 bg-[#0a0f1e]/80 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div id="modalContent" class="relative glass-panel bg-[#0a0f1e] p-8 md:p-10 rounded-[32px] shadow-2xl max-w-md w-full transform scale-95 opacity-0 transition-all duration-300 border border-white/20">
+      <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 border border-white/10 transition-colors text-xl">✕</button>
+      <div id="modalIconBox" class="w-24 h-24 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-white/10 text-cyan-400 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-inner text-4xl">🔧</div>
       <h3 id="modalTitle" class="text-2xl font-bold text-white mb-4 text-center">Service Name</h3>
-      <p id="modalDesc" class="text-slate-400 mb-8 text-center leading-relaxed">Detailed description goes here...</p>
-      <a href="contact.html" onclick="closeModal()" class="flex justify-center items-center gap-2 w-full bg-gradient-to-r from-[#9E1B32] to-rose-600 hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-[0_10px_20px_-5px_rgba(158,27,50,0.4)] hover:-translate-y-1">
-        Book Appointment <i data-feather="arrow-right" class="w-4 h-4"></i>
-      </a>
+      <p id="modalDesc" class="text-slate-400 mb-8 text-center leading-relaxed">Description...</p>
+      <a href="contact.html" onclick="closeModal()" class="flex justify-center items-center gap-2 w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-[0_10px_20px_-5px_rgba(6,182,212,0.4)] hover:-translate-y-1">Book Appointment →</a>
     </div>
   </div>
 
-  <!-- Global JavaScript -->
+  <!-- ================= PRELOADER SCRIPT (Runs immediately) ================= -->
   <script>
-    // Initialize Icons
-    feather.replace();
+    // Preloader percentage counter
+    (function() {
+      var percent = 0;
+      var el = document.getElementById('preloaderPercent');
+      var interval = setInterval(function() {
+        percent += Math.floor(Math.random() * 8) + 2;
+        if (percent > 95) percent = 95;
+        if (el) el.textContent = 'Loading ' + percent + '%';
+        if (percent >= 95) clearInterval(interval);
+      }, 200);
+    })();
 
-    // Accordion Logic
-    function toggleAccordion(element) {
-      const content = element.querySelector('.acc-content');
-      const iconBox = element.querySelector('.acc-icon-box');
-      const title = element.querySelector('h4');
-      
-      const isOpen = !content.classList.contains('max-h-0');
+    // Remove preloader after 5 seconds
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var preloader = document.getElementById('preloader');
+        var percentEl = document.getElementById('preloaderPercent');
+        if (percentEl) percentEl.textContent = 'Loading 100%';
+        
+        setTimeout(function() {
+          preloader.classList.add('fade-out');
+          document.body.classList.remove('preloading');
+          
+          // Initialize feather icons after preloader
+          if (typeof feather !== 'undefined') feather.replace();
+          
+          // Trigger scroll reveals
+          revealOnScroll();
+          
+          // Remove preloader from DOM
+          setTimeout(function() { preloader.remove(); }, 600);
+        }, 400);
+      }, 5000); // 5 second delay
+    });
 
-      document.querySelectorAll('.accordion-item').forEach(item => {
-        item.classList.remove('border-rose-500/30', 'bg-rose-900/10');
-        item.classList.add('border-white/10', 'bg-white/5');
-        
-        const c = item.querySelector('.acc-content');
-        c.classList.add('max-h-0', 'opacity-0', 'mt-0');
-        c.classList.remove('max-h-40', 'opacity-100', 'mt-4');
-        
-        item.querySelector('h4').classList.remove('text-rose-300');
-        item.querySelector('h4').classList.add('text-slate-200');
-        
-        const i = item.querySelector('.acc-icon-box');
-        i.classList.remove('rotate-180', 'bg-rose-500/20', 'text-rose-400');
-        i.classList.add('bg-white/5', 'text-slate-400');
+    // Fallback: if load event already fired
+    if (document.readyState === 'complete') {
+      setTimeout(function() {
+        var preloader = document.getElementById('preloader');
+        if (preloader) {
+          preloader.classList.add('fade-out');
+          document.body.classList.remove('preloading');
+          setTimeout(function() { preloader.remove(); }, 600);
+        }
+      }, 5000);
+    }
+  </script>
+
+  <!-- Feather Icons (deferred) -->
+  <script src="https://unpkg.com/feather-icons" defer></script>
+
+  <!-- ================= MAIN JS (Deferred) ================= -->
+  <script defer>
+    function revealOnScroll() {
+      document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+        if (el.getBoundingClientRect().top < window.innerHeight - 120) el.classList.add('active');
       });
+    }
+    window.addEventListener('scroll', revealOnScroll);
 
+    function toggleAccordion(element) {
+      var content = element.querySelector('.acc-content');
+      var iconBox = element.querySelector('.acc-icon-box');
+      var title = element.querySelector('h4');
+      var isOpen = !content.classList.contains('max-h-0');
+      document.querySelectorAll('.accordion-item').forEach(function(item) {
+        item.classList.remove('border-cyan-500/30', 'bg-cyan-900/10');
+        item.classList.add('border-white/10', 'bg-white/5');
+        item.querySelector('.acc-content').classList.add('max-h-0', 'opacity-0', 'mt-0');
+        item.querySelector('.acc-content').classList.remove('max-h-40', 'opacity-100', 'mt-4');
+        item.querySelector('h4').classList.remove('text-cyan-300');
+        item.querySelector('h4').classList.add('text-slate-200');
+        item.querySelector('.acc-icon-box').classList.remove('rotate-180', 'bg-cyan-500/20', 'text-cyan-400');
+        item.querySelector('.acc-icon-box').classList.add('bg-white/5', 'text-slate-400');
+      });
       if (!isOpen) {
+        element.classList.add('border-cyan-500/30', 'bg-cyan-900/10');
         element.classList.remove('border-white/10', 'bg-white/5');
-        element.classList.add('border-rose-500/30', 'bg-rose-900/10');
-        
         content.classList.remove('max-h-0', 'opacity-0', 'mt-0');
         content.classList.add('max-h-40', 'opacity-100', 'mt-4');
-        
-        title.classList.add('text-rose-300');
+        title.classList.add('text-cyan-300');
         title.classList.remove('text-slate-200');
-        
-        iconBox.classList.add('rotate-180', 'bg-rose-500/20', 'text-rose-400');
+        iconBox.classList.add('rotate-180', 'bg-cyan-500/20', 'text-cyan-400');
         iconBox.classList.remove('bg-white/5', 'text-slate-400');
       }
     }
 
-    // Modal Logic
+    var emojiMap = { smartphone:'📱', tablet:'📋', laptop:'💻', monitor:'🖥️', camera:'📷', watch:'⌚', tool:'🔧' };
     function openModal(title, desc, iconName) {
-      const modal = document.getElementById('serviceModal');
-      const content = document.getElementById('modalContent');
-      
+      var modal = document.getElementById('serviceModal');
+      var content = document.getElementById('modalContent');
       document.getElementById('modalTitle').innerText = title;
       document.getElementById('modalDesc').innerText = desc;
-      document.getElementById('modalIconBox').innerHTML = `<i data-feather="${iconName}" class="w-10 h-10"></i>`;
-      feather.replace();
-      
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      
-      requestAnimationFrame(() => {
-        content.classList.remove('scale-95', 'opacity-0');
-        content.classList.add('scale-100', 'opacity-100');
-      });
+      document.getElementById('modalIconBox').innerHTML = emojiMap[iconName] || '🔧';
+      modal.classList.remove('hidden'); modal.classList.add('flex');
+      requestAnimationFrame(function() { content.classList.remove('scale-95', 'opacity-0'); content.classList.add('scale-100', 'opacity-100'); });
     }
-
     function closeModal() {
-      const modal = document.getElementById('serviceModal');
-      const content = document.getElementById('modalContent');
-      
-      content.classList.remove('scale-100', 'opacity-100');
-      content.classList.add('scale-95', 'opacity-0');
-      
-      setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }, 300);
+      var modal = document.getElementById('serviceModal');
+      var content = document.getElementById('modalContent');
+      content.classList.remove('scale-100', 'opacity-100'); content.classList.add('scale-95', 'opacity-0');
+      setTimeout(function() { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
     }
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
 
-    // Header Scroll Effect
-    const header = document.getElementById('main-header');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        header.classList.add('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
-        header.classList.remove('bg-transparent', 'py-4');
-      } else {
-        header.classList.add('bg-transparent', 'py-4');
-        header.classList.remove('bg-[#0f172a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3');
-      }
+    var header = document.getElementById('main-header');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 50) { header.classList.add('bg-[#0a0f1e]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3'); header.classList.remove('bg-transparent', 'py-4'); }
+      else { header.classList.add('bg-transparent', 'py-4'); header.classList.remove('bg-[#0a0f1e]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg', 'py-3'); }
     });
 
-    // Mobile Menu
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    let isMenuOpen = false;
-
-    function closeMobileMenu() {
-       isMenuOpen = false;
-       mobileMenu.classList.add('hidden');
-       menuBtn.innerHTML = '<i data-feather="menu" class="w-6 h-6"></i>';
-       feather.replace();
-    }
-
-    menuBtn.addEventListener('click', () => {
-      isMenuOpen = !isMenuOpen;
-      if (isMenuOpen) {
-        mobileMenu.classList.remove('hidden');
-        menuBtn.innerHTML = '<i data-feather="x" class="w-6 h-6"></i>';
-      } else {
-        closeMobileMenu();
-      }
-      feather.replace();
-    });
+    var menuBtn = document.getElementById('mobile-menu-btn');
+    var mobileMenu = document.getElementById('mobile-menu');
+    var isMenuOpen = false;
+    function closeMobileMenu() { isMenuOpen = false; mobileMenu.classList.add('hidden'); menuBtn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>'; }
+    if (menuBtn) menuBtn.addEventListener('click', function() { isMenuOpen = !isMenuOpen; if (isMenuOpen) { mobileMenu.classList.remove('hidden'); menuBtn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'; } else closeMobileMenu(); });
   </script>
 
-  <!-- Firebase & App Script -->
+  <!-- Firebase (deferred module) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
-      authDomain: "habib-yt.firebaseapp.com",
-      projectId: "habib-yt",
-      storageBucket: "habib-yt.firebasestorage.app",
-      messagingSenderId: "656628491244",
-      appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
-      measurementId: "G-GNY1T88D34"
-    };
+    const firebaseConfig = { apiKey:"AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0", authDomain:"habib-yt.firebaseapp.com", projectId:"habib-yt", storageBucket:"habib-yt.firebasestorage.app", messagingSenderId:"656628491244", appId:"1:656628491244:web:e01ccd42bd8a2b1b4c96c9", measurementId:"G-GNY1T88D34" };
 
     try {
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const authInstance = getAuth(app);
-        const storageInstance = getStorage(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const authInstance = getAuth(app);
+      const storageInstance = getStorage(app);
 
-        // Auth State
-        onAuthStateChanged(authInstance, (user) => {
-            const loginBtn = document.getElementById('loginNavBtn');
-            const profileMenu = document.getElementById('userProfileMenu');
-            
-            if (user) {
-                if(loginBtn) loginBtn.classList.add('hidden');
-                if(profileMenu) profileMenu.classList.remove('hidden');
-                const avatarImg = document.getElementById('headerAvatar');
-                if(avatarImg) avatarImg.src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg';
-            } else {
-                if(loginBtn) loginBtn.classList.remove('hidden');
-                if(profileMenu) profileMenu.classList.add('hidden');
-            }
-        });
+      onAuthStateChanged(authInstance, user => {
+        const loginBtn = document.getElementById('loginNavBtn');
+        const profileMenu = document.getElementById('userProfileMenu');
+        if (user) { if(loginBtn) loginBtn.classList.add('hidden'); if(profileMenu) profileMenu.classList.remove('hidden'); const a = document.getElementById('headerAvatar'); if(a) a.src = user.photoURL || 'https://www.svgrepo.com/show/5125/avatar.svg'; }
+        else { if(loginBtn) loginBtn.classList.remove('hidden'); if(profileMenu) profileMenu.classList.add('hidden'); }
+      });
 
-        // Profile Pic Upload
-        const picInput = document.getElementById('profilePicInput');
-        if (picInput) {
-            picInput.addEventListener('change', async (e) => {
-                const file = e.target.files[0];
-                if(!file || !authInstance.currentUser) return;
-                try {
-                    const storageRef = ref(storageInstance, 'avatars/' + authInstance.currentUser.uid);
-                    await uploadBytes(storageRef, file);
-                    const photoURL = await getDownloadURL(storageRef);
-                    await updateProfile(authInstance.currentUser, { photoURL: photoURL });
-                    document.getElementById('headerAvatar').src = photoURL;
-                } catch (error) { console.error(error); }
-            });
-        }
+      const picInput = document.getElementById('profilePicInput');
+      if (picInput) picInput.addEventListener('change', async e => { const f = e.target.files[0]; if(!f||!authInstance.currentUser) return; try { const r = ref(storageInstance,'avatars/'+authInstance.currentUser.uid); await uploadBytes(r,f); const u = await getDownloadURL(r); await updateProfile(authInstance.currentUser,{photoURL:u}); document.getElementById('headerAvatar').src=u; } catch(e){console.error(e);} });
 
-        window.logoutCurrentUser = function() {
-            signOut(authInstance).then(() => window.location.reload());
-        };
+      window.logoutCurrentUser = function() { signOut(authInstance).then(() => window.location.reload()); };
 
-        // Fetch Blog Posts
-        async function loadBlogPosts() {
-          const blogContainer = document.getElementById('blog-container');
-          if(!blogContainer) return;
-          
-          try {
-            const q = query(collection(db, "blogPosts"), orderBy("timestamp", "desc"), limit(3));
-            const querySnapshot = await getDocs(q);
-            
-            if (querySnapshot.empty) {
-              blogContainer.innerHTML = `
-                <div class="glass-panel p-8 rounded-[32px] col-span-full text-center">
-                  <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-500">
-                       <i data-feather="inbox" class="w-8 h-8"></i>
-                  </div>
-                  <h3 class="text-xl font-bold text-white mb-2">No Updates Yet</h3>
-                  <p class="text-sm text-slate-400">Check back later for the latest tech news.</p>
-                </div>
-              `;
-              feather.replace();
-              return;
-            }
+      function parseVideoUrl(url) {
+        if(!url) return {type:'unknown',embedUrl:'',isVertical:false}; url=url.trim();
+        if(url.includes('youtube.com')||url.includes('youtu.be')){let v='';if(url.includes('/shorts/')){v=url.split('/shorts/')[1].split('?')[0].split('/')[0];return{type:'youtube',embedUrl:`https://www.youtube.com/embed/${v}?rel=0`,isVertical:true};}if(url.includes('youtu.be/')){v=url.split('youtu.be/')[1].split('?')[0].substring(0,11);return{type:'youtube',embedUrl:`https://www.youtube.com/embed/${v}?rel=0`,isVertical:false};}if(url.includes('v=')){v=url.split('v=')[1].split('&')[0].substring(0,11);return{type:'youtube',embedUrl:`https://www.youtube.com/embed/${v}?rel=0`,isVertical:false};}}
+        if(url.includes('tiktok.com')){const m=url.match(/video\/(\d+)/);if(m)return{type:'tiktok',embedUrl:`https://www.tiktok.com/embed/v2/${m[1]}`,isVertical:true};}
+        if(url.includes('instagram.com')){const m=url.match(/instagram\.com\/reel\/([^\/\?]+)/);if(m)return{type:'instagram',embedUrl:`https://www.instagram.com/reel/${m[1]}/embed/`,isVertical:true};}
+        if(url.includes('facebook.com')||url.includes('fb.watch'))return{type:'facebook',embedUrl:`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0`,isVertical:url.includes('/reel/')};
+        return{type:'unknown',embedUrl:url,isVertical:false};
+      }
 
-            blogContainer.innerHTML = ''; 
-            
-            querySnapshot.forEach((doc) => {
-              const post = doc.data();
-              let mediaHTML = '';
-              if (post.mediaLink && (post.mediaLink.includes('youtube.com') || post.mediaLink.includes('youtu.be'))) {
-                 const videoId = post.mediaLink.split('v=')[1]?.substring(0, 11) || post.mediaLink.split('youtu.be/')[1]?.substring(0, 11);
-                 mediaHTML = `<div class="relative aspect-video rounded-2xl overflow-hidden mb-4 border border-white/10"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
-              } else {
-                 mediaHTML = `<img src="${post.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=80'}" class="w-full aspect-video object-cover rounded-2xl mb-4 border border-white/10" alt="Blog Media">`;
-              }
-
-              const postElement = document.createElement('div');
-              postElement.className = "glass-panel glass-card-hover p-6 rounded-[32px] flex flex-col";
-              postElement.innerHTML = `
-                ${mediaHTML}
-                <div class="flex justify-between items-center mb-3">
-                   <span class="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full uppercase tracking-wide border border-rose-500/20">${post.category || 'Update'}</span>
-                   <span class="text-xs text-slate-500">${post.date || 'Today'}</span>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3 leading-snug">${post.title}</h3>
-                <p class="text-sm text-slate-400 mb-6 line-clamp-3 flex-grow">${post.description}</p>
-                <a href="#" class="text-rose-300 font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all mt-auto">Read Article <i data-feather="arrow-right" class="w-4 h-4"></i></a>
-              `;
-              blogContainer.appendChild(postElement);
-            });
-            feather.replace();
-          } catch (error) {
-            console.log("Error loading posts:", error);
-            blogContainer.innerHTML = `<p class="text-red-400 col-span-full text-center">Failed to load posts.</p>`;
-          }
-        }
-
-        loadBlogPosts();
-    } catch(e) {
-        console.error("Firebase Init Error", e);
-    }
+      async function loadBlogPosts() {
+        const c = document.getElementById('blog-container'); if(!c) return;
+        try {
+          const q = query(collection(db,"blogPosts"),orderBy("timestamp","desc"),limit(3));
+          const snap = await getDocs(q);
+          if(snap.empty){c.innerHTML=`<div class="glass-panel p-8 rounded-[32px] col-span-full text-center"><div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-500 text-3xl">📭</div><h3 class="text-xl font-bold text-white mb-2">No Updates Yet</h3><p class="text-sm text-slate-400">Check back later for the latest tech news.</p></div>`;return;}
+          c.innerHTML='';
+          snap.forEach(doc=>{const p=doc.data();const parsed=parseVideoUrl(p.mediaLink);let m='';
+            if(['youtube','tiktok','instagram','facebook'].includes(parsed.type)){m=parsed.isVertical?`<div class="relative mx-auto mb-4 border border-white/10 rounded-2xl overflow-hidden bg-black" style="max-width:300px;aspect-ratio:9/16;max-height:400px;"><iframe class="w-full h-full" src="${parsed.embedUrl}" frameborder="0" allowfullscreen loading="lazy" scrolling="no"></iframe></div>`:`<div class="relative aspect-video rounded-2xl overflow-hidden mb-4 border border-white/10"><iframe class="w-full h-full" src="${parsed.embedUrl}" frameborder="0" allowfullscreen loading="lazy" scrolling="no"></iframe></div>`;}
+            else{m=`<img src="${p.mediaLink||'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75'}" class="w-full aspect-video object-cover rounded-2xl mb-4 border border-white/10" alt="Blog" loading="lazy" width="500" height="280">`;}
+            const el=document.createElement('div');el.className="glass-panel glass-card-hover p-6 rounded-[32px] flex flex-col";
+            el.innerHTML=`${m}<div class="flex justify-between items-center mb-3"><span class="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full uppercase tracking-wide border border-cyan-500/20">${p.category||'Update'}</span><span class="text-xs text-slate-500">${p.date||'Today'}</span></div><h3 class="text-xl font-bold text-white mb-3 leading-snug">${p.title}</h3><p class="text-sm text-slate-400 mb-6 line-clamp-3 flex-grow">${p.description}</p><a href="blog.html" class="text-cyan-300 font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all mt-auto">Read Article →</a>`;
+            c.appendChild(el);});
+        } catch(e){console.log("Error:",e);c.innerHTML=`<p class="text-red-400 col-span-full text-center">Failed to load posts.</p>`;}
+      }
+      loadBlogPosts();
+    } catch(e){console.error("Firebase Error",e);}
   </script>
 
   <!-- ================= AI AGENT ================= -->
   <div id="ai-agent-container" class="fixed bottom-6 right-6 z-[100] flex flex-col items-end font-sans">
-    
-    <!-- Chat Window -->
-    <div id="ai-chat-window" class="hidden w-[340px] sm:w-[380px] h-[500px] mb-4 glass-panel bg-[#0f172a] rounded-[28px] shadow-2xl flex-col overflow-hidden transition-all duration-300 origin-bottom-right scale-95 opacity-0 border border-white/20">
-      
-      <!-- Header -->
-      <div class="bg-gradient-to-r from-[#9E1B32] to-[#4A154B] p-4 flex justify-between items-center shadow-lg relative overflow-hidden">
-        <div class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity"></div>
-        <div class="flex items-center gap-3 relative z-10">
-          <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30 shadow-inner backdrop-blur-sm">
-            <i data-feather="cpu" class="text-white w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-white font-bold text-sm tracking-wide">Habib AI Support</h3>
-            <p class="text-white/80 text-[10px] flex items-center gap-1.5 font-medium mt-0.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_5px_#4ade80]"></span> Online
-            </p>
-          </div>
-        </div>
-        <button onclick="toggleAiChat()" class="text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-full p-1.5 relative z-10">
-          <i data-feather="x" class="w-4 h-4"></i>
-        </button>
+    <div id="ai-chat-window" class="hidden w-[340px] sm:w-[380px] h-[500px] mb-4 glass-panel bg-[#0a0f1e] rounded-[28px] shadow-2xl flex-col overflow-hidden transition-all duration-300 origin-bottom-right scale-95 opacity-0 border border-white/20">
+      <div class="bg-gradient-to-r from-cyan-600 to-violet-600 p-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-3"><div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30 text-lg">🤖</div><div><h3 class="text-white font-bold text-sm">Habib AI Support</h3><p class="text-white/80 text-[10px] flex items-center gap-1.5 font-medium mt-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p></div></div>
+        <button onclick="toggleAiChat()" class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-1.5 text-sm">✕</button>
       </div>
-      
-      <!-- Body -->
-      <div id="ai-chat-body" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3.5 scroll-smooth bg-[#0f172a]">
-        <div class="flex gap-2 w-max max-w-[85%] animate-fade-in-up">
-          <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
-             <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
-          </div>
-          <div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
-            Hello! Welcome to <b>Habib iFix</b> 👋<br>How can I assist you with your gadget today?
-          </div>
-        </div>
+      <div id="ai-chat-body" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3.5 scroll-smooth bg-[#0a0f1e]">
+        <div class="flex gap-2 w-max max-w-[85%]"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">Hello! Welcome to <b>Habib iFix</b> 👋<br>How can I assist you today?</div></div>
       </div>
-      
-      <!-- Input -->
-      <div class="p-3 border-t border-white/10 bg-[#0f172a] flex gap-2 items-center">
-        <input type="text" id="ai-chat-input" placeholder="Type a message..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-rose-500/50 focus:bg-white/10 transition-all shadow-inner" onkeypress="handleAiKeyPress(event)">
-        <button onclick="sendAiMessage()" class="bg-gradient-to-tr from-[#9E1B32] to-rose-600 hover:shadow-[0_0_15px_rgba(158,27,50,0.5)] text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0 active:scale-95">
-          <i data-feather="send" class="w-4 h-4"></i>
-        </button>
+      <div class="p-3 border-t border-white/10 bg-[#0a0f1e] flex gap-2 items-center">
+        <input type="text" id="ai-chat-input" placeholder="Type a message..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-cyan-400/50 transition-all" onkeypress="handleAiKeyPress(event)">
+        <button onclick="sendAiMessage()" class="bg-gradient-to-tr from-cyan-500 to-violet-600 text-white w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0 active:scale-95 text-sm">➤</button>
       </div>
     </div>
-
-    <!-- Toggle Button -->
-    <button onclick="toggleAiChat()" id="ai-chat-btn" class="w-14 h-14 bg-gradient-to-tr from-[#9E1B32] to-[#4A154B] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(158,27,50,0.4)] hover:scale-110 transition-transform duration-300 border border-white/20 z-50 group">
-      <i data-feather="message-square" class="text-white w-6 h-6 group-hover:rotate-12 transition-transform"></i>
-    </button>
+    <button onclick="toggleAiChat()" id="ai-chat-btn" class="w-14 h-14 bg-gradient-to-tr from-cyan-500 to-violet-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:scale-110 transition-transform duration-300 border border-white/20 z-50 text-2xl">💬</button>
   </div>
 
-  <!-- AI Agent JS -->
-  <script>
-    const GEMINI_API_KEY = "AQ.Ab8RN6J2Wk-LWVzBky-5GEMuPxZD2SP0fVFaH_hJ6c0Np9mYWA";
-
-    function toggleAiChat() {
-      const chatWindow = document.getElementById('ai-chat-window');
-      const btn = document.getElementById('ai-chat-btn');
-      
-      if (chatWindow.classList.contains('hidden')) {
-        chatWindow.classList.remove('hidden');
-        chatWindow.classList.add('flex');
-        btn.innerHTML = '<i data-feather="x" class="text-white w-6 h-6"></i>';
-        setTimeout(() => {
-          chatWindow.classList.remove('scale-95', 'opacity-0');
-          chatWindow.classList.add('scale-100', 'opacity-100');
-        }, 10);
-      } else {
-        chatWindow.classList.remove('scale-100', 'opacity-100');
-        chatWindow.classList.add('scale-95', 'opacity-0');
-        btn.innerHTML = '<i data-feather="message-square" class="text-white w-6 h-6 group-hover:rotate-12 transition-transform"></i>';
-        setTimeout(() => {
-          chatWindow.classList.add('hidden');
-          chatWindow.classList.remove('flex');
-        }, 300);
-      }
-      feather.replace();
-    }
-
-    function handleAiKeyPress(event) {
-      if (event.key === 'Enter') sendAiMessage();
-    }
-
-    async function sendAiMessage() {
-      const inputField = document.getElementById('ai-chat-input');
-      const text = inputField.value.trim();
-      if (!text) return;
-
-      const chatBody = document.getElementById('ai-chat-body');
-
-      chatBody.innerHTML += `
-        <div class="flex gap-2 w-max max-w-[85%] self-end animate-fade-in-up">
-          <div class="bg-gradient-to-r from-rose-600 to-[#9E1B32] text-[13px] text-white p-3 rounded-2xl rounded-br-none shadow-md leading-relaxed border border-rose-500/30">
-            ${escapeHtml(text)}
-          </div>
-        </div>
-      `;
-      
-      inputField.value = '';
-      chatBody.scrollTop = chatBody.scrollHeight;
-
-      const typingId = 'typing-' + Date.now();
-      chatBody.innerHTML += `
-        <div id="${typingId}" class="flex gap-2 w-max max-w-[85%] mt-1 animate-fade-in-up">
-          <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
-             <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
-          </div>
-          <div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 items-center">
-             <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
-             <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
-             <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
-          </div>
-        </div>
-      `;
-      feather.replace();
-      chatBody.scrollTop = chatBody.scrollHeight;
-
-      try {
-        const promptContext = `You are Habib iFix AI Assistant, a helpful customer service chatbot for 'Habib iFix' - a professional gadget repair shop. Answer concisely, professionally, and warmly. Query: ${text}`;
-
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: promptContext }] }] })
-        });
-
-        const data = await response.json();
-        let aiReply = "Thank you for reaching out! How else can I assist you with your device?";
-        
-        if (data && data.candidates && data.candidates[0].content.parts[0].text) {
-          aiReply = data.candidates[0].content.parts[0].text;
-        }
-
-        document.getElementById(typingId).remove();
-        
-        chatBody.innerHTML += `
-          <div class="flex gap-2 w-max max-w-[85%] mt-1 animate-fade-in-up">
-            <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center flex-shrink-0 mt-auto">
-                <i data-feather="cpu" class="text-rose-400 w-3.5 h-3.5"></i>
-            </div>
-            <div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">
-              ${formatAiResponse(aiReply)}
-            </div>
-          </div>
-        `;
-        feather.replace();
-        chatBody.scrollTop = chatBody.scrollHeight;
-
-      } catch (error) {
-        if(document.getElementById(typingId)) document.getElementById(typingId).remove();
-        chatBody.innerHTML += `
-          <div class="flex gap-2 w-max max-w-[85%] mt-1">
-            <div class="bg-red-500/10 border border-red-500/20 text-[13px] text-red-400 p-3 rounded-2xl">
-              Connection error. Please try again.
-            </div>
-          </div>
-        `;
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }
-    }
-
-    function escapeHtml(text) {
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
-    function formatAiResponse(text) {
-      return text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-    }
+  <script defer>
+    var GEMINI_API_KEY = "AQ.Ab8RN6J2Wk-LWVzBky-5GEMuPxZD2SP0fVFaH_hJ6c0Np9mYWA";
+    function toggleAiChat(){var w=document.getElementById('ai-chat-window'),b=document.getElementById('ai-chat-btn');if(w.classList.contains('hidden')){w.classList.remove('hidden');w.classList.add('flex');b.innerHTML='✕';setTimeout(function(){w.classList.remove('scale-95','opacity-0');w.classList.add('scale-100','opacity-100');},10);}else{w.classList.remove('scale-100','opacity-100');w.classList.add('scale-95','opacity-0');b.innerHTML='💬';setTimeout(function(){w.classList.add('hidden');w.classList.remove('flex');},300);}}
+    function handleAiKeyPress(e){if(e.key==='Enter')sendAiMessage();}
+    async function sendAiMessage(){var i=document.getElementById('ai-chat-input'),t=i.value.trim();if(!t)return;var b=document.getElementById('ai-chat-body');b.innerHTML+='<div class="flex gap-2 w-max max-w-[85%] self-end"><div class="bg-gradient-to-r from-cyan-500 to-violet-600 text-[13px] text-white p-3 rounded-2xl rounded-br-none shadow-md leading-relaxed border border-cyan-500/30">'+esc(t)+'</div></div>';i.value='';b.scrollTop=b.scrollHeight;var tid='typing-'+Date.now();b.innerHTML+='<div id="'+tid+'" class="flex gap-2 w-max max-w-[85%] mt-1"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 items-center"><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.15s"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.3s"></div></div></div>';b.scrollTop=b.scrollHeight;try{var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+GEMINI_API_KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:'You are Habib iFix AI Assistant for a gadget repair shop. Answer concisely and warmly. Query: '+t}]}]})});var d=await r.json();var a="Thank you! How else can I help?";if(d&&d.candidates&&d.candidates[0].content.parts[0].text)a=d.candidates[0].content.parts[0].text;var te=document.getElementById(tid);if(te)te.remove();b.innerHTML+='<div class="flex gap-2 w-max max-w-[85%] mt-1"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">'+fmt(a)+'</div></div>';b.scrollTop=b.scrollHeight;}catch(e){var te2=document.getElementById(tid);if(te2)te2.remove();b.innerHTML+='<div class="flex gap-2 w-max max-w-[85%] mt-1"><div class="bg-red-500/10 border border-red-500/20 text-[13px] text-red-400 p-3 rounded-2xl">Connection error. Please try again.</div></div>';b.scrollTop=b.scrollHeight;}}
+    function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+    function fmt(t){return t.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
   </script>
 </body>
 </html>

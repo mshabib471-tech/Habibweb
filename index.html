@@ -7,7 +7,6 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
   
-  <!-- CRITICAL: Tailwind synchronous -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -45,6 +44,45 @@
 
     .img-hover-zoom{overflow:hidden;border-radius:24px}.img-hover-zoom img{transition:transform .7s cubic-bezier(.4,0,.2,1)}.img-hover-zoom:hover img{transform:scale(1.08)}
     .service-img-zoom{transition:transform .7s cubic-bezier(.4,0,.2,1)}.group:hover .service-img-zoom{transform:scale(1.1)}
+
+    /* ===== FLOATING PILL NAVBAR ===== */
+    .pill-nav {
+      background: rgba(15, 20, 35, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05) inset;
+    }
+
+    .pill-nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      color: rgba(255,255,255,0.6);
+    }
+    .pill-nav-link:hover {
+      color: white;
+      background: rgba(255,255,255,0.08);
+    }
+    .pill-nav-link.active {
+      color: white;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+    .pill-nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 2px;
+      background: #06b6d4;
+      border-radius: 2px;
+    }
+
+    /* Scrollbar hide for pill nav on mobile */
+    .pill-scroll::-webkit-scrollbar { display: none; }
+    .pill-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="min-h-screen text-slate-200 selection:bg-cyan-500 selection:text-white relative flex flex-col bg-[#0a0f1e] overflow-x-hidden">
@@ -56,59 +94,77 @@
     <div class="absolute top-[40%] left-[30%] w-[500px] h-[500px] rounded-full bg-blue-600/15 blur-[120px] animate-blob animation-delay-4000 mix-blend-screen"></div>
   </div>
 
-  <!-- HEADER -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4">
-    <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-3 cursor-pointer group">
-        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-cyan-400/50 transition-colors">
-          <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40">
+  <!-- ================= FLOATING PILL HEADER ================= -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 transition-all duration-500">
+    <nav class="pill-nav rounded-full px-2 py-1.5 flex items-center gap-1 max-w-full overflow-x-auto pill-scroll">
+      
+      <!-- Logo (small, inside pill) -->
+      <a href="index.html" class="flex items-center gap-2 pl-2 pr-3 py-1.5 shrink-0 group">
+        <div class="w-8 h-8 rounded-lg overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center group-hover:border-cyan-400/50 transition-colors">
+          <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="32" height="32">
         </div>
-        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium group-hover:text-cyan-400 transition-colors">iFix</span></span>
+        <span class="font-bold text-base tracking-tight text-white hidden sm:inline">Habib<span class="text-slate-400 font-medium">iFix</span></span>
       </a>
-      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
-        <a href="#home" class="text-cyan-400 font-semibold relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-cyan-400">Home</a>
-        <a href="about.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">About Us</a>
-        <a href="services.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Services</a>
-        <div class="group relative py-2 cursor-pointer"><div class="flex items-center gap-1 hover:text-cyan-400 transition-colors">Pages <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div>
-          <div class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-56 glass-panel rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex flex-col overflow-hidden z-50 transform translate-y-2 group-hover:translate-y-0">
-            <a href="#updates" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2">📡 Updates</a>
-            <a href="#vision" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors border-b border-white/5 flex items-center gap-2">👁 Vision & Mission</a>
-            <a href="#testimonial" class="px-5 py-3 text-slate-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2">💬 Testimonials</a>
+
+      <!-- Divider -->
+      <div class="w-px h-5 bg-white/10 shrink-0 hidden sm:block"></div>
+
+      <!-- Nav Links -->
+      <a href="index.html" class="pill-nav-link active flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0">
+        <i data-feather="home" class="w-4 h-4"></i>
+        <span>Home</span>
+      </a>
+
+      <a href="services.html" class="pill-nav-link flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0">
+        <i data-feather="layers" class="w-4 h-4"></i>
+        <span>Services</span>
+      </a>
+
+      <a href="about.html" class="pill-nav-link flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0">
+        <i data-feather="user" class="w-4 h-4"></i>
+        <span>About</span>
+      </a>
+
+      <a href="contact.html" class="pill-nav-link flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0">
+        <i data-feather="send" class="w-4 h-4"></i>
+        <span>Contact</span>
+      </a>
+
+      <a href="blog.html" class="pill-nav-link flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0">
+        <i data-feather="file-text" class="w-4 h-4"></i>
+        <span>Blog</span>
+      </a>
+
+      <!-- Divider -->
+      <div class="w-px h-5 bg-white/10 shrink-0 hidden sm:block"></div>
+
+      <!-- Auth / Profile -->
+      <div id="authProfileArea" class="relative group shrink-0">
+        <a href="login.html?return=index.html" id="loginNavBtn" class="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 hover:bg-cyan-500/25 transition-all">
+          <i data-feather="user" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Login</span>
+        </a>
+        <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center">
+          <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-8 h-8 rounded-full object-cover border-2 border-cyan-400/50 shadow-[0_0_10px_rgba(6,182,212,0.3)]" width="32" height="32">
+          <div class="absolute top-full right-0 mt-3 w-48 glass-panel rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50 transform origin-top-right scale-95 group-hover:scale-100 p-1">
+            <label class="px-3 py-2.5 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 rounded-lg transition-colors">
+              📷 Change Pic
+              <input type="file" id="profilePicInput" accept="image/*" class="hidden">
+            </label>
+            <button onclick="logoutCurrentUser()" class="px-3 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 text-left flex items-center gap-2 rounded-lg transition-colors w-full">
+              🚪 Logout
+            </button>
           </div>
         </div>
-        <a href="blog.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Blog</a>
-        <a href="contact.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Contact</a>
-        <div id="authProfileArea" class="relative group ml-4">
-          <a href="login.html?return=index.html" id="loginNavBtn" class="bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider">Login 👤</a>
-          <div id="userProfileMenu" class="hidden relative cursor-pointer flex items-center gap-2">
-            <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-cyan-400/50 shadow-[0_0_10px_rgba(6,182,212,0.3)]" width="36" height="36">
-            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            <div class="absolute top-full right-0 mt-3 w-48 glass-panel rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden flex flex-col z-50 transform origin-top-right scale-95 group-hover:scale-100">
-              <label class="px-4 py-3 text-sm text-slate-200 hover:text-white hover:bg-white/10 cursor-pointer flex items-center gap-2 border-b border-white/5 transition-colors">📷 Change Pic<input type="file" id="profilePicInput" accept="image/*" class="hidden"></label>
-              <button onclick="logoutCurrentUser()" class="px-4 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-white/10 text-left flex items-center gap-2 transition-colors w-full">🚪 Logout</button>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <div class="flex items-center gap-4">
-        <a href="tel:+8801868461577" class="hidden md:flex bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-white px-5 py-2 rounded-full font-medium items-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 hover:border-cyan-400/30">📞 <span>+880 1868 461577</span></a>
-        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       </div>
-    </div>
-    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0a0f1e]/95 backdrop-blur-2xl border-t border-white/10 flex flex-col px-6 py-8 gap-5 shadow-2xl z-40 min-h-screen overflow-y-auto pb-32">
-      <a href="#home" class="text-cyan-400 font-semibold text-xl border-l-2 border-cyan-400 pl-4" onclick="closeMobileMenu()">Home</a>
-      <a href="about.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4" onclick="closeMobileMenu()">About Us</a>
-      <a href="services.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4" onclick="closeMobileMenu()">Services</a>
-      <div class="flex flex-col gap-3 pl-4 border-l border-white/10 my-2"><p class="text-slate-500 uppercase text-xs font-bold tracking-widest mb-1">Quick Links</p><a href="#updates" class="text-slate-300 hover:text-cyan-400" onclick="closeMobileMenu()">Updates</a><a href="#vision" class="text-slate-300 hover:text-cyan-400" onclick="closeMobileMenu()">Vision</a><a href="#testimonial" class="text-slate-300 hover:text-cyan-400" onclick="closeMobileMenu()">Testimonials</a></div>
-      <a href="blog.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4" onclick="closeMobileMenu()">Blog</a>
-      <a href="contact.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4" onclick="closeMobileMenu()">Contact</a>
-      <a href="login.html?return=index.html" class="mt-4 text-center w-full bg-white/5 border border-white/10 py-3 rounded-xl text-white font-medium" onclick="closeMobileMenu()">👤 Login</a>
-    </div>
+
+    </nav>
   </header>
 
   <main class="flex-grow">
+
     <!-- HERO -->
-    <section id="home" class="relative w-full min-h-screen flex items-center pt-20 overflow-hidden">
+    <section id="home" class="relative w-full min-h-screen flex items-center pt-24 overflow-hidden">
       <div class="absolute inset-0 z-0">
         <video autoplay loop muted playsinline preload="metadata" poster="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=1200&q=60" class="w-full h-full object-cover opacity-25 scale-105 pointer-events-none">
           <source src="https://assets.mixkit.co/videos/preview/mixkit-technician-repairing-a-smartphone-macro-shot-40985-large.mp4" type="video/mp4">
@@ -139,7 +195,7 @@
       </div>
     </section>
 
-    <!-- BLOG / UPDATES (max 4 posts + view all) -->
+    <!-- BLOG -->
     <section id="updates" class="py-24 relative z-10 scroll-mt-24">
       <div class="max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 reveal">
@@ -149,10 +205,7 @@
         <div id="blog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="col-span-full flex justify-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div></div>
         </div>
-        <!-- View All button shown when >4 posts -->
-        <div id="viewAllPostsBtn" class="hidden text-center mt-10">
-          <a href="blog.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-600 hover:to-cyan-500 text-white px-8 py-3 rounded-full font-bold transition-all hover:-translate-y-1 shadow-lg">View All Posts →</a>
-        </div>
+        <div id="viewAllPostsBtn" class="hidden text-center mt-10"><a href="blog.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-3 rounded-full font-bold transition-all hover:-translate-y-1 shadow-lg">View All Posts →</a></div>
       </div>
     </section>
 
@@ -277,9 +330,9 @@
     <div class="max-w-[1280px] mx-auto px-4 md:px-6">
       <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group"><div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-cyan-500/15 blur-[100px] pointer-events-none group-hover:bg-cyan-500/25 transition-colors"></div><h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Ready to fix your device?</h2><p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">Visit us today or contact us online. Experience the best repair service in town with Habib iFix.</p><a href="contact.html" class="inline-block bg-white text-[#0a0f1e] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">Get Started Now</a></div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
-        <div class="col-span-2 space-y-6"><a href="#home" class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center"><img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40" loading="lazy"></div><span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span></a><p class="text-slate-500 leading-relaxed pr-8">Your trusted partner for fast and reliable gadget repair services.</p></div>
+        <div class="col-span-2 space-y-6"><a href="index.html" class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center"><img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40" loading="lazy"></div><span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span></a><p class="text-slate-500 leading-relaxed pr-8">Your trusted partner for fast and reliable gadget repair services.</p></div>
         <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4><ul class="space-y-4"><li><a href="services.html" class="hover:text-cyan-400 transition-colors">Phone Repair</a></li><li><a href="services.html" class="hover:text-cyan-400 transition-colors">Laptop Fix</a></li><li><a href="services.html" class="hover:text-cyan-400 transition-colors">Tablet Service</a></li><li><a href="services.html" class="hover:text-cyan-400 transition-colors">Data Recovery</a></li></ul></div>
-        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4><ul class="space-y-4"><li><a href="#home" class="hover:text-cyan-400 transition-colors">Home</a></li><li><a href="about.html" class="hover:text-cyan-400 transition-colors">About Us</a></li><li><a href="#testimonial" class="hover:text-cyan-400 transition-colors">Reviews</a></li><li><a href="contact.html" class="hover:text-cyan-400 transition-colors">Contact</a></li></ul></div>
+        <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4><ul class="space-y-4"><li><a href="index.html" class="hover:text-cyan-400 transition-colors">Home</a></li><li><a href="about.html" class="hover:text-cyan-400 transition-colors">About Us</a></li><li><a href="#testimonial" class="hover:text-cyan-400 transition-colors">Reviews</a></li><li><a href="contact.html" class="hover:text-cyan-400 transition-colors">Contact</a></li></ul></div>
         <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4><ul class="space-y-4"><li><a href="#" class="hover:text-cyan-400 transition-colors">Privacy Policy</a></li><li><a href="#" class="hover:text-cyan-400 transition-colors">Terms of Service</a></li><li><a href="#" class="hover:text-cyan-400 transition-colors">Warranty Policy</a></li></ul></div>
         <div><h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4><div class="flex flex-col gap-4"><a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a><a href="https://wa.me/8801868461577" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp</a><a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-telegram text-lg"></i> Telegram</a></div></div>
       </div>
@@ -307,7 +360,7 @@
         <button onclick="toggleAiChat()" class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-1.5 text-sm">✕</button>
       </div>
       <div id="ai-chat-body" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3.5 scroll-smooth bg-[#0a0f1e]">
-        <div class="flex gap-2 w-max max-w-[85%]"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">Hello! Welcome to <b>Habib iFix</b> 👋<br>I'm your AI assistant. Ask me anything about our repair services, pricing, or booking!</div></div>
+        <div class="flex gap-2 w-max max-w-[85%]"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">Hello! Welcome to <b>Habib iFix</b> 👋<br>Ask me anything about our repair services!</div></div>
       </div>
       <div class="p-3 border-t border-white/10 bg-[#0a0f1e] flex gap-2 items-center">
         <input type="text" id="ai-chat-input" placeholder="Type your message..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-cyan-400/50 transition-all" onkeypress="if(event.key==='Enter')sendAiMessage()">
@@ -317,85 +370,76 @@
     <button onclick="toggleAiChat()" id="ai-chat-btn" class="w-14 h-14 bg-gradient-to-tr from-cyan-500 to-violet-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:scale-110 transition-transform duration-300 border border-white/20 z-50 text-2xl">💬</button>
   </div>
 
-  <!-- ================= ALL JAVASCRIPT ================= -->
+  <!-- ================= JAVASCRIPT ================= -->
   <script>
     feather.replace();
 
-    // --- REVEAL ---
     function revealOnScroll(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-100)el.classList.add('active');});}
     window.addEventListener('scroll',revealOnScroll);window.addEventListener('load',revealOnScroll);revealOnScroll();
 
-    // --- HEADER ---
+    // Header scroll effect - pill gets more opaque
     var header=document.getElementById('main-header');
-    window.addEventListener('scroll',function(){if(window.scrollY>50){header.classList.add('bg-[#0a0f1e]/80','backdrop-blur-xl','border-b','border-white/5','shadow-lg','py-3');header.classList.remove('bg-transparent','py-4');}else{header.classList.add('bg-transparent','py-4');header.classList.remove('bg-[#0a0f1e]/80','backdrop-blur-xl','border-b','border-white/5','shadow-lg','py-3');}});
+    window.addEventListener('scroll',function(){
+      var nav=header.querySelector('nav');
+      if(window.scrollY>50){
+        nav.style.background='rgba(10,15,30,0.9)';
+        nav.style.boxShadow='0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08) inset';
+      } else {
+        nav.style.background='rgba(15,20,35,0.75)';
+        nav.style.boxShadow='0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05) inset';
+      }
+    });
 
-    // --- MOBILE MENU ---
-    var menuBtn=document.getElementById('mobile-menu-btn'),mobileMenu=document.getElementById('mobile-menu'),isMenuOpen=false;
-    function closeMobileMenu(){isMenuOpen=false;mobileMenu.classList.add('hidden');menuBtn.innerHTML='<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>';feather.replace();}
-    menuBtn.addEventListener('click',function(){isMenuOpen=!isMenuOpen;if(isMenuOpen){mobileMenu.classList.remove('hidden');menuBtn.innerHTML='<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';}else closeMobileMenu();feather.replace();});
-
-    // --- ACCORDION ---
+    // Accordion
     function toggleAccordion(el){var c=el.querySelector('.acc-content'),ib=el.querySelector('.acc-icon-box'),t=el.querySelector('h4'),isOpen=!c.classList.contains('max-h-0');document.querySelectorAll('.accordion-item').forEach(function(item){item.classList.remove('border-cyan-500/30','bg-cyan-900/10');item.classList.add('border-white/10','bg-white/5');item.querySelector('.acc-content').classList.add('max-h-0','opacity-0','mt-0');item.querySelector('.acc-content').classList.remove('max-h-40','opacity-100','mt-4');item.querySelector('h4').classList.remove('text-cyan-300');item.querySelector('h4').classList.add('text-slate-200');item.querySelector('.acc-icon-box').classList.remove('rotate-180','bg-cyan-500/20','text-cyan-400');item.querySelector('.acc-icon-box').classList.add('bg-white/5','text-slate-400');});if(!isOpen){el.classList.add('border-cyan-500/30','bg-cyan-900/10');el.classList.remove('border-white/10','bg-white/5');c.classList.remove('max-h-0','opacity-0','mt-0');c.classList.add('max-h-40','opacity-100','mt-4');t.classList.add('text-cyan-300');t.classList.remove('text-slate-200');ib.classList.add('rotate-180','bg-cyan-500/20','text-cyan-400');ib.classList.remove('bg-white/5','text-slate-400');}}
 
-    // --- MODAL ---
+    // Modal
     var emojiMap={smartphone:'📱',tablet:'📋',laptop:'💻',monitor:'🖥️',camera:'📷',watch:'⌚'};
     function openModal(t,d,icon){var m=document.getElementById('serviceModal'),c=document.getElementById('modalContent');document.getElementById('modalTitle').innerText=t;document.getElementById('modalDesc').innerText=d;document.getElementById('modalIconBox').innerHTML=emojiMap[icon]||'🔧';m.classList.remove('hidden');m.classList.add('flex');requestAnimationFrame(function(){c.classList.remove('scale-95','opacity-0');c.classList.add('scale-100','opacity-100');});}
     function closeModal(){var m=document.getElementById('serviceModal'),c=document.getElementById('modalContent');c.classList.remove('scale-100','opacity-100');c.classList.add('scale-95','opacity-0');setTimeout(function(){m.classList.add('hidden');m.classList.remove('flex');},300);}
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 
-    // --- AI CHAT TOGGLE ---
+    // AI Chat Toggle
     function toggleAiChat(){var w=document.getElementById('ai-chat-window'),b=document.getElementById('ai-chat-btn');if(w.classList.contains('hidden')){w.classList.remove('hidden');w.classList.add('flex');b.innerHTML='✕';setTimeout(function(){w.classList.remove('scale-95','opacity-0');w.classList.add('scale-100','opacity-100');},10);}else{w.classList.remove('scale-100','opacity-100');w.classList.add('scale-95','opacity-0');b.innerHTML='💬';setTimeout(function(){w.classList.add('hidden');w.classList.remove('flex');},300);}}
   </script>
 
-  <!-- Firebase + Blog + AI Agent (module) -->
+  <!-- Firebase + Blog + AI -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, limit, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+    import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import{getFirestore,collection,getDocs,query,orderBy,limit}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import{getAuth,onAuthStateChanged,signOut,updateProfile}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-    const firebaseConfig = { apiKey:"AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0", authDomain:"habib-yt.firebaseapp.com", projectId:"habib-yt", storageBucket:"habib-yt.firebasestorage.app", messagingSenderId:"656628491244", appId:"1:656628491244:web:e01ccd42bd8a2b1b4c96c9", measurementId:"G-GNY1T88D34" };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const authInstance = getAuth(app);
-    const storageInstance = getStorage(app);
+    const firebaseConfig={apiKey:"AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",authDomain:"habib-yt.firebaseapp.com",projectId:"habib-yt",storageBucket:"habib-yt.firebasestorage.app",messagingSenderId:"656628491244",appId:"1:656628491244:web:e01ccd42bd8a2b1b4c96c9",measurementId:"G-GNY1T88D34"};
+    const app=initializeApp(firebaseConfig),db=getFirestore(app),authInstance=getAuth(app),storageInstance=getStorage(app);
 
-    // Auth
-    onAuthStateChanged(authInstance, user => {
-      const lb=document.getElementById('loginNavBtn'),pm=document.getElementById('userProfileMenu');
-      if(user){if(lb)lb.classList.add('hidden');if(pm)pm.classList.remove('hidden');const a=document.getElementById('headerAvatar');if(a)a.src=user.photoURL||'https://www.svgrepo.com/show/5125/avatar.svg';window._currentUser=user;}
-      else{if(lb)lb.classList.remove('hidden');if(pm)pm.classList.add('hidden');window._currentUser=null;}
+    onAuthStateChanged(authInstance,function(user){
+      var lb=document.getElementById('loginNavBtn'),pm=document.getElementById('userProfileMenu');
+      if(user){lb.classList.add('hidden');pm.classList.remove('hidden');var a=document.getElementById('headerAvatar');if(a)a.src=user.photoURL||'https://www.svgrepo.com/show/5125/avatar.svg';window._currentUser=user;}
+      else{lb.classList.remove('hidden');pm.classList.add('hidden');window._currentUser=null;}
     });
 
-    const picInput=document.getElementById('profilePicInput');
-    if(picInput)picInput.addEventListener('change',async e=>{const f=e.target.files[0];if(!f||!authInstance.currentUser)return;try{const r=ref(storageInstance,'avatars/'+authInstance.currentUser.uid);await uploadBytes(r,f);const u=await getDownloadURL(r);await updateProfile(authInstance.currentUser,{photoURL:u});document.getElementById('headerAvatar').src=u;}catch(e){console.error(e);}});
-    window.logoutCurrentUser=function(){signOut(authInstance).then(()=>window.location.reload());};
+    var picInput=document.getElementById('profilePicInput');
+    if(picInput)picInput.addEventListener('change',async function(e){var f=e.target.files[0];if(!f||!authInstance.currentUser)return;try{var r=ref(storageInstance,'avatars/'+authInstance.currentUser.uid);await uploadBytes(r,f);var u=await getDownloadURL(r);await updateProfile(authInstance.currentUser,{photoURL:u});document.getElementById('headerAvatar').src=u;}catch(e){console.error(e);}});
+    window.logoutCurrentUser=function(){signOut(authInstance).then(function(){window.location.reload();});};
 
-    // --- BLOG: Show max 4, "View All" if more ---
-    function parseVideoUrl(url){if(!url)return{type:'unknown',embedUrl:'',isVertical:false};url=url.trim();if(url.includes('youtube.com')||url.includes('youtu.be')){let v='';if(url.includes('/shorts/')){v=url.split('/shorts/')[1].split('?')[0].split('/')[0];return{type:'yt',embedUrl:`https://www.youtube.com/embed/${v}?rel=0`,isVertical:true};}if(url.includes('youtu.be/')){v=url.split('youtu.be/')[1].split('?')[0].substring(0,11);return{type:'yt',embedUrl:`https://www.youtube.com/embed/${v}?rel=0`,isVertical:false};}if(url.includes('v=')){v=url.split('v=')[1].split('&')[0].substring(0,11);return{type:'yt',embedUrl:`https://www.youtube.com/embed/${v}?rel=0`,isVertical:false};}}if(url.includes('tiktok.com')){const m=url.match(/video\/(\d+)/);if(m)return{type:'tt',embedUrl:`https://www.tiktok.com/embed/v2/${m[1]}`,isVertical:true};}if(url.includes('instagram.com')){const m=url.match(/instagram\.com\/reel\/([^\/\?]+)/);if(m)return{type:'ig',embedUrl:`https://www.instagram.com/reel/${m[1]}/embed/`,isVertical:true};}if(url.includes('facebook.com')||url.includes('fb.watch'))return{type:'fb',embedUrl:`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0`,isVertical:url.includes('/reel/')};return{type:'unknown',embedUrl:url,isVertical:false};}
+    // Blog
+    function parseVideoUrl(url){if(!url)return{type:'unknown',embedUrl:'',isVertical:false};url=url.trim();if(url.includes('/shorts/')){var v=url.split('/shorts/')[1].split('?')[0].split('/')[0];return{type:'yt',embedUrl:'https://www.youtube.com/embed/'+v+'?rel=0',isVertical:true};}if(url.includes('youtu.be/')){var v2=url.split('youtu.be/')[1].split('?')[0].substring(0,11);return{type:'yt',embedUrl:'https://www.youtube.com/embed/'+v2+'?rel=0',isVertical:false};}if(url.includes('v=')){var v3=url.split('v=')[1].split('&')[0].substring(0,11);return{type:'yt',embedUrl:'https://www.youtube.com/embed/'+v3+'?rel=0',isVertical:false};}if(url.includes('tiktok.com')){var m=url.match(/video\/(\d+)/);if(m)return{type:'tt',embedUrl:'https://www.tiktok.com/embed/v2/'+m[1],isVertical:true};}if(url.includes('/reel/')){var r=url.match(/instagram\.com\/reel\/([^\/\?]+)/);if(r)return{type:'ig',embedUrl:'https://www.instagram.com/reel/'+r[1]+'/embed/',isVertical:true};}if(url.includes('facebook.com')||url.includes('fb.watch'))return{type:'fb',embedUrl:'https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=0',isVertical:url.includes('/reel/')};return{type:'unknown',embedUrl:url,isVertical:false};}
 
     async function loadBlogPosts(){
-      const c=document.getElementById('blog-container');if(!c)return;
+      var c=document.getElementById('blog-container');if(!c)return;
       try{
-        // Fetch up to 10 to know total count, display only 4
-        const q=query(collection(db,"blogPosts"),orderBy("timestamp","desc"),limit(10));
-        const snap=await getDocs(q);
-        if(snap.empty){c.innerHTML='<div class="glass-panel p-8 rounded-[32px] col-span-full text-center"><div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-500 text-3xl">📭</div><h3 class="text-xl font-bold text-white mb-2">No Updates Yet</h3><p class="text-sm text-slate-400">Check back later!</p></div>';feather.replace();return;}
-        
-        const allDocs=snap.docs;
-        const totalPosts=allDocs.length;
-        const displayDocs=allDocs.slice(0,4); // Show max 4
-        
-        // Show "View All" button if more than 4
-        if(totalPosts>4){document.getElementById('viewAllPostsBtn').classList.remove('hidden');}
-        
+        var q=query(collection(db,"blogPosts"),orderBy("timestamp","desc"),limit(10)),snap=await getDocs(q);
+        if(snap.empty){c.innerHTML='<div class="glass-panel p-8 rounded-[32px] col-span-full text-center"><div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">📭</div><h3 class="text-xl font-bold text-white mb-2">No Updates Yet</h3><p class="text-sm text-slate-400">Check back later!</p></div>';return;}
+        var all=snap.docs,total=all.length,display=all.slice(0,4);
+        if(total>4)document.getElementById('viewAllPostsBtn').classList.remove('hidden');
         c.innerHTML='';
-        displayDocs.forEach(doc=>{
-          const p=doc.data();const parsed=parseVideoUrl(p.mediaLink);let m='';
-          if(['yt','tt','ig','fb'].includes(parsed.type)){m=parsed.isVertical?`<div class="relative mx-auto mb-4 border border-white/10 rounded-2xl overflow-hidden bg-black" style="max-width:280px;aspect-ratio:9/16;max-height:350px;"><iframe class="w-full h-full" src="${parsed.embedUrl}" frameborder="0" allowfullscreen loading="lazy" scrolling="no"></iframe></div>`:`<div class="relative aspect-video rounded-2xl overflow-hidden mb-4 border border-white/10"><iframe class="w-full h-full" src="${parsed.embedUrl}" frameborder="0" allowfullscreen loading="lazy" scrolling="no"></iframe></div>`;}
-          else{m=`<img src="${p.mediaLink||'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75'}" class="w-full aspect-video object-cover rounded-2xl mb-4 border border-white/10" alt="Blog" loading="lazy" width="500" height="280">`;}
-          const el=document.createElement('div');el.className="glass-panel glass-card-hover p-5 rounded-[24px] flex flex-col";
-          el.innerHTML=`${m}<div class="flex justify-between items-center mb-2"><span class="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full uppercase tracking-wide border border-cyan-500/20">${p.category||'Update'}</span><span class="text-[10px] text-slate-500">${p.date||'Today'}</span></div><h3 class="text-base font-bold text-white mb-2 leading-snug line-clamp-2">${p.title}</h3><p class="text-xs text-slate-400 mb-4 line-clamp-2 flex-grow">${p.description}</p><a href="blog.html" class="text-cyan-300 font-bold text-xs flex items-center gap-1 hover:gap-2 transition-all mt-auto">Read More →</a>`;
+        display.forEach(function(ds){
+          var p=ds.data(),parsed=parseVideoUrl(p.mediaLink),m='';
+          if(['yt','tt','ig','fb'].includes(parsed.type)){m=parsed.isVertical?'<div class="relative mx-auto mb-4 border border-white/10 rounded-2xl overflow-hidden bg-black" style="max-width:280px;aspect-ratio:9/16;max-height:350px;"><iframe class="w-full h-full" src="'+parsed.embedUrl+'" frameborder="0" allowfullscreen loading="lazy" scrolling="no"></iframe></div>':'<div class="relative aspect-video rounded-2xl overflow-hidden mb-4 border border-white/10"><iframe class="w-full h-full" src="'+parsed.embedUrl+'" frameborder="0" allowfullscreen loading="lazy" scrolling="no"></iframe></div>';}
+          else{m='<img src="'+(p.mediaLink||'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75')+'" class="w-full aspect-video object-cover rounded-2xl mb-4 border border-white/10" alt="Blog" loading="lazy" width="500" height="280">';}
+          var el=document.createElement('div');el.className="glass-panel glass-card-hover p-5 rounded-[24px] flex flex-col";
+          el.innerHTML=m+'<div class="flex justify-between items-center mb-2"><span class="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full uppercase tracking-wide border border-cyan-500/20">'+(p.category||'Update')+'</span><span class="text-[10px] text-slate-500">'+(p.date||'Today')+'</span></div><h3 class="text-base font-bold text-white mb-2 leading-snug line-clamp-2">'+p.title+'</h3><p class="text-xs text-slate-400 mb-4 line-clamp-2 flex-grow">'+p.description+'</p><a href="blog.html" class="text-cyan-300 font-bold text-xs flex items-center gap-1 hover:gap-2 transition-all mt-auto">Read More →</a>';
           c.appendChild(el);
         });
         feather.replace();
@@ -403,134 +447,45 @@
     }
     loadBlogPosts();
 
-    // --- AI AGENT with Qwen API + Firebase logging ---
-    // Qwen API via DashScope OpenAI-compatible endpoint [[8]][[10]]
-    const QWEN_API_KEY = "sk-YOUR_DASHSCOPE_API_KEY_HERE"; // ⚠️ Replace with your real DashScope API key
-    const QWEN_ENDPOINT = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions";
-    const QWEN_MODEL = "qwen-turbo"; // Fastest & cheapest for chat [[1]]
+    // AI Agent
+    var QWEN_KEY="sk-YOUR_DASHSCOPE_API_KEY_HERE",QWEN_URL="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",chatHistory=[],SYSTEM_PROMPT='You are Habib iFix AI assistant for a gadget repair shop in Chattogram, Bangladesh. Owner: Habibur Rahman. Phone: +880 1868 461577. Email: tec.habiburrahman@gmail.com. Services: phone, laptop, tablet, PC, camera, smartwatch repair. Prices: ৳400-৳5000. Reply in the same language the customer uses. Be concise (2-3 sentences).';
 
-    // Conversation history per session
-    let chatHistory = [];
-    const SYSTEM_PROMPT = `You are the AI customer support assistant for "Habib iFix" — a professional gadget repair shop located in Gachbaria, Chattogram, Bangladesh. 
-
-KEY INFO:
-- Owner: Habibur Rahman
-- Phone: +880 1868 461577
-- Email: tec.habiburrahman@gmail.com
-- Services: Mobile phone repair, laptop repair, tablet repair, desktop PC, camera repair, smartwatch repair
-- Price range: ৳400 - ৳5000 depending on service
-- Most repairs done same day
-- Uses genuine parts with warranty
-- Website: habibifix.com
-
-RULES:
-- Always respond in the SAME language the customer uses (Bengali/Bangla or English)
-- Be warm, professional, and concise (2-4 sentences max)
-- If asked about pricing, give estimates and suggest calling for exact quote
-- If asked about location, mention Gachbaria, Chattogram
-- Never make up information you don't have
-- Always encourage them to call or visit for complex issues`;
-
-    window.sendAiMessage = async function(){
-      const input=document.getElementById('ai-chat-input');
-      const text=input.value.trim();
-      if(!text)return;
-      const body=document.getElementById('ai-chat-body');
-
-      // User message UI
-      body.innerHTML+=`<div class="flex gap-2 w-max max-w-[85%] self-end"><div class="bg-gradient-to-r from-cyan-500 to-violet-600 text-[13px] text-white p-3 rounded-2xl rounded-br-none shadow-md leading-relaxed border border-cyan-500/30">${escHtml(text)}</div></div>`;
-      input.value='';body.scrollTop=body.scrollHeight;
-
-      // Typing indicator
-      const tid='typing-'+Date.now();
-      body.innerHTML+=`<div id="${tid}" class="flex gap-2 w-max max-w-[85%] mt-1"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 items-center"><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.15s"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.3s"></div></div></div>`;
+    window.sendAiMessage=async function(){
+      var inp=document.getElementById('ai-chat-input'),txt=inp.value.trim();if(!txt)return;
+      var body=document.getElementById('ai-chat-body');
+      body.innerHTML+='<div class="flex gap-2 w-max max-w-[85%] self-end"><div class="bg-gradient-to-r from-cyan-500 to-violet-600 text-[13px] text-white p-3 rounded-2xl rounded-br-none shadow-md leading-relaxed border border-cyan-500/30">'+esc(txt)+'</div></div>';
+      inp.value='';body.scrollTop=body.scrollHeight;
+      var tid='t'+Date.now();
+      body.innerHTML+='<div id="'+tid+'" class="flex gap-2 w-max max-w-[85%] mt-1"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 p-3 rounded-2xl rounded-bl-none shadow-sm flex gap-1.5 items-center"><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.15s"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.3s"></div></div></div>';
       body.scrollTop=body.scrollHeight;
-
-      // Add to history
-      chatHistory.push({role:"user",content:text});
-
-      // Save customer message to Firebase for admin to review
-      saveChatToFirebase(text, null, 'pending');
-
+      chatHistory.push({role:"user",content:txt});
+      saveChat(txt,null,'pending');
       try{
-        // Build messages array with system prompt + history (last 10 messages for context)
-        const messages = [{role:"system",content:SYSTEM_PROMPT}];
-        const recentHistory = chatHistory.slice(-10);
-        recentHistory.forEach(m => messages.push(m));
-
-        const response = await fetch(QWEN_ENDPOINT, {
-          method:'POST',
-          headers:{'Content-Type':'application/json','Authorization':'Bearer '+QWEN_API_KEY},
-          body:JSON.stringify({model:QWEN_MODEL,messages:messages,max_tokens:300,temperature:0.7})
-        });
-
-        const data = await response.json();
-        let reply = "দুঃখিত, এখন উত্তর দিতে পারছি না। অনুগ্রহ করে কল করুন: +880 1868 461577";
-
-        if(data.choices && data.choices[0] && data.choices[0].message){
-          reply = data.choices[0].message.content;
-        } else if(data.error){
-          console.error("Qwen API error:", data.error);
-          // Fallback: try Gemini as backup
-          reply = await fallbackGemini(text);
-        }
-
-        // Add AI reply to history
+        var msgs=[{role:"system",content:SYSTEM_PROMPT}].concat(chatHistory.slice(-10));
+        var r=await fetch(QWEN_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+QWEN_KEY},body:JSON.stringify({model:"qwen-turbo",messages:msgs,max_tokens:300,temperature:0.7})});
+        var d=await r.json(),reply="দুঃখিত, এখন উত্তর দিতে পারছি না। কল করুন: +880 1868 461577";
+        if(d.choices&&d.choices[0])reply=d.choices[0].message.content;
+        else reply=await fallbackGemini(txt);
         chatHistory.push({role:"assistant",content:reply});
-
-        // Remove typing, show reply
         document.getElementById(tid)?.remove();
-        body.innerHTML+=`<div class="flex gap-2 w-max max-w-[85%] mt-1"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">${fmtReply(reply)}</div></div>`;
-        body.scrollTop=body.scrollHeight;
-
-        // Save AI reply to Firebase
-        saveChatToFirebase(text, reply, 'completed');
-
-      }catch(error){
-        console.error("AI Error:",error);
+        body.innerHTML+='<div class="flex gap-2 w-max max-w-[85%] mt-1"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">'+fmt(reply)+'</div></div>';
+        saveChat(txt,reply,'completed');
+      }catch(e){
         document.getElementById(tid)?.remove();
-        
-        // Try Gemini fallback
-        try{
-          const fallbackReply = await fallbackGemini(text);
-          chatHistory.push({role:"assistant",content:fallbackReply});
-          body.innerHTML+=`<div class="flex gap-2 w-max max-w-[85%] mt-1"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">${fmtReply(fallbackReply)}</div></div>`;
-          saveChatToFirebase(text, fallbackReply, 'completed_fallback');
-        }catch(e2){
-          body.innerHTML+=`<div class="flex gap-2 w-max max-w-[85%] mt-1"><div class="bg-red-500/10 border border-red-500/20 text-[13px] text-red-400 p-3 rounded-2xl">Connection error. Please call us: +880 1868 461577</div></div>`;
-          saveChatToFirebase(text, 'ERROR: '+error.message, 'failed');
-        }
-        body.scrollTop=body.scrollHeight;
+        try{var fr=await fallbackGemini(txt);chatHistory.push({role:"assistant",content:fr});body.innerHTML+='<div class="flex gap-2 w-max max-w-[85%] mt-1"><div class="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0 mt-auto text-xs">🤖</div><div class="bg-white/5 border border-white/10 text-[13px] text-slate-200 p-3 rounded-2xl rounded-bl-none shadow-sm leading-relaxed">'+fmt(fr)+'</div></div>';saveChat(txt,fr,'fallback');}
+        catch(e2){body.innerHTML+='<div class="flex gap-2 w-max max-w-[85%] mt-1"><div class="bg-red-500/10 border border-red-500/20 text-[13px] text-red-400 p-3 rounded-2xl">Connection error. Call: +880 1868 461577</div></div>';saveChat(txt,'ERROR','failed');}
       }
+      body.scrollTop=body.scrollHeight;
     };
 
-    // Gemini fallback if Qwen fails
-    async function fallbackGemini(userText){
-      const GEMINI_KEY="AQ.Ab8RN6J2Wk-LWVzBky-5GEMuPxZD2SP0fVFaH_hJ6c0Np9mYWA";
-      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:SYSTEM_PROMPT+"\n\nCustomer message: "+userText}]}]})});
-      const d=await r.json();
-      if(d.candidates&&d.candidates[0].content.parts[0].text)return d.candidates[0].content.parts[0].text;
-      throw new Error("Gemini fallback failed");
-    }
+    async function fallbackGemini(t){var k="AQ.Ab8RN6J2Wk-LWVzBky-5GEMuPxZD2SP0fVFaH_hJ6c0Np9mYWA";var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:SYSTEM_PROMPT+'\n\nCustomer: '+t}]}]})});var d=await r.json();if(d.candidates&&d.candidates[0].content.parts[0].text)return d.candidates[0].content.parts[0].text;throw new Error('fail');}
 
-    // Save chat to Firebase for admin panel
-    async function saveChatToFirebase(customerMsg, aiReply, status){
-      try{
-        await addDoc(collection(db,"aiChatLogs"),{
-          customerMessage:customerMsg,
-          aiReply:aiReply||'',
-          status:status,
-          timestamp:serverTimestamp(),
-          userAgent:navigator.userAgent,
-          page:'index.html',
-          userId:window._currentUser?window._currentUser.uid:'anonymous',
-          userEmail:window._currentUser?window._currentUser.email:'anonymous'
-        });
-      }catch(e){console.log("Chat log save error:",e);}
-    }
+    async function saveChat(msg,reply,status){try{await addDoc(collection(db,"aiChatLogs"),{customerMessage:msg,aiReply:reply||'',status:status,timestamp:serverTimestamp(),userAgent:navigator.userAgent,page:'index.html',userId:window._currentUser?window._currentUser.uid:'anonymous',userEmail:window._currentUser?window._currentUser.email:'anonymous'});}catch(e){}}
 
-    function escHtml(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-    function fmtReply(t){return t.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+    import{addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+    function fmt(t){return t.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
   </script>
 </body>
 </html>

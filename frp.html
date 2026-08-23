@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Open FRP - Mobile Tech 2025</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f3f4f6; }
+        .copy-btn { transition: all 0.2s; }
+        .copy-btn:active { transform: scale(0.95); }
+        /* Custom scrollbar for better look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen pb-20">
+
+    <!-- Header Section -->
+    <div class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+            <h1 class="text-lg font-bold text-gray-800 truncate">Direct Open FRP  Mobile Tech 2025</h1>
+            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2">Mobile phone accessories</span>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-3xl mx-auto px-4 py-6 space-y-3">
+
+        <!-- 1. Open Settings -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwbQbDzJU3H8rID7WOJ0KhHJgXTJEtYI4ofLsB3u4IzaNSqZp9tdKaIsFCdN9l2CsT-zSBHIUyUvzDCoStlTxg22jNT175GzBgR-TSlx6qSr3tmDpMkn4nHUXu4LGom2qDVwSfA8zqnWGw6bMatZrSxQQtaHc9c7CLYlY1XTekMbpFhuowsvXZ0pmzKw/s16000/android-hidden-settings.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.android.settings/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Settings</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.android.settings/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 2. Alliance Shield Galaxy Store -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLTd-7ByzPQogZKi1zX9MViT4aoUpiUkzrNfTb2KOgMp5hOghwk7Ihr6kpXvWSZiYSYaIQwyd1_yHMJCf2JD5bOKuxSsBIJdV5oizP8v-lvRfLsnIogIUKRskMa8J9btxc7XI56dKRTgkn5Nhe-eEDI3rwUAOg2In9o4t-ZiIIRdt1LBskfPwaFK1KaQ/s16000/alliance-shield.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="https://apps.samsung.com/appquery/appDetail.as?appId=com.rrivenllc.shieldx" target="_blank" class="text-blue-600 font-bold text-base hover:underline truncate">Alliance Shield Galaxy Store</a>
+            </div>
+            <button onclick="copyToClipboard('https://apps.samsung.com/appquery/appDetail.as?appId=com.rrivenllc.shieldx', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 3. SET Screen Lock -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgslbIXTvh4a277hZLraylMzhRMSaDckn0S1hs5DfVsOeFQMt-mNf_1hrSsnL8souDTv6fgsqUD1dkIscYq4y9tQ9zV9oOPzSiilDQoKOY3F0oQgOuwvEF0fgVXBd-g3N7cw4a8dG0fOq-BnWxRbA0x6k8vd0rj__3Y0oy7i6rNuzNDnycT37fGayNszQ/s16000/screen-smartlock.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.google.android.gms/#Intent;scheme=promote_smartlock_scheme;end" class="text-blue-600 font-bold text-base hover:underline truncate">SET Screen Lock</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.google.android.gms/#Intent;scheme=promote_smartlock_scheme;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 4. Open Galaxy Store -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrt0NkXNewfuYWtZboqEudVgT12XQWJG47Da5yfW0VS8GELr0GKY68vHcGJeEv1chatpAs5cMjq0cQVzhA6QCBaZIfPp3CCrqYXjYr9CmHdbWESI7EHfgAT4w45OG9B_eu5sXqzdn9cPBsyyjfP2WcNK5MlcuCeKK6QmZ7ixUqbEeCZauaxlpAOVWbAQ/s16000/galaxy-store.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.sec.android.app.samsungapps/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Galaxy Store</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.sec.android.app.samsungapps/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 5. Android Hidden Galaxy Store -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhtHvZeHDGwghatuT7lS7pW-gm7iZjdCEHvcwS1L4x0BsghdVCp5Ui0WBCTUOS0-hY-CsNy5qMIn-dgLMaQLgSApl4XSoaslA_ty5sZX1xS-XNfSiuvWzpqLygjrHawZfEm0tUdQLVRGURDSEm06589LzIAz4Sp-SmvpAFkomSryZ5tsDb6P3lo2QrBdg/s16000/android-hidden-settings.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="https://apps.samsung.com/appquery/appDetail.as?appId=com.jami.tool.hiddensetting.other" target="_blank" class="text-blue-600 font-bold text-base hover:underline truncate">Android Hidden Galaxy Store</a>
+            </div>
+            <button onclick="copyToClipboard('https://apps.samsung.com/appquery/appDetail.as?appId=com.jami.tool.hiddensetting.other', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 6. Files Shortcut (Galaxy Store) -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaUsuSRY6xEZS1Vy3YamknQZKXHfBMih_rM8_qChZ13J3U0q3PCzySjhetknvI_lyFKEeCR_ZyBY2hpatZhXFy1fPYLBEf66b2WpqFkobSO_s8DqhR0-nDmjZd9D97yp8qKlmKKiGrZdYUmtxJrfyRYJLn6LgwPyyIlEz2MSt4EOQnCVljz75aqfMWRQ/s16000/samsung-my-file.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="https://galaxy.store/files1" target="_blank" class="text-blue-600 font-bold text-base hover:underline truncate">Files Shortcut (Galaxy Store)</a>
+            </div>
+            <button onclick="copyToClipboard('https://galaxy.store/files1', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 7. S9 Launcher OS13 -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioUwKanAOAGu-xXtZnFFTgyqzATxlZpbFvakv3wdQfFMwJ1vj4Lpa-F4IEXOtsQ__N7rmznP0yNfnGbjJkRmDVsW4HIUxYZAvysMNIrX7CS85-f-BfOLACDSUFvcH3_jv3pK-8na_S74c2fRtWsl9RyWO9ZbMNrHKt3Lhj640Oou_UOIrVaZbFAKZPUA/s16000/s9-launcher.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="https://apps.samsung.com/appquery/appDetail.as?appId=com.launcher.os.launcher" target="_blank" class="text-blue-600 font-bold text-base hover:underline truncate">S9 Launcher OS13 (Galaxy Store)</a>
+            </div>
+            <button onclick="copyToClipboard('https://apps.samsung.com/appquery/appDetail.as?appId=com.launcher.os.launcher', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 8. Open Smart Switch -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4imcp8KcyCwiabaY_VEYBvN-Dani2L65fUy7SMajOaN-xl2IvY6xZy2TAu5PEYRzfNV3LPEaQ_aXE04xojF-saSUGiWxmZlL4CdcboC3WuWv7MKegVuEs8GgaK_-21QqS9u4vUphBDr_cRYVAlitAI2FdGc-2wCbQXMVfhFtDw52dYGROXkujtkGPxw/s16000/smart-switch.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.sec.android.easyMover/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Smart Switch</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.sec.android.easyMover/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 9. Open Alliance Shield -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidZSobi-tb7535ZfUeReJlmzj4rCvqVG4yPs0L0u88n7aR1skc-SzlxFMh3ZozDMsDoo-QwHcRDMxD-tLVuWxbJCkSJUDKEguYKWI-hNcjYBIqx104QRPr2B4ouaalEgmqtug2LsW982MhH3jTU9OhUPSBw266Erj65MTDFc8GO-TwKyUsw1ypbbNPbw/s16000/alliance-shield.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.rrivenllc.shieldx/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Alliance Shield</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.rrivenllc.shieldx/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 10. Open YouTube -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcpfeVRIlYpRCc2pJmFzws6LwKZ0XwSp-47I2OVLgA--3pGr63DeuOizeoDN2g5KWjNH1dcPsKORnKgGi17lC5bGkX2-Z-b0I4klFc9mqUinUqT7sQQW4oQ1tJR4wgzXLzZrzRBzlYx6ft8iWQAqZFpPW-45qK5r_KaWxZLWFP19f2xtth5WQ-ZujqXg/s16000/youtube.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.google.android.youtube/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open YouTube</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.google.android.youtube/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 11. Open Phone-Dialer -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZ7ddsTP8HBWJsmqBzIatFMg9rf6MPpOMGMkSmRuqcMUDNtuAdiP-lrOVd3i9ritM4rgo5iW9-OjxjcRKlSzDodD6-Pd13VFrmgNXsmsO8r-8tOtBsY_S1ecXMAT1N6ra9tZmG_vCU-QQn2xm_vDYVQWTmv1oqkwTq7v2unK_3g9m59HE-FQkCA6xG8A/s16000/dialer-call.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.samsung.android.dialer/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Phone-Dialer</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.samsung.android.dialer/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 12. Open Google Assistant -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjF9BFhUalgmowcou5fF6e77SEeFS3hLPSuOg1asmPolacePf9JzpaJVmDq9Joyiadr133iGa7UbhwjDLbOFQyzzXa0tZ0lCnQF-JqBbl73MSuQVJbIgpKKcOtXpBojG_9yPxQTb22Cl8txq9vFSGfOGUeHYLBHy7S-zaVJSSbvEAJlODYAC4j4mkJqMg/s16000/google-assistant.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.google.android.apps.googleassistant/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Google Assistant</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.google.android.apps.googleassistant/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 13. Open Google Maps -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYMu3walpdmXQGQ1hqlxLPIwNoFfrZYwsw7dXT1psG6OBp8mtwqDOPUpj2ASYe0SE4RpL7ygKCSlFU5jsaHjCmwDB47_7B7DM-VyDa6xJiguDK_uTahNJREo8NjzCH7hUZ9TL1akHG9JovlMFtuS7ZnmlRhVDYjS4xQ9MaDjz4UPDCA9wQijgDTC785w/s16000/google-map.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.google.android.apps.maps/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Google Maps</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.google.android.apps.maps/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 14. Open Google Search -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.google.android.googlequicksearchbox/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Google Search</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.google.android.googlequicksearchbox/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 15. Open Home Launcher -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.android.launcher3.Launcher/#Intent;scheme=android-app;package=com.sec.android.launches;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Home Launcher</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.android.launcher3.Launcher/#Intent;scheme=android-app;package=com.sec.android.launches;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 16. Open USB Settings -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjh3adjOFTSKPHlVyzdM1HbNU6gDfBeKyGH5_bM3RuH7AM_XrncCDSemAjaBr0t0Jiug0xIGfB8qtyFo5VMNvjjiAYGWNavDVv-QwckAnr51H_8PDDowmmxQu4bEUlQ2qNYUM15G0zGxQ-4CwsYBY8P_kOkmPQ2W1Hde9u_H7VEcsp6bxESljL_KT3DNw/s16000/usb-setting.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.sec.android.app.servicemodeapp/#Intent;scheme=promote_USBSettings_scheme;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open USB Settings</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.sec.android.app.servicemodeapp/#Intent;scheme=promote_USBSettings_scheme;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 17. Open MyFiles App -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiJ1wD6dsw_GboGQAcaBV_E0od_2xl-rOTUYN_aqArm3s6H3YWOIX23q9JXMzpTQnpuv3ebmrIerRc2jMHrtym1k5K5z2oZeXVE0DkMnCNmtNg-YOY3tMSoHIhA_Hrnqwk4h9CZxRghMsLKWv6QzCo8cvtBl_gwfBP_-V6YKICixxzAAY9iGQv-kOIXyw/s16000/samsung-my-file.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.sec.android.app.myfiles/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open MyFiles App</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.sec.android.app.myfiles/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 18. XShare Galaxy Store -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhufcn3sYS-UJf94NnE6osUIAa7b0yxCv1EoVtXXl54Rwl7AiWWwPnpADZUQyzEogcVx-ma2JuxTJaz-mvNtN0TbIHJDVdB8Htq4M-SMqF3Lyvz-dWK2PEzb-Z_J2OEPiZZoIxiwQcHvVRAU1szqAAEiHknldDL0GrEJRp347mt72b2GVTuWKoOluoayg/w31-h28/shareit-logo-AA50CB2509-seeklogo.com.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="https://apps.samsung.com/appquery/appDetail.as?appId=com.infinix.xshare" target="_blank" class="text-blue-600 font-bold text-base hover:underline truncate">XShare Galaxy Store</a>
+            </div>
+            <button onclick="copyToClipboard('https://apps.samsung.com/appquery/appDetail.as?appId=com.infinix.xshare', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 19. Open Package Disabler -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZUlJ8Gy3-I3cGp9c8v6TSAYJ4rRNunOuZ8CFWGXcQ5Nt-4fb5rXnBaAVF_XYat9L4obAiNu_H9p3-tJ-YroEmTNGvu_21AG0znxbeMLp-1r771SsV2Vo6oZSeajijvT7R3jcxB_C-IqXYXbCvZeB5tJuRbASMhlX91WcwMToURMDgynrBFXLxfLQ6IA/w30-h29/icon.png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://iotapps.tabs.com.iotapplication/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Package Disabler</a>
+            </div>
+            <button onclick="copyToClipboard('intent://iotapps.tabs.com.iotapplication/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 20. Open Phone Clone Oppo -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.coloros.backuprestore/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Phone Clone Oppo</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.coloros.backuprestore/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 21. Open Xshare Mini Infinix & Tecno -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2lhxdVznhyuaDyHSxY5a6zO6V7jD_lehv_bRgiEqrIRVd8vtUFSTm60rBt2X79I9DKZ_0ZWTqRPopUbXTXIFIjRpSe_C6RVUrs3fZdw6IURY8QIjB7ILgTOTqVDpohmwO9uNZh2lfq0bOWiRgDMSNIoSHwuDBeKD0AAYOVikvXzfC_hO8znQBIFyf9Ah0/w34-h34/XShare_3.5.2.002_(352002)%20(1).png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.infinix.xshare/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open Xshare Mini Infinix & Tecno</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.infinix.xshare/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 22. Open EasyShare Vivo -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhR5t-sSRrOrv8qQjOpbTjiBEViw4BLc-M-K-Ex2K6UNN_dWMY2GHiJ1BAYqhMhKyQJt_a8or8r5NNzy0-dIa04EF-SQA9hlIJ3FAE0fiXmKhlKi2R0fxiARHx1iDlZZR5gZCM9NA1D271rAnVWW3MyLlBSoU75gt6W0THzIzGLL1y8cZBSyCrQ746aK4GC/w35-h35/EasyShare_5.9.8.5_Lite_(2023).png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.vivo.easyshare/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open EasyShare Vivo</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.vivo.easyshare/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 23. Open ShareMe Xiaomi -->
+        <div class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIpZwOWzhpD4LpdlOUdon8JXAwPfG59-8Auj8f_dm0lYbhVmf3e9vnjbbjkN4M27FyKzHIK_4diuiy3oUt-m2YgxMiYt5AAwPLK6IauIqV7cH1pD6FVNGNNz0gQxxXAw6Yqr8kYmPG9KxuVkupBUjD-mJFhYYRTQYLD6_lny4NluE4ot8HiIZibCrMgpIw/w35-h36/ShareMe_3.36.11_(33611).png" alt="Icon" class="w-8 h-8 object-contain shrink-0">
+                <a href="intent://com.xiaomi.midrop/#Intent;scheme=android-app;end" class="text-blue-600 font-bold text-base hover:underline truncate">Open ShareMe Xiaomi</a>
+            </div>
+            <button onclick="copyToClipboard('intent://com.xiaomi.midrop/#Intent;scheme=android-app;end', this)" class="copy-btn text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50" title="Copy Link">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t-2 border-dashed border-gray-300 my-6"></div>
+
+        <!-- APK Downloads Section -->
+        <h2 class="text-xl font-bold text-gray-800 mb-4">APK Downloads & Tools</h2>
+
+        <!-- Android 11&12 -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+            <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Android 11 & 12:</h3>
+            <ul class="space-y-3 text-sm">
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Package Disabler Pro.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1nTNxKMI9aeKdWy_8NVQaT_W1RiokgsNu" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/v5yl3i6s478tbr9/PackageDisabler.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1nTNxKMI9aeKdWy_8NVQaT_W1RiokgsNu', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Notification Bar Settings.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1uTSM8hk6FmuY7t_qfWw666Uxne4Giw9U" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/z9z644z3aai57m1/Bar_Settings.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1uTSM8hk6FmuY7t_qfWw666Uxne4Giw9U', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Android 12 Clear data not Supported XML Files</span>
+                    <div class="flex gap-2">
+                        <a href="https://www.mediafire.com/file/bypx0r8kpg4zwi8/Disable_PlayServices.xml/file" target="_blank" class="text-blue-600 hover:underline">Download XML</a>
+                        <button onclick="copyToClipboard('https://www.mediafire.com/file/bypx0r8kpg4zwi8/Disable_PlayServices.xml/file', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Google Services Android 12.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1vHGX8stTjSyy5OWegK1rlJrYE00eOajL" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/6yutsayz88y9u8t/Bypass+Frp+Mobile+Tech.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1vHGX8stTjSyy5OWegK1rlJrYE00eOajL', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Android 5/6/8/9/10 -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+            <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Android 5 / 6 / 8 / 9 / 10:</h3>
+            <ul class="space-y-3 text-sm">
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Android_5_GAM.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1ZCvO6iylyZOlSv34rMuAxjVs0WcxFUsj" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/n1vg2ip948ntq14/Android_5_GAM.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1ZCvO6iylyZOlSv34rMuAxjVs0WcxFUsj', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Android_6_GAM.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1wmVuZvfZGwdE3PbLAaZt0j07XX_pMXJC" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/8unqhw5sa2xvicm/Android_6_GAM.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1wmVuZvfZGwdE3PbLAaZt0j07XX_pMXJC', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Android_8-9-10_GAM.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1aBM6p1Fnad9qJnAM3Zf-rN96jvPVbV5z" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/70y9dxmu5t7sg9w/Android_8-9-10_GAM.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1aBM6p1Fnad9qJnAM3Zf-rN96jvPVbV5z', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">FRP_Bypass.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1ND-19Xve-Jh8-7xT-AcyDxCv5Q_x-ygu" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/66z2esegbgw18z1/FRP_Bypass.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1ND-19Xve-Jh8-7xT-AcyDxCv5Q_x-ygu', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">XSHARE INFINIX.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.usercontent.google.com/download?id=1aqTDDPPUR9XJLCqhWctgQZoGQREwQN1d&export=download&authuser=0" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/60nrn4f7tylywxj/xshare-3-7-0-001.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.usercontent.google.com/download?id=1aqTDDPPUR9XJLCqhWctgQZoGQREwQN1d&export=download&authuser=0', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Android 7 -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+            <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Android 7:</h3>
+            <ul class="space-y-3 text-sm">
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Google Services Android 7.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1vHGX8stTjSyy5OWegK1rlJrYE00eOajL" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/6yutsayz88y9u8t/Bypass+Frp+Mobile+Tech.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1vHGX8stTjSyy5OWegK1rlJrYE00eOajL', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Settings.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=17X7Vc5u6lsBYqcs__avl0hJWAlO3_c17" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/mtk4iv1qjfy7pbz/Setting.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=17X7Vc5u6lsBYqcs__avl0hJWAlO3_c17', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">QuickShortcutMaker.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?export=download&id=1AJ2IuN0QhidqrTAWZwYUgtkLlOQJ3KMM" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://mega.nz/file/Db4wCCZD#I3hmP7DEIR4Myt9yzpMjFNQ-AzoCcK0h_Cmb64CAdVY" class="text-blue-600 hover:underline">Mega</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?export=download&id=1AJ2IuN0QhidqrTAWZwYUgtkLlOQJ3KMM', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Miui 13/14 -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+            <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Miui 13 / 14:</h3>
+            <ul class="space-y-3 text-sm">
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Activity Manager.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?id=1py4MYYTn0tPpkYi46kh22xjDOAe_DMAq&export=download" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/qqjfgb43b1fdrpf/Activity+Manager.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?id=1py4MYYTn0tPpkYi46kh22xjDOAe_DMAq&export=download', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Apex Launcher.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/uc?id=1EmRdP9WHupsMOZQGKh3nyFo6SVAg1x_B&export=download" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/jv6pepselgch18y/Apex_Launcher.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/uc?id=1EmRdP9WHupsMOZQGKh3nyFo6SVAg1x_B&export=download', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span class="font-medium text-gray-600">Activity Launcher2.apk</span>
+                    <div class="flex gap-2">
+                        <a href="https://drive.google.com/u/0/uc?id=1o2zbUPpzY8RFo0hVgWhskfJVkEiF5tES&export=download" class="text-blue-600 hover:underline">Google Drive</a>
+                        <span class="text-cyan-500 font-bold">|</span>
+                        <a href="https://www.mediafire.com/file/jq5uuxmo2qtzebz/activity-launcher.apk/file" class="text-blue-600 hover:underline">Mediafire</a>
+                        <button onclick="copyToClipboard('https://drive.google.com/u/0/uc?id=1o2zbUPpzY8RFo0hVgWhskfJVkEiF5tES&export=download', this)" class="text-gray-400 hover:text-blue-600"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Useful Links -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+            <h3 class="font-bold text-gray-700 mb-3 border-b pb-2">Useful FRP Links:</h3>
+            <ul class="space-y-2 text-sm">
+                <li><a href="https://mobiletechfrp.blogspot.com/2022/12/g-st-samsung-unlock-frp-tool-android.html" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2"><i class="fa-solid fa-link text-xs"></i> *#0*# FRP All SAMSUNG</a></li>
+                <li><a href="https://mobiletechfrp.blogspot.com/2022/12/g-st-samsung-unlock-frp-tool-android.html" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2"><i class="fa-solid fa-link text-xs"></i> *#0*# FRP Not Working Fix Latest 2023</a></li>
+                <li><a href="https://mobiletechfrp.blogspot.com/2022/09/samsung-frp-tool-open-browser.html" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2"><i class="fa-solid fa-link text-xs"></i> Talkback Google Assistant Not Working Fix</a></li>
+                <li><a href="https://mobiletechfrp.blogspot.com/2022/10/all-samsung-galaxy-android-12-frp.html" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2"><i class="fa-solid fa-link text-xs"></i> Open Google Chrome Without a PC 11/12</a></li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center py-6 text-gray-500 text-sm">
+            <p>-----------------------------------------------</p>
+            <p class="font-bold mt-2">Mobile Tech 2025.</p>
+        </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50 text-sm">
+        Link copied to clipboard!
+    </div>
+
+    <script>
+        function copyToClipboard(text, btnElement) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Show toast
+                const toast = document.getElementById('toast');
+                toast.classList.remove('opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('opacity-0');
+                }, 2000);
+
+                // Change icon temporarily
+                const originalIcon = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-check text-green-500"></i>';
+                setTimeout(() => {
+                    btnElement.innerHTML = originalIcon;
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+                alert('Failed to copy link. Please copy manually.');
+            });
+        }
+    </script>
+</body>
+</html>

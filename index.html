@@ -28,7 +28,7 @@
     .img-hover-zoom{overflow:hidden;border-radius:24px}.img-hover-zoom img{transition:transform .7s cubic-bezier(.4,0,.2,1)}.img-hover-zoom:hover img{transform:scale(1.08)}
     .service-img-zoom{transition:transform .7s cubic-bezier(.4,0,.2,1)}.group:hover .service-img-zoom{transform:scale(1.1)}
 
-    /* Pill Nav - Agentic UI Style (Matching Image 16) */
+    /* Pill Nav - Agentic UI Style (Matching Image 16 & 17) */
     .pill-nav{
       background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(20px);
@@ -46,6 +46,9 @@
       color: #475569;
       transition: all .2s ease;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .nav-link:hover{color:#0f172a;background:rgba(0,0,0,.04)}
     .nav-link.active{color:#ffffff;background:#2563eb;font-weight: 600;}
@@ -54,7 +57,7 @@
     .auth-drop{position:absolute;top:100%;right:0;margin-top:12px;width:180px;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border:1px solid rgba(0,0,0,.1);border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,.1);opacity:0;visibility:hidden;transform:scale(.95);transition:all .2s ease;z-index:60;overflow:hidden}
     .auth-group:hover .auth-drop{opacity:1;visibility:visible;transform:scale(1)}
 
-    /* Mobile Bottom Navigation Bar (App Style) */
+    /* Mobile Bottom Navigation Bar (App Style - Like Image 17) */
     .mobile-bottom-nav {
       position: fixed;
       bottom: 20px;
@@ -69,7 +72,7 @@
       border-radius: 9999px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
       padding: 6px 8px;
       z-index: 50;
@@ -117,11 +120,11 @@
 
       <!-- Desktop Links -->
       <div class="hidden md:flex items-center gap-1 ml-2">
-        <a href="index.html" class="nav-link active">Home</a>
-        <a href="services.html" class="nav-link">Services</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="blog.html" class="nav-link">Blog</a>
-        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="services.html" class="nav-link"><i class="fa-solid fa-layer-group"></i> Services</a>
+        <a href="about.html" class="nav-link"><i class="fa-solid fa-user"></i> About</a>
+        <a href="blog.html" class="nav-link"><i class="fa-solid fa-newspaper"></i> Blog</a>
+        <a href="contact.html" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
       </div>
 
       <!-- Spacer for desktop layout -->
@@ -130,26 +133,11 @@
       <!-- Right Actions -->
       <div class="flex items-center gap-1 md:gap-2 ml-auto md:ml-0">
         
-        <!-- Services Button (Visible on all screens - Blue Pill) -->
-        <a href="services.html" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors shadow-sm whitespace-nowrap">
-          <i class="fa-solid fa-grid-2 text-xs"></i> <span class="hidden sm:inline">Services</span>
-        </a>
-
-        <!-- Cart Icon -->
-        <button class="w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:bg-gray-100 transition-colors hidden sm:flex">
-          <i class="fa-solid fa-cart-shopping text-sm"></i>
-        </button>
-
-        <!-- Dark Mode Toggle -->
-        <button class="w-9 h-9 rounded-full flex items-center justify-center text-slate-500 hover:bg-gray-100 transition-colors hidden sm:flex">
-          <i class="fa-regular fa-moon text-sm"></i>
-        </button>
-
         <!-- Login / Profile (Black Pill) -->
         <div id="authArea" class="auth-group relative ml-1">
           <!-- Login btn -->
           <a href="login.html?return=index.html" id="loginBtn" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-semibold transition-colors shadow-sm whitespace-nowrap">
-            Login
+            <i class="fa-solid fa-right-to-bracket"></i> Login
           </a>
           
           <!-- Avatar (shown when logged in) -->
@@ -229,9 +217,9 @@
       <div class="glass-panel rounded-[32px] p-6 md:p-8 shadow-xl border-t border-white/50 reveal">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 text-slate-700 divide-y sm:divide-y-0 lg:divide-x divide-gray-200">
           <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">⚙️</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Expert Repair</h3><p class="text-xs md:text-sm text-slate-500">Certified technicians</p></div></div>
-          <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600"></div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Genuine Parts</h3><p class="text-xs md:text-sm text-slate-500">100% Original</p></div></div>
+          <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">🔧</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Genuine Parts</h3><p class="text-xs md:text-sm text-slate-500">100% Original</p></div></div>
           <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">💾</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Data Safety</h3><p class="text-xs md:text-sm text-slate-500">Secure recovery</p></div></div>
-          <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">🛡️</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Warranty</h3><p class="text-xs md:text-sm text-slate-500">Service guarantee</p></div></div>
+          <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">️</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Warranty</h3><p class="text-xs md:text-sm text-slate-500">Service guarantee</p></div></div>
         </div>
       </div>
     </section>
@@ -288,11 +276,11 @@
         <a href="services.html" class="bg-white hover:bg-gray-50 border border-gray-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm hover:-translate-y-0.5 transition-all shadow-sm">View All →</a>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal bg-white" onclick="openModal('Mobile Phone Repair','We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage.','📱')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">📱</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Mobile Phone</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Professional mobile repair for all major brands.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
-        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.05s bg-white" onclick="openModal('Tablet Repair','From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates.','📋')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl"></div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Tablet Repair</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Expert tablet diagnosis and quick reliable repairs.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
-        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.1s bg-white" onclick="openModal('Laptop Repair','We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes.','💻')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">💻</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Laptop Care</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Hardware and software solutions for your laptops.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal bg-white" onclick="openModal('Mobile Phone Repair','We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage.','')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">📱</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Mobile Phone</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Professional mobile repair for all major brands.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.05s bg-white" onclick="openModal('Tablet Repair','From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates.','')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl"></div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Tablet Repair</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Expert tablet diagnosis and quick reliable repairs.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.1s bg-white" onclick="openModal('Laptop Repair','We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes.','')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">💻</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Laptop Care</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Hardware and software solutions for your laptops.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
         <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.15s bg-white" onclick="openModal('Desktop PC','Custom PC builds, hardware upgrades, SSD installation, and deep cleaning.','🖥️')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">️</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Desktop PC</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Full desktop maintenance and upgrading services.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
-        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.2s bg-white" onclick="openModal('Camera Repair','Professional cleaning, lens fixing, and sensor calibration for DSLR and Mirrorless cameras.','')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">📷</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">DSLR Camera</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Fixing lenses, sensors, and internal hardware.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.2s bg-white" onclick="openModal('Camera Repair','Professional cleaning, lens fixing, and sensor calibration for DSLR and Mirrorless cameras.','')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl"></div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">DSLR Camera</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Fixing lenses, sensors, and internal hardware.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
         <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.25s bg-white" onclick="openModal('Smart Wearables','Apple Watch, Galaxy Watch screen replacement and battery fixing services.','')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">⌚</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Smart Wearables</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Smartwatch repair and maintenance experts.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
       </div>
     </section>
@@ -433,7 +421,7 @@
     </button>
   </footer>
 
-  <!-- MOBILE BOTTOM NAVIGATION BAR (App Style - Like Image 16) -->
+  <!-- MOBILE BOTTOM NAVIGATION BAR (App Style - Like Image 17) -->
   <nav class="mobile-bottom-nav md:hidden">
     <a href="index.html" class="bottom-nav-item active">
       <i class="fa-solid fa-house"></i>
@@ -477,7 +465,7 @@
         <button onclick="toggleChat()" class="text-white/70 hover:text-white bg-white/10 rounded-full w-7 h-7 flex items-center justify-center text-xs">✕</button>
       </div>
       <div id="chatBody" class="flex-grow p-3 overflow-y-auto flex flex-col gap-2.5 bg-gray-50" style="scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent">
-        <div class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]">🤖</div><div class="bg-white border border-gray-100 text-[12px] text-slate-600 p-2.5 rounded-2xl rounded-bl-none leading-relaxed shadow-sm">Hello! Welcome to <b>Habib iFix</b> <br>Ask me anything about our repair services!</div></div>
+        <div class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]"></div><div class="bg-white border border-gray-100 text-[12px] text-slate-600 p-2.5 rounded-2xl rounded-bl-none leading-relaxed shadow-sm">Hello! Welcome to <b>Habib iFix</b> <br>Ask me anything about our repair services!</div></div>
       </div>
       <div class="p-2 border-t border-gray-100 bg-white flex gap-2 items-center">
         <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-slate-700 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" onkeypress="if(event.key==='Enter')sendMsg()">
@@ -600,7 +588,7 @@
       body.innerHTML+='<div class="flex gap-2 max-w-[85%] self-end"><div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-[12px] text-white p-2.5 rounded-2xl rounded-br-none leading-relaxed border border-blue-500/30">'+esc(txt)+'</div></div>';
       inp.value='';body.scrollTop=body.scrollHeight;
       var tid='t'+Date.now();
-      body.innerHTML+='<div id="'+tid+'" class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]">🤖</div><div class="bg-white border border-gray-100 p-2.5 rounded-2xl rounded-bl-none flex gap-1 items-center shadow-sm"><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.15s"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.3s"></span></div></div>';
+      body.innerHTML+='<div id="'+tid+'" class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]"></div><div class="bg-white border border-gray-100 p-2.5 rounded-2xl rounded-bl-none flex gap-1 items-center shadow-sm"><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.15s"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.3s"></span></div></div>';
       body.scrollTop=body.scrollHeight;
       history.push({role:'user',parts:[{text:txt}]});
       saveLog(txt,null,'pending');

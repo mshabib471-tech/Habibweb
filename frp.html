@@ -3,525 +3,1067 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRP Bypass 2026 APK - Latest Frp Bypass</title>
+    <title>FRP Bypass 2027 - iOS Glass UI</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Google Fonts: Inter (Clean & Modern) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: Arial, sans-serif; background-color: #ffffff; color: #333; }
-        
-        /* Custom Styles to match reference image exactly */
-        .list-item-link { 
-            color: #007bff; 
-            font-weight: bold; 
-            text-decoration: none; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px; 
-            font-size: 15px;
+        /* Base Settings */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa; /* Light base */
+            color: #1a1a1a;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        .list-item-link:hover { text-decoration: underline; }
+
+        /* Ultra Fast Scroll Behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            html {
+                scroll-behavior: auto; /* Instant feel on modern browsers */
+            }
+        }
+
+        /* ================= BACKGROUND (White/Pink Blur) ================= */
+        .ios-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #ffffff 0%, #fff0f3 50%, #ffe4e6 100%);
+        }
         
-        .download-btn {
-            background-color: #2e9e6f;
+        /* Animated Mesh Gradients (Pink/White/Coral) */
+        .mesh-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px); /* Slightly tighter blur for speed perception */
+            opacity: 0.7;
+            animation: float 12s infinite ease-in-out alternate;
+            will-change: transform; /* Performance optimization */
+        }
+        .blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: #fecdd3; animation-delay: 0s; } /* Pink-200 */
+        .blob-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: #fda4af; animation-delay: -4s; } /* Rose-300 */
+        .blob-3 { top: 40%; left: 30%; width: 50vw; height: 50vw; background: #ffffff; animation-delay: -8s; } /* White */
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(3%, 5%) scale(1.05); } /* Reduced movement for performance */
+        }
+
+        /* Wait Motion Glassmorphism (Light Version) */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 
+                0 8px 32px 0 rgba(244, 114, 182, 0.1), /* Soft pink shadow */
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #fda4af;
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 10px 30px -5px rgba(244, 114, 182, 0.15);
+        }
+
+        /* iOS Squircle Icons */
+        .ios-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+            border: 1px solid rgba(255,255,255,1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .ios-icon-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Custom Download Button (Coral/Pink Gradient) */
+        .ios-btn-download {
+            background: linear-gradient(135deg, #fb7185, #f43f5e); /* Rose gradient */
             color: white;
-            padding: 4px 12px;
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: bold;
-            margin-left: 10px;
+            font-weight: 600;
             text-decoration: none;
-            display: inline-block;
-            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        .download-btn:hover { background-color: #248a5f; }
+        .ios-btn-download:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(244, 63, 94, 0.5);
+            filter: brightness(1.1);
+        }
+        .ios-btn-download i { font-size: 10px; }
 
-        .custom-icon { width: 20px; height: 20px; object-fit: contain; vertical-align: middle; }
+        /* Header & Footer Glass (Light) */
+        .site-header, .site-footer {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255,255,255,0.6);
+        }
+        .site-footer { border-top: 1px solid rgba(255,255,255,0.6); border-bottom: none; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(244, 114, 182, 0.3); border-radius: 10px; }
         
-        /* Header/Footer overrides to match standard site look */
-        .site-header { border-bottom: 1px solid #eee; background: #fff; }
-        .site-footer { border-top: 1px solid #eee; background: #fff; color: #666; font-size: 14px; }
+        /* List Item Link */
+        .list-item-link {
+            color: #374151;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .list-item-link:hover { color: #e11d48; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col relative">
 
-    <!-- ================= HEADER (Matching Index) ================= -->
-    <header class="site-header sticky top-0 z-50 shadow-sm">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Animated Background -->
+    <div class="ios-bg">
+        <div class="mesh-blob blob-1"></div>
+        <div class="mesh-blob blob-2"></div>
+        <div class="mesh-blob blob-3"></div>
+    </div>
+
+    <!-- ================= HEADER ================= -->
+    <header class="site-header sticky top-0 z-50 w-full">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-10 h-10 rounded-lg">
-                <span class="font-bold text-xl text-gray-800">Habib<span class="text-blue-600">iFix</span></span>
+                <div class="w-10 h-10 rounded-xl overflow-hidden glass-card p-1">
+                    <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover rounded-lg">
+                </div>
+                <span class="font-bold text-xl tracking-tight text-gray-800">Habib<span class="text-rose-500">iFix</span></span>
             </div>
-            <nav class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
-                <a href="index.html" class="hover:text-blue-600">Home</a>
-                <a href="about.html" class="hover:text-blue-600">About</a>
-                <a href="services.html" class="hover:text-blue-600">Services</a>
-                <a href="blog.html" class="hover:text-blue-600">Blog</a>
-                <a href="contact.html" class="hover:text-blue-600">Contact</a>
+            <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-500">
+                <a href="index.html" class="hover:text-rose-500 transition-colors">Home</a>
+                <a href="about.html" class="hover:text-rose-500 transition-colors">About</a>
+                <a href="services.html" class="hover:text-rose-500 transition-colors">Services</a>
+                <a href="blog.html" class="hover:text-rose-500 transition-colors">Blog</a>
+                <a href="contact.html" class="hover:text-rose-500 transition-colors">Contact</a>
             </nav>
             <button class="md:hidden text-gray-600 text-xl"><i class="fa-solid fa-bars"></i></button>
         </div>
     </header>
 
     <!-- ================= MAIN CONTENT ================= -->
-    <main class="flex-grow max-w-3xl mx-auto w-full px-4 py-8">
+    <main class="flex-grow max-w-3xl mx-auto w-full px-4 py-10 z-10">
         
-        <!-- Headline Hero Line -->
-        <h1 class="text-2xl font-bold mb-2 uppercase tracking-wide text-gray-800">FRP BYPASS</h1>
-        <h2 class="text-xl font-bold mb-4">FRP bypass apk file <a href="#" class="text-blue-600 hover:underline">Download</a></h2>
-        
-        <p class="text-gray-600 mb-6 text-sm leading-relaxed">
-            Below is the APK file to bypass the FRP of any phone. You can download them with one click and bypass the frp of the phone.
-        </p>
+        <!-- Hero Section -->
+        <div class="glass-panel rounded-[32px] p-8 mb-8 text-center relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-br from-rose-100/50 to-pink-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <h1 class="text-xs font-bold uppercase tracking-[0.2em] text-rose-500 mb-2">FRP BYPASS 2027</h1>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">FRP bypass apk file <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-400">Download</span></h2>
+            <p class="text-gray-500 text-sm leading-relaxed max-w-xl mx-auto">
+                Below is the APK file to bypass the FRP of any phone. You can download them with one click and bypass the frp of the phone.
+            </p>
+        </div>
 
         <!-- List Container -->
-        <ul class="space-y-4 text-sm">
+        <ul class="space-y-3">
             
-            <!-- INTENT LINKS (OPEN ICONS) -->
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrt0NkXNewfuYWtZboqEudVgT12XQWJG47Da5yfW0VS8GELr0GKY68vHcGJeEv1chatpAs5cMjq0cQVzhA6QCBaZIfPp3CCrqYXjYr9CmHdbWESI7EHfgAT4w45OG9B_eu5sXqzdn9cPBsyyjfP2WcNK5MlcuCeKK6QmZ7ixUqbEeCZauaxlpAOVWbAQ/s16000/galaxy-store.png" class="custom-icon">
-                <a href="intent://com.sec.android.app.samsungapps/#Intent;scheme=android-app;end" class="list-item-link">Galaxy Store</a>
+            <!-- INTENT LINKS (iOS ICON BOXES) -->
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrt0NkXNewfuYWtZboqEudVgT12XQWJG47Da5yfW0VS8GELr0GKY68vHcGJeEv1chatpAs5cMjq0cQVzhA6QCBaZIfPp3CCrqYXjYr9CmHdbWESI7EHfgAT4w45OG9B_eu5sXqzdn9cPBsyyjfP2WcNK5MlcuCeKK6QmZ7ixUqbEeCZauaxlpAOVWbAQ/s16000/galaxy-store.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.sec.android.app.samsungapps/#Intent;scheme=android-app;end" class="list-item-link text-base">Galaxy Store</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" class="custom-icon">
-                <a href="intent://com.google.android.googlequicksearchbox/#Intent;scheme=android-app;end" class="list-item-link">Google Search app</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.google.android.googlequicksearchbox/#Intent;scheme=android-app;end" class="list-item-link text-base">Google Search app</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwbQbDzJU3H8rID7WOJ0KhHJgXTJEtYI4ofLsB3u4IzaNSqZp9tdKaIsFCdN9l2CsT-zSBHIUyUvzDCoStlTxg22jNT175GzBgR-TSlx6qSr3tmDpMkn4nHUXu4LGom2qDVwSfA8zqnWGw6bMatZrSxQQtaHc9c7CLYlY1XTekMbpFhuowsvXZ0pmzKw/s16000/android-hidden-settings.png" class="custom-icon">
-                <a href="intent://com.android.settings/#Intent;scheme=android-app;end" class="list-item-link">Settings</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwbQbDzJU3H8rID7WOJ0KhHJgXTJEtYI4ofLsB3u4IzaNSqZp9tdKaIsFCdN9l2CsT-zSBHIUyUvzDCoStlTxg22jNT175GzBgR-TSlx6qSr3tmDpMkn4nHUXu4LGom2qDVwSfA8zqnWGw6bMatZrSxQQtaHc9c7CLYlY1XTekMbpFhuowsvXZ0pmzKw/s16000/android-hidden-settings.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.android.settings/#Intent;scheme=android-app;end" class="list-item-link text-base">Settings</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgslbIXTvh4a277hZLraylMzhRMSaDckn0S1hs5DfVsOeFQMt-mNf_1hrSsnL8souDTv6fgsqUD1dkIscYq4y9tQ9zV9oOPzSiilDQoKOY3F0oQgOuwvEF0fgVXBd-g3N7cw4a8dG0fOq-BnWxRbA0x6k8vd0rj__3Y0oy7i6rNuzNDnycT37fGayNszQ/s16000/screen-smartlock.png" class="custom-icon">
-                <a href="intent://com.google.android.gms/#Intent;scheme=promote_smartlock_scheme;end" class="list-item-link">Set Lock Screen</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgslbIXTvh4a277hZLraylMzhRMSaDckn0S1hs5DfVsOeFQMt-mNf_1hrSsnL8souDTv6fgsqUD1dkIscYq4y9tQ9zV9oOPzSiilDQoKOY3F0oQgOuwvEF0fgVXBd-g3N7cw4a8dG0fOq-BnWxRbA0x6k8vd0rj__3Y0oy7i6rNuzNDnycT37fGayNszQ/s16000/screen-smartlock.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.google.android.gms/#Intent;scheme=promote_smartlock_scheme;end" class="list-item-link text-base">Set Lock Screen</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhR5t-sSRrOrv8qQjOpbTjiBEViw4BLc-M-K-Ex2K6UNN_dWMY2GHiJ1BAYqhMhKyQJt_a8or8r5NNzy0-dIa04EF-SQA9hlIJ3FAE0fiXmKhlKi2R0fxiARHx1iDlZZR5gZCM9NA1D271rAnVWW3MyLlBSoU75gt6W0THzIzGLL1y8cZBSyCrQ746aK4GC/w35-h35/EasyShare_5.9.8.5_Lite_(2023).png" class="custom-icon">
-                <a href="intent://com.vivo.easyshare/#Intent;scheme=android-app;end" class="list-item-link">Easy Share</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhR5t-sSRrOrv8qQjOpbTjiBEViw4BLc-M-K-Ex2K6UNN_dWMY2GHiJ1BAYqhMhKyQJt_a8or8r5NNzy0-dIa04EF-SQA9hlIJ3FAE0fiXmKhlKi2R0fxiARHx1iDlZZR5gZCM9NA1D271rAnVWW3MyLlBSoU75gt6W0THzIzGLL1y8cZBSyCrQ746aK4GC/w35-h35/EasyShare_5.9.8.5_Lite_(2023).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.vivo.easyshare/#Intent;scheme=android-app;end" class="list-item-link text-base">Easy Share</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZ7ddsTP8HBWJsmqBzIatFMg9rf6MPpOMGMkSmRuqcMUDNtuAdiP-lrOVd3i9ritM4rgo5iW9-OjxjcRKlSzDodD6-Pd13VFrmgNXsmsO8r-8tOtBsY_S1ecXMAT1N6ra9tZmG_vCU-QQn2xm_vDYVQWTmv1oqkwTq7v2unK_3g9m59HE-FQkCA6xG8A/s16000/dialer-call.png" class="custom-icon">
-                <a href="tel:123456789" class="list-item-link">dial pad</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZ7ddsTP8HBWJsmqBzIatFMg9rf6MPpOMGMkSmRuqcMUDNtuAdiP-lrOVd3i9ritM4rgo5iW9-OjxjcRKlSzDodD6-Pd13VFrmgNXsmsO8r-8tOtBsY_S1ecXMAT1N6ra9tZmG_vCU-QQn2xm_vDYVQWTmv1oqkwTq7v2unK_3g9m59HE-FQkCA6xG8A/s16000/dialer-call.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="tel:123456789" class="list-item-link text-base">dial pad</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjF9BFhUalgmowcou5fF6e77SEeFS3hLPSuOg1asmPolacePf9JzpaJVmDq9Joyiadr133iGa7UbhwjDLbOFQyzzXa0tZ0lCnQF-JqBbl73MSuQVJbIgpKKcOtXpBojG_9yPxQTb22Cl8txq9vFSGfOGUeHYLBHy7S-zaVJSSbvEAJlODYAC4j4mkJqMg/s16000/google-assistant.png" class="custom-icon">
-                <a href="intent://com.google.android.apps.googleassistant/#Intent;scheme=android-app;end" class="list-item-link">Google Assistant</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjF9BFhUalgmowcou5fF6e77SEeFS3hLPSuOg1asmPolacePf9JzpaJVmDq9Joyiadr133iGa7UbhwjDLbOFQyzzXa0tZ0lCnQF-JqBbl73MSuQVJbIgpKKcOtXpBojG_9yPxQTb22Cl8txq9vFSGfOGUeHYLBHy7S-zaVJSSbvEAJlODYAC4j4mkJqMg/s16000/google-assistant.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.google.android.apps.googleassistant/#Intent;scheme=android-app;end" class="list-item-link text-base">Google Assistant</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaUsuSRY6xEZS1Vy3YamknQZKXHfBMih_rM8_qChZ13J3U0q3PCzySjhetknvI_lyFKEeCR_ZyBY2hpatZhXFy1fPYLBEf66b2WpqFkobSO_s8DqhR0-nDmjZd9D97yp8qKlmKKiGrZdYUmtxJrfyRYJLn6LgwPyyIlEz2MSt4EOQnCVljz75aqfMWRQ/s16000/samsung-my-file.png" class="custom-icon">
-                <a href="intent://com.sec.android.app.myfiles/#Intent;scheme=android-app;end" class="list-item-link">Samsung My Files</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaUsuSRY6xEZS1Vy3YamknQZKXHfBMih_rM8_qChZ13J3U0q3PCzySjhetknvI_lyFKEeCR_ZyBY2hpatZhXFy1fPYLBEf66b2WpqFkobSO_s8DqhR0-nDmjZd9D97yp8qKlmKKiGrZdYUmtxJrfyRYJLn6LgwPyyIlEz2MSt4EOQnCVljz75aqfMWRQ/s16000/samsung-my-file.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.sec.android.app.myfiles/#Intent;scheme=android-app;end" class="list-item-link text-base">Samsung My Files</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYMu3walpdmXQGQ1hqlxLPIwNoFfrZYwsw7dXT1psG6OBp8mtwqDOPUpj2ASYe0SE4RpL7ygKCSlFU5jsaHjCmwDB47_7B7DM-VyDa6xJiguDK_uTahNJREo8NjzCH7hUZ9TL1akHG9JovlMFtuS7ZnmlRhVDYjS4xQ9MaDjz4UPDCA9wQijgDTC785w/s16000/google-map.png" class="custom-icon">
-                <a href="intent://com.google.android.apps.maps/#Intent;scheme=android-app;end" class="list-item-link">Google Map</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYMu3walpdmXQGQ1hqlxLPIwNoFfrZYwsw7dXT1psG6OBp8mtwqDOPUpj2ASYe0SE4RpL7ygKCSlFU5jsaHjCmwDB47_7B7DM-VyDa6xJiguDK_uTahNJREo8NjzCH7hUZ9TL1akHG9JovlMFtuS7ZnmlRhVDYjS4xQ9MaDjz4UPDCA9wQijgDTC785w/s16000/google-map.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.google.android.apps.maps/#Intent;scheme=android-app;end" class="list-item-link text-base">Google Map</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" class="custom-icon">
-                <a href="intent://com.android.launcher3.Launcher/#Intent;scheme=android-app;package=com.sec.android.launches;end" class="list-item-link">Home Launcher</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.android.launcher3.Launcher/#Intent;scheme=android-app;package=com.sec.android.launches;end" class="list-item-link text-base">Home Launcher</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhtHvZeHDGwghatuT7lS7pW-gm7iZjdCEHvcwS1L4x0BsghdVCp5Ui0WBCTUOS0-hY-CsNy5qMIn-dgLMaQLgSApl4XSoaslA_ty5sZX1xS-XNfSiuvWzpqLygjrHawZfEm0tUdQLVRGURDSEm06589LzIAz4Sp-SmvpAFkomSryZ5tsDb6P3lo2QrBdg/s16000/android-hidden-settings.png" class="custom-icon">
-                <a href="https://galaxy.store/setting" target="_blank" class="list-item-link">Android Hidden Settings</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhtHvZeHDGwghatuT7lS7pW-gm7iZjdCEHvcwS1L4x0BsghdVCp5Ui0WBCTUOS0-hY-CsNy5qMIn-dgLMaQLgSApl4XSoaslA_ty5sZX1xS-XNfSiuvWzpqLygjrHawZfEm0tUdQLVRGURDSEm06589LzIAz4Sp-SmvpAFkomSryZ5tsDb6P3lo2QrBdg/s16000/android-hidden-settings.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open Web</span>
+                        <a href="https://galaxy.store/setting" target="_blank" class="list-item-link text-base">Android Hidden Settings</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidZSobi-tb7535ZfUeReJlmzj4rCvqVG4yPs0L0u88n7aR1skc-SzlxFMh3ZozDMsDoo-QwHcRDMxD-tLVuWxbJCkSJUDKEguYKWI-hNcjYBIqx104QRPr2B4ouaalEgmqtug2LsW982MhH3jTU9OhUPSBw266Erj65MTDFc8GO-TwKyUsw1ypbbNPbw/s16000/alliance-shield.png" class="custom-icon">
-                <a href="intent://com.rrivenllc.shieldx/#Intent;scheme=android-app;end" class="list-item-link">Alliance Shield</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidZSobi-tb7535ZfUeReJlmzj4rCvqVG4yPs0L0u88n7aR1skc-SzlxFMh3ZozDMsDoo-QwHcRDMxD-tLVuWxbJCkSJUDKEguYKWI-hNcjYBIqx104QRPr2B4ouaalEgmqtug2LsW982MhH3jTU9OhUPSBw266Erj65MTDFc8GO-TwKyUsw1ypbbNPbw/s16000/alliance-shield.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.rrivenllc.shieldx/#Intent;scheme=android-app;end" class="list-item-link text-base">Alliance Shield</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcpfeVRIlYpRCc2pJmFzws6LwKZ0XwSp-47I2OVLgA--3pGr63DeuOizeoDN2g5KWjNH1dcPsKORnKgGi17lC5bGkX2-Z-b0I4klFc9mqUinUqT7sQQW4oQ1tJR4wgzXLzZrzRBzlYx6ft8iWQAqZFpPW-45qK5r_KaWxZLWFP19f2xtth5WQ-ZujqXg/s16000/youtube.png" class="custom-icon">
-                <a href="intent://com.google.android.youtube/#Intent;scheme=android-app;end" class="list-item-link">YouTube</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcpfeVRIlYpRCc2pJmFzws6LwKZ0XwSp-47I2OVLgA--3pGr63DeuOizeoDN2g5KWjNH1dcPsKORnKgGi17lC5bGkX2-Z-b0I4klFc9mqUinUqT7sQQW4oQ1tJR4wgzXLzZrzRBzlYx6ft8iWQAqZFpPW-45qK5r_KaWxZLWFP19f2xtth5WQ-ZujqXg/s16000/youtube.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.google.android.youtube/#Intent;scheme=android-app;end" class="list-item-link text-base">YouTube</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4imcp8KcyCwiabaY_VEYBvN-Dani2L65fUy7SMajOaN-xl2IvY6xZy2TAu5PEYRzfNV3LPEaQ_aXE04xojF-saSUGiWxmZlL4CdcboC3WuWv7MKegVuEs8GgaK_-21QqS9u4vUphBDr_cRYVAlitAI2FdGc-2wCbQXMVfhFtDw52dYGROXkujtkGPxw/s16000/smart-switch.png" class="custom-icon">
-                <a href="intent://com.sec.android.easyMover/#Intent;scheme=android-app;end" class="list-item-link">Smart Switch</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4imcp8KcyCwiabaY_VEYBvN-Dani2L65fUy7SMajOaN-xl2IvY6xZy2TAu5PEYRzfNV3LPEaQ_aXE04xojF-saSUGiWxmZlL4CdcboC3WuWv7MKegVuEs8GgaK_-21QqS9u4vUphBDr_cRYVAlitAI2FdGc-2wCbQXMVfhFtDw52dYGROXkujtkGPxw/s16000/smart-switch.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.sec.android.easyMover/#Intent;scheme=android-app;end" class="list-item-link text-base">Smart Switch</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioUwKanAOAGu-xXtZnFFTgyqzATxlZpbFvakv3wdQfFMwJ1vj4Lpa-F4IEXOtsQ__N7rmznP0yNfnGbjJkRmDVsW4HIUxYZAvysMNIrX7CS85-f-BfOLACDSUFvcH3_jv3pK-8na_S74c2fRtWsl9RyWO9ZbMNrHKt3Lhj640Oou_UOIrVaZbFAKZPUA/s16000/s9-launcher.png" class="custom-icon">
-                <a href="https://galaxy.store/s9la" target="_blank" class="list-item-link">Samsung S9 Launcher</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioUwKanAOAGu-xXtZnFFTgyqzATxlZpbFvakv3wdQfFMwJ1vj4Lpa-F4IEXOtsQ__N7rmznP0yNfnGbjJkRmDVsW4HIUxYZAvysMNIrX7CS85-f-BfOLACDSUFvcH3_jv3pK-8na_S74c2fRtWsl9RyWO9ZbMNrHKt3Lhj640Oou_UOIrVaZbFAKZPUA/s16000/s9-launcher.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open Web</span>
+                        <a href="https://galaxy.store/s9la" target="_blank" class="list-item-link text-base">Samsung S9 Launcher</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjh3adjOFTSKPHlVyzdM1HbNU6gDfBeKyGH5_bM3RuH7AM_XrncCDSemAjaBr0t0Jiug0xIGfB8qtyFo5VMNvjjiAYGWNavDVv-QwckAnr51H_8PDDowmmxQu4bEUlQ2qNYUM15G0zGxQ-4CwsYBY8P_kOkmPQ2W1Hde9u_H7VEcsp6bxESljL_KT3DNw/s16000/usb-setting.png" class="custom-icon">
-                <a href="intent://com.sec.android.app.servicemodeapp/#Intent;scheme=promote_USBSettings_scheme;end" class="list-item-link">USB Settings</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjh3adjOFTSKPHlVyzdM1HbNU6gDfBeKyGH5_bM3RuH7AM_XrncCDSemAjaBr0t0Jiug0xIGfB8qtyFo5VMNvjjiAYGWNavDVv-QwckAnr51H_8PDDowmmxQu4bEUlQ2qNYUM15G0zGxQ-4CwsYBY8P_kOkmPQ2W1Hde9u_H7VEcsp6bxESljL_KT3DNw/s16000/usb-setting.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.sec.android.app.servicemodeapp/#Intent;scheme=promote_USBSettings_scheme;end" class="list-item-link text-base">USB Settings</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" class="custom-icon">
-                <a href="intent://com.coloros.backuprestore/#Intent;scheme=android-app;end" class="list-item-link">Phone Clone Oppo</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.coloros.backuprestore/#Intent;scheme=android-app;end" class="list-item-link text-base">Phone Clone Oppo</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhufcn3sYS-UJf94NnE6osUIAa7b0yxCv1EoVtXXl54Rwl7AiWWwPnpADZUQyzEogcVx-ma2JuxTJaz-mvNtN0TbIHJDVdB8Htq4M-SMqF3Lyvz-dWK2PEzb-Z_J2OEPiZZoIxiwQcHvVRAU1szqAAEiHknldDL0GrEJRp347mt72b2GVTuWKoOluoayg/w31-h28/shareit-logo-AA50CB2509-seeklogo.com.png" class="custom-icon">
-                <a href="https://apps.samsung.com/appquery/appDetail.as?appId=com.infinix.xshare" target="_blank" class="list-item-link">XShare Galaxy Store</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhufcn3sYS-UJf94NnE6osUIAa7b0yxCv1EoVtXXl54Rwl7AiWWwPnpADZUQyzEogcVx-ma2JuxTJaz-mvNtN0TbIHJDVdB8Htq4M-SMqF3Lyvz-dWK2PEzb-Z_J2OEPiZZoIxiwQcHvVRAU1szqAAEiHknldDL0GrEJRp347mt72b2GVTuWKoOluoayg/w31-h28/shareit-logo-AA50CB2509-seeklogo.com.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open Web</span>
+                        <a href="https://apps.samsung.com/appquery/appDetail.as?appId=com.infinix.xshare" target="_blank" class="list-item-link text-base">XShare Galaxy Store</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZUlJ8Gy3-I3cGp9c8v6TSAYJ4rRNunOuZ8CFWGXcQ5Nt-4fb5rXnBaAVF_XYat9L4obAiNu_H9p3-tJ-YroEmTNGvu_21AG0znxbeMLp-1r771SsV2Vo6oZSeajijvT7R3jcxB_C-IqXYXbCvZeB5tJuRbASMhlX91WcwMToURMDgynrBFXLxfLQ6IA/w30-h29/icon.png" class="custom-icon">
-                <a href="intent://iotapps.tabs.com.iotapplication/#Intent;scheme=android-app;end" class="list-item-link">Package Disabler</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZUlJ8Gy3-I3cGp9c8v6TSAYJ4rRNunOuZ8CFWGXcQ5Nt-4fb5rXnBaAVF_XYat9L4obAiNu_H9p3-tJ-YroEmTNGvu_21AG0znxbeMLp-1r771SsV2Vo6oZSeajijvT7R3jcxB_C-IqXYXbCvZeB5tJuRbASMhlX91WcwMToURMDgynrBFXLxfLQ6IA/w30-h29/icon.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://iotapps.tabs.com.iotapplication/#Intent;scheme=android-app;end" class="list-item-link text-base">Package Disabler</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2lhxdVznhyuaDyHSxY5a6zO6V7jD_lehv_bRgiEqrIRVd8vtUFSTm60rBt2X79I9DKZ_0ZWTqRPopUbXTXIFIjRpSe_C6RVUrs3fZdw6IURY8QIjB7ILgTOTqVDpohmwO9uNZh2lfq0bOWiRgDMSNIoSHwuDBeKD0AAYOVikvXzfC_hO8znQBIFyf9Ah0/w34-h34/XShare_3.5.2.002_(352002)%20(1).png" class="custom-icon">
-                <a href="intent://com.infinix.xshare/#Intent;scheme=android-app;end" class="list-item-link">Xshare Mini Infinix & Tecno</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2lhxdVznhyuaDyHSxY5a6zO6V7jD_lehv_bRgiEqrIRVd8vtUFSTm60rBt2X79I9DKZ_0ZWTqRPopUbXTXIFIjRpSe_C6RVUrs3fZdw6IURY8QIjB7ILgTOTqVDpohmwO9uNZh2lfq0bOWiRgDMSNIoSHwuDBeKD0AAYOVikvXzfC_hO8znQBIFyf9Ah0/w34-h34/XShare_3.5.2.002_(352002)%20(1).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.infinix.xshare/#Intent;scheme=android-app;end" class="list-item-link text-base">Xshare Mini Infinix & Tecno</a>
+                    </div>
+                </div>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">• Open</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIpZwOWzhpD4LpdlOUdon8JXAwPfG59-8Auj8f_dm0lYbhVmf3e9vnjbbjkN4M27FyKzHIK_4diuiy3oUt-m2YgxMiYt5AAwPLK6IauIqV7cH1pD6FVNGNNz0gQxxXAw6Yqr8kYmPG9KxuVkupBUjD-mJFhYYRTQYLD6_lny4NluE4ot8HiIZibCrMgpIw/w35-h36/ShareMe_3.36.11_(33611).png" class="custom-icon">
-                <a href="intent://com.xiaomi.midrop/#Intent;scheme=android-app;end" class="list-item-link">ShareMe Xiaomi</a>
+            <li class="glass-card rounded-2xl p-3 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIpZwOWzhpD4LpdlOUdon8JXAwPfG59-8Auj8f_dm0lYbhVmf3e9vnjbbjkN4M27FyKzHIK_4diuiy3oUt-m2YgxMiYt5AAwPLK6IauIqV7cH1pD6FVNGNNz0gQxxXAw6Yqr8kYmPG9KxuVkupBUjD-mJFhYYRTQYLD6_lny4NluE4ot8HiIZibCrMgpIw/w35-h36/ShareMe_3.36.11_(33611).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Open App</span>
+                        <a href="intent://com.xiaomi.midrop/#Intent;scheme=android-app;end" class="list-item-link text-base">ShareMe Xiaomi</a>
+                    </div>
+                </div>
             </li>
 
-            <!-- DOWNLOAD BUTTONS (APKS) -->
-            <li class="flex items-center gap-2 mt-6 pt-4 border-t border-gray-100">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">FRP Bypass .apk</span>
-                <a href="https://frpbypass.romstage.com/frp_bypass/" class="download-btn">Download now</a>
+            <!-- DOWNLOAD BUTTONS (APKS) WITH PNG ICONS -->
+            <div class="pt-6 pb-2">
+                <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 mb-4 pl-2">Downloads & Tools</h3>
+            </div>
+
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">APK File</span>
+                        <span class="text-gray-800 font-medium text-base">FRP Bypass .apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/frp_bypass/" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidZSobi-tb7535ZfUeReJlmzj4rCvqVG4yPs0L0u88n7aR1skc-SzlxFMh3ZozDMsDoo-QwHcRDMxD-tLVuWxbJCkSJUDKEguYKWI-hNcjYBIqx104QRPr2B4ouaalEgmqtug2LsW982MhH3jTU9OhUPSBw266Erj65MTDFc8GO-TwKyUsw1ypbbNPbw/s16000/alliance-shield.png" class="custom-icon">
-                <span class="font-bold text-gray-800">Alliance Shield.apk (Latest)</span>
-                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/alliance-shield-x-0-9-10%20.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidZSobi-tb7535ZfUeReJlmzj4rCvqVG4yPs0L0u88n7aR1skc-SzlxFMh3ZozDMsDoo-QwHcRDMxD-tLVuWxbJCkSJUDKEguYKWI-hNcjYBIqx104QRPr2B4ouaalEgmqtug2LsW982MhH3jTU9OhUPSBw266Erj65MTDFc8GO-TwKyUsw1ypbbNPbw/s16000/alliance-shield.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Latest Version</span>
+                        <span class="text-gray-800 font-medium text-base">Alliance Shield.apk</span>
+                    </div>
+                </div>
+                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/alliance-shield-x-0-9-10%20.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Notification Bar Apk For Samsung</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/09/Notification-Bar_frpbypass.romstage.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZUlJ8Gy3-I3cGp9c8v6TSAYJ4rRNunOuZ8CFWGXcQ5Nt-4fb5rXnBaAVF_XYat9L4obAiNu_H9p3-tJ-YroEmTNGvu_21AG0znxbeMLp-1r771SsV2Vo6oZSeajijvT7R3jcxB_C-IqXYXbCvZeB5tJuRbASMhlX91WcwMToURMDgynrBFXLxfLQ6IA/w30-h29/icon.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Samsung Tool</span>
+                        <span class="text-gray-800 font-medium text-base">Notification Bar Apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/09/Notification-Bar_frpbypass.romstage.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Notification Bar apk all</span>
-                <a href="https://frpbypass.romstage.com/notification-bar-apk/" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZUlJ8Gy3-I3cGp9c8v6TSAYJ4rRNunOuZ8CFWGXcQ5Nt-4fb5rXnBaAVF_XYat9L4obAiNu_H9p3-tJ-YroEmTNGvu_21AG0znxbeMLp-1r771SsV2Vo6oZSeajijvT7R3jcxB_C-IqXYXbCvZeB5tJuRbASMhlX91WcwMToURMDgynrBFXLxfLQ6IA/w30-h29/icon.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Pro Version</span>
+                        <span class="text-gray-800 font-medium text-base">Package Disabler Pro</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/09/Package-Disabler-Pro_frpbypass.romstage.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Package Disabler Pro Apk Direct</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/09/Package-Disabler-Pro_frpbypass.romstage.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Bypass Tool</span>
+                        <span class="text-gray-800 font-medium text-base">addROM Bypass apk</span>
+                    </div>
+                </div>
+                <a href="https://github.com/buyoneh/frpbypass/raw/main/FRP_addROM.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZUlJ8Gy3-I3cGp9c8v6TSAYJ4rRNunOuZ8CFWGXcQ5Nt-4fb5rXnBaAVF_XYat9L4obAiNu_H9p3-tJ-YroEmTNGvu_21AG0znxbeMLp-1r771SsV2Vo6oZSeajijvT7R3jcxB_C-IqXYXbCvZeB5tJuRbASMhlX91WcwMToURMDgynrBFXLxfLQ6IA/w30-h29/icon.png" class="custom-icon">
-                <span class="font-bold text-gray-800">Package Disabler Pro All apk</span>
-                <a href="https://frpbypass.romstage.com/package-disabler-pro-apk-download/" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Bypass Tool</span>
+                        <span class="text-gray-800 font-medium text-base">vnROM Bypass apk</span>
+                    </div>
+                </div>
+                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/FRP_vnROM.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">addROM Bypass apk</span>
-                <a href="https://github.com/buyoneh/frpbypass/raw/main/FRP_addROM.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZUlJ8Gy3-I3cGp9c8v6TSAYJ4rRNunOuZ8CFWGXcQ5Nt-4fb5rXnBaAVF_XYat9L4obAiNu_H9p3-tJ-YroEmTNGvu_21AG0znxbeMLp-1r771SsV2Vo6oZSeajijvT7R3jcxB_C-IqXYXbCvZeB5tJuRbASMhlX91WcwMToURMDgynrBFXLxfLQ6IA/w30-h29/icon.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Config File</span>
+                        <span class="text-gray-800 font-medium text-base">Disable SystemUI.xml</span>
+                    </div>
+                </div>
+                <a href="https://apk.romstage.com/wp-content/uploads/2024/04/pd_disable_apps_disable_systemUI.xml" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">vnROM Bypass apk</span>
-                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/FRP_vnROM.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Config File</span>
+                        <span class="text-gray-800 font-medium text-base">Disable Google Services.xml</span>
+                    </div>
+                </div>
+                <a href="https://apk.romstage.com/wp-content/uploads/2024/04/pd_disable_apps_disable_googleservice.xml" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Disable SystemUI.xml</span>
-                <a href="https://apk.romstage.com/wp-content/uploads/2024/04/pd_disable_apps_disable_systemUI.xml" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZUlJ8Gy3-I3cGp9c8v6TSAYJ4rRNunOuZ8CFWGXcQ5Nt-4fb5rXnBaAVF_XYat9L4obAiNu_H9p3-tJ-YroEmTNGvu_21AG0znxbeMLp-1r771SsV2Vo6oZSeajijvT7R3jcxB_C-IqXYXbCvZeB5tJuRbASMhlX91WcwMToURMDgynrBFXLxfLQ6IA/w30-h29/icon.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Config File</span>
+                        <span class="text-gray-800 font-medium text-base">Disable SystemUI/MDM/Knox xml</span>
+                    </div>
+                </div>
+                <a href="https://apk.romstage.com/wp-content/uploads/2024/04/pd_disable_apps_disable_mdmknox.xml" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Disable Google Services.xml</span>
-                <a href="https://apk.romstage.com/wp-content/uploads/2024/04/pd_disable_apps_disable_googleservice.xml" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Utility</span>
+                        <span class="text-gray-800 font-medium text-base">Activity Launcher apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/activity_launcher-1/" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Disable SystemUI/MDM/Google/Knox xml</span>
-                <a href="https://apk.romstage.com/wp-content/uploads/2024/04/pd_disable_apps_disable_mdmknox.xml" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Testing</span>
+                        <span class="text-gray-800 font-medium text-base">Factory Test apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/factory-test-apk-vivo/" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Activity Launcher apk</span>
-                <a href="https://frpbypass.romstage.com/activity_launcher-1/" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Account Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Google Account Manager All</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/download-google-account-manager-apk/" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Factory Test apk</span>
-                <img src="https://frpbypass.romstage.com/wp-content/uploads/2024/04/image.png" class="custom-icon">
-                <a href="https://frpbypass.romstage.com/factory-test-apk-vivo/" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Account Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Google Account Manager 10.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/10/GoogleAccountManager10.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2 mt-4">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Google Account Manager All Version</span>
-                <img src="https://frpbypass.romstage.com/wp-content/uploads/2022/02/google-account-maneger-min.png" class="custom-icon">
-            </li>
-            
-            <li class="flex items-center gap-2 pl-6">
-                <span class="text-gray-600">Google Account Manager Android 10.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/10/GoogleAccountManager10.apk" class="download-btn">Download now</a>
-            </li>
-            <li class="flex items-center gap-2 pl-6">
-                <span class="text-gray-600">Google Account manager 9.apk</span>
-                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/Download-Google-Account-Manager-Android-9.0-Pie.apk" class="download-btn">Download now</a>
-            </li>
-            <li class="flex items-center gap-2 pl-6">
-                <span class="text-gray-600">Google Account Manager Android 8.1.apk</span>
-                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/Google-Account-Manager-8.1.apk" class="download-btn">Download now</a>
-            </li>
-            <li class="flex items-center gap-2 pl-6">
-                <span class="text-gray-600">Google Account Manager Android 8.0.apk</span>
-                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/Download-Google-Account-Manager-Android-8.0-Oreo.apk" class="download-btn">Download now</a>
-            </li>
-            <li class="flex items-center gap-2 pl-6">
-                <span class="text-gray-600">Download Google Account Manager 7.1.2.25-Nougat.apk</span>
-                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/Google.Account.Version-7.1.2.25-Nougat.apk" class="download-btn">Download now</a>
-            </li>
-            <li class="flex items-center gap-2 pl-6">
-                <span class="text-gray-600">Google Account manager 6.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Google-accout-Maneger-Android_6.apk" class="download-btn">Download now</a>
-            </li>
-            <li class="flex items-center gap-2 pl-6">
-                <span class="text-gray-600">Google Account manager 5.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Google-accout-Maneger-Android_5_.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Account Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Google Account manager 9.apk</span>
+                    </div>
+                </div>
+                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/Download-Google-Account-Manager-Android-9.0-Pie.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Google Setting.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Google_Setting.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Account Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Google Account Manager 8.1.apk</span>
+                    </div>
+                </div>
+                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/Google-Account-Manager-8.1.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Development setting.apk</span>
-                <a href="https://romstage.com/wp-content/uploads/2020/05/Development-setting.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Account Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Google Account Manager 8.0.apk</span>
+                    </div>
+                </div>
+                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/Download-Google-Account-Manager-Android-8.0-Oreo.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Quick Shortcut Maker.apk</span>
-                <a href="https://romstage.com/wp-content/uploads/2020/05/QuickShortcutMaker_2.4.0.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Account Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Google Account Manager 7.1.2.25-Nougat.apk</span>
+                    </div>
+                </div>
+                <a href="https://github.com/filefrp/filefrp/raw/refs/heads/main/Google.Account.Version-7.1.2.25-Nougat.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Sidebar lite .apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/09/Sidebar-Lite-4.4.0frpbypass.romstage.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Account Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Google Account manager 6.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Google-accout-Maneger-Android_6.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Frp Android_7.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/FRP_Android_7.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZvBUKTsEf8oKscQPI-Tpi17o-2oMafPYg5ueNePo3oHf4MUJHtvwIJcXrw8FU0Q1H7394dsJNyCXgUiXe1kBsbWUD_ui_uW7z6JxErstU8GWOh7J9lYyNc3jh6Xp95iq2wQwYaBB01BFypl3azncTJwXyWwRsbpxpGLyjHBis9bXdTYocTJfDIMqqOw/s16000/google-search.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Account Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Google Account manager 5.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Google-accout-Maneger-Android_5_.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Romstage FRP.apk</span>
-                <a href="https://romstage.com/wp-content/uploads/2020/05/Romstage-Frp.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwbQbDzJU3H8rID7WOJ0KhHJgXTJEtYI4ofLsB3u4IzaNSqZp9tdKaIsFCdN9l2CsT-zSBHIUyUvzDCoStlTxg22jNT175GzBgR-TSlx6qSr3tmDpMkn4nHUXu4LGom2qDVwSfA8zqnWGw6bMatZrSxQQtaHc9c7CLYlY1XTekMbpFhuowsvXZ0pmzKw/s16000/android-hidden-settings.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">System</span>
+                        <span class="text-gray-800 font-medium text-base">Google Setting.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Google_Setting.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Technocare.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Tecno-Care.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwbQbDzJU3H8rID7WOJ0KhHJgXTJEtYI4ofLsB3u4IzaNSqZp9tdKaIsFCdN9l2CsT-zSBHIUyUvzDCoStlTxg22jNT175GzBgR-TSlx6qSr3tmDpMkn4nHUXu4LGom2qDVwSfA8zqnWGw6bMatZrSxQQtaHc9c7CLYlY1XTekMbpFhuowsvXZ0pmzKw/s16000/android-hidden-settings.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">System</span>
+                        <span class="text-gray-800 font-medium text-base">Development setting.apk</span>
+                    </div>
+                </div>
+                <a href="https://romstage.com/wp-content/uploads/2020/05/Development-setting.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">FRP Bypass All.apk</span>
-                <a href="https://frpbypass.romstage.com/frp-bypass-apk/" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Utility</span>
+                        <span class="text-gray-800 font-medium text-base">Quick Shortcut Maker.apk</span>
+                    </div>
+                </div>
+                <a href="https://romstage.com/wp-content/uploads/2020/05/QuickShortcutMaker_2.4.0.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">TEST DPC 4.0.5.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/10/Testdpc_4.0.5.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">UI Mod</span>
+                        <span class="text-gray-800 font-medium text-base">Sidebar lite .apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/09/Sidebar-Lite-4.4.0frpbypass.romstage.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Test DPC.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Test_DPC.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Legacy</span>
+                        <span class="text-gray-800 font-medium text-base">Frp Android_7.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/FRP_Android_7.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Apex Launcher.apk</span>
-                <a href="https://frpbypass.romstage.com/apex-launcher-apk-download/" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Tool</span>
+                        <span class="text-gray-800 font-medium text-base">Romstage FRP.apk</span>
+                    </div>
+                </div>
+                <a href="https://romstage.com/wp-content/uploads/2020/05/Romstage-Frp.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">nova Launcher.apk</span>
-                <a href="https://frpbypass.romstage.com/nova-launche-apk-dowmload/" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Tool</span>
+                        <span class="text-gray-800 font-medium text-base">Technocare.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Tecno-Care.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Xshare.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2023/04/xshare-3-3-0-006.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Tool</span>
+                        <span class="text-gray-800 font-medium text-base">FRP Bypass All.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/frp-bypass-apk/" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Menu Button.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Menu_Button.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Testing</span>
+                        <span class="text-gray-800 font-medium text-base">TEST DPC 4.0.5.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/10/Testdpc_4.0.5.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">ES File Explorer.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/ES_File_Explorer.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Testing</span>
+                        <span class="text-gray-800 font-medium text-base">Test DPC.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Test_DPC.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="text-gray-600">Download all File Explorer</span>
-                <a href="https://frpbypass.romstage.com/file-explorer-apk-download/" class="list-item-link text-xs ml-2">APK ALL</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Launcher</span>
+                        <span class="text-gray-800 font-medium text-base">Apex Launcher.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/apex-launcher-apk-download/" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Setting.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Setting.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Launcher</span>
+                        <span class="text-gray-800 font-medium text-base">nova Launcher.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/nova-launche-apk-dowmload/" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">File_Commander_Manager.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/File_Commander_Manager.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhufcn3sYS-UJf94NnE6osUIAa7b0yxCv1EoVtXXl54Rwl7AiWWwPnpADZUQyzEogcVx-ma2JuxTJaz-mvNtN0TbIHJDVdB8Htq4M-SMqF3Lyvz-dWK2PEzb-Z_J2OEPiZZoIxiwQcHvVRAU1szqAAEiHknldDL0GrEJRp347mt72b2GVTuWKoOluoayg/w31-h28/shareit-logo-AA50CB2509-seeklogo.com.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Sharing</span>
+                        <span class="text-gray-800 font-medium text-base">Xshare.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2023/04/xshare-3-3-0-006.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Phone_Clone.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Phone_Clone.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEict3RdeA04PJSU18ZHuh_tPlgporLKYLXUerCc3Pfdr1QuVm_XosmHZ9eQYY2LvzVynDgqtJVwVpl4FkYkX6-FfnOntJBjbwimZarcq88-OsCCpwQOSIB_Pv7HwXKLCHPEtaExgxzeojdXvbIlJQCt_DCRHAHwXgLk7S_WNi1_r3sd40BNGp_-H_lEKQ/s16000/home-launcher.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">UI Mod</span>
+                        <span class="text-gray-800 font-medium text-base">Menu Button.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Menu_Button.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Huawei Phone Clone.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/01/HuaweiPhoneClone.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaUsuSRY6xEZS1Vy3YamknQZKXHfBMih_rM8_qChZ13J3U0q3PCzySjhetknvI_lyFKEeCR_ZyBY2hpatZhXFy1fPYLBEf66b2WpqFkobSO_s8DqhR0-nDmjZd9D97yp8qKlmKKiGrZdYUmtxJrfyRYJLn6LgwPyyIlEz2MSt4EOQnCVljz75aqfMWRQ/s16000/samsung-my-file.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">File Manager</span>
+                        <span class="text-gray-800 font-medium text-base">ES File Explorer.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/ES_File_Explorer.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">FactoryReset_v1.3.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/01/FactoryReset_v1.3.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwbQbDzJU3H8rID7WOJ0KhHJgXTJEtYI4ofLsB3u4IzaNSqZp9tdKaIsFCdN9l2CsT-zSBHIUyUvzDCoStlTxg22jNT175GzBgR-TSlx6qSr3tmDpMkn4nHUXu4LGom2qDVwSfA8zqnWGw6bMatZrSxQQtaHc9c7CLYlY1XTekMbpFhuowsvXZ0pmzKw/s16000/android-hidden-settings.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">File Manager</span>
+                        <span class="text-gray-800 font-medium text-base">Setting.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Setting.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Calculator_1.0.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/01/Calculator_1.0.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaUsuSRY6xEZS1Vy3YamknQZKXHfBMih_rM8_qChZ13J3U0q3PCzySjhetknvI_lyFKEeCR_ZyBY2hpatZhXFy1fPYLBEf66b2WpqFkobSO_s8DqhR0-nDmjZd9D97yp8qKlmKKiGrZdYUmtxJrfyRYJLn6LgwPyyIlEz2MSt4EOQnCVljz75aqfMWRQ/s16000/samsung-my-file.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">File Manager</span>
+                        <span class="text-gray-800 font-medium text-base">File_Commander_Manager.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/File_Commander_Manager.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">CROM Service v1.0.4.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/01/CROM_Serviceunlock_v1.0.4.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Transfer</span>
+                        <span class="text-gray-800 font-medium text-base">Phone_Clone.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Phone_Clone.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Smart_Switch_Mobile.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Smart_Switch_Mobile.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Transfer</span>
+                        <span class="text-gray-800 font-medium text-base">Huawei Phone Clone.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/01/HuaweiPhoneClone.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
-            <li class="flex items-center gap-2">
-                <span class="font-bold text-gray-800">•</span>
-                <span class="font-bold text-gray-800">Hush SMS.apk</span>
-                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/HushSMS.apk" class="download-btn">Download now</a>
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Reset</span>
+                        <span class="text-gray-800 font-medium text-base">FactoryReset_v1.3.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/01/FactoryReset_v1.3.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
+            </li>
+
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Utility</span>
+                        <span class="text-gray-800 font-medium text-base">Calculator_1.0.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/01/Calculator_1.0.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
+            </li>
+
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Service</span>
+                        <span class="text-gray-800 font-medium text-base">CROM Service v1.0.4.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2022/01/CROM_Serviceunlock_v1.0.4.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
+            </li>
+
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4imcp8KcyCwiabaY_VEYBvN-Dani2L65fUy7SMajOaN-xl2IvY6xZy2TAu5PEYRzfNV3LPEaQ_aXE04xojF-saSUGiWxmZlL4CdcboC3WuWv7MKegVuEs8GgaK_-21QqS9u4vUphBDr_cRYVAlitAI2FdGc-2wCbQXMVfhFtDw52dYGROXkujtkGPxw/s16000/smart-switch.png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Transfer</span>
+                        <span class="text-gray-800 font-medium text-base">Smart_Switch_Mobile.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/Smart_Switch_Mobile.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
+            </li>
+
+            <li class="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-4 overflow-hidden">
+                    <div class="ios-icon-box">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjx51I3nJDMtNFo3NLbqVDyu5GFCd8vA2uIFwyywwzpzz8i0i2rOgFd3USuqKtahe7lNFzDGqtfzgwZXuNfjkENTnM10__P-59AHfBTQzSeLWp-ig4kY1xkCqJ-un7bZe0MtS56vRahkwQmYwJArtaCOVWOBImfEdgCuR2vMHKeVktpA8qdMCH1yHmBdUbn/w32-h32/Clone%20Phone_13.3.6_third_(130306).png" alt="Icon">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Messaging</span>
+                        <span class="text-gray-800 font-medium text-base">Hush SMS.apk</span>
+                    </div>
+                </div>
+                <a href="https://frpbypass.romstage.com/wp-content/uploads/2020/09/HushSMS.apk" class="ios-btn-download">Download now <i class="fa-solid fa-arrow-down"></i></a>
             </li>
 
         </ul>
 
-        <div class="mt-10 pt-6 border-t border-gray-200">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">All Mobile FRP BYPASS</h3>
-            <p class="text-gray-600 text-sm mb-4">Here you will find solution to FRP problem of mobile phone. After factory resetting the mobile phone, Google account is required to use the phone again. This time we forget the Google account and password of the phone, This website will solve this problem.</p>
-            <p class="text-gray-600 text-sm">Above are some apps with the help of which you can reset FRP lock of mobile phone , And some links are given with the help of which you can directly access the settings through the browser of your phone or you can open YouTube or you can open email you can open many such apps directly.</p>
+        <div class="mt-12 pt-8 border-t border-rose-100 glass-panel rounded-[24px] p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-3">All Mobile FRP BYPASS</h3>
+            <p class="text-gray-500 text-sm mb-4 leading-relaxed">Here you will find solution to FRP problem of mobile phone. After factory resetting the mobile phone, Google account is required to use the phone again. This time we forget the Google account and password of the phone, This website will solve this problem.</p>
+            <p class="text-gray-500 text-sm mb-6 leading-relaxed">Above are some apps with the help of which you can reset FRP lock of mobile phone , And some links are given with the help of which you can directly access the settings through the browser of your phone or you can open YouTube or you can open email you can open many such apps directly.</p>
             
-            <h4 class="font-bold text-gray-800 mt-6 mb-2">Here Helpful Some FRP BYPASS Apk File</h4>
-            <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
-                <li>Frp Bypass Apk</li>
-                <li>Frp bypass DM</li>
-                <li>vnROM BYPASS</li>
-                <li>addROM BYPASS</li>
-                <li>Tecnocare APK</li>
-                <li>Frpfile/bypass APK</li>
-                <li>FRP BYPASS Tool</li>
+            <h4 class="font-bold text-gray-700 mb-3 text-sm uppercase tracking-wider">Helpful FRP BYPASS Apk Files</h4>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-500">
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400 text-xs"></i> Frp Bypass Apk</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400 text-xs"></i> Frp bypass DM</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400 text-xs"></i> vnROM BYPASS</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400 text-xs"></i> addROM BYPASS</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400 text-xs"></i> Tecnocare APK</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400 text-xs"></i> Frpfile/bypass APK</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400 text-xs"></i> FRP BYPASS Tool</li>
             </ul>
         </div>
 
     </main>
 
-    <!-- ================= FOOTER (Matching Index) ================= -->
-    <footer class="site-footer py-8 mt-auto">
-        <div class="max-w-4xl mx-auto px-4 text-center md:text-left">
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer py-10 mt-auto">
+        <div class="max-w-4xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div>
-                    <h4 class="font-bold text-gray-800 mb-3">About Us</h4>
-                    <p class="text-xs leading-relaxed">Your trusted partner for fast and reliable gadget repair services and component solutions. We breathe life back into your tech.</p>
+                    <h4 class="font-bold text-gray-700 mb-3 text-sm uppercase tracking-wider">About Us</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed">Your trusted partner for fast and reliable gadget repair services and component solutions. We breathe life back into your tech.</p>
                 </div>
                 <div>
-                    <h4 class="font-bold text-gray-800 mb-3">Quick Links</h4>
-                    <ul class="text-xs space-y-2">
-                        <li><a href="index.html" class="hover:text-blue-600">Home</a></li>
-                        <li><a href="about.html" class="hover:text-blue-600">About Us</a></li>
-                        <li><a href="services.html" class="hover:text-blue-600">Services</a></li>
-                        <li><a href="contact.html" class="hover:text-blue-600">Contact</a></li>
+                    <h4 class="font-bold text-gray-700 mb-3 text-sm uppercase tracking-wider">Quick Links</h4>
+                    <ul class="text-xs space-y-2 text-gray-500">
+                        <li><a href="index.html" class="hover:text-rose-500 transition-colors">Home</a></li>
+                        <li><a href="about.html" class="hover:text-rose-500 transition-colors">About Us</a></li>
+                        <li><a href="services.html" class="hover:text-rose-500 transition-colors">Services</a></li>
+                        <li><a href="contact.html" class="hover:text-rose-500 transition-colors">Contact</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold text-gray-800 mb-3">Connect</h4>
-                    <div class="flex justify-center md:justify-start gap-4 text-lg">
-                        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fa-brands fa-whatsapp"></i></a>
-                        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fa-brands fa-telegram"></i></a>
+                    <h4 class="font-bold text-gray-700 mb-3 text-sm uppercase tracking-wider">Connect</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-8 h-8 rounded-full glass-card flex items-center justify-center text-gray-500 hover:text-rose-500 hover:border-rose-200 transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full glass-card flex items-center justify-center text-gray-500 hover:text-green-500 hover:border-green-200 transition-all"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full glass-card flex items-center justify-center text-gray-500 hover:text-cyan-500 hover:border-cyan-200 transition-all"><i class="fa-brands fa-telegram"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-200 pt-4 text-xs text-center text-gray-500">
-                &copy; 2026 Habib iFix. All Rights Reserved. | <span class="text-emerald-600">System Online</span>
+            <div class="border-t border-rose-100 pt-6 text-xs text-center text-gray-400 flex flex-col md:flex-row justify-between items-center gap-2">
+                <span>&copy; 2026 Habib iFix. All Rights Reserved.</span>
+                <span class="text-emerald-500 flex items-center gap-1"><i class="fa-solid fa-circle text-[6px] animate-pulse"></i> System Online</span>
             </div>
         </div>
     </footer>

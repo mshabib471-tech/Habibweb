@@ -4,7 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Habib iFix - Fast repair services</title>
+  
+  <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
+  
+  <!-- Adsterra Popunder Scripts -->
+  <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
+  <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,6 +45,10 @@
     /* Auth dropdown */
     .auth-drop{position:absolute;top:100%;right:0;margin-top:12px;width:180px;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border:1px solid rgba(0,0,0,.1);border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,.1);opacity:0;visibility:hidden;transform:scale(.95);transition:all .2s ease;z-index:60;overflow:hidden}
     .auth-group:hover .auth-drop{opacity:1;visibility:visible;transform:scale(1)}
+
+    /* Ad Containers */
+    .ad-container{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:8px;text-align:center;margin:20px 0;min-height:60px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .ad-label{font-size:10px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
   </style>
 </head>
 <body class="min-h-screen text-slate-600 selection:bg-blue-500 selection:text-white relative flex flex-col bg-[#f8fafc] overflow-x-hidden">
@@ -79,7 +90,7 @@
           <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-blue-500/20" width="36" height="36">
           <!-- Dropdown -->
           <div class="auth-drop p-1">
-            <label class="px-3 py-2.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-gray-100 cursor-pointer flex items-center gap-2 rounded-lg transition-colors">📷 Change Pic<input type="file" id="profilePicInput" accept="image/*" class="hidden"></label>
+            <label class="px-3 py-2.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-gray-100 cursor-pointer flex items-center gap-2 rounded-lg transition-colors"> Change Pic<input type="file" id="profilePicInput" accept="image/*" class="hidden"></label>
             <button onclick="doLogout()" class="w-full px-3 py-2.5 text-sm text-red-500 hover:text-red-600 hover:bg-red-50 text-left flex items-center gap-2 rounded-lg transition-colors"> Logout</button>
           </div>
         </div>
@@ -121,14 +132,25 @@
       <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden md:block"><div class="w-6 h-10 rounded-full border-2 border-slate-300 flex items-start justify-center p-1.5"><div class="w-1.5 h-3 rounded-full bg-blue-500 animate-pulse"></div></div></div>
     </section>
 
+    <!-- Adsterra Native Banner Ad (After Hero) -->
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="ad-container">
+        <div class="text-center">
+          <div class="ad-label">Advertisement</div>
+          <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
+          <div id="container-8e9094986a453471eab78291c50b779f"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- QUICK BAR -->
-    <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-16 md:-mt-24">
+    <section class="relative z-20 max-w-[1280px] mx-auto px-4 md:px-6 -mt-4 md:-mt-8">
       <div class="glass-panel rounded-[32px] p-6 md:p-8 shadow-xl border-t border-white/50 reveal">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 text-slate-700 divide-y sm:divide-y-0 lg:divide-x divide-gray-200">
           <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">⚙️</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Expert Repair</h3><p class="text-xs md:text-sm text-slate-500">Certified technicians</p></div></div>
           <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">🔧</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Genuine Parts</h3><p class="text-xs md:text-sm text-slate-500">100% Original</p></div></div>
           <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">💾</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Data Safety</h3><p class="text-xs md:text-sm text-slate-500">Secure recovery</p></div></div>
-          <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">🛡️</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Warranty</h3><p class="text-xs md:text-sm text-slate-500">Service guarantee</p></div></div>
+          <div class="flex items-center gap-3 group cursor-pointer p-2"><div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:border-blue-300 transition-all text-xl text-blue-600">️</div><div><h3 class="font-bold text-sm md:text-lg text-slate-800">Warranty</h3><p class="text-xs md:text-sm text-slate-500">Service guarantee</p></div></div>
         </div>
       </div>
     </section>
@@ -186,13 +208,32 @@
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal bg-white" onclick="openModal('Mobile Phone Repair','We fix all kinds of mobile phone issues including broken screens, battery replacements, and water damage.','📱')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">📱</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Mobile Phone</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Professional mobile repair for all major brands.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
-        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.05s bg-white" onclick="openModal('Tablet Repair','From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates.','📋')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">📋</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Tablet Repair</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Expert tablet diagnosis and quick reliable repairs.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.05s bg-white" onclick="openModal('Tablet Repair','From iPad to Samsung Tabs, we handle touch screen issues, charging port fixes, and software updates.','')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">📋</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Tablet Repair</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Expert tablet diagnosis and quick reliable repairs.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
         <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.1s bg-white" onclick="openModal('Laptop Repair','We offer motherboard repairs, screen replacement, OS installation, and keyboard fixes.','💻')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">💻</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Laptop Care</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Hardware and software solutions for your laptops.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
-        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.15s bg-white" onclick="openModal('Desktop PC','Custom PC builds, hardware upgrades, SSD installation, and deep cleaning.','🖥️')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">🖥️</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Desktop PC</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Full desktop maintenance and upgrading services.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.15s bg-white" onclick="openModal('Desktop PC','Custom PC builds, hardware upgrades, SSD installation, and deep cleaning.','🖥️')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">️</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Desktop PC</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Full desktop maintenance and upgrading services.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
         <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.2s bg-white" onclick="openModal('Camera Repair','Professional cleaning, lens fixing, and sensor calibration for DSLR and Mirrorless cameras.','📷')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">📷</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">DSLR Camera</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Fixing lenses, sensors, and internal hardware.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
-        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.25s bg-white" onclick="openModal('Smart Wearables','Apple Watch, Galaxy Watch screen replacement and battery fixing services.','⌚')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl">⌚</div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Smart Wearables</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Smartwatch repair and maintenance experts.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
+        <div class="glass-panel glass-card-hover p-6 rounded-[28px] text-center group flex flex-col items-center cursor-pointer reveal" style="transition-delay:.25s bg-white" onclick="openModal('Smart Wearables','Apple Watch, Galaxy Watch screen replacement and battery fixing services.','⌚')"><div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all text-3xl"></div><h3 class="text-lg font-bold mb-2 text-slate-800 group-hover:text-blue-600 transition-colors">Smart Wearables</h3><p class="text-slate-500 mb-4 text-xs line-clamp-2">Smartwatch repair and maintenance experts.</p><span class="text-blue-500 font-semibold text-xs flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">Learn More →</span></div>
       </div>
     </section>
+
+    <!-- Adsterra 468x60 Banner Ad (Between Services and CTA) -->
+    <div class="max-w-[1280px] mx-auto px-4 md:px-6">
+      <div class="ad-container" style="min-height:70px">
+        <div class="text-center w-full">
+          <div class="ad-label">Advertisement</div>
+          <script>
+            atOptions = {
+              'key' : 'ee42b7834317f300013464e2e2c603f5',
+              'format' : 'iframe',
+              'height' : 60,
+              'width' : 468,
+              'params' : {}
+            };
+          </script>
+          <script src="https://www.highrevenueformat.com/ee42b7834317f300013464e2e2c603f5/invoke.js"></script>
+        </div>
+      </div>
+    </div>
 
     <!-- CTA -->
     <section class="relative py-20 md:py-28">
@@ -350,7 +391,7 @@
         <button onclick="toggleChat()" class="text-white/70 hover:text-white bg-white/10 rounded-full w-7 h-7 flex items-center justify-center text-xs">✕</button>
       </div>
       <div id="chatBody" class="flex-grow p-3 overflow-y-auto flex flex-col gap-2.5 bg-gray-50" style="scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent">
-        <div class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]">🤖</div><div class="bg-white border border-gray-100 text-[12px] text-slate-600 p-2.5 rounded-2xl rounded-bl-none leading-relaxed shadow-sm">Hello! Welcome to <b>Habib iFix</b> <br>Ask me anything about our repair services!</div></div>
+        <div class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]"></div><div class="bg-white border border-gray-100 text-[12px] text-slate-600 p-2.5 rounded-2xl rounded-bl-none leading-relaxed shadow-sm">Hello! Welcome to <b>Habib iFix</b> <br>Ask me anything about our repair services!</div></div>
       </div>
       <div class="p-2 border-t border-gray-100 bg-white flex gap-2 items-center">
         <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-slate-700 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" onkeypress="if(event.key==='Enter')sendMsg()">
@@ -430,7 +471,7 @@
       var c=document.getElementById('blog-container');if(!c)return;
       try{
         var q=query(collection(db,"blogPosts"),orderBy("timestamp","desc"),limit(10)),snap=await getDocs(q);
-        if(snap.empty){c.innerHTML='<div class="glass-panel p-8 rounded-[28px] col-span-full text-center bg-white"><div class="text-3xl mb-3">📭</div><h3 class="text-lg font-bold text-slate-800 mb-2">No Updates Yet</h3><p class="text-sm text-slate-500">Check back later!</p></div>';return}
+        if(snap.empty){c.innerHTML='<div class="glass-panel p-8 rounded-[28px] col-span-full text-center bg-white"><div class="text-3xl mb-3"></div><h3 class="text-lg font-bold text-slate-800 mb-2">No Updates Yet</h3><p class="text-sm text-slate-500">Check back later!</p></div>';return}
         var all=snap.docs;if(all.length>4)document.getElementById('viewAllBtn').classList.remove('hidden');
         c.innerHTML='';
         all.slice(0,4).forEach(function(ds){
@@ -446,6 +487,7 @@
     loadBlog();
 
     // ===== AI CHAT =====
+    // Using gemini-1.5-flash for better stability
     var GEMINI_KEY='AQ.Ab8RN6J2Wk-LWVzBky-5GEMuPxZD2SP0fVFaH_hJ6c0Np9mYWA';
     var SYS='You are Habib iFix AI assistant for a gadget repair shop in Gachbaria, Chattogram, Bangladesh. Owner: Habibur Rahman. Phone: +880 1868 461577. Email: tec.habiburrahman@gmail.com. Services: phone, laptop, tablet, PC, camera, smartwatch repair. Prices: ৳400-৳5000. Most repairs same day. Uses genuine parts with warranty. ALWAYS reply in the SAME language the customer uses (Bengali or English). Be warm, concise (2-3 sentences max). Never make up info.';
     var history=[];
@@ -456,7 +498,7 @@
       body.innerHTML+='<div class="flex gap-2 max-w-[85%] self-end"><div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-[12px] text-white p-2.5 rounded-2xl rounded-br-none leading-relaxed border border-blue-500/30">'+esc(txt)+'</div></div>';
       inp.value='';body.scrollTop=body.scrollHeight;
       var tid='t'+Date.now();
-      body.innerHTML+='<div id="'+tid+'" class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]">🤖</div><div class="bg-white border border-gray-100 p-2.5 rounded-2xl rounded-bl-none flex gap-1 items-center shadow-sm"><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.15s"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.3s"></span></div></div>';
+      body.innerHTML+='<div id="'+tid+'" class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]"></div><div class="bg-white border border-gray-100 p-2.5 rounded-2xl rounded-bl-none flex gap-1 items-center shadow-sm"><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.15s"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.3s"></span></div></div>';
       body.scrollTop=body.scrollHeight;
       history.push({role:'user',parts:[{text:txt}]});
       saveLog(txt,null,'pending');
@@ -468,10 +510,16 @@
         var recent=history.slice(-8);
         recent.forEach(function(m){contents.push(m)});
 
-        var resp=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GEMINI_KEY,{
+        // Using gemini-1.5-flash model which is more stable
+        var resp=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+GEMINI_KEY,{
           method:'POST',headers:{'Content-Type':'application/json'},
           body:JSON.stringify({contents:contents,generationConfig:{maxOutputTokens:300,temperature:0.7}})
         });
+        
+        if (!resp.ok) {
+            throw new Error('API request failed with status ' + resp.status);
+        }
+
         var data=await resp.json();
         var reply='দুঃখিত, এখন উত্তর দিতে পারছি না। কল করুন: +880 1868 461577';
         if(data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]){
@@ -484,7 +532,9 @@
       }catch(e){
         console.error('AI Error:',e);
         var te2=document.getElementById(tid);if(te2)te2.remove();
-        body.innerHTML+='<div class="flex gap-2 max-w-[85%]"><div class="bg-red-50 border border-red-100 text-[12px] text-red-500 p-2.5 rounded-2xl">Connection error. Please call: +880 1868 461577</div></div>';
+        // Fallback response if API fails completely
+        var fallbackReply = "দুঃখিত, সার্ভারে সমস্যা হচ্ছে। অনুগ্রহ করে কল করুন: +880 1868 461577 অথবা ইমেইল করুন tec.habiburrahman@gmail.com";
+        body.innerHTML+='<div class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center flex-shrink-0 mt-auto text-[10px]">🤖</div><div class="bg-white border border-gray-100 text-[12px] text-slate-600 p-2.5 rounded-2xl rounded-bl-none leading-relaxed shadow-sm">'+fallbackReply+'</div></div>';
         saveLog(txt,'ERROR: '+e.message,'failed');
       }
       body.scrollTop=body.scrollHeight;

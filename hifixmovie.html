@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movies - HiFix</title>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background: #0f172a;
+      color: #f8fafc;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+    /* Hide scrollbar for horizontal scroll areas but keep functionality */
+    .hide-scroll::-webkit-scrollbar { display: none; }
+    .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Movie Card Hover Effects */
+    .movie-card { transition: all 0.3s ease; }
+    .movie-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    
+    /* Poster Overlay Gradient */
+    .poster-overlay {
+      background: linear-gradient(to top, rgba(15,23,42,1) 0%, rgba(15,23,42,0.8) 50%, transparent 100%);
+    }
+
+    /* Loading Skeleton Animation */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-[1400px] mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 group">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-lg group-hover:shadow-cyan-500/50 transition-all">H</div>
+        <span class="font-bold text-xl tracking-tight text-white">Hi<span class="text-cyan-400">Fix</span></span>
+      </a>
+
+      <!-- Search Bar (Desktop) -->
+      <div class="hidden md:flex flex-1 max-w-md mx-8 relative">
+        <input type="text" id="searchInput" placeholder="Search movies..." class="w-full bg-slate-800/50 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all">
+        <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </div>
+
+      <nav class="flex items-center gap-4 text-sm font-medium text-slate-300">
+        <a href="index.html" class="hover:text-cyan-400 transition-colors hidden sm:block">Home</a>
+        <a href="movies.html" class="text-cyan-400">Movies</a>
+        <button onclick="toggleSearchMobile()" class="md:hidden text-slate-300 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </button>
+      </nav>
+    </div>
+    
+    <!-- Mobile Search Bar (Hidden by default) -->
+    <div id="mobileSearchBar" class="hidden md:hidden px-4 pb-4 bg-[#0f172a] border-b border-white/10">
+      <input type="text" id="mobileSearchInput" placeholder="Search movies..." class="w-full bg-slate-800/50 border border-white/10 rounded-full py-2 pl-4 pr-4 text-sm text-white focus:outline-none focus:border-cyan-500">
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow pt-20 pb-12">
+    
+    <!-- Trending Section -->
+    <section class="max-w-[1400px] mx-auto px-4 md:px-6 mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <span class="w-1 h-6 bg-cyan-500 rounded-full"></span> Trending Now
+        </h2>
+        <button onclick="fetchTrending()" class="text-xs text-cyan-400 hover:text-cyan-300 font-medium">Refresh </button>
+      </div>
+      
+      <!-- Horizontal Scroll Container -->
+      <div id="trendingContainer" class="flex gap-4 overflow-x-auto hide-scroll pb-4 snap-x snap-mandatory">
+        <!-- Skeleton Loaders -->
+        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
+        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
+        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
+        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
+        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
+      </div>
+    </section>
+
+    <!-- Popular Movies Grid -->
+    <section class="max-w-[1400px] mx-auto px-4 md:px-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <span class="w-1 h-6 bg-purple-500 rounded-full"></span> Popular Movies
+        </h2>
+        <div class="flex gap-2">
+           <select id="yearFilter" onchange="fetchPopular()" class="bg-slate-800 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-500">
+             <option value="">All Years</option>
+             <option value="2024">2024</option>
+             <option value="2023">2023</option>
+             <option value="2022">2022</option>
+           </select>
+        </div>
+      </div>
+
+      <div id="popularContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+        <!-- Skeleton Loaders -->
+        <div class="h-[320px] rounded-xl skeleton"></div>
+        <div class="h-[320px] rounded-xl skeleton"></div>
+        <div class="h-[320px] rounded-xl skeleton"></div>
+        <div class="h-[320px] rounded-xl skeleton"></div>
+        <div class="h-[320px] rounded-xl skeleton"></div>
+        <div class="h-[320px] rounded-xl skeleton"></div>
+      </div>
+      
+      <!-- Pagination / Load More -->
+      <div class="mt-12 text-center">
+        <button id="loadMoreBtn" onclick="loadMorePopular()" class="bg-slate-800 hover:bg-slate-700 text-white px-8 py-3 rounded-full font-medium text-sm transition-all border border-white/10 hover:border-cyan-500/50">
+          Load More Movies
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#0b1120] border-t border-white/5 py-8 mt-auto">
+    <div class="max-w-[1400px] mx-auto px-4 md:px-6 text-center text-slate-500 text-sm">
+      <p>&copy; 2024 HiFix Movies. Powered by TMDB API.</p>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    const API_KEY = '93a5c52b939ffbcb3cd561c8a1f8b880';
+    const BASE_URL = 'https://api.themoviedb.org/3';
+    const IMG_BASE = 'https://image.tmdb.org/t/p/w500';
+    const IMG_ORIGINAL = 'https://image.tmdb.org/t/p/original';
+
+    let currentPage = 1;
+    let currentCategory = 'popular'; // 'popular' or search results
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchTrending();
+      fetchPopular();
+      
+      // Search Listeners
+      const searchInput = document.getElementById('searchInput');
+      const mobileSearchInput = document.getElementById('mobileSearchInput');
+      
+      let searchTimeout;
+      const handleSearch = (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          const query = e.target.value.trim();
+          if(query.length > 2) {
+            fetchSearch(query);
+          } else if (query === '') {
+            fetchPopular();
+          }
+        }, 500);
+      };
+
+      searchInput.addEventListener('input', handleSearch);
+      mobileSearchInput.addEventListener('input', handleSearch);
+    });
+
+    // Toggle Mobile Search
+    function toggleSearchMobile() {
+      const bar = document.getElementById('mobileSearchBar');
+      bar.classList.toggle('hidden');
+      if(!bar.classList.contains('hidden')) document.getElementById('mobileSearchInput').focus();
+    }
+
+    // Fetch Trending
+    async function fetchTrending() {
+      const container = document.getElementById('trendingContainer');
+      try {
+        const res = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
+        const data = await res.json();
+        
+        container.innerHTML = '';
+        data.results.slice(0, 10).forEach(movie => {
+          if(!movie.poster_path) return;
+          container.innerHTML += createMovieCard(movie, true);
+        });
+      } catch(e) { console.error(e); }
+    }
+
+    // Fetch Popular
+    async function fetchPopular(page = 1) {
+      const container = document.getElementById('popularContainer');
+      const year = document.getElementById('yearFilter').value;
+      
+      if(page === 1) container.innerHTML = '<div class="col-span-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">' + 
+        Array(6).fill('<div class="h-[320px] rounded-xl skeleton"></div>').join('') + '</div>';
+      
+      try {
+        let url = `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`;
+        if(year) url += `&primary_release_year=${year}`;
+        
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        if(page === 1) container.innerHTML = '';
+        
+        data.results.forEach(movie => {
+          if(!movie.poster_path) return;
+          container.innerHTML += createMovieCard(movie, false);
+        });
+        
+        currentPage = page;
+      } catch(e) { console.error(e); }
+    }
+
+    // Fetch Search
+    async function fetchSearch(query) {
+      const container = document.getElementById('popularContainer');
+      document.getElementById('loadMoreBtn').classList.add('hidden');
+      
+      container.innerHTML = '<div class="col-span-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">' + 
+        Array(6).fill('<div class="h-[320px] rounded-xl skeleton"></div>').join('') + '</div>';
+
+      try {
+        const res = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        
+        container.innerHTML = '';
+        if(data.results.length === 0) {
+          container.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400">No movies found.</div>';
+          return;
+        }
+
+        data.results.forEach(movie => {
+          if(!movie.poster_path) return;
+          container.innerHTML += createMovieCard(movie, false);
+        });
+      } catch(e) { console.error(e); }
+    }
+
+    // Load More
+    function loadMorePopular() {
+      fetchPopular(currentPage + 1);
+    }
+
+    // Create Movie Card HTML
+    function createMovieCard(movie, isHorizontal) {
+      const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
+      const year = movie.release_date ? movie.release_date.split('-')[0] : '';
+      
+      if(isHorizontal) {
+        return `
+          <div class="movie-card min-w-[160px] w-[160px] relative group cursor-pointer snap-start" onclick="window.open('https://www.themoviedb.org/movie/${movie.id}', '_blank')">
+            <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-2">
+              <img src="${IMG_BASE}${movie.poster_path}" alt="${movie.title}" class="w-full h-full object-cover" loading="lazy">
+              <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-yellow-400 flex items-center gap-1">
+                ★ ${rating}
+              </div>
+            </div>
+            <h3 class="text-sm font-semibold text-white line-clamp-1 group-hover:text-cyan-400 transition-colors">${movie.title}</h3>
+            <p class="text-xs text-slate-500">${year}</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="movie-card relative group cursor-pointer" onclick="window.open('https://www.themoviedb.org/movie/${movie.id}', '_blank')">
+          <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3">
+            <img src="${IMG_BASE}${movie.poster_path}" alt="${movie.title}" class="w-full h-full object-cover" loading="lazy">
+            <div class="absolute inset-0 poster-overlay opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+               <div class="text-xs text-yellow-400 font-bold mb-1">★ ${rating}</div>
+               <button class="w-10 h-10 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-400 transition-colors shadow-lg">
+                 <svg class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+               </button>
+            </div>
+            <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-yellow-400 flex items-center gap-1 group-hover:opacity-0 transition-opacity">
+              ★ ${rating}
+            </div>
+          </div>
+          <h3 class="text-base font-semibold text-white line-clamp-1 group-hover:text-cyan-400 transition-colors">${movie.title}</h3>
+          <p class="text-xs text-slate-500 mt-1">${year}</p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

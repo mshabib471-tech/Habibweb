@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us - Habib iFix</title>
 
-  <!-- CRITICAL: Tailwind synchronous -->
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
+  
+  <!-- Adsterra Popunder Scripts -->
+  <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
+  <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,10 +20,9 @@
 
   <style>
     body { font-family: 'Inter', sans-serif; }
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0a0f1e; }
-    ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f8fafc; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
     @keyframes blob { 0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-50px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.9)}100%{transform:translate(0,0) scale(1)} }
     .animate-blob { animation: blob 7s infinite; }
@@ -34,9 +38,12 @@
     @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)} }
     .animate-float { animation: float 4s ease-in-out infinite; }
 
-    .glass-panel { background:rgba(255,255,255,.03);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08); }
+    @keyframes success-pop { 0%{transform:scale(0.8);opacity:0}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1} }
+    .animate-success { animation: success-pop 0.5s ease-out forwards; }
+
+    .glass-panel { background:rgba(255,255,255,.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.8);box-shadow:0 8px 32px rgba(0,0,0,.05); }
     .glass-card-hover { transition:all .4s cubic-bezier(.4,0,.2,1); }
-    .glass-card-hover:hover { transform:translateY(-5px);background:rgba(255,255,255,.07);border-color:rgba(6,182,212,.5);box-shadow:0 20px 40px -10px rgba(0,0,0,.5),0 0 20px rgba(6,182,212,.1); }
+    .glass-card-hover:hover { transform:translateY(-5px);background:rgba(255,255,255,.9);border-color:rgba(6,182,212,.5);box-shadow:0 20px 40px -10px rgba(0,0,0,.5),0 0 20px rgba(6,182,212,.1); }
 
     .reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.4,0,.2,1)}.reveal.active{opacity:1;transform:translateY(0)}
     .reveal-left{opacity:0;transform:translateX(-40px);transition:all .8s cubic-bezier(.4,0,.2,1)}.reveal-left.active{opacity:1;transform:translateX(0)}
@@ -46,88 +53,141 @@
     .form-input { transition: all 0.3s ease; }
     .form-input:focus { box-shadow: 0 0 0 3px rgba(6,182,212,0.15); }
 
-    /* Success animation */
-    @keyframes success-pop { 0%{transform:scale(0.8);opacity:0}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1} }
-    .animate-success { animation: success-pop 0.5s ease-out forwards; }
+    /* Pill Nav with Labels */
+    .pill-nav{background:rgba(255,255,255,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,0,0,.05);box-shadow:0 8px 32px rgba(0,0,0,.08),inset 0 0 0 1px rgba(255,255,255,.5)}
+    .pill-link{position:relative;transition:all .25s ease;color:#64748b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 10px;border-radius:12px;flex-shrink:0;min-width:60px}
+    .pill-link:hover{color:#0f172a;background:rgba(0,0,0,.05)}
+    .pill-link.active{color:#2563eb;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2)}
+    .pill-link svg{width:18px;height:18px}
+    .pill-link span{font-size:9px;font-weight:600;letter-spacing:0.3px}
+
+    /* Auth dropdown */
+    .auth-drop{position:absolute;top:100%;right:0;margin-top:12px;width:180px;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border:1px solid rgba(0,0,0,.1);border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,.1);opacity:0;visibility:hidden;transform:scale(.95);transition:all .2s ease;z-index:60;overflow:hidden}
+    .auth-group:hover .auth-drop{opacity:1;visibility:visible;transform:scale(1)}
+
+    /* Ad Containers */
+    .ad-container{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:8px;text-align:center;margin:20px 0;min-height:60px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .ad-label{font-size:10px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+
+    /* Smartlink Banner */
+    .smartlink-banner{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:16px;padding:20px;color:white;text-align:center;cursor:pointer;transition:all .3s ease;box-shadow:0 10px 30px rgba(102,126,234,.3)}
+    .smartlink-banner:hover{transform:translateY(-5px);box-shadow:0 15px 40px rgba(102,126,234,.4)}
   </style>
 </head>
-<body class="min-h-screen text-slate-200 selection:bg-cyan-500 selection:text-white relative flex flex-col bg-[#0a0f1e] overflow-x-hidden">
+<body class="min-h-screen text-slate-600 selection:bg-cyan-500 selection:text-white relative flex flex-col bg-[#f8fafc] overflow-x-hidden">
 
   <!-- BACKGROUND -->
   <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-    <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-500/20 blur-[120px] animate-blob mix-blend-screen"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-violet-600/25 blur-[150px] animate-blob animation-delay-2000 mix-blend-screen"></div>
-    <div class="absolute top-[40%] left-[30%] w-[500px] h-[500px] rounded-full bg-blue-600/15 blur-[120px] animate-blob animation-delay-4000 mix-blend-screen"></div>
+    <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-100/50 blur-[120px] animate-blob mix-blend-multiply"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-violet-100/50 blur-[150px] animate-blob animation-delay-2000 mix-blend-multiply"></div>
   </div>
 
   <!-- ================= HEADER ================= -->
-  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4">
-    <div class="max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3 cursor-pointer group">
-        <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-cyan-400/50 transition-colors">
-          <img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40">
-        </div>
-        <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-400 font-medium group-hover:text-cyan-400 transition-colors">iFix</span></span>
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 flex justify-center px-3 pt-3 transition-all duration-500">
+    <nav id="pillNav" class="pill-nav rounded-2xl px-2 py-2 flex items-center gap-1">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2 px-2 shrink-0 ml-0.5" title="Habib iFix">
+        <div class="w-8 h-8 rounded-lg overflow-hidden border border-gray-200 bg-white"><img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="32" height="32"></div>
       </a>
-
-      <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-200">
-        <a href="index.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Home</a>
-        <a href="about.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">About Us</a>
-        <a href="services.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Services</a>
-        <a href="blog.html" class="hover:text-cyan-400 transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-cyan-400 after:transition-all hover:after:w-full">Blog</a>
-        <a href="contact.html" class="text-cyan-400 font-semibold relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-cyan-400">Contact</a>
-      </nav>
-
-      <div class="flex items-center gap-4">
-        <a href="tel:+8801868461577" class="hidden md:flex bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-white px-5 py-2 rounded-full font-medium items-center gap-2 transition-all shadow-lg hover:-translate-y-0.5 hover:border-cyan-400/30">
-          📞 <span>+880 1868 461577</span>
+      <div class="w-px h-8 bg-gray-200 shrink-0 mx-0.5"></div>
+      <!-- Home -->
+      <a href="index.html" class="pill-link" title="Home">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+        <span>Home</span>
+      </a>
+      <!-- Services -->
+      <a href="services.html" class="pill-link" title="Services">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>Services</span>
+      </a>
+      <!-- About -->
+      <a href="about.html" class="pill-link" title="About">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        <span>About</span>
+      </a>
+      <!-- Contact (Active) -->
+      <a href="contact.html" class="pill-link active" title="Contact">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        <span>Contact</span>
+      </a>
+      <!-- Blog -->
+      <a href="blog.html" class="pill-link" title="Blog">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+        <span>Blog</span>
+      </a>
+      <div class="w-px h-8 bg-gray-200 shrink-0 mx-0.5"></div>
+      <!-- Auth -->
+      <div id="authArea" class="auth-group relative shrink-0 mr-0.5">
+        <a href="login.html?return=contact.html" id="loginNavBtn" class="pill-link" style="color:#2563eb;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2)" title="Login">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+          <span>Login</span>
         </a>
-        <button id="mobile-menu-btn" class="lg:hidden text-white bg-white/5 p-2 rounded-lg border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
+        <div id="userProfileMenu" class="hidden relative cursor-pointer">
+          <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-full object-cover border-2 border-cyan-400/50" width="36" height="36">
+          <div class="auth-drop p-1">
+            <label class="px-3 py-2.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-gray-100 cursor-pointer flex items-center gap-2 rounded-lg transition-colors"> Change Pic<input type="file" id="profilePicInput" accept="image/*" class="hidden"></label>
+            <button onclick="logoutCurrentUser()" class="w-full px-3 py-2.5 text-sm text-red-500 hover:text-red-600 hover:bg-red-50 text-left flex items-center gap-2 rounded-lg transition-colors">Logout</button>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-[#0a0f1e]/95 backdrop-blur-2xl border-t border-white/10 flex flex-col px-6 py-8 gap-5 shadow-2xl z-40 min-h-screen overflow-y-auto pb-32">
-      <a href="index.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4" onclick="closeMobileMenu()">Home</a>
-      <a href="about.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4" onclick="closeMobileMenu()">About Us</a>
-      <a href="services.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4" onclick="closeMobileMenu()">Services</a>
-      <a href="blog.html" class="text-lg text-slate-200 hover:text-cyan-400 pl-4" onclick="closeMobileMenu()">Blog</a>
-      <a href="contact.html" class="text-cyan-400 font-semibold text-xl border-l-2 border-cyan-400 pl-4" onclick="closeMobileMenu()">Contact Us</a>
-      <a href="tel:+8801868461577" class="mt-4 text-center w-full bg-cyan-600/20 border border-cyan-500/30 py-3 rounded-xl text-cyan-400 font-medium flex items-center justify-center gap-2" onclick="closeMobileMenu()">📞 +880 1868 461577</a>
-    </div>
+    </nav>
   </header>
 
   <!-- ================= CONTACT SECTION ================= -->
-  <main class="flex-grow pt-[100px] pb-24 px-4 md:px-6 relative z-10">
+  <main class="flex-grow pt-20 pb-24 px-4 md:px-6 relative z-10">
     <div class="max-w-[1280px] w-full mx-auto">
 
       <!-- Section Header -->
-      <div class="text-center mb-16 animate-fade-in-up">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-4">
-          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> Support Center
+      <div class="text-center mb-16 animate-fade-in-up mt-8">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-700 text-xs font-bold uppercase tracking-wider mb-4 bg-white/50">
+          <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span> Support Center
         </div>
-        <h2 class="text-4xl md:text-6xl font-extrabold mb-6 text-white tracking-tight">Get In <span class="text-shimmer">Touch</span></h2>
-        <p class="text-slate-400 max-w-2xl mx-auto text-lg">কোনো সমস্যা থাকলে আমাদের লোকেশনে যোগাযোগ করুন অথবা ফর্মটি পূরণ করে মেসেজ দিন। আমরা সবসময় আপনাকে সাহায্য করতে প্রস্তুত।</p>
+        <h2 class="text-4xl md:text-6xl font-extrabold mb-6 text-slate-900 tracking-tight">Get In <span class="text-shimmer">Touch</span></h2>
+        <p class="text-slate-500 max-w-2xl mx-auto text-lg">কোনো সমস্যা থাকলে আমাদের লোকেশনে যোগাযোগ করুন অথবা ফর্মটি পূরণ করে মেসেজ দিন। আমরা সবসময় আপনাকে সাহায্য করতে প্রস্তুত।</p>
       </div>
 
       <!-- Quick Contact Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 reveal">
-        <a href="tel:+8801868461577" class="glass-panel glass-card-hover p-6 rounded-2xl flex items-center gap-4 group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400/50 transition-all text-xl">📞</div>
-          <div><p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Call Us</p><p class="text-white font-bold text-sm">+880 1868 461577</p></div>
+        <a href="tel:+8801868461577" class="glass-panel glass-card-hover p-6 rounded-2xl flex items-center gap-4 group bg-white/50">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-cyan-100 flex items-center justify-center text-cyan-600 group-hover:scale-110 group-hover:border-cyan-400/50 transition-all text-xl">📞</div>
+          <div><p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Call Us</p><p class="text-slate-900 font-bold text-sm">+880 1868 461577</p></div>
         </a>
-        <a href="mailto:tec.habiburrahman@gmail.com" class="glass-panel glass-card-hover p-6 rounded-2xl flex items-center gap-4 group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400/50 transition-all text-xl">✉️</div>
-          <div><p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Email</p><p class="text-white font-bold text-sm">tec.habiburrahman@gmail.com</p></div>
+        <a href="mailto:tec.habiburrahman@gmail.com" class="glass-panel glass-card-hover p-6 rounded-2xl flex items-center gap-4 group bg-white/50">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-cyan-100 flex items-center justify-center text-cyan-600 group-hover:scale-110 group-hover:border-cyan-400/50 transition-all text-xl">✉️</div>
+          <div><p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Email</p><p class="text-slate-900 font-bold text-sm">tec.habiburrahman@gmail.com</p></div>
         </a>
-        <a href="https://wa.me/8801868461577" target="_blank" class="glass-panel glass-card-hover p-6 rounded-2xl flex items-center gap-4 group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-transparent border border-white/10 flex items-center justify-center text-green-400 group-hover:scale-110 group-hover:border-green-400/50 transition-all text-xl"><i class="fab fa-whatsapp text-lg"></i></div>
-          <div><p class="text-xs text-slate-500 font-medium uppercase tracking-wider">WhatsApp</p><p class="text-white font-bold text-sm">Chat Now</p></div>
+        <a href="https://wa.me/8801868461577" target="_blank" class="glass-panel glass-card-hover p-6 rounded-2xl flex items-center gap-4 group bg-white/50">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-transparent border border-green-100 flex items-center justify-center text-green-600 group-hover:scale-110 group-hover:border-green-400/50 transition-all text-xl"><i class="fab fa-whatsapp text-lg"></i></div>
+          <div><p class="text-xs text-slate-500 font-medium uppercase tracking-wider">WhatsApp</p><p class="text-slate-900 font-bold text-sm">Chat Now</p></div>
         </a>
-        <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="glass-panel glass-card-hover p-6 rounded-2xl flex items-center gap-4 group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-transparent border border-white/10 flex items-center justify-center text-blue-400 group-hover:scale-110 group-hover:border-blue-400/50 transition-all text-xl"><i class="fab fa-telegram-plane text-lg"></i></div>
-          <div><p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Telegram</p><p class="text-white font-bold text-sm">Message Us</p></div>
+        <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="glass-panel glass-card-hover p-6 rounded-2xl flex items-center gap-4 group bg-white/50">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-transparent border border-blue-100 flex items-center justify-center text-blue-600 group-hover:scale-110 group-hover:border-blue-400/50 transition-all text-xl"><i class="fab fa-telegram-plane text-lg"></i></div>
+          <div><p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Telegram</p><p class="text-slate-900 font-bold text-sm">Message Us</p></div>
+        </a>
+      </div>
+
+      <!-- Adsterra Native Banner Ad -->
+      <div class="mb-12">
+        <div class="ad-container">
+          <div class="text-center">
+            <div class="ad-label">Advertisement</div>
+            <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
+            <div id="container-8e9094986a453471eab78291c50b779f"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smartlink Banner Ad -->
+      <div class="mb-12">
+        <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="smartlink-banner block">
+          <div class="flex items-center justify-center gap-4">
+            <div class="text-4xl"></div>
+            <div class="text-left">
+              <h3 class="text-xl font-bold mb-1">Exclusive Offers & Deals!</h3>
+              <p class="text-sm opacity-90">Click here to discover amazing deals and earn rewards</p>
+            </div>
+            <div class="text-3xl">→</div>
+          </div>
         </a>
       </div>
 
@@ -135,110 +195,109 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
 
         <!-- Left: Contact Info -->
-        <div class="glass-panel glass-card-hover p-8 md:p-10 rounded-[32px] shadow-2xl flex flex-col h-full relative overflow-hidden group reveal-left">
+        <div class="glass-panel glass-card-hover p-8 md:p-10 rounded-[32px] shadow-2xl flex flex-col h-full relative overflow-hidden group reveal-left bg-white/50">
           <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-cyan-500/20 transition-colors"></div>
 
-          <h3 class="text-2xl font-bold text-white mb-8 relative z-10">📍 Contact Information</h3>
+          <h3 class="text-2xl font-bold text-slate-900 mb-8 relative z-10">📍 Contact Information</h3>
 
           <div class="space-y-8 flex-grow relative z-10">
             <!-- Address -->
             <div class="flex items-start gap-5 group/item">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center text-cyan-400 shrink-0 group-hover/item:scale-110 group-hover/item:border-cyan-400/50 transition-all duration-300 shadow-lg">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-cyan-100 flex items-center justify-center text-cyan-600 shrink-0 group-hover/item:scale-110 group-hover/item:border-cyan-400/50 transition-all duration-300 shadow-lg">
                 <i class="fas fa-map-marker-alt text-xl"></i>
               </div>
               <div>
-                <h4 class="text-white font-bold text-lg mb-1">Our Location</h4>
-                <p class="text-slate-400 leading-relaxed">House - Habibur Rahman, Gachbaria<br>Chattogram, Bangladesh</p>
+                <h4 class="text-slate-900 font-bold text-lg mb-1">Our Location</h4>
+                <p class="text-slate-500 leading-relaxed">House - Habibur Rahman, Gachbaria<br>Chattogram, Bangladesh</p>
               </div>
             </div>
 
             <!-- Phone -->
             <div class="flex items-start gap-5 group/item">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center text-cyan-400 shrink-0 group-hover/item:scale-110 group-hover/item:border-cyan-400/50 transition-all duration-300 shadow-lg">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-cyan-100 flex items-center justify-center text-cyan-600 shrink-0 group-hover/item:scale-110 group-hover/item:border-cyan-400/50 transition-all duration-300 shadow-lg">
                 <i class="fas fa-phone text-xl"></i>
               </div>
               <div>
-                <h4 class="text-white font-bold text-lg mb-1">Phone Number</h4>
-                <a href="tel:+8801868461577" class="text-slate-400 hover:text-cyan-400 transition-colors">+880 1868 461577</a>
+                <h4 class="text-slate-900 font-bold text-lg mb-1">Phone Number</h4>
+                <a href="tel:+8801868461577" class="text-slate-500 hover:text-cyan-600 transition-colors">+880 1868 461577</a>
               </div>
             </div>
 
             <!-- Email -->
             <div class="flex items-start gap-5 group/item">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center text-cyan-400 shrink-0 group-hover/item:scale-110 group-hover/item:border-cyan-400/50 transition-all duration-300 shadow-lg">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-cyan-100 flex items-center justify-center text-cyan-600 shrink-0 group-hover/item:scale-110 group-hover/item:border-cyan-400/50 transition-all duration-300 shadow-lg">
                 <i class="fas fa-envelope text-xl"></i>
               </div>
               <div>
-                <h4 class="text-white font-bold text-lg mb-1">Email Address</h4>
-                <a href="mailto:tec.habiburrahman@gmail.com" class="text-slate-400 hover:text-cyan-400 transition-colors">tec.habiburrahman@gmail.com</a>
+                <h4 class="text-slate-900 font-bold text-lg mb-1">Email Address</h4>
+                <a href="mailto:tec.habiburrahman@gmail.com" class="text-slate-500 hover:text-cyan-600 transition-colors">tec.habiburrahman@gmail.com</a>
               </div>
             </div>
 
             <!-- Hours -->
             <div class="flex items-start gap-5 group/item">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-white/10 flex items-center justify-center text-cyan-400 shrink-0 group-hover/item:scale-110 group-hover/item:border-cyan-400/50 transition-all duration-300 shadow-lg">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-transparent border border-cyan-100 flex items-center justify-center text-cyan-600 shrink-0 group-hover/item:scale-110 group-hover/item:border-cyan-400/50 transition-all duration-300 shadow-lg">
                 <i class="fas fa-clock text-xl"></i>
               </div>
               <div>
-                <h4 class="text-white font-bold text-lg mb-1">Working Hours</h4>
-                <p class="text-slate-400 leading-relaxed">Always Open Online<br>Chat support available 24/7</p>
+                <h4 class="text-slate-900 font-bold text-lg mb-1">Working Hours</h4>
+                <p class="text-slate-500 leading-relaxed">Always Open Online<br>Chat support available 24/7</p>
               </div>
             </div>
           </div>
 
           <!-- Social Links -->
-          <div class="flex gap-3 mt-10 pt-8 border-t border-white/10 relative z-10">
-            <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-lg"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#0088cc] hover:border-[#0088cc] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-lg"><i class="fab fa-telegram-plane"></i></a>
-            <a href="https://wa.me/8801868461577" target="_blank" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-lg"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://habib-bd.vercel.app/" target="_blank" class="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-cyan-600 hover:border-cyan-600 hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-lg"><i class="fas fa-globe"></i></a>
+          <div class="flex gap-3 mt-10 pt-8 border-t border-gray-100 relative z-10">
+            <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-sm"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-[#0088cc] hover:border-[#0088cc] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-sm"><i class="fab fa-telegram-plane"></i></a>
+            <a href="https://wa.me/8801868461577" target="_blank" class="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-sm"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://habib-bd.vercel.app/" target="_blank" class="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-cyan-600 hover:border-cyan-600 hover:text-white hover:-translate-y-1 transition-all duration-300 text-slate-400 shadow-sm"><i class="fas fa-globe"></i></a>
           </div>
 
           <!-- Google Map -->
-          <div class="mt-8 rounded-2xl overflow-hidden border border-white/10 shadow-2xl opacity-80 hover:opacity-100 transition-opacity duration-500 h-[220px] relative z-10 group/map">
-            <div class="absolute inset-0 bg-cyan-500/5 mix-blend-overlay pointer-events-none z-10 group-hover/map:bg-transparent transition-colors"></div>
+          <div class="mt-8 rounded-2xl overflow-hidden border border-gray-200 shadow-lg opacity-90 hover:opacity-100 transition-opacity duration-500 h-[220px] relative z-10 group/map">
             <iframe title="Location Map" src="https://maps.google.com/maps?q=22.2149092,92.0320435&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>
           </div>
         </div>
 
         <!-- Right: Contact Form -->
-        <div class="glass-panel glass-card-hover p-8 md:p-10 rounded-[32px] shadow-2xl h-full relative overflow-hidden reveal-right">
+        <div class="glass-panel glass-card-hover p-8 md:p-10 rounded-[32px] shadow-2xl h-full relative overflow-hidden reveal-right bg-white/50">
           <div class="absolute bottom-0 left-0 w-64 h-64 bg-violet-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
-          <h3 class="text-2xl font-bold text-white mb-2 relative z-10">✉️ Send us a Message</h3>
+          <h3 class="text-2xl font-bold text-slate-900 mb-2 relative z-10">✉️ Send us a Message</h3>
           <p class="text-slate-500 text-sm mb-8 relative z-10">Fill out the form below and we'll get back to you within 24 hours.</p>
 
           <form class="space-y-5 relative z-10" id="contactForm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Your Name</label>
-                <input type="text" id="name" name="name" placeholder="John Doe" required class="form-input w-full bg-[#0a0f1e]/80 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:bg-[#0a0f1e]">
+                <input type="text" id="name" name="name" placeholder="John Doe" required class="form-input w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:bg-white">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="john@example.com" required class="form-input w-full bg-[#0a0f1e]/80 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:bg-[#0a0f1e]">
+                <input type="email" id="email" name="email" placeholder="john@example.com" required class="form-input w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:bg-white">
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="+880 1..." class="form-input w-full bg-[#0a0f1e]/80 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:bg-[#0a0f1e]">
+                <input type="tel" id="phone" name="phone" placeholder="+880 1..." class="form-input w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:bg-white">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Service Type</label>
                 <div class="relative">
-                  <select id="service" name="service" required class="form-input w-full bg-[#0a0f1e]/80 border border-white/10 rounded-xl px-5 py-3.5 text-slate-300 focus:outline-none focus:border-cyan-400 focus:bg-[#0a0f1e] appearance-none cursor-pointer">
-                    <option value="" class="bg-slate-900">Select Service / Issue</option>
-                    <option value="apple-service" class="bg-slate-900">Apple Service</option>
-                    <option value="samsung-service" class="bg-slate-900">Samsung Service</option>
-                    <option value="xiaomi-service" class="bg-slate-900">Xiaomi Service</option>
-                    <option value="huawei-service" class="bg-slate-900">Huawei Service</option>
-                    <option value="laptop-service" class="bg-slate-900">Laptop Service</option>
-                    <option value="buy-accessories" class="bg-slate-900">Buy Accessories</option>
-                    <option value="other" class="bg-slate-900">Other Inquiry</option>
+                  <select id="service" name="service" required class="form-input w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3.5 text-slate-600 focus:outline-none focus:border-cyan-400 focus:bg-white appearance-none cursor-pointer">
+                    <option value="" class="bg-white">Select Service / Issue</option>
+                    <option value="apple-service" class="bg-white">Apple Service</option>
+                    <option value="samsung-service" class="bg-white">Samsung Service</option>
+                    <option value="xiaomi-service" class="bg-white">Xiaomi Service</option>
+                    <option value="huawei-service" class="bg-white">Huawei Service</option>
+                    <option value="laptop-service" class="bg-white">Laptop Service</option>
+                    <option value="buy-accessories" class="bg-white">Buy Accessories</option>
+                    <option value="other" class="bg-white">Other Inquiry</option>
                   </select>
-                  <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+                  <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                   </div>
                 </div>
@@ -247,10 +306,10 @@
 
             <div>
               <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Message Details</label>
-              <textarea id="message" name="message" rows="5" placeholder="Describe your device problem here... (ডিভাইসের সমস্যা বিস্তারিত লিখুন)" required class="form-input w-full bg-[#0a0f1e]/80 border border-white/10 rounded-xl px-5 py-3.5 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:bg-[#0a0f1e] resize-none"></textarea>
+              <textarea id="message" name="message" rows="5" placeholder="Describe your device problem here... (ডিভাইসের সমস্যা বিস্তারিত লিখুন)" required class="form-input w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:bg-white resize-none"></textarea>
             </div>
 
-            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-600 hover:to-cyan-500 text-white font-bold text-lg py-4 rounded-xl transition-all shadow-[0_10px_30px_-10px_rgba(6,182,212,0.5)] hover:-translate-y-1 mt-2 flex items-center justify-center gap-2">
+            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-600 hover:to-cyan-500 text-white font-bold text-lg py-4 rounded-xl transition-all shadow-lg hover:-translate-y-1 mt-2 flex items-center justify-center gap-2">
               <span>Send Message</span> ➤
             </button>
 
@@ -260,28 +319,66 @@
 
       </div>
 
+      <!-- Extra Ad 160x600 -->
+      <div class="mt-12">
+        <div class="ad-container" style="min-height:70px">
+          <div class="text-center w-full">
+            <div class="ad-label">Advertisement</div>
+            <script>
+              atOptions = {
+                'key' : '1eda4cac05549ff59bb7f97d83a3666b',
+                'format' : 'iframe',
+                'height' : 600,
+                'width' : 160,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highrevenueformat.com/1eda4cac05549ff59bb7f97d83a3666b/invoke.js"></script>
+          </div>
+        </div>
+      </div>
+
       <!-- FAQ Section -->
       <div class="mt-20 reveal">
         <div class="text-center mb-12">
-          <span class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 block">FAQ</span>
-          <h2 class="text-3xl md:text-4xl font-extrabold text-white">Frequently Asked Questions</h2>
+          <span class="text-cyan-600 font-bold tracking-widest text-xs uppercase mb-3 block">FAQ</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900">Frequently Asked Questions</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <div class="glass-panel rounded-2xl p-6">
-            <h4 class="text-white font-bold mb-2 flex items-center gap-2"><span class="text-cyan-400">Q:</span> How long does a repair take?</h4>
-            <p class="text-slate-400 text-sm leading-relaxed">Most repairs are completed within 30 minutes to 3 hours. Complex issues like water damage may take 1-2 days.</p>
+          <div class="glass-panel rounded-2xl p-6 bg-white/50">
+            <h4 class="text-slate-900 font-bold mb-2 flex items-center gap-2"><span class="text-cyan-500">Q:</span> How long does a repair take?</h4>
+            <p class="text-slate-500 text-sm leading-relaxed">Most repairs are completed within 30 minutes to 3 hours. Complex issues like water damage may take 1-2 days.</p>
           </div>
-          <div class="glass-panel rounded-2xl p-6">
-            <h4 class="text-white font-bold mb-2 flex items-center gap-2"><span class="text-cyan-400">Q:</span> Do you offer warranty?</h4>
-            <p class="text-slate-400 text-sm leading-relaxed">Yes! Every repair comes with a service warranty. If anything goes wrong, we fix it again free of charge.</p>
+          <div class="glass-panel rounded-2xl p-6 bg-white/50">
+            <h4 class="text-slate-900 font-bold mb-2 flex items-center gap-2"><span class="text-cyan-500">Q:</span> Do you offer warranty?</h4>
+            <p class="text-slate-500 text-sm leading-relaxed">Yes! Every repair comes with a service warranty. If anything goes wrong, we fix it again free of charge.</p>
           </div>
-          <div class="glass-panel rounded-2xl p-6">
-            <h4 class="text-white font-bold mb-2 flex items-center gap-2"><span class="text-cyan-400">Q:</span> Is my data safe during repair?</h4>
-            <p class="text-slate-400 text-sm leading-relaxed">Absolutely. We never access your personal data. Your privacy is our top priority during every repair.</p>
+          <div class="glass-panel rounded-2xl p-6 bg-white/50">
+            <h4 class="text-slate-900 font-bold mb-2 flex items-center gap-2"><span class="text-cyan-500">Q:</span> Is my data safe during repair?</h4>
+            <p class="text-slate-500 text-sm leading-relaxed">Absolutely. We never access your personal data. Your privacy is our top priority during every repair.</p>
           </div>
-          <div class="glass-panel rounded-2xl p-6">
-            <h4 class="text-white font-bold mb-2 flex items-center gap-2"><span class="text-cyan-400">Q:</span> Can I get a price estimate before repair?</h4>
-            <p class="text-slate-400 text-sm leading-relaxed">Yes! We provide free diagnosis and transparent pricing before starting any repair. No hidden fees ever.</p>
+          <div class="glass-panel rounded-2xl p-6 bg-white/50">
+            <h4 class="text-slate-900 font-bold mb-2 flex items-center gap-2"><span class="text-cyan-500">Q:</span> Can I get a price estimate before repair?</h4>
+            <p class="text-slate-500 text-sm leading-relaxed">Yes! We provide free diagnosis and transparent pricing before starting any repair. No hidden fees ever.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extra Ad 300x250 -->
+      <div class="mt-12">
+        <div class="ad-container" style="min-height:70px">
+          <div class="text-center w-full">
+            <div class="ad-label">Advertisement</div>
+            <script>
+              atOptions = {
+                'key' : '32e0f71a4efea05f3881aa566f147309',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highrevenueformat.com/32e0f71a4efea05f3881aa566f147309/invoke.js"></script>
           </div>
         </div>
       </div>
@@ -290,60 +387,60 @@
   </main>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="bg-[#060a14] text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-white/10">
+  <footer class="bg-white text-slate-400 pt-20 pb-12 relative z-10 mt-auto border-t border-gray-100">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6">
-      <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-cyan-500/15 blur-[100px] pointer-events-none group-hover:bg-cyan-500/25 transition-colors"></div>
-        <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Need Help Right Now?</h2>
-        <p class="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">Our team is available to answer your questions and schedule your repair appointment.</p>
-        <a href="tel:+8801868461577" class="inline-block bg-white text-[#0a0f1e] font-bold px-10 py-4 rounded-full hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1">📞 Call Us Now</a>
+      <div class="glass-panel rounded-[32px] p-10 md:p-16 text-center mb-20 shadow-2xl relative overflow-hidden group bg-white/50">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-cyan-500/10 blur-[100px] pointer-events-none group-hover:bg-cyan-500/20 transition-colors"></div>
+        <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">Need Help Right Now?</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto text-base md:text-lg mb-10 leading-relaxed">Our team is available to answer your questions and schedule your repair appointment.</p>
+        <a href="tel:+8801868461577" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-10 py-4 rounded-full hover:opacity-90 transition-all shadow-lg hover:-translate-y-1"> Call Us Now</a>
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-16 text-sm">
         <div class="col-span-2 space-y-6">
           <a href="index.html" class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center"><img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40" loading="lazy"></div>
-            <span class="font-bold text-2xl tracking-tight text-white">Habib<span class="text-slate-500 font-medium">iFix</span></span>
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-gray-200 bg-white flex items-center justify-center"><img src="https://i.ibb.co.com/2XJPZ5X/Chat-GPT-Image-Aug-15-2026-12-34-42-PM.png" alt="Logo" class="w-full h-full object-cover" width="40" height="40" loading="lazy"></div>
+            <span class="font-bold text-2xl tracking-tight text-slate-900">Habib<span class="text-slate-500 font-medium">iFix</span></span>
           </a>
           <p class="text-slate-500 leading-relaxed pr-8">Your trusted partner for fast and reliable gadget repair services and component solutions.</p>
         </div>
         <div>
-          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Services</h4>
+          <h4 class="text-slate-900 font-bold mb-6 text-sm uppercase tracking-widest">Services</h4>
           <ul class="space-y-4">
-            <li><a href="services.html" class="hover:text-cyan-400 transition-colors">Phone Repair</a></li>
-            <li><a href="services.html" class="hover:text-cyan-400 transition-colors">Laptop Fix</a></li>
-            <li><a href="services.html" class="hover:text-cyan-400 transition-colors">Tablet Service</a></li>
-            <li><a href="services.html" class="hover:text-cyan-400 transition-colors">Data Recovery</a></li>
+            <li><a href="services.html" class="hover:text-cyan-600 transition-colors">Phone Repair</a></li>
+            <li><a href="services.html" class="hover:text-cyan-600 transition-colors">Laptop Fix</a></li>
+            <li><a href="services.html" class="hover:text-cyan-600 transition-colors">Tablet Service</a></li>
+            <li><a href="services.html" class="hover:text-cyan-600 transition-colors">Data Recovery</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
+          <h4 class="text-slate-900 font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
           <ul class="space-y-4">
-            <li><a href="index.html" class="hover:text-cyan-400 transition-colors">Home</a></li>
-            <li><a href="about.html" class="hover:text-cyan-400 transition-colors">About Us</a></li>
-            <li><a href="blog.html" class="hover:text-cyan-400 transition-colors">Blog</a></li>
-            <li><a href="contact.html" class="hover:text-cyan-400 transition-colors">Contact</a></li>
+            <li><a href="index.html" class="hover:text-cyan-600 transition-colors">Home</a></li>
+            <li><a href="about.html" class="hover:text-cyan-600 transition-colors">About Us</a></li>
+            <li><a href="blog.html" class="hover:text-cyan-600 transition-colors">Blog</a></li>
+            <li><a href="contact.html" class="hover:text-cyan-600 transition-colors">Contact</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4>
+          <h4 class="text-slate-900 font-bold mb-6 text-sm uppercase tracking-widest">Legal</h4>
           <ul class="space-y-4">
-            <li><a href="#" class="hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
-            <li><a href="#" class="hover:text-cyan-400 transition-colors">Terms of Service</a></li>
-            <li><a href="#" class="hover:text-cyan-400 transition-colors">Warranty Policy</a></li>
+            <li><a href="#" class="hover:text-cyan-600 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-cyan-600 transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-cyan-600 transition-colors">Warranty Policy</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4>
+          <h4 class="text-slate-900 font-bold mb-6 text-sm uppercase tracking-widest">Connect</h4>
           <div class="flex flex-col gap-4">
-            <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
-            <a href="https://wa.me/8801868461577" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp</a>
-            <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors"><i class="fa-brands fa-telegram text-lg"></i> Telegram</a>
+            <a href="https://www.facebook.com/share/16tXdf1PSw/" target="_blank" class="flex items-center gap-2 hover:text-cyan-600 transition-colors"><i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
+            <a href="https://wa.me/8801868461577" target="_blank" class="flex items-center gap-2 hover:text-cyan-600 transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp</a>
+            <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="flex items-center gap-2 hover:text-cyan-600 transition-colors"><i class="fa-brands fa-telegram text-lg"></i> Telegram</a>
           </div>
         </div>
       </div>
 
-      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
+      <div class="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-400 gap-4">
         <div class="flex items-center gap-6">
           <p>&copy; 2026 Habib iFix. All Rights Reserved.</p>
           <span class="hidden md:flex items-center gap-2 text-emerald-500 font-medium"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> System Online</span>
@@ -354,20 +451,18 @@
 
   <!-- ================= JAVASCRIPT ================= -->
   <script>
-    feather.replace();
-
     // Scroll Reveal
     function revealOnScroll(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-100)el.classList.add('active');});}
     window.addEventListener('scroll',revealOnScroll);window.addEventListener('load',revealOnScroll);revealOnScroll();
 
     // Header Scroll
     var header=document.getElementById('main-header');
-    window.addEventListener('scroll',function(){if(window.scrollY>50){header.classList.add('bg-[#0a0f1e]/80','backdrop-blur-xl','border-b','border-white/5','shadow-lg','py-3');header.classList.remove('bg-transparent','py-4');}else{header.classList.add('bg-transparent','py-4');header.classList.remove('bg-[#0a0f1e]/80','backdrop-blur-xl','border-b','border-white/5','shadow-lg','py-3');}});
+    window.addEventListener('scroll',function(){if(window.scrollY>50){header.classList.add('bg-white/90','backdrop-blur-xl','border-b','border-gray-100','shadow-sm','py-3');header.classList.remove('bg-transparent','py-4');}else{header.classList.add('bg-transparent','py-4');header.classList.remove('bg-white/90','backdrop-blur-xl','border-b','border-gray-100','shadow-sm','py-3');}});
 
     // Mobile Menu
     var menuBtn=document.getElementById('mobile-menu-btn'),mobileMenu=document.getElementById('mobile-menu'),isMenuOpen=false;
-    function closeMobileMenu(){isMenuOpen=false;mobileMenu.classList.add('hidden');menuBtn.innerHTML='<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>';feather.replace();}
-    menuBtn.addEventListener('click',function(){isMenuOpen=!isMenuOpen;if(isMenuOpen){mobileMenu.classList.remove('hidden');menuBtn.innerHTML='<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';}else closeMobileMenu();feather.replace();});
+    function closeMobileMenu(){isMenuOpen=false;mobileMenu.classList.add('hidden');menuBtn.innerHTML='<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>';}
+    menuBtn.addEventListener('click',function(){isMenuOpen=!isMenuOpen;if(isMenuOpen){mobileMenu.classList.remove('hidden');menuBtn.innerHTML='<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';}else closeMobileMenu();});
 
     // Form Submission
     var form=document.getElementById('contactForm'),submitBtn=document.getElementById('submitBtn'),formStatus=document.getElementById('formStatus');
@@ -382,7 +477,7 @@
 
       fetch(scriptURL,{method:'POST',body:new FormData(form)})
         .then(function(response){
-          formStatus.className="mt-4 font-medium p-4 rounded-xl border backdrop-blur-md text-center animate-success flex items-center justify-center gap-2 bg-green-500/10 border-green-500/30 text-green-400";
+          formStatus.className="mt-4 font-medium p-4 rounded-xl border backdrop-blur-md text-center animate-success flex items-center justify-center gap-2 bg-green-500/10 border-green-500/30 text-green-600";
           formStatus.innerHTML='✅ Message sent successfully! We will contact you soon.';
           formStatus.classList.remove('hidden');
           form.reset();
@@ -391,7 +486,7 @@
         })
         .catch(function(error){
           console.error('Error!',error.message);
-          formStatus.className="mt-4 font-medium p-4 rounded-xl border backdrop-blur-md text-center animate-fade-in-up flex items-center justify-center gap-2 bg-red-500/10 border-red-500/30 text-red-400";
+          formStatus.className="mt-4 font-medium p-4 rounded-xl border backdrop-blur-md text-center animate-fade-in-up flex items-center justify-center gap-2 bg-red-500/10 border-red-500/30 text-red-500";
           formStatus.innerHTML='❌ Error sending message. Please try again or call us directly.';
           formStatus.classList.remove('hidden');
           submitBtn.innerHTML=originalBtn;submitBtn.disabled=false;submitBtn.classList.remove('opacity-75','cursor-not-allowed');

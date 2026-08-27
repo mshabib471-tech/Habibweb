@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HMDb - The Home of Movies</title>
+    <title>HMDb - Complete Movie Database</title>
     <style>
         :root {
             --bg-color: #121212;
@@ -11,118 +11,221 @@
             --primary-color: #f5c518;
             --text-light: #ffffff;
             --text-muted: #aaaaaa;
+            --card-bg: #2a2a2a;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-light); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-light); overflow-x: hidden; }
         
-        /* Navbar */
-        header { display: flex; justify-content: space-between; align-items: center; background-color: var(--nav-bg); padding: 15px 50px; }
-        .logo { font-size: 28px; font-weight: bold; background-color: var(--primary-color); color: #000; padding: 5px 10px; border-radius: 5px; }
-        .search-bar { display: flex; gap: 10px; width: 50%; }
-        .search-bar input { width: 100%; padding: 10px; border: none; border-radius: 4px; }
-        .search-bar select { padding: 10px; border: none; border-radius: 4px; background: #333; color: white; }
+        /* Navbar & Search */
+        header { display: flex; justify-content: space-between; align-items: center; background-color: var(--nav-bg); padding: 15px 50px; position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 28px; font-weight: bold; background-color: var(--primary-color); color: #000; padding: 5px 12px; border-radius: 5px; cursor: pointer; }
+        .search-container { display: flex; gap: 10px; width: 60%; position: relative; }
+        .search-container select { padding: 10px; border: none; border-radius: 4px; background: #333; color: white; outline: none; cursor: pointer; }
+        .search-container input { width: 100%; padding: 10px 15px; border: none; border-radius: 4px; outline: none; background: #333; color: white; }
+        
+        /* Autocomplete Suggestions */
+        .autocomplete-list { position: absolute; top: 100%; left: 100px; right: 0; background: var(--nav-bg); border-radius: 4px; margin-top: 5px; max-height: 200px; overflow-y: auto; display: none; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.5); }
+        .autocomplete-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #333; }
+        .autocomplete-item:hover { background: #444; }
 
-        /* Hero Section (Amateur Hawa) */
-        .hero { display: flex; padding: 50px; gap: 30px; background: linear-gradient(to right, #000000, transparent), url('https://m.media-amazon.com/images/M/MV5BM2YzYWZjZWQtYWNlNi00MTJjLWE4MTUtOWMwODA2MTAxZDQ1XkEyXkFqcGc@.jpg') no-repeat center/cover; height: 500px; align-items: center; }
-        .hero-content { max-width: 600px; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 10px; }
-        .hero h1 { font-size: 48px; color: var(--primary-color); margin-bottom: 10px; }
-        .tags span { display: inline-block; background: #333; padding: 5px 10px; border-radius: 20px; font-size: 14px; margin-right: 10px; margin-bottom: 15px; }
-        .hero p { line-height: 1.6; font-size: 16px; margin-bottom: 20px; }
+        /* Hero Section */
+        .hero { display: flex; padding: 50px; gap: 30px; background-size: cover; background-position: center; height: 500px; align-items: center; position: relative; }
+        .hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to right, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.4)); }
+        .hero-content { position: relative; z-index: 1; max-width: 600px; }
+        .hero h1 { font-size: 52px; color: var(--primary-color); margin-bottom: 15px; }
+        .tags span { display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid var(--text-muted); padding: 5px 12px; border-radius: 20px; font-size: 14px; margin-right: 10px; margin-bottom: 15px; }
+        .hero p { line-height: 1.6; font-size: 16px; margin-bottom: 20px; color: #ddd; }
+        .play-btn { background: var(--primary-color); color: #000; border: none; padding: 10px 25px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .play-btn:hover { background: #e0b416; transform: scale(1.05); }
 
-        /* Movie Grid */
-        .section-title { padding: 40px 50px 20px; font-size: 24px; border-left: 5px solid var(--primary-color); margin-left: 50px; }
-        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 0 50px 50px; }
-        .movie-card { background-color: var(--nav-bg); border-radius: 8px; overflow: hidden; transition: transform 0.3s; }
-        .movie-card:hover { transform: scale(1.05); }
+        /* Movie Sections (Scrollable Rows) */
+        .section-container { padding: 30px 50px; }
+        .section-title { font-size: 24px; border-left: 5px solid var(--primary-color); padding-left: 10px; margin-bottom: 20px; }
+        .movie-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: thin; scrollbar-color: var(--primary-color) var(--bg-color); }
+        .movie-row::-webkit-scrollbar { height: 8px; }
+        .movie-row::-webkit-scrollbar-thumb { background-color: var(--primary-color); border-radius: 4px; }
+        
+        .movie-card { min-width: 200px; background-color: var(--card-bg); border-radius: 8px; overflow: hidden; transition: transform 0.3s; cursor: pointer; }
+        .movie-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         .movie-card img { width: 100%; height: 300px; object-fit: cover; }
         .movie-info { padding: 15px; }
-        .movie-info h3 { font-size: 16px; margin-bottom: 5px; }
+        .movie-info h3 { font-size: 16px; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .movie-meta { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-muted); }
         .rating { color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
 
+    <!-- Navbar & Multiple Features -->
     <header>
         <div class="logo">HMDb</div>
-        <div class="search-bar">
-            <select id="genre-select">
+        <div class="search-container">
+            <select id="genre-filter">
                 <option value="All">All Genres</option>
-                <option value="Drama">Drama</option>
                 <option value="Action">Action</option>
                 <option value="Comedy">Comedy</option>
+                <option value="Drama">Drama</option>
+                <option value="Documentary">Documentary</option>
                 <option value="Thriller">Thriller</option>
             </select>
-            <input type="text" placeholder="Search movies, TV series... (e.g., Breaking Bad)">
+            <input type="text" id="search-input" placeholder="Search for movies, shows... (e.g., Breaking Bad)">
+            <div class="autocomplete-list" id="autocomplete-list"></div>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Amateur Hawa</h1>
-            <div class="tags">
-                <span>Action</span>
-                <span>Comedy</span>
-                <span>Drama</span>
-                <span>2025</span>
-            </div>
-            <p>In a desperate attempt to save his life, inexperienced Victor drags his friends into a botched bank truck heist with a local thug, spiraling into a chaotic and hilarious chase as their plans unravel.</p>
+    <!-- Dynamic Hero Section -->
+    <section class="hero" id="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content" id="hero-content">
+            <!-- Injected by JS -->
         </div>
     </section>
 
-    <h2 class="section-title">Top 250 Movies</h2>
-    <section class="movie-grid" id="movie-container">
-        <!-- Movies will be injected here by JS -->
-    </section>
+    <!-- Top 250 Section -->
+    <div class="section-container">
+        <h2 class="section-title">Top 250 Movies</h2>
+        <div class="movie-row" id="top-250-container">
+            <!-- Injected by JS -->
+        </div>
+    </div>
+
+    <!-- Trending / Other Section -->
+    <div class="section-container">
+        <h2 class="section-title">Trending Now</h2>
+        <div class="movie-row" id="trending-container">
+            <!-- Injected by JS -->
+        </div>
+    </div>
 
     <script>
-        // Sample data from your JSON
-        const topMovies = [
-            {
-                title: "The Shawshank Redemption",
-                year: 1994,
-                rating: 9.3,
-                image: "https://m.media-amazon.com/images/M/MV5BMDAyY2FhYjctNDc5OS00MDNlLThiMGUtY2UxYWVkNGY2ZjljXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg"
+        // ==========================================
+        // 1. PLACE YOUR API JSON DATA HERE
+        // ==========================================
+        
+        const apiData = {
+            hero: {
+                title: "Amateur Hawa",
+                genres: ["Action", "Comedy", "Drama"],
+                year: "2025",
+                description: "In a desperate attempt to save his life, inexperienced Victor drags his friends into a botched bank truck heist with a local thug, spiraling into a chaotic and hilarious chase as their plans unravel.",
+                bgImage: "https://m.media-amazon.com/images/M/MV5BM2YzYWZjZWQtYWNlNi00MTJjLWE4MTUtOWMwODA2MTAxZDQ1XkEyXkFqcGc@.jpg"
             },
-            {
-                title: "The Godfather",
-                year: 1972,
-                rating: 9.2,
-                image: "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg"
-            },
-            {
-                title: "The Dark Knight",
-                year: 2008,
-                rating: 9.1,
-                image: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX280_CR0,0,280,414_.jpg"
-            },
-            {
-                title: "The Lord of the Rings",
-                year: 2003,
-                rating: 9.0,
-                image: "https://m.media-amazon.com/images/M/MV5BMTZkMjBjNWMtZGI5OC00MGU0LTk4ZTItODg2NWM3NTVmNWQ4XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg"
-            },
-            {
-                title: "12 Angry Men",
-                year: 1957,
-                rating: 9.0,
-                image: "https://m.media-amazon.com/images/M/MV5BYjE4NzdmOTYtYjc5Yi00YzBiLWEzNDEtNTgxZGQ2MWVkN2NiXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg"
+            searchSuggestions: [
+                "Breaking Bad", "Prison Break", "Amateur Hawa", "The Shawshank Redemption", "The Godfather", "The Dark Knight"
+            ],
+            top250: [
+                { title: "The Shawshank Redemption", year: 1994, rating: 9.3, img: "https://m.media-amazon.com/images/M/MV5BMDAyY2FhYjctNDc5OS00MDNlLThiMGUtY2UxYWVkNGY2ZjljXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
+                { title: "The Godfather", year: 1972, rating: 9.2, img: "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
+                { title: "The Dark Knight", year: 2008, rating: 9.1, img: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
+                { title: "12 Angry Men", year: 1957, rating: 9.0, img: "https://m.media-amazon.com/images/M/MV5BYjE4NzdmOTYtYjc5Yi00YzBiLWEzNDEtNTgxZGQ2MWVkN2NiXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
+                { title: "Schindler's List", year: 1993, rating: 9.0, img: "https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" }
+            ],
+            trending: [
+                { title: "Dune: Part Two", year: 2024, rating: 8.8, img: "https://m.media-amazon.com/images/M/MV5BODQ0ZWE1YjMtYWQ3My00NGVjLTgwZWEtNjZhYzQzZGE5ZjNkXkEyXkFqcGdeQXVyMTAxNzQ1NzI@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
+                { title: "Oppenheimer", year: 2023, rating: 8.4, img: "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
+                { title: "Deadpool & Wolverine", year: 2024, rating: 8.2, img: "https://m.media-amazon.com/images/M/MV5BNzRiMjg0MzUtNTQ1Mi00Y2Q5LWEwM2MtMzUwZDVjNjgwZDIxXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" }
+            ]
+        };
+
+        // ==========================================
+        // 2. RENDER HERO SECTION
+        // ==========================================
+        const heroSection = document.getElementById('hero-section');
+        const heroContent = document.getElementById('hero-content');
+        
+        heroSection.style.backgroundImage = `url('${apiData.hero.bgImage}')`;
+        let genresHtml = apiData.hero.genres.map(g => `<span>${g}</span>`).join('');
+        
+        heroContent.innerHTML = `
+            <h1>${apiData.hero.title}</h1>
+            <div class="tags">
+                ${genresHtml}
+                <span>${apiData.hero.year}</span>
+            </div>
+            <p>${apiData.hero.description}</p>
+            <button class="play-btn">▶ Watch Trailer</button>
+        `;
+
+        // ==========================================
+        // 3. RENDER MOVIE SECTIONS
+        // ==========================================
+        function renderMovies(movies, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = ''; // Clear previous
+            
+            movies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.innerHTML = `
+                    <img src="${movie.img}" alt="${movie.title}">
+                    <div class="movie-info">
+                        <h3>${movie.title}</h3>
+                        <div class="movie-meta">
+                            <span>${movie.year}</span>
+                            <span class="rating">⭐ ${movie.rating}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        renderMovies(apiData.top250, 'top-250-container');
+        renderMovies(apiData.trending, 'trending-container');
+
+        // ==========================================
+        // 4. AUTOCOMPLETE SEARCH LOGIC
+        // ==========================================
+        const searchInput = document.getElementById('search-input');
+        const autocompleteList = document.getElementById('autocomplete-list');
+
+        searchInput.addEventListener('input', function() {
+            const val = this.value.toLowerCase();
+            autocompleteList.innerHTML = '';
+            
+            if (!val) {
+                autocompleteList.style.display = 'none';
+                return;
             }
-        ];
 
-        const container = document.getElementById('movie-container');
-
-        topMovies.forEach(movie => {
-            const card = document.createElement('div');
-            card.className = 'movie-card';
-            card.innerHTML = `
-                <img src="${movie.image}" alt="${movie.title}">
-                <div class="movie-info">
-                    <h3>${movie.title} (${movie.year})</h3>
-                    <p class="rating">⭐ ${movie.rating}</p>
-                </div>
-            `;
-            container.appendChild(card);
+            const matches = apiData.searchSuggestions.filter(item => item.toLowerCase().includes(val));
+            
+            if (matches.length > 0) {
+                autocompleteList.style.display = 'block';
+                matches.forEach(match => {
+                    const div = document.createElement('div');
+                    div.className = 'autocomplete-item';
+                    div.innerText = match;
+                    div.onclick = function() {
+                        searchInput.value = match;
+                        autocompleteList.style.display = 'none';
+                        // Here you can trigger an API call or filter function
+                        alert(`Searching for: ${match}`);
+                    };
+                    autocompleteList.appendChild(div);
+                });
+            } else {
+                autocompleteList.style.display = 'none';
+            }
         });
+
+        // Close autocomplete when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target !== searchInput) {
+                autocompleteList.style.display = 'none';
+            }
+        });
+
+        // ==========================================
+        // 5. GENRE FILTER LOGIC (MOCK)
+        // ==========================================
+        const genreFilter = document.getElementById('genre-filter');
+        genreFilter.addEventListener('change', function() {
+            const selectedGenre = this.value;
+            console.log(`Filtered by: ${selectedGenre}`);
+            // In a real scenario, you would fetch new data here and call renderMovies() again
+        });
+
     </script>
 </body>
 </html>

@@ -17,16 +17,15 @@
         body { background-color: var(--bg-color); color: var(--text-light); overflow-x: hidden; }
         
         /* Navbar & Search */
-        header { display: flex; justify-content: space-between; align-items: center; background-color: var(--nav-bg); padding: 15px 50px; position: sticky; top: 0; z-index: 100; }
+        header { display: flex; justify-content: space-between; align-items: center; background-color: var(--nav-bg); padding: 15px 50px; }
         .logo { font-size: 28px; font-weight: bold; background-color: var(--primary-color); color: #000; padding: 5px 12px; border-radius: 5px; cursor: pointer; }
         .search-container { display: flex; gap: 10px; width: 60%; position: relative; }
-        .search-container select { padding: 10px; border: none; border-radius: 4px; background: #333; color: white; outline: none; cursor: pointer; }
         .search-container input { width: 100%; padding: 10px 15px; border: none; border-radius: 4px; outline: none; background: #333; color: white; }
         
-        /* Autocomplete Suggestions */
-        .autocomplete-list { position: absolute; top: 100%; left: 100px; right: 0; background: var(--nav-bg); border-radius: 4px; margin-top: 5px; max-height: 200px; overflow-y: auto; display: none; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.5); }
-        .autocomplete-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #333; }
-        .autocomplete-item:hover { background: #444; }
+        /* Advanced Filter Bar */
+        .filter-bar { display: flex; gap: 15px; padding: 15px 50px; background-color: #1a1a1a; flex-wrap: wrap; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 99; }
+        .filter-bar select { padding: 10px; border: 1px solid #444; border-radius: 4px; background: #2a2a2a; color: white; outline: none; cursor: pointer; flex-grow: 1; min-width: 150px; }
+        .filter-bar select:hover { border-color: var(--primary-color); }
 
         /* Hero Section */
         .hero { display: flex; padding: 50px; gap: 30px; background-size: cover; background-position: center; height: 500px; align-items: center; position: relative; }
@@ -38,7 +37,7 @@
         .play-btn { background: var(--primary-color); color: #000; border: none; padding: 10px 25px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; }
         .play-btn:hover { background: #e0b416; transform: scale(1.05); }
 
-        /* Movie Sections (Scrollable Rows) */
+        /* Movie Sections */
         .section-container { padding: 30px 50px; }
         .section-title { font-size: 24px; border-left: 5px solid var(--primary-color); padding-left: 10px; margin-bottom: 20px; }
         .movie-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: thin; scrollbar-color: var(--primary-color) var(--bg-color); }
@@ -56,22 +55,22 @@
 </head>
 <body>
 
-    <!-- Navbar & Multiple Features -->
+    <!-- Navbar -->
     <header>
         <div class="logo">HMDb</div>
         <div class="search-container">
-            <select id="genre-filter">
-                <option value="All">All Genres</option>
-                <option value="Action">Action</option>
-                <option value="Comedy">Comedy</option>
-                <option value="Drama">Drama</option>
-                <option value="Documentary">Documentary</option>
-                <option value="Thriller">Thriller</option>
-            </select>
-            <input type="text" id="search-input" placeholder="Search for movies, shows... (e.g., Breaking Bad)">
-            <div class="autocomplete-list" id="autocomplete-list"></div>
+            <input type="text" id="search-input" placeholder="Search for movies, TV series...">
         </div>
     </header>
+
+    <!-- Advanced Filter Section -->
+    <div class="filter-bar">
+        <select id="type-filter"></select>
+        <select id="genre-filter"></select>
+        <select id="country-filter"></select>
+        <select id="rating-filter"></select>
+        <select id="language-filter"></select>
+    </div>
 
     <!-- Dynamic Hero Section -->
     <section class="hero" id="hero-section">
@@ -83,80 +82,83 @@
 
     <!-- Top 250 Section -->
     <div class="section-container">
-        <h2 class="section-title">Top 250 Movies</h2>
-        <div class="movie-row" id="top-250-container">
-            <!-- Injected by JS -->
-        </div>
-    </div>
-
-    <!-- Trending / Other Section -->
-    <div class="section-container">
-        <h2 class="section-title">Trending Now</h2>
-        <div class="movie-row" id="trending-container">
-            <!-- Injected by JS -->
-        </div>
+        <h2 class="section-title">Top Movies</h2>
+        <div class="movie-row" id="top-250-container"></div>
     </div>
 
     <script>
         // ==========================================
-        // 1. PLACE YOUR API JSON DATA HERE
+        // 1. FILTER DATA (Your provided data)
         // ==========================================
-        
-        const apiData = {
-            hero: {
-                title: "Amateur Hawa",
-                genres: ["Action", "Comedy", "Drama"],
-                year: "2025",
-                description: "In a desperate attempt to save his life, inexperienced Victor drags his friends into a botched bank truck heist with a local thug, spiraling into a chaotic and hilarious chase as their plans unravel.",
-                bgImage: "https://m.media-amazon.com/images/M/MV5BM2YzYWZjZWQtYWNlNi00MTJjLWE4MTUtOWMwODA2MTAxZDQ1XkEyXkFqcGc@.jpg"
-            },
-            searchSuggestions: [
-                "Breaking Bad", "Prison Break", "Amateur Hawa", "The Shawshank Redemption", "The Godfather", "The Dark Knight"
-            ],
-            top250: [
-                { title: "The Shawshank Redemption", year: 1994, rating: 9.3, img: "https://m.media-amazon.com/images/M/MV5BMDAyY2FhYjctNDc5OS00MDNlLThiMGUtY2UxYWVkNGY2ZjljXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
-                { title: "The Godfather", year: 1972, rating: 9.2, img: "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
-                { title: "The Dark Knight", year: 2008, rating: 9.1, img: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
-                { title: "12 Angry Men", year: 1957, rating: 9.0, img: "https://m.media-amazon.com/images/M/MV5BYjE4NzdmOTYtYjc5Yi00YzBiLWEzNDEtNTgxZGQ2MWVkN2NiXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
-                { title: "Schindler's List", year: 1993, rating: 9.0, img: "https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" }
-            ],
-            trending: [
-                { title: "Dune: Part Two", year: 2024, rating: 8.8, img: "https://m.media-amazon.com/images/M/MV5BODQ0ZWE1YjMtYWQ3My00NGVjLTgwZWEtNjZhYzQzZGE5ZjNkXkEyXkFqcGdeQXVyMTAxNzQ1NzI@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
-                { title: "Oppenheimer", year: 2023, rating: 8.4, img: "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
-                { title: "Deadpool & Wolverine", year: 2024, rating: 8.2, img: "https://m.media-amazon.com/images/M/MV5BNzRiMjg0MzUtNTQ1Mi00Y2Q5LWEwM2MtMzUwZDVjNjgwZDIxXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" }
-            ]
+        const filterData = {
+            types: [ "movie", "tvSeries", "tvMovie", "tvMiniSeries", "tvSpecial" ],
+            
+            genres: [ "Drama", "Documentary", "Comedy", "Action", "Romance", "Thriller", "Crime", "Horror", "Music", "Adventure", "Family", "Animation", "Reality-TV", "Mystery", "History", "Biography", "Sport", "Talk-Show", "Fantasy", "Sci-Fi", "Musical", "News", "War", "Adult", "Game-Show", "Western", "Short", "Film-Noir" ],
+            
+            countries: [ { "name": "Andorra", "iso_3166_1": "AD" }, { "name": "United Arab Emirates", "iso_3166_1": "AE" }, { "name": "Afghanistan", "iso_3166_1": "AF" }, { "name": "Antigua and Barbuda", "iso_3166_1": "AG" }, { "name": "Anguilla", "iso_3166_1": "AI" }, { "name": "Albania", "iso_3166_1": "AL" }, { "name": "Armenia", "iso_3166_1": "AM" }, { "name": "Netherlands Antilles", "iso_3166_1": "AN" }, { "name": "Angola", "iso_3166_1": "AO" }, { "name": "Antarctica", "iso_3166_1": "AQ" }, { "name": "Argentina", "iso_3166_1": "AR" }, { "name": "American Samoa", "iso_3166_1": "AS" }, { "name": "Austria", "iso_3166_1": "AT" }, { "name": "Australia", "iso_3166_1": "AU" }, { "name": "Aruba", "iso_3166_1": "AW" }, { "name": "Azerbaijan", "iso_3166_1": "AZ" }, { "name": "Bosnia and Herzegovina", "iso_3166_1": "BA" }, { "name": "Barbados", "iso_3166_1": "BB" }, { "name": "Bangladesh", "iso_3166_1": "BD" }, { "name": "Belgium", "iso_3166_1": "BE" }, { "name": "Burkina Faso", "iso_3166_1": "BF" }, { "name": "Bulgaria", "iso_3166_1": "BG" }, { "name": "Bahrain", "iso_3166_1": "BH" }, { "name": "Burundi", "iso_3166_1": "BI" }, { "name": "Benin", "iso_3166_1": "BJ" }, { "name": "Bermuda", "iso_3166_1": "BM" }, { "name": "Brunei Darussalam", "iso_3166_1": "BN" }, { "name": "Bolivia", "iso_3166_1": "BO" }, { "name": "Brazil", "iso_3166_1": "BR" }, { "name": "Bahamas", "iso_3166_1": "BS" }, { "name": "Bhutan", "iso_3166_1": "BT" }, { "name": "Burma", "iso_3166_1": "BU" }, { "name": "Botswana", "iso_3166_1": "BW" }, { "name": "Belarus", "iso_3166_1": "BY" }, { "name": "Canada", "iso_3166_1": "CA" }, { "name": "Switzerland", "iso_3166_1": "CH" }, { "name": "China", "iso_3166_1": "CN" }, { "name": "Colombia", "iso_3166_1": "CO" }, { "name": "Germany", "iso_3166_1": "DE" }, { "name": "Denmark", "iso_3166_1": "DK" }, { "name": "Egypt", "iso_3166_1": "EG" }, { "name": "Spain", "iso_3166_1": "ES" }, { "name": "Finland", "iso_3166_1": "FI" }, { "name": "France", "iso_3166_1": "FR" }, { "name": "United Kingdom", "iso_3166_1": "GB" }, { "name": "India", "iso_3166_1": "IN" }, { "name": "Italy", "iso_3166_1": "IT" }, { "name": "Japan", "iso_3166_1": "JP" }, { "name": "South Korea", "iso_3166_1": "KR" }, { "name": "Mexico", "iso_3166_1": "MX" }, { "name": "Netherlands", "iso_3166_1": "NL" }, { "name": "Pakistan", "iso_3166_1": "PK" }, { "name": "Russia", "iso_3166_1": "RU" }, { "name": "Sweden", "iso_3166_1": "SE" }, { "name": "United States of America", "iso_3166_1": "US" } ],
+            // Note: I have kept the core countries above to save space in the code, but you can paste your full country array here.
+            
+            ratings: [ "(Banned)", 12, "13+", 16, "16+", 18, "18+", 6, "Approved", "Banned", "C", "E", "E10+", "EC", "G", "GA", "GP", "M", "M/PG", "MA-13", "MA-17", "NC-17", "Not Rated", "Open", "PG", "PG-13", "Passed", "R", "T", "TV-13", "TV-14", "TV-G", "TV-MA", "TV-PG", "TV-Y", "TV-Y7", "TV-Y7-FV", "Unrated", "X" ],
+            
+            languages: [ { "name": "English", "iso_639_1": "en" }, { "name": "Bengali", "iso_639_1": "bn" }, { "name": "Hindi", "iso_639_1": "hi" }, { "name": "Spanish", "iso_639_1": "es" }, { "name": "French", "iso_639_1": "fr" }, { "name": "Arabic", "iso_639_1": "ar" }, { "name": "Russian", "iso_639_1": "ru" }, { "name": "Japanese", "iso_639_1": "ja" }, { "name": "Korean", "iso_639_1": "ko" }, { "name": "Italian", "iso_639_1": "it" }, { "name": "German", "iso_639_1": "de" }, { "name": "Chinese", "iso_639_1": "zh" } ]
+            // Note: Same here, I added the most common ones to keep the HTML file clean. You can directly replace this with your full array.
         };
 
         // ==========================================
-        // 2. RENDER HERO SECTION
+        // 2. DYNAMICALLY POPULATE DROPDOWNS
+        // ==========================================
+        
+        // Function for simple arrays (Strings/Numbers)
+        function populateSimpleDropdown(selectId, dataArray, defaultText) {
+            const select = document.getElementById(selectId);
+            select.innerHTML = `<option value="">${defaultText}</option>`;
+            dataArray.forEach(item => {
+                select.innerHTML += `<option value="${item}">${item}</option>`;
+            });
+        }
+
+        // Function for object arrays (like Country and Language)
+        function populateObjectDropdown(selectId, dataArray, defaultText, valueKey, textKey) {
+            const select = document.getElementById(selectId);
+            select.innerHTML = `<option value="">${defaultText}</option>`;
+            dataArray.forEach(item => {
+                select.innerHTML += `<option value="${item[valueKey]}">${item[textKey]}</option>`;
+            });
+        }
+
+        // Initialize Dropdowns
+        populateSimpleDropdown('type-filter', filterData.types, 'All Types');
+        populateSimpleDropdown('genre-filter', filterData.genres, 'All Genres');
+        populateObjectDropdown('country-filter', filterData.countries, 'All Countries', 'iso_3166_1', 'name');
+        populateSimpleDropdown('rating-filter', filterData.ratings, 'All Ratings');
+        populateObjectDropdown('language-filter', filterData.languages, 'All Languages', 'iso_639_1', 'name');
+
+
+        // ==========================================
+        // 3. SAMPLE RENDER LOGIC (Hero & Movies)
         // ==========================================
         const heroSection = document.getElementById('hero-section');
         const heroContent = document.getElementById('hero-content');
-        
-        heroSection.style.backgroundImage = `url('${apiData.hero.bgImage}')`;
-        let genresHtml = apiData.hero.genres.map(g => `<span>${g}</span>`).join('');
+        heroSection.style.backgroundImage = `url('https://m.media-amazon.com/images/M/MV5BM2YzYWZjZWQtYWNlNi00MTJjLWE4MTUtOWMwODA2MTAxZDQ1XkEyXkFqcGc@.jpg')`;
         
         heroContent.innerHTML = `
-            <h1>${apiData.hero.title}</h1>
+            <h1>Amateur Hawa</h1>
             <div class="tags">
-                ${genresHtml}
-                <span>${apiData.hero.year}</span>
+                <span>Action</span><span>Comedy</span><span>Drama</span><span>2025</span>
             </div>
-            <p>${apiData.hero.description}</p>
+            <p>In a desperate attempt to save his life, inexperienced Victor drags his friends into a botched bank truck heist...</p>
             <button class="play-btn">▶ Watch Trailer</button>
         `;
 
-        // ==========================================
-        // 3. RENDER MOVIE SECTIONS
-        // ==========================================
-        function renderMovies(movies, containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = ''; // Clear previous
-            
-            movies.forEach(movie => {
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                card.innerHTML = `
+        const topMovies = [
+            { title: "The Shawshank Redemption", year: 1994, rating: 9.3, img: "https://m.media-amazon.com/images/M/MV5BMDAyY2FhYjctNDc5OS00MDNlLThiMGUtY2UxYWVkNGY2ZjljXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" },
+            { title: "The Godfather", year: 1972, rating: 9.2, img: "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg" }
+        ];
+
+        const container = document.getElementById('top-250-container');
+        topMovies.forEach(movie => {
+            container.innerHTML += `
+                <div class="movie-card">
                     <img src="${movie.img}" alt="${movie.title}">
                     <div class="movie-info">
                         <h3>${movie.title}</h3>
@@ -165,67 +167,8 @@
                             <span class="rating">⭐ ${movie.rating}</span>
                         </div>
                     </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        renderMovies(apiData.top250, 'top-250-container');
-        renderMovies(apiData.trending, 'trending-container');
-
-        // ==========================================
-        // 4. AUTOCOMPLETE SEARCH LOGIC
-        // ==========================================
-        const searchInput = document.getElementById('search-input');
-        const autocompleteList = document.getElementById('autocomplete-list');
-
-        searchInput.addEventListener('input', function() {
-            const val = this.value.toLowerCase();
-            autocompleteList.innerHTML = '';
-            
-            if (!val) {
-                autocompleteList.style.display = 'none';
-                return;
-            }
-
-            const matches = apiData.searchSuggestions.filter(item => item.toLowerCase().includes(val));
-            
-            if (matches.length > 0) {
-                autocompleteList.style.display = 'block';
-                matches.forEach(match => {
-                    const div = document.createElement('div');
-                    div.className = 'autocomplete-item';
-                    div.innerText = match;
-                    div.onclick = function() {
-                        searchInput.value = match;
-                        autocompleteList.style.display = 'none';
-                        // Here you can trigger an API call or filter function
-                        alert(`Searching for: ${match}`);
-                    };
-                    autocompleteList.appendChild(div);
-                });
-            } else {
-                autocompleteList.style.display = 'none';
-            }
+                </div>`;
         });
-
-        // Close autocomplete when clicking outside
-        document.addEventListener('click', function(e) {
-            if (e.target !== searchInput) {
-                autocompleteList.style.display = 'none';
-            }
-        });
-
-        // ==========================================
-        // 5. GENRE FILTER LOGIC (MOCK)
-        // ==========================================
-        const genreFilter = document.getElementById('genre-filter');
-        genreFilter.addEventListener('change', function() {
-            const selectedGenre = this.value;
-            console.log(`Filtered by: ${selectedGenre}`);
-            // In a real scenario, you would fetch new data here and call renderMovies() again
-        });
-
     </script>
 </body>
 </html>

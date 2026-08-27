@@ -1,2156 +1,495 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CINEFLIX - Premium Movie & TV Discovery</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #050505;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-        
-        h1, h2, h3, .serif {
-            font-family: 'Playfair Display', serif;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #e50914; 
-        }
-
-        /* Glassmorphism Utilities */
-        .glass {
-            background: rgba(20, 20, 20, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .glass-card {
-            background: rgba(30, 30, 30, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .glass-card:hover {
-            background: rgba(40, 40, 40, 0.6);
-            border-color: rgba(229, 9, 20, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* Loader */
-        .skeleton {
-            background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09090b">
+<title>CINEHUB — Movie & TV Discovery</title>
+<style>
+:root{
+  --bg:#07070a;--panel:#111116;--panel2:#17171e;--text:#f7f7f8;--muted:#a6a6b0;
+  --line:rgba(255,255,255,.09);--accent:#e50935;--accent2:#ff3158;
+  --shadow:0 20px 60px rgba(0,0,0,.45);--radius:18px
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 80% -10%,rgba(229,9,53,.16),transparent 30%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.container{width:min(1400px,calc(100% - 36px));margin:auto}
+header{position:fixed;inset:0 0 auto;z-index:50;height:76px;display:flex;align-items:center;background:linear-gradient(to bottom,rgba(4,4,7,.94),rgba(4,4,7,.45));backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:.25s}
+header.scrolled{background:rgba(7,7,10,.94);border-color:var(--line)}
+.nav{display:flex;align-items:center;gap:28px;width:100%}.logo{font-weight:950;letter-spacing:-1px;font-size:24px}.logo span{color:var(--accent)}
+.navlinks{display:flex;gap:20px;align-items:center}.navlinks a{color:#ddd;text-decoration:none;font-size:14px}.navlinks a:hover{color:#fff}
+.spacer{flex:1}.iconbtn{background:transparent;color:#eee;font-size:20px;padding:8px;border-radius:12px}.iconbtn:hover{background:rgba(255,255,255,.08)}
+.searchbox{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid var(--line);padding:8px 12px;border-radius:14px}.searchbox input{width:180px;background:transparent;border:0;outline:0;color:white}
+.hero{min-height:720px;display:flex;align-items:end;padding:130px 0 70px;position:relative;overflow:hidden;background:#09090c}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#07070a 0%,rgba(7,7,10,.88) 35%,rgba(7,7,10,.25) 75%,#07070a 100%),linear-gradient(0deg,#07070a 0%,transparent 50%,rgba(0,0,0,.35) 100%);z-index:1}
+.hero-bg{position:absolute;inset:0;background-position:center;background-size:cover;opacity:.72;filter:saturate(.9)}
+.hero-content{position:relative;z-index:2;width:min(760px,100%)}.eyebrow{color:#ff6b86;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(42px,6vw,84px);line-height:.96;letter-spacing:-3px;margin:14px 0}.hero p{font-size:17px;line-height:1.65;color:#d4d4d9;max-width:700px}.meta{display:flex;flex-wrap:wrap;gap:9px;align-items:center;color:#ddd;font-size:14px;margin:18px 0}.badge{padding:5px 9px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.06)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.primary,.secondary{padding:12px 18px;border-radius:12px;font-weight:800}.primary{background:var(--accent);color:white}.primary:hover{background:var(--accent2)}.secondary{background:rgba(255,255,255,.09);color:white;border:1px solid var(--line)}
+main{padding:50px 0}.section{margin:0 0 48px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}.section h2{font-size:26px;margin:0}.section small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}.card{min-width:0;position:relative}.poster{aspect-ratio:2/3;border-radius:14px;overflow:hidden;background:#15151b;position:relative;border:1px solid var(--line)}.poster img{width:100%;height:100%;object-fit:cover;display:block;transition:.35s}.card:hover img{transform:scale(1.05)}.overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.92),transparent 55%);opacity:0;transition:.25s;display:flex;align-items:end;padding:12px}.card:hover .overlay{opacity:1}.quick{display:flex;gap:7px}.quick button{width:36px;height:36px;border-radius:50%;background:white;color:#111;font-weight:900}.title{font-weight:750;margin:9px 2px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sub{font-size:12px;color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.035);border:1px solid var(--line);padding:14px;border-radius:16px;margin-bottom:22px}.toolbar input,.toolbar select{background:#15151b;color:white;border:1px solid var(--line);padding:10px 12px;border-radius:10px;outline:0}
+.empty,.error{padding:55px 20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px}.error{color:#ff9aae}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modalbox{width:min(1000px,100%);max-height:90vh;overflow:auto;background:#111116;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.modalhead{display:flex;justify-content:space-between;padding:16px;border-bottom:1px solid var(--line)}.modalbody{padding:20px}.detail{display:grid;grid-template-columns:250px 1fr;gap:24px}.detail img{width:100%;border-radius:14px}.detail h2{font-size:38px;margin:0 0 8px}.detail p{color:#ccc;line-height:1.65}.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{font-size:12px;background:rgba(255,255,255,.07);padding:6px 9px;border-radius:8px;color:#ddd}
+.trailer{position:relative;aspect-ratio:16/9;background:#000}.trailer iframe{width:100%;height:100%;border:0}.close{background:rgba(255,255,255,.08);color:#fff;border-radius:10px;width:38px;height:38px}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:min(380px,92vw);background:#101015;z-index:90;transform:translateX(105%);transition:.25s;padding:88px 22px 22px;border-left:1px solid var(--line);overflow:auto}.drawer.open{transform:none}.drawer h3{margin-top:0}.field{margin:15px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}.field input,.field select{width:100%;background:#17171e;color:#fff;border:1px solid var(--line);padding:11px;border-radius:10px}
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--muted);font-size:13px}
+.skeleton{background:linear-gradient(100deg,#121218 20%,#1d1d24 40%,#121218 60%);background-size:200% 100%;animation:shine 1.2s infinite}@keyframes shine{to{background-position:-200% 0}}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(5,1fr)}.navlinks{display:none}}
+@media(max-width:800px){.grid{grid-template-columns:repeat(4,1fr)}.hero{min-height:650px}.searchbox input{width:110px}.detail{grid-template-columns:150px 1fr}}
+@media(max-width:560px){.container{width:min(100% - 24px,1400px)}header{height:66px}.searchbox{display:none}.grid{grid-template-columns:repeat(2,1fr);gap:12px}.hero{min-height:620px;padding-bottom:42px}h1{font-size:44px;letter-spacing:-2px}.hero p{font-size:15px}.detail{grid-template-columns:1fr}.detail img{max-width:220px}.modal{padding:8px}.modalbox{max-height:94vh}}
+</style>
 </head>
 <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect, useMemo, useRef } = React;
-
-        // --- MOCK DATA BASED ON PROVIDED FILE ---
-        // In a real app, this would be fetched from an API. 
-        // I have parsed the provided text file content into this structured array.
-        
-        const RAW_DATA = [
-            {
-                id: "tt0081505",
-                primaryTitle: "The Shining",
-                originalTitle: "The Shining",
-                type: "movie",
-                description: "A family heads to an isolated hotel for the winter where a sinister presence influences the father into violence, while his psychic son sees horrific forebodings from both past and future.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNmM5ZThhY2ItOGRjOS00NzZiLWEwYTItNDgyMjFkOTgxMmRiXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: null,
-                contentRating: "R",
-                startYear: 1980,
-                releaseDate: "1980-05-23",
-                genres: ["Drama", "Horror"],
-                interests: ["Psychological Horror", "Isolation"],
-                countriesOfOrigin: ["US", "GB"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 146,
-                averageRating: 8.4,
-                numVotes: 1050000,
-                metascore: 66,
-                productionCompanies: [{"name": "Warner Bros."}, {"name": "Hawk Films"}],
-                budget: 19000000,
-                grossWorldwide: 47000000
-            },
-            {
-                id: "tt0137523",
-                primaryTitle: "Fight Club",
-                originalTitle: "Fight Club",
-                type: "movie",
-                description: "An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into much more.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNDIzNDU0YzEtYzE5Ni00ZjlkLTk5ZjgtNjM3NWE4YzA3Nzk3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=SUXWAEX2jlg",
-                contentRating: "R",
-                startYear: 1999,
-                releaseDate: "1999-10-15",
-                genres: ["Drama"],
-                interests: ["Dark Comedy", "Psychological Drama", "Thriller"],
-                countriesOfOrigin: ["US", "DE"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 139,
-                averageRating: 8.8,
-                numVotes: 2200000,
-                metascore: 66,
-                productionCompanies: [{"name": "Fox 2000 Pictures"}, {"name": "Regency Enterprises"}],
-                budget: 63000000,
-                grossWorldwide: 101000000
-            },
-            {
-                id: "tt0111161",
-                primaryTitle: "The Shawshank Redemption",
-                originalTitle: "The Shawshank Redemption",
-                type: "movie",
-                description: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=6hB3S9bIaco",
-                contentRating: "R",
-                startYear: 1994,
-                releaseDate: "1994-09-23",
-                genres: ["Drama"],
-                interests: ["Prison", "Friendship"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 142,
-                averageRating: 9.3,
-                numVotes: 2800000,
-                metascore: 82,
-                productionCompanies: [{"name": "Castle Rock Entertainment"}],
-                budget: 25000000,
-                grossWorldwide: 28000000
-            },
-            {
-                id: "tt0468569",
-                primaryTitle: "The Dark Knight",
-                originalTitle: "The Dark Knight",
-                type: "movie",
-                description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=EXeTwQWrcwY",
-                contentRating: "PG-13",
-                startYear: 2008,
-                releaseDate: "2008-07-18",
-                genres: ["Action", "Crime", "Drama"],
-                interests: ["Superhero", "Crime"],
-                countriesOfOrigin: ["US", "GB"],
-                spokenLanguages: ["en", "zh"],
-                runtimeMinutes: 152,
-                averageRating: 9.0,
-                numVotes: 2700000,
-                metascore: 84,
-                productionCompanies: [{"name": "Warner Bros."}, {"name": "Legendary Entertainment"}],
-                budget: 185000000,
-                grossWorldwide: 1006000000
-            },
-            {
-                id: "tt0109830",
-                primaryTitle: "Forrest Gump",
-                originalTitle: "Forrest Gump",
-                type: "movie",
-                description: "The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal and other historical events unfold from the perspective of an Alabama man with an IQ of 75.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=bLvqoHBptjg",
-                contentRating: "PG-13",
-                startYear: 1994,
-                releaseDate: "1994-07-06",
-                genres: ["Drama", "Romance"],
-                interests: ["Historical", "Coming-of-Age"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 142,
-                averageRating: 8.8,
-                numVotes: 2100000,
-                metascore: 82,
-                productionCompanies: [{"name": "Paramount Pictures"}],
-                budget: 55000000,
-                grossWorldwide: 678000000
-            },
-            {
-                id: "tt0944947",
-                primaryTitle: "Game of Thrones",
-                originalTitle: "Game of Thrones",
-                type: "tvSeries",
-                description: "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BYTRiNDQwYzAtMzVlZS00NTI5LWJjYjUtMzkwNTUzMWMxZTllXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=rlR4PJn8b8I",
-                contentRating: "TV-MA",
-                startYear: 2011,
-                endYear: 2019,
-                releaseDate: "2011-04-17",
-                genres: ["Action", "Adventure", "Drama"],
-                interests: ["Fantasy", "Political"],
-                countriesOfOrigin: ["US", "GB"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 57,
-                averageRating: 9.2,
-                numVotes: 2200000,
-                metascore: null,
-                productionCompanies: [{"name": "HBO"}],
-                budget: null,
-                grossWorldwide: null
-            },
-            {
-                id: "tt0903747",
-                primaryTitle: "Breaking Bad",
-                originalTitle: "Breaking Bad",
-                type: "tvSeries",
-                description: "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine in order to secure his family's future.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BYmQ4YWMxYjUtNjZmYi00MDQ1LWFjMjMtNjA5ZDdiYjdiODU5XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=HhesaQXLuRY",
-                contentRating: "TV-MA",
-                startYear: 2008,
-                endYear: 2013,
-                releaseDate: "2008-01-20",
-                genres: ["Crime", "Drama", "Thriller"],
-                interests: ["Drugs", "Family"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "es"],
-                runtimeMinutes: 49,
-                averageRating: 9.5,
-                numVotes: 1900000,
-                metascore: 96,
-                productionCompanies: [{"name": "AMC"}],
-                budget: null,
-                grossWorldwide: null
-            },
-            {
-                id: "tt0133093",
-                primaryTitle: "The Matrix",
-                originalTitle: "The Matrix",
-                type: "movie",
-                description: "When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth--the life he knows is the elaborate deception of an evil cyber-intelligence.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=vKQi3bBA1y8",
-                contentRating: "R",
-                startYear: 1999,
-                releaseDate: "1999-03-31",
-                genres: ["Action", "Sci-Fi"],
-                interests: ["Cyberpunk", "Philosophy"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 136,
-                averageRating: 8.7,
-                numVotes: 1900000,
-                metascore: 73,
-                productionCompanies: [{"name": "Warner Bros."}],
-                budget: 63000000,
-                grossWorldwide: 467000000
-            },
-            {
-                id: "tt0110912",
-                primaryTitle: "Pulp Fiction",
-                originalTitle: "Pulp Fiction",
-                type: "movie",
-                description: "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=s7EdQ4FqbhY",
-                contentRating: "R",
-                startYear: 1994,
-                releaseDate: "1994-10-14",
-                genres: ["Crime", "Drama"],
-                interests: ["Nonlinear", "Violence"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "es", "fr"],
-                runtimeMinutes: 154,
-                averageRating: 8.9,
-                numVotes: 2100000,
-                metascore: 94,
-                productionCompanies: [{"name": "Miramax"}],
-                budget: 8000000,
-                grossWorldwide: 214000000
-            },
-             {
-                id: "tt0167260",
-                primaryTitle: "The Lord of the Rings: The Return of the King",
-                originalTitle: "The Lord of the Rings: The Return of the King",
-                type: "movie",
-                description: "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNzA5ZDNlZWMtM2NhNS00NDJjLTk4NDItYTRmY2EwMWZlMTY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=r5X-hFf6Bwo",
-                contentRating: "PG-13",
-                startYear: 2003,
-                releaseDate: "2003-12-17",
-                genres: ["Action", "Adventure", "Drama"],
-                interests: ["Fantasy", "Epic"],
-                countriesOfOrigin: ["NZ", "US"],
-                spokenLanguages: ["en", "qu"],
-                runtimeMinutes: 201,
-                averageRating: 9.0,
-                numVotes: 1900000,
-                metascore: 94,
-                productionCompanies: [{"name": "New Line Cinema"}],
-                budget: 94000000,
-                grossWorldwide: 1146000000
-            },
-            {
-                id: "tt0120737",
-                primaryTitle: "The Lord of the Rings: The Fellowship of the Ring",
-                originalTitle: "The Lord of the Rings: The Fellowship of the Ring",
-                type: "movie",
-                description: "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BN2EyZjM3NzUtNWUzMi00MTgxLWI0NTctMzY4M2VlOTdjZWRiXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=V75dMMIW2B4",
-                contentRating: "PG-13",
-                startYear: 2001,
-                releaseDate: "2001-12-19",
-                genres: ["Action", "Adventure", "Drama"],
-                interests: ["Fantasy", "Quest"],
-                countriesOfOrigin: ["NZ", "US"],
-                spokenLanguages: ["en", "sn"],
-                runtimeMinutes: 178,
-                averageRating: 8.8,
-                numVotes: 1900000,
-                metascore: 92,
-                productionCompanies: [{"name": "New Line Cinema"}],
-                budget: 93000000,
-                grossWorldwide: 898000000
-            },
-            {
-                id: "tt0167261",
-                primaryTitle: "The Lord of the Rings: The Two Towers",
-                originalTitle: "The Lord of the Rings: The Two Towers",
-                type: "movie",
-                description: "While Frodo and Sam edge closer to Mordor with the help of the shifty Gollum, the divided fellowship makes a stand against Sauron's new ally, Saruman, and his hordes of Isengard.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZGMxZTdjZmYtMmE2Ni00ZTdkLWI5NTgtNjlmMjBiNzU2MmI5XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=LbfMDwc4azU",
-                contentRating: "PG-13",
-                startYear: 2002,
-                releaseDate: "2002-12-18",
-                genres: ["Action", "Adventure", "Drama"],
-                interests: ["Fantasy", "War"],
-                countriesOfOrigin: ["NZ", "US"],
-                spokenLanguages: ["en", "sn"],
-                runtimeMinutes: 179,
-                averageRating: 8.8,
-                numVotes: 1700000,
-                metascore: 87,
-                productionCompanies: [{"name": "New Line Cinema"}],
-                budget: 94000000,
-                grossWorldwide: 947000000
-            },
-            {
-                id: "tt0068646",
-                primaryTitle: "The Godfather",
-                originalTitle: "The Godfather",
-                type: "movie",
-                description: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=sY1S34973zA",
-                contentRating: "R",
-                startYear: 1972,
-                releaseDate: "1972-03-24",
-                genres: ["Crime", "Drama"],
-                interests: ["Mafia", "Family"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "it", "la"],
-                runtimeMinutes: 175,
-                averageRating: 9.2,
-                numVotes: 1900000,
-                metascore: 100,
-                productionCompanies: [{"name": "Paramount Pictures"}],
-                budget: 6000000,
-                grossWorldwide: 250000000
-            },
-            {
-                id: "tt0071562",
-                primaryTitle: "The Godfather Part II",
-                originalTitle: "The Godfather Part II",
-                type: "movie",
-                description: "The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son, Michael, expands and tightens his grip on the family crime syndicate.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=qJr92K_hKl0",
-                contentRating: "R",
-                startYear: 1974,
-                releaseDate: "1974-12-20",
-                genres: ["Crime", "Drama"],
-                interests: ["Mafia", "Prequel"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "it", "es", "la"],
-                runtimeMinutes: 202,
-                averageRating: 9.0,
-                numVotes: 1300000,
-                metascore: 90,
-                productionCompanies: [{"name": "Paramount Pictures"}],
-                budget: 13000000,
-                grossWorldwide: 93000000
-            },
-            {
-                id: "tt0108052",
-                primaryTitle: "Schindler's List",
-                originalTitle: "Schindler's List",
-                type: "movie",
-                description: "In German-occupied Poland during World War II, industrialist Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=gG22XNhtnoY",
-                contentRating: "R",
-                startYear: 1993,
-                releaseDate: "1993-12-15",
-                genres: ["Biography", "Drama", "History"],
-                interests: ["Holocaust", "War"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "he", "de", "pl"],
-                runtimeMinutes: 195,
-                averageRating: 9.0,
-                numVotes: 1400000,
-                metascore: 95,
-                productionCompanies: [{"name": "Universal Pictures"}],
-                budget: 22000000,
-                grossWorldwide: 322000000
-            },
-            {
-                id: "tt0167260",
-                primaryTitle: "Interstellar",
-                originalTitle: "Interstellar",
-                type: "movie",
-                description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
-                contentRating: "PG-13",
-                startYear: 2014,
-                releaseDate: "2014-11-07",
-                genres: ["Adventure", "Drama", "Sci-Fi"],
-                interests: ["Space", "Time Travel"],
-                countriesOfOrigin: ["US", "GB", "CA"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 169,
-                averageRating: 8.7,
-                numVotes: 1900000,
-                metascore: 74,
-                productionCompanies: [{"name": "Paramount Pictures"}, {"name": "Warner Bros."}],
-                budget: 165000000,
-                grossWorldwide: 701000000
-            },
-            {
-                id: "tt0816692",
-                primaryTitle: "Interstellar",
-                originalTitle: "Interstellar",
-                type: "movie",
-                description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
-                contentRating: "PG-13",
-                startYear: 2014,
-                releaseDate: "2014-11-07",
-                genres: ["Adventure", "Drama", "Sci-Fi"],
-                interests: ["Space", "Time Travel"],
-                countriesOfOrigin: ["US", "GB", "CA"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 169,
-                averageRating: 8.7,
-                numVotes: 1900000,
-                metascore: 74,
-                productionCompanies: [{"name": "Paramount Pictures"}, {"name": "Warner Bros."}],
-                budget: 165000000,
-                grossWorldwide: 701000000
-            },
-            {
-                id: "tt0114369",
-                primaryTitle: "Se7en",
-                originalTitle: "Se7en",
-                type: "movie",
-                description: "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BOTUwODM5MTctZjczMi00OTk4LTg3NWUtNmVhMTAzNTNjYjcyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=znmZoVkCjpI",
-                contentRating: "R",
-                startYear: 1995,
-                releaseDate: "1995-09-22",
-                genres: ["Crime", "Drama", "Mystery"],
-                interests: ["Serial Killer", "Detective"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 127,
-                averageRating: 8.6,
-                numVotes: 1700000,
-                metascore: 65,
-                productionCompanies: [{"name": "New Line Cinema"}],
-                budget: 33000000,
-                grossWorldwide: 327000000
-            },
-            {
-                id: "tt0102926",
-                primaryTitle: "The Silence of the Lambs",
-                originalTitle: "The Silence of the Lambs",
-                type: "movie",
-                description: "A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNjNhZTk0ZmEtNjJhMi00YzFlLWE1MmEtYzM1M2ZmMGMwMTU4XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=W6Mm8Sbe__o",
-                contentRating: "R",
-                startYear: 1991,
-                releaseDate: "1991-02-14",
-                genres: ["Crime", "Drama", "Thriller"],
-                interests: ["Serial Killer", "Psychological"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "la"],
-                runtimeMinutes: 118,
-                averageRating: 8.6,
-                numVotes: 1500000,
-                metascore: 85,
-                productionCompanies: [{"name": "Orion Pictures"}],
-                budget: 19000000,
-                grossWorldwide: 272000000
-            },
-            {
-                id: "tt0120815",
-                primaryTitle: "Saving Private Ryan",
-                originalTitle: "Saving Private Ryan",
-                type: "movie",
-                description: "Following the Normandy Landings, a group of U.S. soldiers go behind enemy lines to retrieve a paratrooper whose brothers have been killed in action.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZjhkMDM4MWItZTVjOC00ZDRhLThmYTAtM2I5NzBmNmNlMzI1XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=zwhP5b4tD6s",
-                contentRating: "R",
-                startYear: 1998,
-                releaseDate: "1998-07-24",
-                genres: ["Drama", "War"],
-                interests: ["WWII", "Military"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "de", "fr"],
-                runtimeMinutes: 169,
-                averageRating: 8.6,
-                numVotes: 1400000,
-                metascore: 91,
-                productionCompanies: [{"name": "DreamWorks Pictures"}, {"name": "Paramount Pictures"}],
-                budget: 70000000,
-                grossWorldwide: 482000000
-            },
-            {
-                id: "tt0317248",
-                primaryTitle: "City of God",
-                originalTitle: "Cidade de Deus",
-                type: "movie",
-                description: "In the slums of Rio, two kids' paths diverge as one struggles to become a photographer and the other a kingpin.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMjA4ODQ3ODkzNV5BMl5BanBnXkFtZTYwOTc4NDI3._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=dcUOO4Itgmw",
-                contentRating: "R",
-                startYear: 2002,
-                releaseDate: "2002-08-30",
-                genres: ["Crime", "Drama"],
-                interests: ["Gang", "Brazil"],
-                countriesOfOrigin: ["BR", "FR"],
-                spokenLanguages: ["pt"],
-                runtimeMinutes: 130,
-                averageRating: 8.6,
-                numVotes: 780000,
-                metascore: 79,
-                productionCompanies: [{"name": "O2 Filmes"}],
-                budget: 3300000,
-                grossWorldwide: 30600000
-            },
-            {
-                id: "tt0118799",
-                primaryTitle: "Life Is Beautiful",
-                originalTitle: "La vita è bella",
-                type: "movie",
-                description: "When an open-minded Jewish waiter and his son become victims of the Holocaust, he uses a perfect mixture of will, humor, and imagination to protect his son from the dangers around their camp.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BYmJmM2Q4NmMtYThmNC00ZjRlLWEyZmItZTIwOTBlZDQ3NTQ1XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=pAYEQP8gx3w",
-                contentRating: "PG-13",
-                startYear: 1997,
-                releaseDate: "1997-12-20",
-                genres: ["Comedy", "Drama", "Romance"],
-                interests: ["Holocaust", "Father-Son"],
-                countriesOfOrigin: ["IT"],
-                spokenLanguages: ["it", "de", "en"],
-                runtimeMinutes: 116,
-                averageRating: 8.6,
-                numVotes: 720000,
-                metascore: 59,
-                productionCompanies: [{"name": "Cecchi Gori Group"}],
-                budget: 7000000,
-                grossWorldwide: 230000000
-            },
-            {
-                id: "tt0114814",
-                primaryTitle: "The Usual Suspects",
-                originalTitle: "The Usual Suspects",
-                type: "movie",
-                description: "A sole survivor tells of the twisty events leading up to a horrific gun battle on a boat, which began when five criminals met at a seemingly random police lineup.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BYTViNjMyNmUtNDFkNC00ZDRlLThmMDUtZDU2YWE4NGI2ZjVmXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=oiXdPolca5w",
-                contentRating: "R",
-                startYear: 1995,
-                releaseDate: "1995-08-16",
-                genres: ["Crime", "Drama", "Mystery"],
-                interests: ["Heist", "Twist"],
-                countriesOfOrigin: ["US", "DE"],
-                spokenLanguages: ["en", "hu", "es", "fr"],
-                runtimeMinutes: 106,
-                averageRating: 8.5,
-                numVotes: 1100000,
-                metascore: 77,
-                productionCompanies: [{"name": "Gramercy Pictures"}],
-                budget: 6000000,
-                grossWorldwide: 23300000
-            },
-            {
-                id: "tt0245429",
-                primaryTitle: "Spirited Away",
-                originalTitle: "Sen to Chihiro no kamikakushi",
-                type: "movie",
-                description: "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMjlmZmI5MDctNDE2YS00YWE0LWE5ZWItZDBhYWQ0NTcxNWRhXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=ByXuk9QqQkk",
-                contentRating: "PG",
-                startYear: 2001,
-                releaseDate: "2001-07-20",
-                genres: ["Animation", "Adventure", "Family"],
-                interests: ["Fantasy", "Studio Ghibli"],
-                countriesOfOrigin: ["JP"],
-                spokenLanguages: ["ja"],
-                runtimeMinutes: 125,
-                averageRating: 8.6,
-                numVotes: 800000,
-                metascore: 96,
-                productionCompanies: [{"name": "Studio Ghibli"}],
-                budget: 19000000,
-                grossWorldwide: 395000000
-            },
-            {
-                id: "tt0120689",
-                primaryTitle: "The Green Mile",
-                originalTitle: "The Green Mile",
-                type: "movie",
-                description: "The lives of guards on Death Row are affected by one of their charges: a black man accused of child murder and rape, yet who has a mysterious gift.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=Ki4haFrqSrw",
-                contentRating: "R",
-                startYear: 1999,
-                releaseDate: "1999-12-10",
-                genres: ["Crime", "Drama", "Fantasy"],
-                interests: ["Prison", "Supernatural"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "fr"],
-                runtimeMinutes: 189,
-                averageRating: 8.6,
-                numVotes: 1300000,
-                metascore: 61,
-                productionCompanies: [{"name": "Warner Bros."}, {"name": "Castle Rock Entertainment"}],
-                budget: 60000000,
-                grossWorldwide: 286000000
-            },
-            {
-                id: "tt0110413",
-                primaryTitle: "Léon: The Professional",
-                originalTitle: "Léon",
-                type: "movie",
-                description: "12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin's trade.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BODllNWE0MmEtYjUwZi00ZjY3LThmNmQtZjZlMjI2YTZjYmQ0XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=jawVxq1Iyl0",
-                contentRating: "R",
-                startYear: 1994,
-                releaseDate: "1994-09-14",
-                genres: ["Action", "Crime", "Drama"],
-                interests: ["Hitman", "Mentorship"],
-                countriesOfOrigin: ["FR", "US"],
-                spokenLanguages: ["en", "it", "fr"],
-                runtimeMinutes: 110,
-                averageRating: 8.5,
-                numVotes: 1200000,
-                metascore: 64,
-                productionCompanies: [{"name": "Gaumont"}],
-                budget: 16000000,
-                grossWorldwide: 19800000
-            },
-            {
-                id: "tt0120586",
-                primaryTitle: "American History X",
-                originalTitle: "American History X",
-                type: "movie",
-                description: "A former neo-nazi skinhead tries to prevent his younger brother from going down the same wrong path that he did.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZTJhN2FkYWEtMGI0My00YWM4LWI2MjAtM2UwNjY4MTI2ZTQyXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=XfQYHqsiN5g",
-                contentRating: "R",
-                startYear: 1998,
-                releaseDate: "1998-10-30",
-                genres: ["Crime", "Drama"],
-                interests: ["Racism", "Redemption"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 119,
-                averageRating: 8.5,
-                numVotes: 1100000,
-                metascore: 62,
-                productionCompanies: [{"name": "New Line Cinema"}],
-                budget: 20000000,
-                grossWorldwide: 23800000
-            },
-            {
-                id: "tt0407887",
-                primaryTitle: "The Departed",
-                originalTitle: "The Departed",
-                type: "movie",
-                description: "An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMTI1MTY2OTIxNV5BMl5BanBnXkFtZTYwNjQ4NjY3._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=iojhqm0JTW4",
-                contentRating: "R",
-                startYear: 2006,
-                releaseDate: "2006-10-06",
-                genres: ["Crime", "Drama", "Thriller"],
-                interests: ["Mafia", "Undercover"],
-                countriesOfOrigin: ["US", "HK"],
-                spokenLanguages: ["en", "zh"],
-                runtimeMinutes: 151,
-                averageRating: 8.5,
-                numVotes: 1300000,
-                metascore: 85,
-                productionCompanies: [{"name": "Warner Bros."}, {"name": "Plan B Entertainment"}],
-                budget: 90000000,
-                grossWorldwide: 291000000
-            },
-            {
-                id: "tt0482571",
-                primaryTitle: "The Prestige",
-                originalTitle: "The Prestige",
-                type: "movie",
-                description: "After a tragic accident, two stage magicians engage in a battle to create the ultimate illusion while sacrificing everything they have to outwit each other.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMjA4NDI0MTIxNF5BMl5BanBnXkFtZTYwNTM0MzY2._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=ELq7V8vkekI",
-                contentRating: "PG-13",
-                startYear: 2006,
-                releaseDate: "2006-10-20",
-                genres: ["Drama", "Mystery", "Sci-Fi"],
-                interests: ["Magic", "Rivalry"],
-                countriesOfOrigin: ["US", "GB"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 130,
-                averageRating: 8.5,
-                numVotes: 1300000,
-                metascore: 66,
-                productionCompanies: [{"name": "Warner Bros."}, {"name": "Touchstone Pictures"}],
-                budget: 40000000,
-                grossWorldwide: 109000000
-            },
-            {
-                id: "tt0095327",
-                primaryTitle: "Grave of the Fireflies",
-                originalTitle: "Hotaru no haka",
-                type: "movie",
-                description: "A young boy and his little sister struggle to survive in Japan during World War II.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZmY2NjUzNDQtNTgxNC00M2Q4LTljOWQtMjNjNDBjNWUxNmJlXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=4vPeTSRd580",
-                contentRating: "Not Rated",
-                startYear: 1988,
-                releaseDate: "1988-04-16",
-                genres: ["Animation", "Drama", "War"],
-                interests: ["Tragedy", "Sibling"],
-                countriesOfOrigin: ["JP"],
-                spokenLanguages: ["ja"],
-                runtimeMinutes: 89,
-                averageRating: 8.5,
-                numVotes: 280000,
-                metascore: 94,
-                productionCompanies: [{"name": "Studio Ghibli"}],
-                budget: null,
-                grossWorldwide: 500000
-            },
-            {
-                id: "tt0095765",
-                primaryTitle: "Cinema Paradiso",
-                originalTitle: "Nuovo Cinema Paradiso",
-                type: "movie",
-                description: "A filmmaker recalls his childhood when he fell in love with the movies at his village's theater and formed a deep friendship with the theater's projectionist.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BM2FhYjEyYmYtMDI1Yy00YTdlLWI2NWQtYmEzNzAxOGY1NjY2XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=8m4hJpVcIu0",
-                contentRating: "PG",
-                startYear: 1988,
-                releaseDate: "1988-11-17",
-                genres: ["Drama", "Romance"],
-                interests: ["Cinema", "Nostalgia"],
-                countriesOfOrigin: ["IT", "FR"],
-                spokenLanguages: ["it"],
-                runtimeMinutes: 155,
-                averageRating: 8.5,
-                numVotes: 270000,
-                metascore: 80,
-                productionCompanies: [{"name": "Cristaldifilm"}],
-                budget: null,
-                grossWorldwide: 12000000
-            },
-            {
-                id: "tt0082971",
-                primaryTitle: "Raiders of the Lost Ark",
-                originalTitle: "Raiders of the Lost Ark",
-                type: "movie",
-                description: "In 1936, archaeologist and adventurer Indiana Jones is hired by the U.S. government to find the Ark of the Covenant before Adolf Hitler's Nazis can obtain its awesome powers.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMjA0ODEzMTc1Nl5BMl5BanBnXkFtZTcwODM2MjAxNA@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=XkkzKHCx154",
-                contentRating: "PG",
-                startYear: 1981,
-                releaseDate: "1981-06-12",
-                genres: ["Action", "Adventure"],
-                interests: ["Archaeology", "Nazis"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "de", "he", "hi", "ne", "ar"],
-                runtimeMinutes: 115,
-                averageRating: 8.4,
-                numVotes: 980000,
-                metascore: 85,
-                productionCompanies: [{"name": "Paramount Pictures"}, {"name": "Lucasfilm"}],
-                budget: 20000000,
-                grossWorldwide: 389000000
-            },
-            {
-                id: "tt0088763",
-                primaryTitle: "Back to the Future",
-                originalTitle: "Back to the Future",
-                type: "movie",
-                description: "Marty McFly, a 17-year-old high school student, is accidentally sent thirty years into the past in a time-traveling DeLorean invented by his close friend, the eccentric scientist Doc Brown.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=qvsgGtivCgs",
-                contentRating: "PG",
-                startYear: 1985,
-                releaseDate: "1985-07-03",
-                genres: ["Adventure", "Comedy", "Sci-Fi"],
-                interests: ["Time Travel", "Teen"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 116,
-                averageRating: 8.5,
-                numVotes: 1200000,
-                metascore: 87,
-                productionCompanies: [{"name": "Universal Pictures"}, {"name": "Amblin Entertainment"}],
-                budget: 19000000,
-                grossWorldwide: 388000000
-            },
-            {
-                id: "tt0078748",
-                primaryTitle: "Alien",
-                originalTitle: "Alien",
-                type: "movie",
-                description: "The crew of a commercial spacecraft encounter a deadly lifeform after investigating an unknown transmission.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BOGQzZTBjMjQtOTVmMS00NGE5LWEyYmMtOGQ1ZGZjNmRkYjFhXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=Lj381Pa3nX4",
-                contentRating: "R",
-                startYear: 1979,
-                releaseDate: "1979-05-25",
-                genres: ["Horror", "Sci-Fi"],
-                interests: ["Space", "Monster"],
-                countriesOfOrigin: ["US", "GB"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 117,
-                averageRating: 8.5,
-                numVotes: 900000,
-                metascore: 89,
-                productionCompanies: [{"name": "20th Century Fox"}],
-                budget: 11000000,
-                grossWorldwide: 106000000
-            },
-            {
-                id: "tt0078788",
-                primaryTitle: "Apocalypse Now",
-                originalTitle: "Apocalypse Now",
-                type: "movie",
-                description: "A U.S. Army officer serving in Vietnam is tasked with assassinating a renegade Special Forces Colonel who sees himself as a god.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMDdhODg0MjYtYzBiOS00ZmI5LWEwZGYtZDEyNDU4MmQyNzFjXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=FTjG-Aux_yQ",
-                contentRating: "R",
-                startYear: 1979,
-                releaseDate: "1979-08-15",
-                genres: ["Drama", "Mystery", "War"],
-                interests: ["Vietnam War", "Psychological"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "fr", "vi", "kh"],
-                runtimeMinutes: 147,
-                averageRating: 8.4,
-                numVotes: 680000,
-                metascore: 94,
-                productionCompanies: [{"name": "United Artists"}],
-                budget: 31500000,
-                grossWorldwide: 150000000
-            },
-            {
-                id: "tt0076759",
-                primaryTitle: "Star Wars: Episode IV - A New Hope",
-                originalTitle: "Star Wars",
-                type: "movie",
-                description: "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle station, while also attempting to rescue Princess Leia from the mysterious Darth Vader.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BOTA5NjhiOTAtZWM0ZC00MWNhLThiMzEtZDFkOTk2OTU1ZDJkXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=vZ734NWnAHA",
-                contentRating: "PG",
-                startYear: 1977,
-                releaseDate: "1977-05-25",
-                genres: ["Action", "Adventure", "Fantasy"],
-                interests: ["Space Opera", "Rebellion"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 121,
-                averageRating: 8.6,
-                numVotes: 1400000,
-                metascore: 90,
-                productionCompanies: [{"name": "Lucasfilm"}, {"name": "20th Century Fox"}],
-                budget: 11000000,
-                grossWorldwide: 775000000
-            },
-            {
-                id: "tt0073486",
-                primaryTitle: "One Flew Over the Cuckoo's Nest",
-                originalTitle: "One Flew Over the Cuckoo's Nest",
-                type: "movie",
-                description: "In the Fall of 1963, a Korean War veteran and criminal pleads insanity and is admitted to a mental institution, where he rallies up the scared patients against the tyrannical nurse.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZjA0OWVhOTAtYWQxNi00YzNhLWI4ZjYtNjFjZTEyYjJlNDVlL2ltYWdlL2ltYWdlXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=OXrcDonY-B8",
-                contentRating: "R",
-                startYear: 1975,
-                releaseDate: "1975-11-19",
-                genres: ["Drama"],
-                interests: ["Mental Institution", "Rebellion"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 133,
-                averageRating: 8.7,
-                numVotes: 1000000,
-                metascore: 84,
-                productionCompanies: [{"name": "United Artists"}],
-                budget: 4400000,
-                grossWorldwide: 163000000
-            },
-            {
-                id: "tt0064116",
-                primaryTitle: "Once Upon a Time in the West",
-                originalTitle: "C'era una volta il West",
-                type: "movie",
-                description: "A mysterious stranger with a harmonica joins forces with a notorious desperado to protect a beautiful widow from a ruthless assassin working for the railroad.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BODQ3NDExOGYtMzI3Mi00NWRlLTkwNjAtNjc4MDgzZGJiZTA1XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=c8CJ6L0I6M8",
-                contentRating: "PG-13",
-                startYear: 1968,
-                releaseDate: "1968-12-21",
-                genres: ["Western"],
-                interests: ["Railroad", "Revenge"],
-                countriesOfOrigin: ["IT", "US"],
-                spokenLanguages: ["it", "en", "es"],
-                runtimeMinutes: 165,
-                averageRating: 8.5,
-                numVotes: 340000,
-                metascore: 82,
-                productionCompanies: [{"name": "Paramount Pictures"}],
-                budget: 5000000,
-                grossWorldwide: 5300000
-            },
-            {
-                id: "tt0056058",
-                primaryTitle: "Hara-Kiri: Death of a Samurai",
-                originalTitle: "Seppuku",
-                type: "movie",
-                description: "When a ronin requesting seppuku at a feudal lord's palace is told of the brutal suicide of another ronin who previously visited, he reveals how their pasts are intertwined - and in doing so challenges the clan's integrity.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BYjBmYTQ1NjItZWU5MS00YjI0LTg2OTYtYmFkN2JkMmNiNWVkXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: null,
-                contentRating: "Not Rated",
-                startYear: 1962,
-                releaseDate: "1962-09-15",
-                genres: ["Action", "Drama"],
-                interests: ["Samurai", "Honor"],
-                countriesOfOrigin: ["JP"],
-                spokenLanguages: ["ja"],
-                runtimeMinutes: 133,
-                averageRating: 8.6,
-                numVotes: 60000,
-                metascore: null,
-                productionCompanies: [{"name": "Shochiku"}],
-                budget: null,
-                grossWorldwide: null
-            },
-            {
-                id: "tt0053125",
-                primaryTitle: "North by Northwest",
-                originalTitle: "North by Northwest",
-                type: "movie",
-                description: "A New York City advertising executive goes on the run after being mistaken for a government agent by a group of foreign spies, and falls for a woman whose loyalties he begins to doubt.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZDA3NDExMTUtMDlhOC00MmQ5LWExZGUtYmI1NGVlZWI4OWNiXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=Ca1hZsaWAd0",
-                contentRating: "Approved",
-                startYear: 1959,
-                releaseDate: "1959-07-01",
-                genres: ["Action", "Adventure", "Mystery"],
-                interests: ["Spy", "Mistaken Identity"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "fr"],
-                runtimeMinutes: 136,
-                averageRating: 8.3,
-                numVotes: 340000,
-                metascore: 98,
-                productionCompanies: [{"name": "MGM"}],
-                budget: 4300000,
-                grossWorldwide: 13200000
-            },
-            {
-                id: "tt0052357",
-                primaryTitle: "Vertigo",
-                originalTitle: "Vertigo",
-                type: "movie",
-                description: "A former San Francisco police detective juggles wrestling with his personal demons and becoming obsessed with the hauntingly beautiful woman he has been hired to trail, who may be deeply disturbed.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BYTE4ODEwZDUtNDFjOC00NjAxLWEycGMtMTEwYjE3YjYxMzE4XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=Z5jvQwwHQNY",
-                contentRating: "PG",
-                startYear: 1958,
-                releaseDate: "1958-05-09",
-                genres: ["Mystery", "Romance", "Thriller"],
-                interests: ["Acrophobia", "Obsession"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 128,
-                averageRating: 8.3,
-                numVotes: 420000,
-                metascore: 100,
-                productionCompanies: [{"name": "Paramount Pictures"}],
-                budget: 2500000,
-                grossWorldwide: 7700000
-            },
-            {
-                id: "tt0047478",
-                primaryTitle: "Seven Samurai",
-                originalTitle: "Shichinin no samurai",
-                type: "movie",
-                description: "Farmers from a village exploited by bandits hire a veteran samurai for protection, who gathers six other samurai to join him.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BNWQ3OTM4ZGItMWEwZi00MjI5LWI3YzgtNTYwNWRkNmIzMGI5XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=wJ1TOratCTo",
-                contentRating: "Not Rated",
-                startYear: 1954,
-                releaseDate: "1954-04-26",
-                genres: ["Action", "Drama"],
-                interests: ["Samurai", "Bandits"],
-                countriesOfOrigin: ["JP"],
-                spokenLanguages: ["ja"],
-                runtimeMinutes: 207,
-                averageRating: 8.6,
-                numVotes: 360000,
-                metascore: 98,
-                productionCompanies: [{"name": "Toho Company"}],
-                budget: 500000,
-                grossWorldwide: 269000
-            },
-            {
-                id: "tt0043014",
-                primaryTitle: "Sunset Boulevard",
-                originalTitle: "Sunset Blvd.",
-                type: "movie",
-                description: "A screenwriter develops a dangerous relationship with a faded film star determined to make a triumphant return.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMTU0NTkyNzYwMF5BMl5BanBnXkFtZTgwMDU0NDk5MTI@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=ICAOFpaZO8g",
-                contentRating: "Approved",
-                startYear: 1950,
-                releaseDate: "1950-08-10",
-                genres: ["Drama", "Film-Noir"],
-                interests: ["Hollywood", "Delusion"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 110,
-                averageRating: 8.4,
-                numVotes: 230000,
-                metascore: 94,
-                productionCompanies: [{"name": "Paramount Pictures"}],
-                budget: 1750000,
-                grossWorldwide: 5000000
-            },
-            {
-                id: "tt0038650",
-                primaryTitle: "It's a Wonderful Life",
-                originalTitle: "It's a Wonderful Life",
-                type: "movie",
-                description: "An angel is sent from Heaven to help a desperately frustrated businessman by showing him what life would have been like if he had never existed.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZjc4NDZhZWMtNGEzYS00ZWU2LThlM2ItYzBhY2IwMjM4MTZlXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=iLR3gZrU2Xo",
-                contentRating: "PG",
-                startYear: 1946,
-                releaseDate: "1946-12-20",
-                genres: ["Drama", "Family", "Fantasy"],
-                interests: ["Christmas", "Suicide"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "fr"],
-                runtimeMinutes: 130,
-                averageRating: 8.6,
-                numVotes: 480000,
-                metascore: 89,
-                productionCompanies: [{"name": "Liberty Films"}],
-                budget: 3700000,
-                grossWorldwide: 3300000
-            },
-            {
-                id: "tt0034583",
-                primaryTitle: "Casablanca",
-                originalTitle: "Casablanca",
-                type: "movie",
-                description: "A cynical expatriate American cafe owner struggles to decide whether or not to help his former lover and her fugitive husband escape the Nazis in French Morocco.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BY2IzZGY2YmEtYzljNS00NTM5LTgwMzUtMzM1NjQ4NGI0OTk0XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=BkL9l7qovsE",
-                contentRating: "PG",
-                startYear: 1942,
-                releaseDate: "1942-11-26",
-                genres: ["Drama", "Romance", "War"],
-                interests: ["WWII", "Love Triangle"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en", "fr", "de", "it"],
-                runtimeMinutes: 102,
-                averageRating: 8.5,
-                numVotes: 590000,
-                metascore: 100,
-                productionCompanies: [{"name": "Warner Bros."}],
-                budget: 1039000,
-                grossWorldwide: 1039000
-            },
-            {
-                id: "tt0027977",
-                primaryTitle: "Modern Times",
-                originalTitle: "Modern Times",
-                type: "movie",
-                description: "The Tramp struggles to live in modern industrial society with the help of a young homeless woman.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BYjJiZjMzYzktNjU0NS00OTkxLWEwYzItYzdhYWJjN2QzMTRlL2ltYWdlL2ltYWdlXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=GLeDdzGUTq0",
-                contentRating: "G",
-                startYear: 1936,
-                releaseDate: "1936-02-05",
-                genres: ["Comedy", "Drama", "Romance"],
-                interests: ["Industrialization", "Poverty"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 87,
-                averageRating: 8.5,
-                numVotes: 250000,
-                metascore: 96,
-                productionCompanies: [{"name": "United Artists"}],
-                budget: 1500000,
-                grossWorldwide: 1632452
-            },
-            {
-                id: "tt0021749",
-                primaryTitle: "City Lights",
-                originalTitle: "City Lights",
-                type: "movie",
-                description: "With the aid of a wealthy erratic tippler, a dewy-eyed tramp who has fallen in love with a sightless flower girl accumulates money to be able to help her medically.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BY2I4MmM1N2EtM2YzOS00OWUzLTkzYzctNDc5NDg2N2IyODJmXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=mCLJY22z4Aw",
-                contentRating: "G",
-                startYear: 1931,
-                releaseDate: "1931-03-07",
-                genres: ["Comedy", "Drama", "Romance"],
-                interests: ["Blindness", "Boxing"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: [],
-                runtimeMinutes: 87,
-                averageRating: 8.5,
-                numVotes: 190000,
-                metascore: 99,
-                productionCompanies: [{"name": "United Artists"}],
-                budget: 1500000,
-                grossWorldwide: 5000000
-            },
-            {
-                id: "tt0017136",
-                primaryTitle: "Metropolis",
-                originalTitle: "Metropolis",
-                type: "movie",
-                description: "In a futuristic city sharply divided between the working class and the city planners, the son of the city's mastermind falls in love with a working-class prophet who predicts the coming of a savior to mediate their differences.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BMTg2Mzk2NjUwNF5BMl5BanBnXkFtZTgwNTMxNjEwMjE@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=ZSExNWpm0Ls",
-                contentRating: "Not Rated",
-                startYear: 1927,
-                releaseDate: "1927-03-13",
-                genres: ["Drama", "Sci-Fi"],
-                interests: ["Dystopia", "Robot"],
-                countriesOfOrigin: ["DE"],
-                spokenLanguages: ["de"],
-                runtimeMinutes: 153,
-                averageRating: 8.3,
-                numVotes: 180000,
-                metascore: 98,
-                productionCompanies: [{"name": "Universum Film (UFA)"}],
-                budget: 6000000,
-                grossWorldwide: 1236166
-            },
-            {
-                id: "tt0015864",
-                primaryTitle: "The Gold Rush",
-                originalTitle: "The Gold Rush",
-                type: "movie",
-                description: "A prospector goes to the Klondike during the 1890s gold rush in hopes of making his fortune, and is smitten with a girl he sees in a dance hall.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZjEyOTE4MzMtNmMzYy00MDcxLWEzN2UtZTJlYTk1OGU2N2Y4XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=B4J0fL7X3J8",
-                contentRating: "Not Rated",
-                startYear: 1925,
-                releaseDate: "1925-06-26",
-                genres: ["Adventure", "Comedy", "Drama"],
-                interests: ["Gold Rush", "Poverty"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 95,
-                averageRating: 8.2,
-                numVotes: 120000,
-                metascore: 91,
-                productionCompanies: [{"name": "United Artists"}],
-                budget: 1000000,
-                grossWorldwide: 4250000
-            },
-            {
-                id: "tt0012349",
-                primaryTitle: "The Kid",
-                originalTitle: "The Kid",
-                type: "movie",
-                description: "The Tramp cares for an abandoned child, but events put their relationship in jeopardy.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZjhhMThhNDItNTY2MC00MmU1LTliNDEtNDdhZjdlNTY5ZDQ1XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: "https://www.youtube.com/watch?v=MS5AvJ7j7fI",
-                contentRating: "Not Rated",
-                startYear: 1921,
-                releaseDate: "1921-02-06",
-                genres: ["Comedy", "Drama", "Family"],
-                interests: ["Orphan", "Poverty"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: ["en"],
-                runtimeMinutes: 68,
-                averageRating: 8.3,
-                numVotes: 130000,
-                metascore: null,
-                productionCompanies: [{"name": "First National Pictures"}],
-                budget: 1000000,
-                grossWorldwide: 5450000
-            },
-            {
-                id: "tt0008587",
-                primaryTitle: "Intolerance: Love's Struggle Throughout the Ages",
-                originalTitle: "Intolerance",
-                type: "movie",
-                description: "The story of a poor young woman, separated by prejudice from her husband and baby, is interwoven with tales of intolerance from throughout history.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BODVhNDNlYzUtMzUzYS00Y2Y0LWE3NzctYjMzZmQ5NjQ3MzA0XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: null,
-                contentRating: "Not Rated",
-                startYear: 1916,
-                releaseDate: "1916-09-05",
-                genres: ["Drama", "History"],
-                interests: ["Parallel Storylines", "Silent"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: [],
-                runtimeMinutes: 197,
-                averageRating: 8.0,
-                numVotes: 15000,
-                metascore: null,
-                productionCompanies: [{"name": "Triangle Film Corporation"}],
-                budget: 385907,
-                grossWorldwide: 1000000
-            },
-            {
-                id: "tt0004972",
-                primaryTitle: "The Cabinet of Dr. Caligari",
-                originalTitle: "Das Cabinet des Dr. Caligari",
-                type: "movie",
-                description: "Hypnotist Dr. Caligari uses a somnambulist, Cesare, to commit murders.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZmQyOGVjNDgtYzc2YS00ZmE0LWE3YzctYzI0YjI1YjI1YjI1XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: null,
-                contentRating: "Not Rated",
-                startYear: 1920,
-                releaseDate: "1920-02-26",
-                genres: ["Horror", "Mystery", "Thriller"],
-                interests: ["Expressionism", "Madness"],
-                countriesOfOrigin: ["DE"],
-                spokenLanguages: ["de"],
-                runtimeMinutes: 76,
-                averageRating: 8.0,
-                numVotes: 65000,
-                metascore: null,
-                productionCompanies: [{"name": "Decla-Bioscop AG"}],
-                budget: 18000,
-                grossWorldwide: null
-            },
-            {
-                id: "tt0003417",
-                primaryTitle: "The Birth of a Nation",
-                originalTitle: "The Birth of a Nation",
-                type: "movie",
-                description: "Two families, abolitionist Northerners the Stonemans and Southern landowners the Camerons, weave their lives and fortunes around the major events of the American Civil War, Reconstruction, and the birth of the Ku Klux Klan.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BODVhNDNlYzUtMzUzYS00Y2Y0LWE3NzctYjMzZmQ5NjQ3MzA0XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: null,
-                contentRating: "Not Rated",
-                startYear: 1915,
-                releaseDate: "1915-02-08",
-                genres: ["Drama", "History", "War"],
-                interests: ["Civil War", "KKK"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: [],
-                runtimeMinutes: 195,
-                averageRating: 6.1,
-                numVotes: 25000,
-                metascore: null,
-                productionCompanies: [{"name": "David W. Griffith Corp."}],
-                budget: 110000,
-                grossWorldwide: 18000000
-            },
-            {
-                id: "tt0000502",
-                primaryTitle: "The Great Train Robbery",
-                originalTitle: "The Great Train Robbery",
-                type: "movie",
-                description: "A group of bandits stage a brazen train hold-up, only to find a determined posse hot on their heels.",
-                primaryImage: "https://m.media-amazon.com/images/M/MV5BZmQyOGVjNDgtYzc2YS00ZmE0LWE3YzctYzI0YjI1YjI1YjI1XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-                trailer: null,
-                contentRating: "Not Rated",
-                startYear: 1903,
-                releaseDate: "1903-12-01",
-                genres: ["Action", "Crime", "Western"],
-                interests: ["Train", "Outlaws"],
-                countriesOfOrigin: ["US"],
-                spokenLanguages: [],
-                runtimeMinutes: 11,
-                averageRating: 7.3,
-                numVotes: 11000,
-                metascore: null,
-                productionCompanies: [{"name": "Edison Manufacturing Company"}],
-                budget: 150,
-                grossWorldwide: null
-            }
-        ];
-
-        // --- UTILS & HELPERS ---
-
-        const formatCurrency = (val) => {
-            if (!val) return 'N/A';
-            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
-        };
-
-        const formatNumber = (num) => {
-            if (!num) return '0';
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return num.toString();
-        };
-
-        const getYouTubeID = (url) => {
-            if (!url) return null;
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        };
-
-        // --- ICONS COMPONENT WRAPPER ---
-        // Since we are using CDN lucide, we need to render them carefully in React
-        const Icon = ({ name, size = 24, className = "" }) => {
-            const iconName = name.charAt(0).toUpperCase() + name.slice(1);
-            const LucideIcon = window.lucide.icons[iconName];
-            
-            if (!LucideIcon) return null;
-
-            // Create SVG element manually from icon data
-            // This is a simplified renderer for the standalone environment
-            const svgString = window.lucide.createIcons({ icons: { [iconName]: LucideIcon }, attrs: { width: size, height: size, class: className } });
-            
-            // Actually, simpler approach for React + CDN Lucide:
-            // We will use the `lucide-react` equivalent logic manually or just simple SVG paths if needed.
-            // But `lucide` CDN exposes `lucide.icons`. Let's use a simpler mapping for common icons to avoid complex dynamic rendering issues in this specific env.
-            
-            // Fallback to simple SVG paths for stability in this single-file setup
-            const paths = {
-                search: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
-                play: "M8 5v14l11-7z",
-                plus: "M12 4v16m8-8H4",
-                x: "M18 6L6 18M6 6l12 12",
-                menu: "M4 6h16M4 12h16M4 18h16",
-                star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
-                filter: "M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z",
-                chevronLeft: "M15 19l-7-7 7-7",
-                chevronRight: "M9 5l7 7-7 7",
-                info: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
-                heart: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
-                trash: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            };
-
-            return (
-                <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width={size} 
-                    height={size} 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    className={className}
-                >
-                    <path d={paths[name] || paths.info} />
-                </svg>
-            );
-        };
-
-        // --- COMPONENTS ---
-
-        const Navbar = ({ onSearch, currentView, onChangeView }) => {
-            const [isScrolled, setIsScrolled] = useState(false);
-            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-            const [searchTerm, setSearchTerm] = useState("");
-
-            useEffect(() => {
-                const handleScroll = () => setIsScrolled(window.scrollY > 50);
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
-
-            const handleSearchSubmit = (e) => {
-                e.preventDefault();
-                if (searchTerm.trim()) {
-                    onSearch(searchTerm);
-                    onChangeView('search');
-                    setIsMobileMenuOpen(false);
-                }
-            };
-
-            return (
-                <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'glass py-3' : 'bg-transparent py-5'}`}>
-                    <div className="container mx-auto px-4 flex items-center justify-between">
-                        {/* Logo */}
-                        <div 
-                            className="text-red-600 font-bold text-2xl md:text-3xl tracking-tighter cursor-pointer serif"
-                            onClick={() => onChangeView('home')}
-                        >
-                            CINEFLIX
-                        </div>
-
-                        {/* Desktop Nav */}
-                        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
-                            {['Home', 'Movies', 'TV Shows', 'Trending'].map((item) => (
-                                <button 
-                                    key={item}
-                                    onClick={() => onChangeView(item === 'Home' ? 'home' : item.toLowerCase().replace(' ', ''))}
-                                    className="hover:text-white transition relative group"
-                                >
-                                    {item}
-                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full"></span>
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Right Actions */}
-                        <div className="flex items-center gap-4">
-                            <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center bg-black/30 rounded-full px-3 py-1.5 border border-white/10 focus-within:border-red-600/50 transition">
-                                <Icon name="search" size={16} className="text-gray-400 mr-2" />
-                                <input 
-                                    type="text" 
-                                    placeholder="Titles, people, genres..." 
-                                    className="bg-transparent border-none outline-none text-sm text-white w-48 placeholder-gray-500"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                            </form>
-                            
-                            <button onClick={() => onChangeView('watchlist')} className="relative p-2 hover:bg-white/10 rounded-full transition">
-                                <Icon name="heart" size={20} className="text-gray-300 hover:text-red-500" />
-                            </button>
-
-                            <button 
-                                className="md:hidden p-2"
-                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            >
-                                <Icon name={isMobileMenuOpen ? "x" : "menu"} size={24} />
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Mobile Menu */}
-                    {isMobileMenuOpen && (
-                        <div className="md:hidden absolute top-full left-0 w-full glass border-t border-white/10 animate-fade-in">
-                            <div className="p-4 space-y-4">
-                                <form onSubmit={handleSearchSubmit} className="flex items-center bg-black/50 rounded-lg px-3 py-2">
-                                    <Icon name="search" size={16} className="text-gray-400 mr-2" />
-                                    <input 
-                                        type="text" 
-                                        placeholder="Search..." 
-                                        className="bg-transparent border-none outline-none text-sm text-white w-full"
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                    />
-                                </form>
-                                <div className="flex flex-col gap-2">
-                                    {['Home', 'Movies', 'TV Shows', 'Trending', 'Watchlist'].map((item) => (
-                                        <button 
-                                            key={item}
-                                            onClick={() => {
-                                                onChangeView(item === 'Home' ? 'home' : item.toLowerCase().replace(' ', ''));
-                                                setIsMobileMenuOpen(false);
-                                            }}
-                                            className="text-left py-2 px-4 hover:bg-white/5 rounded text-gray-300"
-                                        >
-                                            {item}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </nav>
-            );
-        };
-
-        const Hero = ({ movie, onPlayTrailer, onViewDetails }) => {
-            if (!movie) return <div className="h-[60vh] w-full bg-black skeleton"></div>;
-
-            return (
-                <div className="relative h-[85vh] w-full overflow-hidden">
-                    {/* Background Image */}
-                    <div 
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] hover:scale-105"
-                        style={{ backgroundImage: `url(${movie.primaryImage})` }}
-                    ></div>
-                    
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/40 to-transparent"></div>
-
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 lg:p-24 pb-24">
-                        <div className="max-w-3xl space-y-6 animate-fade-in">
-                            <div className="flex items-center gap-3 text-sm font-semibold text-red-500 uppercase tracking-widest">
-                                <span>{movie.type === 'tvSeries' ? 'TV Series' : 'Movie'}</span>
-                                <span className="w-1 h-1 bg-gray-500 rounded-full"></span>
-                                <span>{movie.startYear}</span>
-                                <span className="w-1 h-1 bg-gray-500 rounded-full"></span>
-                                <span>{movie.contentRating}</span>
-                            </div>
-
-                            <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight drop-shadow-lg serif">
-                                {movie.primaryTitle}
-                            </h1>
-
-                            <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm">
-                                <div className="flex items-center gap-1 text-yellow-400">
-                                    <Icon name="star" size={16} className="fill-current" />
-                                    <span className="font-bold text-white">{movie.averageRating}</span>
-                                    <span className="text-gray-500">/10</span>
-                                </div>
-                                <span>{movie.runtimeMinutes} min</span>
-                                <span>{movie.genres.join(', ')}</span>
-                            </div>
-
-                            <p className="text-lg text-gray-200 max-w-xl leading-relaxed drop-shadow-md line-clamp-3">
-                                {movie.description}
-                            </p>
-
-                            <div className="flex flex-wrap gap-4 pt-4">
-                                {movie.trailer && (
-                                    <button 
-                                        onClick={() => onPlayTrailer(movie)}
-                                        className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded font-bold flex items-center gap-2 transition transform hover:scale-105 shadow-lg shadow-red-900/20"
-                                    >
-                                        <Icon name="play" size={20} className="fill-current" />
-                                        Watch Trailer
-                                    </button>
-                                )}
-                                <button 
-                                    onClick={() => onViewDetails(movie)}
-                                    className="bg-gray-600/60 hover:bg-gray-600/80 backdrop-blur-sm text-white px-8 py-3 rounded font-bold flex items-center gap-2 transition border border-gray-500"
-                                >
-                                    <Icon name="info" size={20} />
-                                    More Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const MovieCard = ({ movie, onClick, onToggleWatchlist, isInWatchlist }) => {
-            return (
-                <div 
-                    className="group relative aspect-[2/3] rounded-xl overflow-hidden cursor-pointer glass-card"
-                    onClick={() => onClick(movie)}
-                >
-                    <img 
-                        src={movie.primaryImage} 
-                        alt={movie.primaryTitle}
-                        className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                        loading="lazy"
-                    />
-                    
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
-                        <div className="transform translate-y-4 group-hover:translate-y-0 transition duration-300">
-                            <h3 className="font-bold text-white text-lg leading-tight mb-1">{movie.primaryTitle}</h3>
-                            <div className="flex items-center justify-between text-xs text-gray-300 mb-3">
-                                <span>{movie.startYear}</span>
-                                <span className="border border-gray-500 px-1 rounded">{movie.contentRating}</span>
-                            </div>
-                            
-                            <div className="flex items-center gap-2">
-                                <button className="bg-white text-black rounded-full p-2 hover:bg-gray-200 transition">
-                                    <Icon name="play" size={16} className="fill-current ml-0.5" />
-                                </button>
-                                <button 
-                                    onClick={(e) => { e.stopPropagation(); onToggleWatchlist(movie.id); }}
-                                    className={`border rounded-full p-2 transition ${isInWatchlist ? 'bg-red-600 border-red-600 text-white' : 'border-white text-white hover:bg-white/20'}`}
-                                >
-                                    <Icon name={isInWatchlist ? "trash" : "plus"} size={16} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Default Badge */}
-                    <div className="absolute top-2 right-2 bg-black/60 backdrop-blur px-2 py-1 rounded text-xs font-bold text-white">
-                        {movie.averageRating} <span className="text-yellow-400">★</span>
-                    </div>
-                </div>
-            );
-        };
-
-        const Section = ({ title, children, onViewAll }) => (
-            <section className="py-8 px-6 md:px-12 lg:px-24">
-                <div className="flex justify-between items-end mb-6">
-                    <h2 className="text-2xl md:text-3xl font-bold text-white border-l-4 border-red-600 pl-4">{title}</h2>
-                    {onViewAll && (
-                        <button onClick={onViewAll} className="text-sm text-gray-400 hover:text-white transition flex items-center gap-1">
-                            View All <Icon name="chevronRight" size={16} />
-                        </button>
-                    )}
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                    {children}
-                </div>
-            </section>
-        );
-
-        const Carousel = ({ title, movies, onMovieClick, onToggleWatchlist, watchlist }) => {
-            const scrollRef = useRef(null);
-
-            const scroll = (direction) => {
-                if (scrollRef.current) {
-                    const { current } = scrollRef;
-                    const scrollAmount = direction === 'left' ? -current.offsetWidth : current.offsetWidth;
-                    current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                }
-            };
-
-            return (
-                <section className="py-8 relative group">
-                    <div className="px-6 md:px-12 lg:px-24 mb-4 flex justify-between items-center">
-                         <h2 className="text-2xl font-bold text-white">{title}</h2>
-                         <div className="flex gap-2">
-                             <button onClick={() => scroll('left')} className="p-2 bg-black/50 hover:bg-red-600 rounded-full text-white transition"><Icon name="chevronLeft" size={20}/></button>
-                             <button onClick={() => scroll('right')} className="p-2 bg-black/50 hover:bg-red-600 rounded-full text-white transition"><Icon name="chevronRight" size={20}/></button>
-                         </div>
-                    </div>
-                    
-                    <div 
-                        ref={scrollRef}
-                        className="flex overflow-x-auto gap-4 px-6 md:px-12 lg:px-24 pb-4 scrollbar-hide snap-x"
-                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                    >
-                        {movies.map(movie => (
-                            <div key={movie.id} className="min-w-[160px] md:min-w-[200px] snap-start">
-                                <MovieCard 
-                                    movie={movie} 
-                                    onClick={onMovieClick} 
-                                    onToggleWatchlist={onToggleWatchlist}
-                                    isInWatchlist={watchlist.includes(movie.id)}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            );
-        };
-
-        const FilterDrawer = ({ isOpen, onClose, filters, setFilters, availableGenres, availableCountries }) => {
-            if (!isOpen) return null;
-
-            const toggleGenre = (genre) => {
-                setFilters(prev => {
-                    const exists = prev.genres.includes(genre);
-                    return {
-                        ...prev,
-                        genres: exists ? prev.genres.filter(g => g !== genre) : [...prev.genres, genre]
-                    };
-                });
-            };
-
-            const toggleType = (type) => {
-                 setFilters(prev => ({ ...prev, type: prev.type === type ? 'all' : type }));
-            };
-
-            return (
-                <div className="fixed inset-0 z-[60] flex justify-end">
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose}></div>
-                    <div className="relative w-full max-w-md bg-[#141414] h-full overflow-y-auto border-l border-white/10 animate-fade-in">
-                        <div className="p-6 space-y-8">
-                            <div className="flex justify-between items-center">
-                                <h2 className="text-2xl font-bold">Filters</h2>
-                                <button onClick={onClose}><Icon name="x" size={24} /></button>
-                            </div>
-
-                            {/* Type */}
-                            <div>
-                                <h3 className="text-sm font-bold text-gray-400 uppercase mb-3">Type</h3>
-                                <div className="flex gap-2 flex-wrap">
-                                    {['all', 'movie', 'tvSeries'].map(type => (
-                                        <button 
-                                            key={type}
-                                            onClick={() => toggleType(type)}
-                                            className={`px-4 py-2 rounded-full text-sm border transition ${filters.type === type ? 'bg-red-600 border-red-600 text-white' : 'border-gray-700 text-gray-300 hover:border-white'}`}
-                                        >
-                                            {type === 'all' ? 'All' : type === 'tvSeries' ? 'TV Shows' : 'Movies'}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Genres */}
-                            <div>
-                                <h3 className="text-sm font-bold text-gray-400 uppercase mb-3">Genres</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {availableGenres.map(genre => (
-                                        <button 
-                                            key={genre}
-                                            onClick={() => toggleGenre(genre)}
-                                            className={`px-3 py-1 rounded text-xs border transition ${filters.genres.includes(genre) ? 'bg-white text-black border-white' : 'border-gray-700 text-gray-400 hover:border-gray-500'}`}
-                                        >
-                                            {genre}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                             {/* Rating */}
-                             <div>
-                                <h3 className="text-sm font-bold text-gray-400 uppercase mb-3">Min Rating: {filters.minRating}</h3>
-                                <input 
-                                    type="range" 
-                                    min="0" 
-                                    max="10" 
-                                    step="0.5"
-                                    value={filters.minRating}
-                                    onChange={(e) => setFilters({...filters, minRating: parseFloat(e.target.value)})}
-                                    className="w-full accent-red-600"
-                                />
-                            </div>
-
-                            <button 
-                                onClick={() => setFilters({ type: 'all', genres: [], minRating: 0, country: 'all' })}
-                                className="w-full py-3 border border-gray-700 rounded text-gray-300 hover:bg-white/5 transition"
-                            >
-                                Reset Filters
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const MovieModal = ({ movie, onClose, onPlayTrailer, onToggleWatchlist, isInWatchlist }) => {
-            if (!movie) return null;
-
-            return (
-                <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={onClose}></div>
-                    
-                    <div className="relative w-full max-w-5xl bg-[#141414] rounded-2xl overflow-hidden shadow-2xl border border-white/10 max-h-[90vh] overflow-y-auto animate-fade-in">
-                        <button onClick={onClose} className="absolute top-4 right-4 z-10 bg-black/50 p-2 rounded-full hover:bg-red-600 transition">
-                            <Icon name="x" size={24} />
-                        </button>
-
-                        <div className="grid md:grid-cols-3 gap-0">
-                            {/* Poster Side */}
-                            <div className="md:col-span-1 relative h-64 md:h-auto">
-                                <img src={movie.primaryImage} alt={movie.primaryTitle} className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#141414] to-transparent md:bg-gradient-to-r"></div>
-                            </div>
-
-                            {/* Info Side */}
-                            <div className="md:col-span-2 p-8 space-y-6">
-                                <div>
-                                    <h2 className="text-4xl font-bold serif mb-2">{movie.primaryTitle}</h2>
-                                    {movie.originalTitle && movie.originalTitle !== movie.primaryTitle && (
-                                        <p className="text-gray-400 italic">{movie.originalTitle}</p>
-                                    )}
-                                </div>
-
-                                <div className="flex flex-wrap items-center gap-4 text-sm">
-                                    <span className="text-green-500 font-bold">{movie.averageRating * 10}% Match</span>
-                                    <span>{movie.startYear}</span>
-                                    <span className="border border-gray-600 px-1 rounded text-xs">{movie.contentRating}</span>
-                                    <span>{movie.runtimeMinutes}m</span>
-                                    <span className="uppercase text-xs border border-gray-700 px-2 py-0.5 rounded">{movie.type}</span>
-                                </div>
-
-                                <p className="text-gray-300 leading-relaxed text-lg">{movie.description}</p>
-
-                                <div className="grid grid-cols-2 gap-4 text-sm">
-                                    <div>
-                                        <span className="text-gray-500 block">Genres</span>
-                                        <span className="text-white">{movie.genres.join(', ')}</span>
-                                    </div>
-                                    <div>
-                                        <span className="text-gray-500 block">Countries</span>
-                                        <span className="text-white">{movie.countriesOfOrigin.join(', ')}</span>
-                                    </div>
-                                    <div>
-                                        <span className="text-gray-500 block">Languages</span>
-                                        <span className="text-white">{movie.spokenLanguages.join(', ').toUpperCase()}</span>
-                                    </div>
-                                    <div>
-                                        <span className="text-gray-500 block">Budget</span>
-                                        <span className="text-white">{formatCurrency(movie.budget)}</span>
-                                    </div>
-                                </div>
-
-                                <div className="flex gap-4 pt-4">
-                                    {movie.trailer && (
-                                        <button 
-                                            onClick={() => onPlayTrailer(movie)}
-                                            className="flex-1 bg-white text-black py-3 rounded font-bold hover:bg-gray-200 transition flex items-center justify-center gap-2"
-                                        >
-                                            <Icon name="play" size={20} className="fill-current" /> Play Trailer
-                                        </button>
-                                    )}
-                                    <button 
-                                        onClick={() => onToggleWatchlist(movie.id)}
-                                        className={`flex-1 border py-3 rounded font-bold transition flex items-center justify-center gap-2 ${isInWatchlist ? 'border-red-600 text-red-600 bg-red-600/10' : 'border-gray-600 text-white hover:border-white'}`}
-                                    >
-                                        <Icon name={isInWatchlist ? "trash" : "plus"} size={20} /> 
-                                        {isInWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const TrailerModal = ({ youtubeId, onClose }) => {
-            if (!youtubeId) return null;
-
-            return (
-                <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/95 backdrop-blur-lg p-4" onClick={onClose}>
-                     <button onClick={onClose} className="absolute top-6 right-6 text-white hover:text-red-600 transition">
-                        <Icon name="x" size={32} />
-                    </button>
-                    <div className="w-full max-w-6xl aspect-video bg-black shadow-2xl" onClick={e => e.stopPropagation()}>
-                        <iframe 
-                            width="100%" 
-                            height="100%" 
-                            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`} 
-                            title="YouTube video player" 
-                            frameBorder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-                </div>
-            );
-        };
-
-        // --- MAIN APP ---
-
-        const App = () => {
-            const [view, setView] = useState('home'); // home, search, watchlist, details
-            const [selectedMovie, setSelectedMovie] = useState(null);
-            const [trailerMovie, setTrailerMovie] = useState(null);
-            const [watchlist, setWatchlist] = useState(() => {
-                const saved = localStorage.getItem('cineflix_watchlist');
-                return saved ? JSON.parse(saved) : [];
-            });
-            const [searchQuery, setSearchQuery] = useState('');
-            const [filters, setFilters] = useState({ type: 'all', genres: [], minRating: 0, country: 'all' });
-            const [isFilterOpen, setIsFilterOpen] = useState(false);
-
-            // Derived Data
-            const allGenres = [...new Set(RAW_DATA.flatMap(m => m.genres))].sort();
-            
-            const filteredData = useMemo(() => {
-                return RAW_DATA.filter(movie => {
-                    // Search Filter
-                    if (searchQuery) {
-                        const q = searchQuery.toLowerCase();
-                        if (!movie.primaryTitle.toLowerCase().includes(q) && 
-                            !movie.genres.some(g => g.toLowerCase().includes(q))) return false;
-                    }
-
-                    // Type Filter
-                    if (filters.type !== 'all') {
-                        if (filters.type === 'tvSeries' && movie.type !== 'tvSeries') return false;
-                        if (filters.type === 'movie' && movie.type !== 'movie') return false;
-                    }
-
-                    // Genre Filter
-                    if (filters.genres.length > 0) {
-                        if (!filters.genres.some(g => movie.genres.includes(g))) return false;
-                    }
-
-                    // Rating Filter
-                    if (movie.averageRating < filters.minRating) return false;
-
-                    return true;
-                });
-            }, [searchQuery, filters]);
-
-            // Effects
-            useEffect(() => {
-                localStorage.setItem('cineflix_watchlist', JSON.stringify(watchlist));
-            }, [watchlist]);
-
-            // Handlers
-            const toggleWatchlist = (id) => {
-                setWatchlist(prev => 
-                    prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-                );
-            };
-
-            const handleViewDetails = (movie) => {
-                setSelectedMovie(movie);
-            };
-
-            const handlePlayTrailer = (movie) => {
-                setTrailerMovie(movie);
-            };
-
-            // Render Helpers
-            const renderContent = () => {
-                if (view === 'search') {
-                    return (
-                        <div className="pt-24 px-6 md:px-12 lg:px-24 min-h-screen">
-                            <div className="flex justify-between items-center mb-8">
-                                <h1 className="text-3xl font-bold">Search Results "{searchQuery}"</h1>
-                                <button onClick={() => setIsFilterOpen(true)} className="flex items-center gap-2 text-gray-300 hover:text-white">
-                                    <Icon name="filter" size={20} /> Filters
-                                </button>
-                            </div>
-                            
-                            {filteredData.length === 0 ? (
-                                <div className="text-center py-20 text-gray-500">
-                                    <p className="text-xl">No movies found matching your criteria.</p>
-                                    <button onClick={() => {setSearchQuery(''); setFilters({type:'all', genres:[], minRating:0});}} className="mt-4 text-red-500 hover:underline">Clear Filters</button>
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                                    {filteredData.map(movie => (
-                                        <MovieCard 
-                                            key={movie.id} 
-                                            movie={movie} 
-                                            onClick={handleViewDetails}
-                                            onToggleWatchlist={toggleWatchlist}
-                                            isInWatchlist={watchlist.includes(movie.id)}
-                                        />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    );
-                }
-
-                if (view === 'watchlist') {
-                    const watchlistMovies = RAW_DATA.filter(m => watchlist.includes(m.id));
-                    return (
-                        <div className="pt-24 px-6 md:px-12 lg:px-24 min-h-screen">
-                            <h1 className="text-3xl font-bold mb-8">My Watchlist</h1>
-                            {watchlistMovies.length === 0 ? (
-                                <div className="text-center py-20 text-gray-500">
-                                    <Icon name="heart" size={48} className="mx-auto mb-4 opacity-20" />
-                                    <p className="text-xl">Your watchlist is empty.</p>
-                                    <button onClick={() => setView('home')} className="mt-4 text-red-500 hover:underline">Browse Movies</button>
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                                    {watchlistMovies.map(movie => (
-                                        <MovieCard 
-                                            key={movie.id} 
-                                            movie={movie} 
-                                            onClick={handleViewDetails}
-                                            onToggleWatchlist={toggleWatchlist}
-                                            isInWatchlist={true}
-                                        />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    );
-                }
-
-                // Home View
-                const trending = RAW_DATA.slice(0, 10);
-                const popularMovies = RAW_DATA.filter(m => m.type === 'movie').slice(0, 10);
-                const popularTV = RAW_DATA.filter(m => m.type === 'tvSeries').slice(0, 10);
-                const topRated = [...RAW_DATA].sort((a,b) => b.averageRating - a.averageRating).slice(0, 10);
-                
-                return (
-                    <>
-                        <Hero 
-                            movie={RAW_DATA[0]} 
-                            onPlayTrailer={handlePlayTrailer} 
-                            onViewDetails={handleViewDetails} 
-                        />
-                        
-                        <Carousel 
-                            title="Trending Now" 
-                            movies={trending} 
-                            onMovieClick={handleViewDetails}
-                            onToggleWatchlist={toggleWatchlist}
-                            watchlist={watchlist}
-                        />
-                        
-                        <Section title="Popular Movies" onViewAll={() => {setSearchQuery(''); setFilters({...filters, type: 'movie'}); setView('search');}}>
-                            {popularMovies.map(movie => (
-                                <MovieCard 
-                                    key={movie.id} 
-                                    movie={movie} 
-                                    onClick={handleViewDetails}
-                                    onToggleWatchlist={toggleWatchlist}
-                                    isInWatchlist={watchlist.includes(movie.id)}
-                                />
-                            ))}
-                        </Section>
-
-                        <Section title="Top Rated" onViewAll={() => {setSearchQuery(''); setFilters({...filters, minRating: 8}); setView('search');}}>
-                            {topRated.map(movie => (
-                                <MovieCard 
-                                    key={movie.id} 
-                                    movie={movie} 
-                                    onClick={handleViewDetails}
-                                    onToggleWatchlist={toggleWatchlist}
-                                    isInWatchlist={watchlist.includes(movie.id)}
-                                />
-                            ))}
-                        </Section>
-
-                         <Carousel 
-                            title="Popular TV Shows" 
-                            movies={popularTV} 
-                            onMovieClick={handleViewDetails}
-                            onToggleWatchlist={toggleWatchlist}
-                            watchlist={watchlist}
-                        />
-                    </>
-                );
-            };
-
-            return (
-                <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-600 selection:text-white">
-                    <Navbar 
-                        onSearch={(q) => setSearchQuery(q)} 
-                        currentView={view}
-                        onChangeView={setView}
-                    />
-                    
-                    <main>
-                        {renderContent()}
-                    </main>
-
-                    <footer className="bg-black py-12 px-6 border-t border-gray-900 mt-12 text-center text-gray-500 text-sm">
-                        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-left mb-8">
-                            <div>
-                                <h4 className="text-white font-bold mb-4">CINEFLIX</h4>
-                                <ul className="space-y-2">
-                                    <li><a href="#" className="hover:underline">About Us</a></li>
-                                    <li><a href="#" className="hover:underline">Jobs</a></li>
-                                    <li><a href="#" className="hover:underline">Press</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 className="text-white font-bold mb-4">Support</h4>
-                                <ul className="space-y-2">
-                                    <li><a href="#" className="hover:underline">Help Center</a></li>
-                                    <li><a href="#" className="hover:underline">Terms of Use</a></li>
-                                    <li><a href="#" className="hover:underline">Privacy Policy</a></li>
-                                </ul>
-                            </div>
-                             <div>
-                                <h4 className="text-white font-bold mb-4">Connect</h4>
-                                <ul className="space-y-2">
-                                    <li><a href="#" className="hover:underline">Facebook</a></li>
-                                    <li><a href="#" className="hover:underline">Twitter</a></li>
-                                    <li><a href="#" className="hover:underline">Instagram</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p>&copy; 2026 Cineflix Inc. All rights reserved.</p>
-                    </footer>
-
-                    {/* Modals */}
-                    {selectedMovie && (
-                        <MovieModal 
-                            movie={selectedMovie} 
-                            onClose={() => setSelectedMovie(null)} 
-                            onPlayTrailer={handlePlayTrailer}
-                            onToggleWatchlist={toggleWatchlist}
-                            isInWatchlist={watchlist.includes(selectedMovie.id)}
-                        />
-                    )}
-
-                    {trailerMovie && (
-                        <TrailerModal 
-                            youtubeId={getYouTubeID(trailerMovie.trailer)} 
-                            onClose={() => setTrailerMovie(null)} 
-                        />
-                    )}
-
-                    <FilterDrawer 
-                        isOpen={isFilterOpen} 
-                        onClose={() => setIsFilterOpen(false)} 
-                        filters={filters}
-                        setFilters={setFilters}
-                        availableGenres={allGenres}
-                    />
-                </div>
-            );
-        };
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+<header id="header"><div class="container nav">
+  <a href="#/" class="logo" style="color:white;text-decoration:none">CINE<span>HUB</span></a>
+  <nav class="navlinks">
+    <a href="#/">Home</a><a href="#/movies">Movies</a><a href="#/tv">TV Shows</a>
+    <a href="#/trending">Trending</a><a href="#/top-rated">Top Rated</a><a href="#/genres">Genres</a><a href="#/countries">Countries</a>
+  </nav>
+  <div class="spacer"></div>
+  <form class="searchbox" id="headerSearch"><span>⌕</span><input id="headerSearchInput" placeholder="Search movies & TV" aria-label="Search"></form>
+  <button class="iconbtn" id="watchBtn" title="Watchlist">♡</button>
+  <button class="iconbtn" id="menuBtn" title="Menu">☰</button>
+</div></header>
+
+<section class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="container"><div class="hero-content" id="heroContent">
+    <div class="eyebrow">CINEHUB • DISCOVER</div><h1>Find your next story.</h1>
+    <p>Discover movies and TV shows using your live metadata API.</p>
+    <div class="actions"><button class="primary" id="heroSearchBtn">EXPLORE MOVIES</button></div>
+  </div></div>
+</section>
+
+<main class="container" id="app"></main>
+
+<div class="drawer" id="drawer">
+  <button class="close" id="drawerClose">×</button><h3>Filters</h3>
+  <div class="field"><label>Type</label><select id="fType"><option value="">All types</option></select></div>
+  <div class="field"><label>Genre</label><select id="fGenre"><option value="">All genres</option></select></div>
+  <div class="field"><label>Country</label><select id="fCountry"><option value="">All countries</option></select></div>
+  <div class="field"><label>Language</label><select id="fLanguage"><option value="">All languages</option></select></div>
+  <div class="field"><label>Content Rating</label><select id="fRating"><option value="">All ratings</option></select></div>
+  <div class="field"><label>Minimum rating</label><input id="fMinRating" type="number" min="0" max="10" step=".1" placeholder="0"></div>
+  <button class="primary" id="applyFilters" style="width:100%">Apply Filters</button>
+</div>
+
+<div class="modal" id="modal"><div class="modalbox">
+  <div class="modalhead"><strong id="modalTitle">CINEHUB</strong><button class="close" id="modalClose">×</button></div>
+  <div class="modalbody" id="modalBody"></div>
+</div></div>
+
+<footer><div class="container">CINEHUB — Movie & TV Discovery. Metadata is supplied by the configured API. CINEHUB is not affiliated with IMDb.</div></footer>
+
+<script>
+/*
+  ============================================================
+  CINEHUB API CONFIG
+  ============================================================
+  The supplied credentials/identifiers:
+    API ID:      api_d92f85b9-d095-4deb-bf92-2af12d5410db
+    API Version: apiversion_0b731677-4f03-4850-b4c2-b9a954b6c4ff
+
+  IMPORTANT:
+  The supplied reference does not contain a concrete public BASE_URL
+  or documented endpoint paths, so this file does NOT invent them.
+  Put the real API base URL/path in BASE_URL below.
+*/
+const API_CONFIG = {
+  // RapidAPI host confirmed by your API details.
+  HOST: "imdb236.p.rapidapi.com",
+
+  // IMPORTANT: replace this with YOUR RapidAPI key.
+  // Do not publish a real key in a public frontend.
+  RAPIDAPI_KEY: "",
+
+  // These identify your RapidAPI API/version in the platform.
+  // They are metadata identifiers, not substitutes for X-RapidAPI-Key.
+  API_ID: "api_d92f85b9-d095-4deb-bf92-2af12d5410db",
+  API_VERSION_ID: "apiversion_0b731677-4f03-4850-b4c2-b9a954b6c4ff",
+
+  BASE_URL: "https://imdb236.p.rapidapi.com"
+};
+
+const API = {
+  async request(path="", params={}) {
+    if (!API_CONFIG.RAPIDAPI_KEY) {
+      throw new Error("RAPIDAPI_KEY_MISSING");
+    }
+
+    const url = new URL(API_CONFIG.BASE_URL + path);
+    Object.entries(params).forEach(([k,v]) => {
+      if (v !== "" && v !== null && v !== undefined) {
+        url.searchParams.set(k, v);
+      }
+    });
+
+    const res = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": API_CONFIG.RAPIDAPI_KEY,
+        "X-RapidAPI-Host": API_CONFIG.HOST,
+        "Accept": "application/json"
+      }
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(`RAPIDAPI_HTTP_${res.status}${text ? " " + text.slice(0,120) : ""}`);
+    }
+    return res.json();
+  },
+
+  // Confirmed RapidAPI IMDb endpoints.
+  search(params={}) {
+    return this.request("/imdb/search", params);
+  },
+
+  title(id) {
+    return this.request("/imdb/" + encodeURIComponent(id));
+  },
+
+  // Useful IMDb lists exposed by this API.
+  top250Movies() {
+    return this.request("/api/imdb/top250-movies");
+  },
+
+  top250TVShows() {
+    return this.request("/api/imdb/top250-tv-shows");
+  },
+
+  mostPopularMovies() {
+    return this.request("/api/imdb/most-popular-movies");
+  },
+
+  mostPopularTVShows() {
+    return this.request("/api/imdb/most-popular-tv-shows");
+  },
+
+  topRatedEnglishMovies() {
+    return this.request("/api/imdb/top-rated-english-movies");
+  },
+
+  lowestRatedMovies() {
+    return this.request("/api/imdb/lowest-rated-movies");
+  }
+};
+
+const FALLBACK_GENRES = ["Drama","Documentary","Comedy","Action","Romance","Thriller","Crime","Horror","Music","Adventure","Family","Animation","Reality-TV","Mystery","History","Biography","Sport","Talk-Show","Fantasy","Sci-Fi","Musical","News","War","Adult","Game-Show","Western","Short","Film-Noir"];
+const FALLBACK_TYPES = ["movie","tvSeries","tvMovie","tvMiniSeries","tvSpecial"];
+
+const state = { results:[], total:0, query:"", page:1, rows:24, filters:{}, initialized:false };
+
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const arr = v => Array.isArray(v) ? v : (v ? [v] : []);
+const first = v => Array.isArray(v) ? v[0] : v;
+
+function normalize(x){
+  return {
+    id:x.id || x.imdbId || x.tconst || "",
+    title:x.primaryTitle || x.title || x.originalTitle || "Untitled",
+    originalTitle:x.originalTitle || "",
+    type:x.type || "",
+    description:x.description || "",
+    image:x.primaryImage || first(x.thumbnails)?.url || "",
+    thumbnails:arr(x.thumbnails),
+    trailer:x.trailer || "",
+    contentRating:x.contentRating || "",
+    year:x.startYear || "",
+    endYear:x.endYear || "",
+    releaseDate:x.releaseDate || "",
+    genres:arr(x.genres),
+    interests:arr(x.interests),
+    countries:arr(x.countriesOfOrigin),
+    languages:arr(x.spokenLanguages),
+    filmingLocations:arr(x.filmingLocations),
+    productionCompanies:arr(x.productionCompanies),
+    budget:x.budget,
+    grossWorldwide:x.grossWorldwide,
+    isAdult:!!x.isAdult,
+    runtime:x.runtimeMinutes,
+    rating:x.averageRating,
+    votes:x.numVotes,
+    metascore:x.metascore,
+    externalLinks:arr(x.externalLinks),
+    url:x.url || ""
+  };
+}
+
+function resultArray(data){
+  if(Array.isArray(data)) return data;
+  if(Array.isArray(data.results)) return data.results;
+  if(Array.isArray(data.data)) return data.data;
+  if(Array.isArray(data.items)) return data.items;
+  return [];
+}
+
+function imageFallback(img){
+  img.onerror = () => {
+    img.onerror = null;
+    img.src = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900"><rect width="100%" height="100%" fill="#15151b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#777" font-size="28" font-family="Arial">CINEHUB</text></svg>'
+    );
+  };
+}
+
+function card(m){
+  const saved = watchlist().includes(m.id);
+  return `<article class="card">
+    <div class="poster">
+      <img src="${esc(m.image)}" alt="${esc(m.title)}" loading="lazy" onerror="imageFallback(this)">
+      <div class="overlay"><div class="quick">
+        <button onclick="openDetails('${esc(m.id)}')" title="Details">i</button>
+        ${m.trailer ? `<button onclick="openTrailer('${esc(m.trailer)}')" title="Trailer">▶</button>` : ""}
+        <button onclick="toggleWatch('${esc(m.id)}')" title="Watchlist">${saved?"♥":"♡"}</button>
+      </div></div>
+    </div>
+    <div class="title">${esc(m.title)}</div>
+    <div class="sub">${esc(m.year || "—")} ${m.rating!=null ? " • ★ "+esc(m.rating) : ""}</div>
+  </article>`;
+}
+
+function section(title, items){
+  if(!items.length) return "";
+  return `<section class="section"><div class="section-head"><div><h2>${esc(title)}</h2><small>${items.length} titles</small></div><button class="secondary" onclick="location.hash='#/search'">See all</button></div><div class="grid">${items.map(card).join("")}</div></section>`;
+}
+
+function skeletons(n=12){
+  return `<div class="grid">${Array.from({length:n},()=>`<div><div class="poster skeleton"></div><div class="skeleton" style="height:15px;margin-top:9px;border-radius:6px"></div></div>`).join("")}</div>`;
+}
+
+function watchlist(){
+  try{return JSON.parse(localStorage.getItem("cinehub_watchlist")||"[]")}catch{return[]}
+}
+function toggleWatch(id){
+  if(!id)return;
+  let w=watchlist();
+  w=w.includes(id)?w.filter(x=>x!==id):[id,...w];
+  localStorage.setItem("cinehub_watchlist",JSON.stringify(w));
+  route();
+}
+
+function youtube(url){
+  try{
+    const u=new URL(url);
+    let id=u.searchParams.get("v");
+    if(!id && u.hostname.includes("youtu.be")) id=u.pathname.slice(1);
+    return id ? "https://www.youtube.com/embed/"+encodeURIComponent(id)+"?autoplay=1&rel=0" : "";
+  }catch{return ""}
+}
+
+function openTrailer(url){
+  const src=youtube(url);
+  if(!src){ alert("No supported YouTube trailer URL."); return; }
+  $("#modalTitle").textContent="Trailer";
+  $("#modalBody").innerHTML=`<div class="trailer"><iframe src="${src}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe></div>`;
+  $("#modal").classList.add("open"); document.body.style.overflow="hidden";
+}
+
+async function openDetails(id){
+  if(!id)return;
+  $("#modalTitle").textContent="Loading…";
+  $("#modalBody").innerHTML=skeletons(1);
+  $("#modal").classList.add("open"); document.body.style.overflow="hidden";
+  try{
+    let data=await API.title(id);
+    let m=normalize(data.result || data.data || data);
+    if(!m.id)m.id=id;
+    renderDetails(m);
+  }catch(e){
+    $("#modalBody").innerHTML=`<div class="error">Unable to load details. Check your API endpoint configuration.</div>`;
+  }
+}
+
+function renderDetails(m){
+  $("#modalTitle").textContent=m.title;
+  const genres=m.genres.map(x=>`<span class="chip">${esc(typeof x==="object"?x.name:x)}</span>`).join("");
+  const countries=m.countries.map(x=>`<span class="chip">${esc(typeof x==="object"?(x.name||x.iso_3166_1):x)}</span>`).join("");
+  const companies=m.productionCompanies.map(x=>`<span class="chip">${esc(typeof x==="object"?x.name:x)}</span>`).join("");
+  $("#modalBody").innerHTML=`<div class="detail">
+    <div>${m.image?`<img src="${esc(m.image)}" alt="${esc(m.title)}" onerror="imageFallback(this)">`:""}</div>
+    <div>
+      <div class="eyebrow">${esc(m.type)}</div>
+      <h2>${esc(m.title)}</h2>
+      ${m.originalTitle&&m.originalTitle!==m.title?`<div class="sub">${esc(m.originalTitle)}</div>`:""}
+      <div class="meta">
+        ${m.year?`<span class="badge">${esc(m.year)}</span>`:""}
+        ${m.runtime?`<span class="badge">${esc(m.runtime)} min</span>`:""}
+        ${m.contentRating?`<span class="badge">${esc(m.contentRating)}</span>`:""}
+        ${m.rating!=null?`<span class="badge">★ ${esc(m.rating)}</span>`:""}
+        ${m.votes!=null?`<span class="badge">${esc(m.votes)} votes</span>`:""}
+        ${m.metascore!=null?`<span class="badge">Metascore ${esc(m.metascore)}</span>`:""}
+      </div>
+      ${m.description?`<p>${esc(m.description)}</p>`:""}
+      ${genres?`<div class="chips">${genres}</div>`:""}
+      ${countries?`<p><b>Countries</b></p><div class="chips">${countries}</div>`:""}
+      ${m.languages.length?`<p><b>Languages:</b> ${esc(m.languages.join(", "))}</p>`:""}
+      ${companies?`<p><b>Production</b></p><div class="chips">${companies}</div>`:""}
+      ${m.releaseDate?`<p><b>Release:</b> ${esc(m.releaseDate)}</p>`:""}
+      ${m.budget!=null?`<p><b>Budget:</b> ${esc(formatMoney(m.budget))}</p>`:""}
+      ${m.grossWorldwide!=null?`<p><b>Worldwide Gross:</b> ${esc(formatMoney(m.grossWorldwide))}</p>`:""}
+      <div class="actions">
+        ${m.trailer?`<button class="primary" onclick="openTrailer('${esc(m.trailer)}')">WATCH TRAILER</button>`:""}
+        <button class="secondary" onclick="toggleWatch('${esc(m.id)}')">${watchlist().includes(m.id)?"REMOVE FROM WATCHLIST":"ADD TO WATCHLIST"}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function formatMoney(v){
+  if(typeof v==="number") return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(v);
+  return v;
+}
+
+async function loadMeta(){
+  const cacheKey="cinehub_meta_v1";
+  try{
+    const cached=JSON.parse(localStorage.getItem(cacheKey)||"null");
+    if(cached && Date.now()-cached.time<86400000){fillMeta(cached);return}
+  }catch{}
+  const meta={types:FALLBACK_TYPES,genres:FALLBACK_GENRES,countries:[],languages:[],ratings:[]};
+  if(API_CONFIG.BASE_URL){
+    const jobs=await Promise.allSettled([API.types(),API.genres(),API.countries(),API.languages(),API.contentRatings()]);
+    const vals=jobs.map(x=>x.status==="fulfilled"?resultArray(x.value):[]);
+    if(vals[0].length)meta.types=vals[0].map(x=>typeof x==="object"?(x.value||x.name||x.id):x);
+    if(vals[1].length)meta.genres=vals[1].map(x=>typeof x==="object"?(x.name||x.value):x);
+    if(vals[2].length)meta.countries=vals[2];
+    if(vals[3].length)meta.languages=vals[3];
+    if(vals[4].length)meta.ratings=vals[4].map(x=>typeof x==="object"?(x.name||x.value):x);
+  }
+  meta.time=Date.now(); try{localStorage.setItem(cacheKey,JSON.stringify(meta))}catch{}
+  fillMeta(meta);
+}
+function fillMeta(m){
+  const fill=(sel,items,labelFn)=>{
+    const el=$(sel); if(!el)return;
+    const first=el.options[0]?.outerHTML||"";
+    el.innerHTML=first+items.slice(0,500).map(x=>`<option value="${esc(typeof x==="object"?(x.iso_3166_1||x.code||x.value||x.name):x)}">${esc(labelFn?labelFn(x):typeof x==="object"?(x.name||x.value||x.code):x)}</option>`).join("");
+  };
+  fill("#fType",m.types);fill("#fGenre",m.genres);fill("#fCountry",m.countries);fill("#fLanguage",m.languages);fill("#fRating",m.ratings);
+}
+
+function paramsFromFilters(){
+  const f=state.filters, p={};
+  if(state.query)p.q=state.query;
+  if(f.type)p.type=f.type;
+  if(f.genre)p.genre=f.genre;
+  if(f.country)p.country=f.country;
+  if(f.language)p.language=f.language;
+  if(f.rating)p.contentRating=f.rating;
+  if(f.minRating)p.minRating=f.minRating;
+  // These are conventional UI params; if your API documentation uses different
+  // pagination names, change only these names to the exact documented parameters.
+  p.rows=state.rows;
+  p.sortOrder="DESC";
+  p.sortField="averageRating";
+  return p;
+}
+
+async function searchAPI(){
+  if(!API_CONFIG.RAPIDAPI_KEY){
+    return {error:"RAPIDAPI_KEY_MISSING",results:[],numFound:0};
+  }
+  try{
+    const data=await API.search(paramsFromFilters());
+    return {results:resultArray(data).map(normalize),numFound:Number(data.numFound ?? data.total ?? resultArray(data).length)||0,rows:Number(data.rows ?? state.rows)||state.rows};
+  }catch(e){return {error:e.message,results:[],numFound:0}}
+}
+
+async function renderHome(){
+  $("#app").innerHTML=skeletons(12);
+  if(!API_CONFIG.BASE_URL){
+    $("#app").innerHTML=`<div class="error"><b>RapidAPI key is not configured.</b><br><br>Open this file and set <code>API_CONFIG.RAPIDAPI_KEY</code> to your RapidAPI key. The RapidAPI Host, API ID and API Version ID are already configured.</div>`;
+    return;
+  }
+  const r=await searchAPI();
+  if(r.error){$("#app").innerHTML=`<div class="error">Unable to load movies. API error: ${esc(r.error)}</div>`;return}
+  state.results=r.results;state.total=r.numFound;
+  const movies=r.results.filter(x=>x.type==="movie");
+  const tv=r.results.filter(x=>x.type!=="movie");
+  if(r.results[0])setHero(r.results[0]);
+  $("#app").innerHTML=section("🔥 Trending Now",r.results.slice(0,6))
+    +section("Popular Movies",movies.slice(0,6))
+    +section("Popular TV Shows",tv.slice(0,6))
+    +section("⭐ Top Rated",[...r.results].sort((a,b)=>(b.rating??-1)-(a.rating??-1)).slice(0,6))
+    +section("Latest Releases",[...r.results].sort((a,b)=>String(b.releaseDate).localeCompare(String(a.releaseDate))).slice(0,6));
+}
+
+function setHero(m){
+  $("#heroBg").style.backgroundImage=m.image?`url("${m.image.replace(/"/g,'\\"')}")`:"";
+  $("#heroContent").innerHTML=`<div class="eyebrow">FEATURED • ${esc(m.type)}</div>
+    <h1>${esc(m.title)}</h1>
+    <div class="meta">${m.year?`<span class="badge">${esc(m.year)}</span>`:""}${m.rating!=null?`<span class="badge">★ ${esc(m.rating)}</span>`:""}${m.contentRating?`<span class="badge">${esc(m.contentRating)}</span>`:""}${m.runtime?`<span class="badge">${esc(m.runtime)} min</span>`:""}</div>
+    <p>${esc(m.description||"Discover more details about this title.")}</p>
+    <div class="actions">
+      ${m.trailer?`<button class="primary" onclick="openTrailer('${esc(m.trailer)}')">▶ WATCH TRAILER</button>`:""}
+      <button class="secondary" onclick="openDetails('${esc(m.id)}')">MORE DETAILS</button>
+      <button class="secondary" onclick="toggleWatch('${esc(m.id)}')">${watchlist().includes(m.id)?"♥ SAVED":"♡ WATCHLIST"}</button>
+    </div>`;
+}
+
+async function renderListing(title, extraFilters={}){
+  $("#app").innerHTML=`<section class="section"><div class="section-head"><div><h2>${esc(title)}</h2><small id="resultCount">Loading…</small></div><button class="secondary" id="filterOpen">Filters</button></div>
+  <div class="toolbar"><input id="pageSearch" placeholder="Search this collection…" value="${esc(state.query)}"><select id="sort"><option value="default">Default</option><option value="rating">Rating high → low</option><option value="newest">Newest</option><option value="az">A → Z</option><option value="votes">Most voted</option></select></div>
+  <div id="listing">${skeletons(12)}</div></section>`;
+  $("#filterOpen").onclick=()=>$("#drawer").classList.add("open");
+  $("#pageSearch").onkeydown=e=>{if(e.key==="Enter"){state.query=e.target.value.trim();state.page=1;route()}};
+  const r=await searchAPI();
+  if(r.error){$("#listing").innerHTML=`<div class="error">Unable to load data. Set <code>API_CONFIG.RAPIDAPI_KEY</code> first.</div>`;return}
+  let items=r.results;
+  if(extraFilters.type)items=items.filter(x=>x.type===extraFilters.type);
+  if(extraFilters.genre)items=items.filter(x=>x.genres.includes(extraFilters.genre));
+  const sort=$("#sort");
+  sort.onchange=()=>{const v=sort.value;items=[...items];if(v==="rating")items.sort((a,b)=>(b.rating??-1)-(a.rating??-1));if(v==="newest")items.sort((a,b)=>String(b.releaseDate).localeCompare(String(a.releaseDate)));if(v==="az")items.sort((a,b)=>a.title.localeCompare(b.title));if(v==="votes")items.sort((a,b)=>(b.votes??-1)-(a.votes??-1));$("#listing").innerHTML=items.length?`<div class="grid">${items.map(card).join("")}</div>`:`<div class="empty">No results found.</div>`};
+  $("#resultCount").textContent=`${r.numFound.toLocaleString()} results`;
+  $("#listing").innerHTML=items.length?`<div class="grid">${items.map(card).join("")}</div>`:`<div class="empty">No results found.</div>`;
+}
+
+async function renderSearch(){
+  await renderListing(state.query?`Search: ${state.query}`:"Search Movies & TV");
+}
+
+async function renderWatchlist(){
+  const ids=watchlist();
+  $("#app").innerHTML=`<section class="section"><div class="section-head"><div><h2>♡ Your Watchlist</h2><small>${ids.length} saved</small></div>${ids.length?`<button class="secondary" onclick="localStorage.removeItem('cinehub_watchlist');route()">Clear all</button>`:""}</div><div id="watchArea">${ids.length?skeletons(ids.length):`<div class="empty">Your watchlist is empty.<br><br>Add titles from any movie card.</div>`}</div></section>`;
+  if(!ids.length)return;
+  if(!API_CONFIG.BASE_URL){$("#watchArea").innerHTML=`<div class="error">Connect the API to load saved titles.</div>`;return}
+  const got=await Promise.allSettled(ids.map(id=>API.title(id)));
+  const items=got.filter(x=>x.status==="fulfilled").map(x=>normalize(x.value.result||x.value.data||x.value)).filter(x=>x.id);
+  $("#watchArea").innerHTML=items.length?`<div class="grid">${items.map(card).join("")}</div>`:`<div class="empty">Saved titles could not be loaded.</div>`;
+}
+
+function route(){
+  const hash=location.hash||"#/";
+  const path=hash.replace(/^#/,"");
+  const q=new URLSearchParams(location.search).get("q") || (path.startsWith("/search")?new URLSearchParams(path.split("?")[1]||"").get("q"):"");
+  state.query=q||"";
+  if(path==="/"||path==="")renderHome();
+  else if(path.startsWith("/search"))renderSearch();
+  else if(path==="/watchlist"){renderWatchlist()}
+  else if(path==="/movies")renderListing("Movies",{type:"movie"});
+  else if(path==="/tv")renderListing("TV Shows",{type:"tvSeries"});
+  else if(path==="/trending")renderListing("Trending Now");
+  else if(path==="/top-rated")renderListing("Top Rated");
+  else if(path==="/latest")renderListing("Latest Releases");
+  else if(path.startsWith("/genre/"))renderListing(path.split("/")[2].replace(/-/g," "),{genre:path.split("/")[2]});
+  else renderHome();
+}
+
+$("#headerSearch").addEventListener("submit",e=>{e.preventDefault();const q=$("#headerSearchInput").value.trim();location.hash="/search";history.replaceState(null,"","?q="+encodeURIComponent(q));route()});
+$("#watchBtn").onclick=()=>location.hash="/watchlist";
+$("#menuBtn").onclick=()=>$("#drawer").classList.add("open");
+$("#drawerClose").onclick=()=>$("#drawer").classList.remove("open");
+$("#modalClose").onclick=()=>{$("#modal").classList.remove("open");$("#modalBody").innerHTML="";document.body.style.overflow=""};
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")$("#modalClose").click()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if($("#modal").classList.contains("open"))$("#modalClose").click();$("#drawer").classList.remove("open")}});
+$("#applyFilters").onclick=()=>{state.filters={type:$("#fType").value,genre:$("#fGenre").value,country:$("#fCountry").value,language:$("#fLanguage").value,rating:$("#fRating").value,minRating:$("#fMinRating").value};state.page=1;$("#drawer").classList.remove("open");route()};
+$("#heroSearchBtn").onclick=()=>{location.hash="/movies"};
+window.addEventListener("hashchange",route);window.addEventListener("scroll",()=>$("#header").classList.toggle("scrolled",scrollY>20));
+
+loadMeta();
+route();
+</script>
 </body>
 </html>

@@ -1,492 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movies - HiFix</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMDb - Movie Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fontsource-inter@5/css/index.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 1) 100%);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+        }
+        
+        .loader {
+            border-top-color: #eab308; /* Yellow for HMDb feel */
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+        
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
-
-  <!-- Adsterra Popunder Scripts -->
-  <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
-  <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    body { 
-      font-family: 'Inter', sans-serif; 
-      background: #0f172a;
-      color: #f8fafc;
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #1e293b; }
-    ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
-
-    /* Hide scrollbar for horizontal scroll areas */
-    .hide-scroll::-webkit-scrollbar { display: none; }
-    .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
-    /* Movie Card Hover Effects */
-    .movie-card { transition: all 0.3s ease; }
-    .movie-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-    
-    /* Poster Overlay Gradient */
-    .poster-overlay {
-      background: linear-gradient(to top, rgba(15,23,42,1) 0%, rgba(15,23,42,0.8) 50%, transparent 100%);
-    }
-
-    /* Loading Skeleton Animation */
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    .skeleton {
-      background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-    }
-
-    /* Modal Animation */
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    .modal-animate { animation: modalFadeIn 0.3s ease-out forwards; }
-  </style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #eab308; 
+            border-radius: 4px;
+        }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="antialiased min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/90 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-[1400px] mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2 group">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-lg group-hover:shadow-cyan-500/50 transition-all">H</div>
-        <span class="font-bold text-xl tracking-tight text-white">Hi<span class="text-cyan-400">Fix</span></span>
-      </a>
-
-      <!-- Search Bar (Desktop) -->
-      <div class="hidden md:flex flex-1 max-w-md mx-8 relative">
-        <input type="text" id="searchInput" placeholder="Search movies..." class="w-full bg-slate-800/50 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all">
-        <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      </div>
-
-      <nav class="flex items-center gap-4 text-sm font-medium text-slate-300">
-        <a href="index.html" class="hover:text-cyan-400 transition-colors hidden sm:block">Home</a>
-        <a href="hifixmovie.html" class="text-cyan-400">Movies</a>
-        <button onclick="toggleSearchMobile()" class="md:hidden text-slate-300 hover:text-white">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        </button>
-      </nav>
-    </div>
-    
-    <!-- Mobile Search Bar -->
-    <div id="mobileSearchBar" class="hidden md:hidden px-4 pb-4 bg-[#0f172a] border-b border-white/10">
-      <input type="text" id="mobileSearchInput" placeholder="Search movies..." class="w-full bg-slate-800/50 border border-white/10 rounded-full py-2 pl-4 pr-4 text-sm text-white focus:outline-none focus:border-cyan-500">
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="flex-grow pt-20 pb-12">
-    
-    <!-- Smartlink Banner Ad -->
-    <div class="max-w-[1400px] mx-auto px-4 md:px-6 mb-8">
-      <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-4 text-center text-white font-bold hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20">
-        🎬 Exclusive Movie Deals & Offers - Click Here!
-      </a>
-    </div>
-
-    <!-- Trending Section -->
-    <section class="max-w-[1400px] mx-auto px-4 md:px-6 mb-12">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-          <span class="w-1 h-6 bg-cyan-500 rounded-full"></span> Trending Now
-        </h2>
-        <button onclick="fetchTrending()" class="text-xs text-cyan-400 hover:text-cyan-300 font-medium">Refresh ↻</button>
-      </div>
-      
-      <!-- Horizontal Scroll Container -->
-      <div id="trendingContainer" class="flex gap-4 overflow-x-auto hide-scroll pb-4 snap-x snap-mandatory">
-        <!-- Skeleton Loaders -->
-        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
-        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
-        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
-        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
-        <div class="min-w-[160px] w-[160px] h-[240px] rounded-xl skeleton shrink-0"></div>
-      </div>
-    </section>
-
-    <!-- Adsterra Native Banner Ad -->
-    <div class="max-w-[1400px] mx-auto px-4 md:px-6 mb-12">
-      <div class="bg-slate-800/50 rounded-xl p-2 text-center border border-white/5">
-        <div class="text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Advertisement</div>
-        <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
-        <div id="container-8e9094986a453471eab78291c50b779f"></div>
-      </div>
-    </div>
-
-    <!-- Popular Movies Grid -->
-    <section class="max-w-[1400px] mx-auto px-4 md:px-6">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-          <span class="w-1 h-6 bg-purple-500 rounded-full"></span> Popular Movies
-        </h2>
-        <div class="flex gap-2">
-           <select id="yearFilter" onchange="fetchPopular()" class="bg-slate-800 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-500">
-             <option value="">All Years</option>
-             <option value="2024">2024</option>
-             <option value="2023">2023</option>
-             <option value="2022">2022</option>
-           </select>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <span class="bg-yellow-500 text-black font-black px-2 py-1 rounded text-xl tracking-tighter">HMDb</span>
+                    <span class="font-bold text-xl tracking-tight ml-2">Movie Database</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#" class="bg-slate-800 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 transition">Home</a>
+                        <a href="#top250" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Top 250</a>
+                        <a href="#boxoffice" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Box Office</a>
+                        <a href="#lowest" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Lowest Rated</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+    </nav>
 
-      <div id="popularContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-        <!-- Skeleton Loaders -->
-        <div class="h-[320px] rounded-xl skeleton"></div>
-        <div class="h-[320px] rounded-xl skeleton"></div>
-        <div class="h-[320px] rounded-xl skeleton"></div>
-        <div class="h-[320px] rounded-xl skeleton"></div>
-        <div class="h-[320px] rounded-xl skeleton"></div>
-        <div class="h-[320px] rounded-xl skeleton"></div>
-      </div>
-      
-      <!-- Pagination / Load More -->
-      <div class="mt-12 text-center">
-        <button id="loadMoreBtn" onclick="loadMorePopular()" class="bg-slate-800 hover:bg-slate-700 text-white px-8 py-3 rounded-full font-medium text-sm transition-all border border-white/10 hover:border-cyan-500/50">
-          Load More Movies
-        </button>
-      </div>
-    </section>
-
-    <!-- Adsterra 160x600 Ad (Centered for mobile/tablet visibility) -->
-    <div class="max-w-[1400px] mx-auto px-4 md:px-6 mt-12 flex justify-center">
-       <div class="bg-slate-800/30 p-4 rounded-xl border border-white/5">
-          <div class="text-[10px] text-slate-500 mb-2 text-center uppercase">Advertisement</div>
-          <script>
-            atOptions = {
-              'key' : '1eda4cac05549ff59bb7f97d83a3666b',
-              'format' : 'iframe',
-              'height' : 600,
-              'width' : 160,
-              'params' : {}
-            };
-          </script>
-          <script src="https://www.highrevenueformat.com/1eda4cac05549ff59bb7f97d83a3666b/invoke.js"></script>
-       </div>
-    </div>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-[#0b1120] border-t border-white/5 py-8 mt-auto">
-    <div class="max-w-[1400px] mx-auto px-4 md:px-6 text-center text-slate-500 text-sm">
-      <p>&copy; 2024 HiFix Movies. Powered by TMDB API.</p>
-    </div>
-  </footer>
-
-  <!-- ================= MOVIE DETAIL MODAL ================= -->
-  <div id="movieModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-    <div class="bg-[#0f172a] w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl border border-white/10 relative modal-animate">
-      
-      <!-- Close Button -->
-      <button onclick="closeModal()" class="absolute top-4 right-4 z-20 bg-black/50 hover:bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-
-      <!-- Modal Content -->
-      <div id="modalContent">
-        <!-- Content injected via JS -->
-        <div class="p-8 text-center text-slate-400">Loading...</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= JAVASCRIPT ================= -->
-  <script>
-    // CONFIGURATION
-    const API_KEY = '93a5c52b939ffbcb3cd561c8a1f8b880';
-    const BASE_URL = 'https://api.themoviedb.org/3';
-    const IMG_BASE = 'https://image.tmdb.org/t/p/w500';
-    const IMG_ORIGINAL = 'https://image.tmdb.org/t/p/original';
-
-    let currentPage = 1;
-
-    // --- NEW FETCH FUNCTION WITH BEARER TOKEN ---
-    async function tmdbFetch(endpoint) {
-      const response = await fetch(`${BASE_URL}${endpoint}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${API_KEY}`,
-          'accept': 'application/json'
-        }
-      });
-      if (!response.ok) throw new Error(`TMDB API Error: ${response.status}`);
-      return response.json();
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchTrending();
-      fetchPopular();
-      
-      // Search Listeners
-      const searchInput = document.getElementById('searchInput');
-      const mobileSearchInput = document.getElementById('mobileSearchInput');
-      
-      let searchTimeout;
-      const handleSearch = (e) => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-          const query = e.target.value.trim();
-          if(query.length > 2) {
-            fetchSearch(query);
-          } else if (query === '') {
-            fetchPopular();
-          }
-        }, 500);
-      };
-
-      searchInput.addEventListener('input', handleSearch);
-      mobileSearchInput.addEventListener('input', handleSearch);
-    });
-
-    function toggleSearchMobile() {
-      const bar = document.getElementById('mobileSearchBar');
-      bar.classList.toggle('hidden');
-      if(!bar.classList.contains('hidden')) document.getElementById('mobileSearchInput').focus();
-    }
-
-    // Fetch Trending
-    async function fetchTrending() {
-      const container = document.getElementById('trendingContainer');
-      try {
-        const data = await tmdbFetch('/trending/movie/week');
+    <!-- Hero Section -->
+    <header id="hero-section" class="relative h-[80vh] w-full overflow-hidden">
+        <!-- Background Image will be injected here -->
+        <div id="hero-bg" class="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-in-out"></div>
+        <div class="absolute inset-0 bg-black/70 hero-gradient"></div>
         
-        container.innerHTML = '';
-        data.results.slice(0, 10).forEach(movie => {
-          if(!movie.poster_path) return;
-          container.innerHTML += createMovieCard(movie, true);
-        });
-      } catch(e) { console.error(e); }
-    }
-
-    // Fetch Popular
-    async function fetchPopular(page = 1) {
-      const container = document.getElementById('popularContainer');
-      const year = document.getElementById('yearFilter').value;
-      
-      if(page === 1) container.innerHTML = '<div class="col-span-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">' + 
-        Array(6).fill('<div class="h-[320px] rounded-xl skeleton"></div>').join('') + '</div>';
-      
-      try {
-        let endpoint = `/movie/popular?page=${page}`;
-        if(year) endpoint += `&primary_release_year=${year}`;
-        
-        const data = await tmdbFetch(endpoint);
-        
-        if(page === 1) container.innerHTML = '';
-        
-        data.results.forEach(movie => {
-          if(!movie.poster_path) return;
-          container.innerHTML += createMovieCard(movie, false);
-        });
-        
-        currentPage = page;
-      } catch(e) { console.error(e); }
-    }
-
-    // Fetch Search
-    async function fetchSearch(query) {
-      const container = document.getElementById('popularContainer');
-      document.getElementById('loadMoreBtn').classList.add('hidden');
-      
-      container.innerHTML = '<div class="col-span-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">' + 
-        Array(6).fill('<div class="h-[320px] rounded-xl skeleton"></div>').join('') + '</div>';
-
-      try {
-        const data = await tmdbFetch(`/search/movie?query=${encodeURIComponent(query)}`);
-        
-        container.innerHTML = '';
-        if(data.results.length === 0) {
-          container.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400">No movies found.</div>';
-          return;
-        }
-
-        data.results.forEach(movie => {
-          if(!movie.poster_path) return;
-          container.innerHTML += createMovieCard(movie, false);
-        });
-      } catch(e) { console.error(e); }
-    }
-
-    function loadMorePopular() {
-      fetchPopular(currentPage + 1);
-    }
-
-    // Create Movie Card HTML
-    function createMovieCard(movie, isHorizontal) {
-      const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
-      const year = movie.release_date ? movie.release_date.split('-')[0] : '';
-      
-      // onclick calls openMovieDetails instead of window.open
-      const clickAction = `onclick="openMovieDetails(${movie.id})"`;
-
-      if(isHorizontal) {
-        return `
-          <div class="movie-card min-w-[160px] w-[160px] relative group cursor-pointer snap-start" ${clickAction}>
-            <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-2">
-              <img src="${IMG_BASE}${movie.poster_path}" alt="${movie.title}" class="w-full h-full object-cover" loading="lazy">
-              <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-yellow-400 flex items-center gap-1">
-                ★ ${rating}
-              </div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-20">
+            <div class="max-w-2xl animate-fade-in-up">
+                <span id="hero-tag" class="inline-block py-1 px-3 rounded-full bg-yellow-500 text-black text-xs font-bold tracking-wider uppercase mb-4">Featured Movie</span>
+                <h1 id="hero-title" class="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight">Loading...</h1>
+                <p id="hero-overview" class="text-lg text-gray-300 mb-8 line-clamp-3">Fetching the latest cinematic masterpiece for you.</p>
+                <div class="flex gap-4">
+                    <button onclick="scrollToMovies()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-8 rounded-full transition transform hover:scale-105 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+                        View Details
+                    </button>
+                </div>
             </div>
-            <h3 class="text-sm font-semibold text-white line-clamp-1 group-hover:text-cyan-400 transition-colors">${movie.title}</h3>
-            <p class="text-xs text-slate-500">${year}</p>
-          </div>
-        `;
-      }
-
-      return `
-        <div class="movie-card relative group cursor-pointer" ${clickAction}>
-          <div class="relative aspect-[2/3] rounded-xl overflow-hidden mb-3">
-            <img src="${IMG_BASE}${movie.poster_path}" alt="${movie.title}" class="w-full h-full object-cover" loading="lazy">
-            <div class="absolute inset-0 poster-overlay opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-               <div class="text-xs text-yellow-400 font-bold mb-1">★ ${rating}</div>
-               <div class="w-10 h-10 rounded-full bg-cyan-500 text-white flex items-center justify-center hover:bg-cyan-400 transition-colors shadow-lg">
-                 <svg class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-               </div>
-            </div>
-            <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-yellow-400 flex items-center gap-1 group-hover:opacity-0 transition-opacity">
-              ★ ${rating}
-            </div>
-          </div>
-          <h3 class="text-base font-semibold text-white line-clamp-1 group-hover:text-cyan-400 transition-colors">${movie.title}</h3>
-          <p class="text-xs text-slate-500 mt-1">${year}</p>
         </div>
-      `;
-    }
+    </header>
 
-    // ================= MODAL LOGIC (FULL ACCESS) =================
-    const modal = document.getElementById('movieModal');
-    const modalContent = document.getElementById('modalContent');
-
-    async function openMovieDetails(movieId) {
-      // Show modal with loading state
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      modalContent.innerHTML = '<div class="p-12 text-center text-cyan-400"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div><p class="mt-4">Loading Movie Details...</p></div>';
-
-      try {
-        // Fetch details + videos + credits in one request using append_to_response
-        const data = await tmdbFetch(`/movie/${movieId}?append_to_response=videos,credits`);
-
-        // Find YouTube Trailer
-        let trailerUrl = '';
-        if (data.videos && data.videos.results) {
-          const trailer = data.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube') || data.videos.results[0];
-          if (trailer) {
-            trailerUrl = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&rel=0`;
-          }
-        }
-
-        // Format Genres
-        const genres = data.genres ? data.genres.map(g => g.name).join(', ') : 'Unknown';
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         
-        // Format Cast (Top 5)
-        const cast = data.credits && data.credits.cast ? data.credits.cast.slice(0, 5).map(c => c.name).join(', ') : 'N/A';
-
-        // Build Modal HTML
-        modalContent.innerHTML = `
-          <div class="relative">
-            <!-- Backdrop Header -->
-            <div class="relative h-64 md:h-80 w-full">
-              <img src="${IMG_ORIGINAL}${data.backdrop_path || data.poster_path}" class="w-full h-full object-cover opacity-40">
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/50 to-transparent"></div>
+        <!-- Top 250 Section -->
+        <section id="top250" class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold border-l-4 border-yellow-500 pl-4">IMDb Top 250</h2>
+                <button class="text-yellow-400 text-sm hover:text-yellow-300 font-medium">View All</button>
             </div>
             
-            <div class="px-6 md:px-8 pb-8 -mt-20 relative z-10">
-              <div class="flex flex-col md:flex-row gap-6">
-                <!-- Poster -->
-                <div class="hidden md:block w-48 shrink-0">
-                  <img src="${IMG_BASE}${data.poster_path}" class="rounded-xl shadow-2xl border border-white/10 w-full">
+            <div id="top250-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Loader -->
+                <div class="col-span-full flex justify-center py-12">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
                 </div>
-                
-                <!-- Info -->
-                <div class="flex-1 pt-4 md:pt-12">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs rounded border border-cyan-500/30">${data.release_date ? data.release_date.split('-')[0] : 'N/A'}</span>
-                    <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded border border-yellow-500/30">★ ${data.vote_average ? data.vote_average.toFixed(1) : 'N/A'}</span>
-                    <span class="text-slate-400 text-xs">${data.runtime ? data.runtime + ' min' : ''}</span>
-                  </div>
-                  <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">${data.title}</h2>
-                  <p class="text-cyan-400 text-sm mb-4">${genres}</p>
-                  <p class="text-slate-300 leading-relaxed mb-6">${data.overview || 'No overview available.'}</p>
-                  
-                  <div class="mb-6">
-                    <h4 class="text-white font-semibold text-sm mb-2">Top Cast:</h4>
-                    <p class="text-slate-400 text-sm">${cast}</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Trailer Section -->
-              ${trailerUrl ? `
-              <div class="mt-8">
-                <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                  <span class="w-1 h-5 bg-red-500 rounded-full"></span> Official Trailer
-                </h3>
-                <div class="aspect-video w-full rounded-xl overflow-hidden border border-white/10 shadow-lg">
-                  <iframe src="${trailerUrl}" class="w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-              </div>
-              ` : '<p class="text-slate-500 mt-8 text-center">No trailer available for this movie.</p>'}
-              
-              <!-- Adsterra 300x250 Ad inside Modal -->
-              <div class="mt-8 flex justify-center">
-                 <div class="bg-slate-800/50 p-2 rounded-lg border border-white/5">
-                    <div class="text-[10px] text-slate-500 mb-1 text-center uppercase">Advertisement</div>
-                    <script>
-                      atOptions = {
-                        'key' : '32e0f71a4efea05f3881aa566f147309',
-                        'format' : 'iframe',
-                        'height' : 250,
-                        'width' : 300,
-                        'params' : {}
-                      };
-                    </script>
-                    <script src="https://www.highrevenueformat.com/32e0f71a4efea05f3881aa566f147309/invoke.js"></script>
-                 </div>
-              </div>
-
             </div>
-          </div>
-        `;
+        </section>
 
-      } catch (error) {
-        console.error(error);
-        modalContent.innerHTML = '<div class="p-8 text-center text-red-400">Failed to load movie details. Please try again.</div>';
-      }
-    }
+        <!-- Box Office Section -->
+        <section id="boxoffice" class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold border-l-4 border-blue-500 pl-4">Top Box Office</h2>
+                <button class="text-blue-400 text-sm hover:text-blue-300 font-medium">View All</button>
+            </div>
+            
+            <div id="boxoffice-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                 <!-- Loader -->
+                 <div class="col-span-full flex justify-center py-12">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                </div>
+            </div>
+        </section>
 
-    function closeModal() {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      // Stop video by clearing content
-      modalContent.innerHTML = ''; 
-    }
+        <!-- Lowest Rated Section -->
+        <section id="lowest" class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold border-l-4 border-red-500 pl-4">Lowest Rated Movies</h2>
+                <button class="text-red-400 text-sm hover:text-red-300 font-medium">View All</button>
+            </div>
+            
+            <div id="lowest-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                 <!-- Loader -->
+                 <div class="col-span-full flex justify-center py-12">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                </div>
+            </div>
+        </section>
 
-    // Close modal on outside click
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
-  </script>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm">
+                Powered by RapidAPI (IMDb236) • HMDb &copy; 2026<br>
+                Designed with Tailwind CSS
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration from user request
+        const API_KEY = 'b51d957631mshcc2d2fe52917d48p1a318ajsna4f6330c9e9e';
+        const API_HOST = 'imdb236.p.rapidapi.com';
+        
+        // Helper function to fetch data
+        async function fetchData(endpoint) {
+            const url = `https://${API_HOST}/${endpoint}`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': API_KEY,
+                    'x-rapidapi-host': API_HOST
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                
+                // Log status for debugging
+                console.log(`Fetching ${endpoint}: ${response.status}`);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`Error fetching ${endpoint}:`, response.status, errorText);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log(`Data received for ${endpoint}:`, result); // Debug log
+                return result;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return null;
+            }
+        }
+
+        // Helper to extract movie list from various API response structures
+        function extractMovieList(data) {
+            if (!data) return [];
+            
+            // Case 1: Direct array
+            if (Array.isArray(data)) return data;
+            
+            // Case 2: Common property names
+            if (data.results && Array.isArray(data.results)) return data.results;
+            if (data.data && Array.isArray(data.data)) return data.data;
+            if (data.movies && Array.isArray(data.movies)) return data.movies;
+            if (data.list && Array.isArray(data.list)) return data.list;
+            
+            // Case 3: Nested object with array
+            for (const key in data) {
+                if (Array.isArray(data[key])) {
+                    return data[key];
+                }
+            }
+            
+            return [];
+        }
+
+        // Render Cards
+        function renderCards(containerId, movies) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = ''; // Clear loader
+
+            if (!movies || movies.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 col-span-full text-center">No movies found or API limit reached.</p>';
+                return;
+            }
+
+            movies.forEach(movie => {
+                // Extract data safely - handle different possible field names based on the provided JSON structure
+                const title = movie.primaryTitle || movie.title || movie.name || "Unknown Title";
+                const year = movie.startYear || movie.year || movie.releaseYear || "N/A";
+                const rating = movie.averageRating || movie.rating || movie.imDbRating || "N/A";
+                
+                // Handle image URL from various possible fields based on the provided JSON structure
+                let posterUrl = 'https://placehold.co/500x750/1e293b/FFF?text=No+Image';
+                
+                if (movie.primaryImage) {
+                    posterUrl = typeof movie.primaryImage === 'string' ? movie.primaryImage : movie.primaryImage.url;
+                } else if (movie.image) {
+                    posterUrl = typeof movie.image === 'string' ? movie.image : movie.image.url;
+                } else if (movie.poster) {
+                    posterUrl = typeof movie.poster === 'string' ? movie.poster : movie.poster.url;
+                } else if (movie.imageUrl) {
+                    posterUrl = movie.imageUrl;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800 rounded-xl overflow-hidden shadow-lg card-hover transition-all duration-300 cursor-pointer group relative';
+                card.innerHTML = `
+                    <div class="relative aspect-[2/3] overflow-hidden bg-slate-900">
+                        <img src="${posterUrl}" alt="${title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://placehold.co/500x750/1e293b/FFF?text=Error'">
+                        <div class="absolute top-2 right-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-yellow-400 flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            ${rating}
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-white font-bold text-lg truncate mb-1">${title}</h3>
+                        <div class="flex justify-between items-center text-sm text-gray-400">
+                            <span>${year}</span>
+                            <span class="border border-gray-600 px-2 py-0.5 rounded text-xs">Movie</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Setup Hero Section
+        function setupHero(movie) {
+            if (!movie) return;
+
+            const heroBg = document.getElementById('hero-bg');
+            const heroTitle = document.getElementById('hero-title');
+            const heroOverview = document.getElementById('hero-overview');
+            
+            const title = movie.primaryTitle || movie.title || movie.name || "Unknown";
+            const desc = movie.description || movie.plot || movie.overview || "A highly rated movie currently trending.";
+            
+            heroTitle.textContent = title;
+            heroOverview.textContent = desc;
+
+            // Try to get image based on the provided JSON structure
+            let imgUrl = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1920&auto=format&fit=crop'; // Fallback
+            if (movie.primaryImage) imgUrl = typeof movie.primaryImage === 'string' ? movie.primaryImage : movie.primaryImage.url;
+            else if (movie.image) imgUrl = typeof movie.image === 'string' ? movie.image : movie.image.url;
+            else if (movie.poster) imgUrl = typeof movie.poster === 'string' ? movie.poster : movie.poster.url;
+            else if (movie.imageUrl) imgUrl = movie.imageUrl;
+
+            heroBg.style.backgroundImage = `url('${imgUrl}')`;
+        }
+
+        // Initialize App
+        async function init() {
+            // 1. Fetch Top 250
+            const top250Raw = await fetchData('api/imdb/top250-movies');
+            const top250Data = extractMovieList(top250Raw);
+            
+            // 2. Fetch Box Office
+            const boxOfficeRaw = await fetchData('api/imdb/top-box-office');
+            const boxOfficeData = extractMovieList(boxOfficeRaw);
+
+            // 3. Fetch Lowest Rated
+            const lowestRaw = await fetchData('api/imdb/lowest-rated-movies');
+            const lowestData = extractMovieList(lowestRaw);
+
+            // Update UI
+            if (top250Data.length > 0) {
+                // Set Hero to the first movie of Top 250
+                setupHero(top250Data[0]);
+                renderCards('top250-grid', top250Data);
+            } else {
+                document.getElementById('top250-grid').innerHTML = '<p class="text-red-400 col-span-full text-center">Failed to load Top 250. Check API Key/Quota.</p>';
+            }
+
+            if (boxOfficeData.length > 0) {
+                renderCards('boxoffice-grid', boxOfficeData);
+            } else {
+                 document.getElementById('boxoffice-grid').innerHTML = '<p class="text-red-400 col-span-full text-center">Failed to load Box Office. Check API Key/Quota.</p>';
+            }
+
+            if (lowestData.length > 0) {
+                renderCards('lowest-grid', lowestData);
+            } else {
+                 document.getElementById('lowest-grid').innerHTML = '<p class="text-red-400 col-span-full text-center">Failed to load Lowest Rated. Check API Key/Quota.</p>';
+            }
+        }
+
+        function scrollToMovies() {
+            document.getElementById('top250').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Run
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
 </body>
 </html>

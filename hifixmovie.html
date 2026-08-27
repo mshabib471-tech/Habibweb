@@ -3,330 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HMDb - Movie Database</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/fontsource-inter@5/css/index.min.css" rel="stylesheet">
+    <title>HMDb - The Home of Movies</title>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #ffffff;
+        :root {
+            --bg-color: #121212;
+            --nav-bg: #1f1f1f;
+            --primary-color: #f5c518;
+            --text-light: #ffffff;
+            --text-muted: #aaaaaa;
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-light); }
         
-        .hero-gradient {
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 1) 100%);
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
-        }
-        
-        .loader {
-            border-top-color: #eab308; /* Yellow for HMDb feel */
-            -webkit-animation: spinner 1.5s linear infinite;
-            animation: spinner 1.5s linear infinite;
-        }
-        
-        @keyframes spinner {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        /* Navbar */
+        header { display: flex; justify-content: space-between; align-items: center; background-color: var(--nav-bg); padding: 15px 50px; }
+        .logo { font-size: 28px; font-weight: bold; background-color: var(--primary-color); color: #000; padding: 5px 10px; border-radius: 5px; }
+        .search-bar { display: flex; gap: 10px; width: 50%; }
+        .search-bar input { width: 100%; padding: 10px; border: none; border-radius: 4px; }
+        .search-bar select { padding: 10px; border: none; border-radius: 4px; background: #333; color: white; }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #eab308; 
-            border-radius: 4px;
-        }
+        /* Hero Section (Amateur Hawa) */
+        .hero { display: flex; padding: 50px; gap: 30px; background: linear-gradient(to right, #000000, transparent), url('https://m.media-amazon.com/images/M/MV5BM2YzYWZjZWQtYWNlNi00MTJjLWE4MTUtOWMwODA2MTAxZDQ1XkEyXkFqcGc@.jpg') no-repeat center/cover; height: 500px; align-items: center; }
+        .hero-content { max-width: 600px; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 10px; }
+        .hero h1 { font-size: 48px; color: var(--primary-color); margin-bottom: 10px; }
+        .tags span { display: inline-block; background: #333; padding: 5px 10px; border-radius: 20px; font-size: 14px; margin-right: 10px; margin-bottom: 15px; }
+        .hero p { line-height: 1.6; font-size: 16px; margin-bottom: 20px; }
+
+        /* Movie Grid */
+        .section-title { padding: 40px 50px 20px; font-size: 24px; border-left: 5px solid var(--primary-color); margin-left: 50px; }
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 0 50px 50px; }
+        .movie-card { background-color: var(--nav-bg); border-radius: 8px; overflow: hidden; transition: transform 0.3s; }
+        .movie-card:hover { transform: scale(1.05); }
+        .movie-card img { width: 100%; height: 300px; object-fit: cover; }
+        .movie-info { padding: 15px; }
+        .movie-info h3 { font-size: 16px; margin-bottom: 5px; }
+        .rating { color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-2">
-                    <span class="bg-yellow-500 text-black font-black px-2 py-1 rounded text-xl tracking-tighter">HMDb</span>
-                    <span class="font-bold text-xl tracking-tight ml-2">Movie Database</span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#" class="bg-slate-800 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 transition">Home</a>
-                        <a href="#top250" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Top 250</a>
-                        <a href="#boxoffice" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Box Office</a>
-                        <a href="#lowest" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Lowest Rated</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header id="hero-section" class="relative h-[80vh] w-full overflow-hidden">
-        <!-- Background Image will be injected here -->
-        <div id="hero-bg" class="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-in-out"></div>
-        <div class="absolute inset-0 bg-black/70 hero-gradient"></div>
-        
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-20">
-            <div class="max-w-2xl animate-fade-in-up">
-                <span id="hero-tag" class="inline-block py-1 px-3 rounded-full bg-yellow-500 text-black text-xs font-bold tracking-wider uppercase mb-4">Featured Movie</span>
-                <h1 id="hero-title" class="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight">Loading...</h1>
-                <p id="hero-overview" class="text-lg text-gray-300 mb-8 line-clamp-3">Fetching the latest cinematic masterpiece for you.</p>
-                <div class="flex gap-4">
-                    <button onclick="scrollToMovies()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-8 rounded-full transition transform hover:scale-105 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
-                        View Details
-                    </button>
-                </div>
-            </div>
+    <header>
+        <div class="logo">HMDb</div>
+        <div class="search-bar">
+            <select id="genre-select">
+                <option value="All">All Genres</option>
+                <option value="Drama">Drama</option>
+                <option value="Action">Action</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Thriller">Thriller</option>
+            </select>
+            <input type="text" placeholder="Search movies, TV series... (e.g., Breaking Bad)">
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        
-        <!-- Top 250 Section -->
-        <section id="top250" class="mb-16">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-2xl font-bold border-l-4 border-yellow-500 pl-4">IMDb Top 250</h2>
-                <button class="text-yellow-400 text-sm hover:text-yellow-300 font-medium">View All</button>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Amateur Hawa</h1>
+            <div class="tags">
+                <span>Action</span>
+                <span>Comedy</span>
+                <span>Drama</span>
+                <span>2025</span>
             </div>
-            
-            <div id="top250-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Loader -->
-                <div class="col-span-full flex justify-center py-12">
-                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Box Office Section -->
-        <section id="boxoffice" class="mb-16">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-2xl font-bold border-l-4 border-blue-500 pl-4">Top Box Office</h2>
-                <button class="text-blue-400 text-sm hover:text-blue-300 font-medium">View All</button>
-            </div>
-            
-            <div id="boxoffice-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                 <!-- Loader -->
-                 <div class="col-span-full flex justify-center py-12">
-                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Lowest Rated Section -->
-        <section id="lowest" class="mb-16">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-2xl font-bold border-l-4 border-red-500 pl-4">Lowest Rated Movies</h2>
-                <button class="text-red-400 text-sm hover:text-red-300 font-medium">View All</button>
-            </div>
-            
-            <div id="lowest-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                 <!-- Loader -->
-                 <div class="col-span-full flex justify-center py-12">
-                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-12 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-slate-500 text-sm">
-                Powered by RapidAPI (IMDb236) • HMDb &copy; 2026<br>
-                Designed with Tailwind CSS
-            </p>
+            <p>In a desperate attempt to save his life, inexperienced Victor drags his friends into a botched bank truck heist with a local thug, spiraling into a chaotic and hilarious chase as their plans unravel.</p>
         </div>
-    </footer>
+    </section>
+
+    <h2 class="section-title">Top 250 Movies</h2>
+    <section class="movie-grid" id="movie-container">
+        <!-- Movies will be injected here by JS -->
+    </section>
 
     <script>
-        // Configuration from user request
-        const API_KEY = 'b51d957631mshcc2d2fe52917d48p1a318ajsna4f6330c9e9e';
-        const API_HOST = 'imdb236.p.rapidapi.com';
-        
-        // Helper function to fetch data
-        async function fetchData(endpoint) {
-            const url = `https://${API_HOST}/${endpoint}`;
-            const options = {
-                method: 'GET',
-                headers: {
-                    'x-rapidapi-key': API_KEY,
-                    'x-rapidapi-host': API_HOST
-                }
-            };
-
-            try {
-                const response = await fetch(url, options);
-                
-                // Log status for debugging
-                console.log(`Fetching ${endpoint}: ${response.status}`);
-                
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error(`Error fetching ${endpoint}:`, response.status, errorText);
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                console.log(`Data received for ${endpoint}:`, result); // Debug log
-                return result;
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                return null;
+        // Sample data from your JSON
+        const topMovies = [
+            {
+                title: "The Shawshank Redemption",
+                year: 1994,
+                rating: 9.3,
+                image: "https://m.media-amazon.com/images/M/MV5BMDAyY2FhYjctNDc5OS00MDNlLThiMGUtY2UxYWVkNGY2ZjljXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg"
+            },
+            {
+                title: "The Godfather",
+                year: 1972,
+                rating: 9.2,
+                image: "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg"
+            },
+            {
+                title: "The Dark Knight",
+                year: 2008,
+                rating: 9.1,
+                image: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX280_CR0,0,280,414_.jpg"
+            },
+            {
+                title: "The Lord of the Rings",
+                year: 2003,
+                rating: 9.0,
+                image: "https://m.media-amazon.com/images/M/MV5BMTZkMjBjNWMtZGI5OC00MGU0LTk4ZTItODg2NWM3NTVmNWQ4XkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg"
+            },
+            {
+                title: "12 Angry Men",
+                year: 1957,
+                rating: 9.0,
+                image: "https://m.media-amazon.com/images/M/MV5BYjE4NzdmOTYtYjc5Yi00YzBiLWEzNDEtNTgxZGQ2MWVkN2NiXkEyXkFqcGc@._V1_QL75_UX280_CR0,0,280,414_.jpg"
             }
-        }
+        ];
 
-        // Helper to extract movie list from various API response structures
-        function extractMovieList(data) {
-            if (!data) return [];
-            
-            // Case 1: Direct array
-            if (Array.isArray(data)) return data;
-            
-            // Case 2: Common property names
-            if (data.results && Array.isArray(data.results)) return data.results;
-            if (data.data && Array.isArray(data.data)) return data.data;
-            if (data.movies && Array.isArray(data.movies)) return data.movies;
-            if (data.list && Array.isArray(data.list)) return data.list;
-            
-            // Case 3: Nested object with array
-            for (const key in data) {
-                if (Array.isArray(data[key])) {
-                    return data[key];
-                }
-            }
-            
-            return [];
-        }
+        const container = document.getElementById('movie-container');
 
-        // Render Cards
-        function renderCards(containerId, movies) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = ''; // Clear loader
-
-            if (!movies || movies.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 col-span-full text-center">No movies found or API limit reached.</p>';
-                return;
-            }
-
-            movies.forEach(movie => {
-                // Extract data safely - handle different possible field names based on the provided JSON structure
-                const title = movie.primaryTitle || movie.title || movie.name || "Unknown Title";
-                const year = movie.startYear || movie.year || movie.releaseYear || "N/A";
-                const rating = movie.averageRating || movie.rating || movie.imDbRating || "N/A";
-                
-                // Handle image URL from various possible fields based on the provided JSON structure
-                let posterUrl = 'https://placehold.co/500x750/1e293b/FFF?text=No+Image';
-                
-                if (movie.primaryImage) {
-                    posterUrl = typeof movie.primaryImage === 'string' ? movie.primaryImage : movie.primaryImage.url;
-                } else if (movie.image) {
-                    posterUrl = typeof movie.image === 'string' ? movie.image : movie.image.url;
-                } else if (movie.poster) {
-                    posterUrl = typeof movie.poster === 'string' ? movie.poster : movie.poster.url;
-                } else if (movie.imageUrl) {
-                    posterUrl = movie.imageUrl;
-                }
-
-                const card = document.createElement('div');
-                card.className = 'bg-slate-800 rounded-xl overflow-hidden shadow-lg card-hover transition-all duration-300 cursor-pointer group relative';
-                card.innerHTML = `
-                    <div class="relative aspect-[2/3] overflow-hidden bg-slate-900">
-                        <img src="${posterUrl}" alt="${title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://placehold.co/500x750/1e293b/FFF?text=Error'">
-                        <div class="absolute top-2 right-2 bg-black/70 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-yellow-400 flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            ${rating}
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-white font-bold text-lg truncate mb-1">${title}</h3>
-                        <div class="flex justify-between items-center text-sm text-gray-400">
-                            <span>${year}</span>
-                            <span class="border border-gray-600 px-2 py-0.5 rounded text-xs">Movie</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Setup Hero Section
-        function setupHero(movie) {
-            if (!movie) return;
-
-            const heroBg = document.getElementById('hero-bg');
-            const heroTitle = document.getElementById('hero-title');
-            const heroOverview = document.getElementById('hero-overview');
-            
-            const title = movie.primaryTitle || movie.title || movie.name || "Unknown";
-            const desc = movie.description || movie.plot || movie.overview || "A highly rated movie currently trending.";
-            
-            heroTitle.textContent = title;
-            heroOverview.textContent = desc;
-
-            // Try to get image based on the provided JSON structure
-            let imgUrl = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1920&auto=format&fit=crop'; // Fallback
-            if (movie.primaryImage) imgUrl = typeof movie.primaryImage === 'string' ? movie.primaryImage : movie.primaryImage.url;
-            else if (movie.image) imgUrl = typeof movie.image === 'string' ? movie.image : movie.image.url;
-            else if (movie.poster) imgUrl = typeof movie.poster === 'string' ? movie.poster : movie.poster.url;
-            else if (movie.imageUrl) imgUrl = movie.imageUrl;
-
-            heroBg.style.backgroundImage = `url('${imgUrl}')`;
-        }
-
-        // Initialize App
-        async function init() {
-            // 1. Fetch Top 250
-            const top250Raw = await fetchData('api/imdb/top250-movies');
-            const top250Data = extractMovieList(top250Raw);
-            
-            // 2. Fetch Box Office
-            const boxOfficeRaw = await fetchData('api/imdb/top-box-office');
-            const boxOfficeData = extractMovieList(boxOfficeRaw);
-
-            // 3. Fetch Lowest Rated
-            const lowestRaw = await fetchData('api/imdb/lowest-rated-movies');
-            const lowestData = extractMovieList(lowestRaw);
-
-            // Update UI
-            if (top250Data.length > 0) {
-                // Set Hero to the first movie of Top 250
-                setupHero(top250Data[0]);
-                renderCards('top250-grid', top250Data);
-            } else {
-                document.getElementById('top250-grid').innerHTML = '<p class="text-red-400 col-span-full text-center">Failed to load Top 250. Check API Key/Quota.</p>';
-            }
-
-            if (boxOfficeData.length > 0) {
-                renderCards('boxoffice-grid', boxOfficeData);
-            } else {
-                 document.getElementById('boxoffice-grid').innerHTML = '<p class="text-red-400 col-span-full text-center">Failed to load Box Office. Check API Key/Quota.</p>';
-            }
-
-            if (lowestData.length > 0) {
-                renderCards('lowest-grid', lowestData);
-            } else {
-                 document.getElementById('lowest-grid').innerHTML = '<p class="text-red-400 col-span-full text-center">Failed to load Lowest Rated. Check API Key/Quota.</p>';
-            }
-        }
-
-        function scrollToMovies() {
-            document.getElementById('top250').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Run
-        window.addEventListener('DOMContentLoaded', init);
-
+        topMovies.forEach(movie => {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+            card.innerHTML = `
+                <img src="${movie.image}" alt="${movie.title}">
+                <div class="movie-info">
+                    <h3>${movie.title} (${movie.year})</h3>
+                    <p class="rating">⭐ ${movie.rating}</p>
+                </div>
+            `;
+            container.appendChild(card);
+        });
     </script>
 </body>
 </html>

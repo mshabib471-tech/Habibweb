@@ -1,1124 +1,564 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CINEHUB | Premium Movie & TV Discovery</title>
-    
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.19/index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.16/index.css">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-card: #141414;
-            --bg-glass: rgba(20, 20, 20, 0.7);
-            --primary: #e50914; /* Crimson Red */
-            --primary-hover: #b20710;
-            --text-main: #ffffff;
-            --text-muted: #a3a3a3;
-            --border: rgba(255, 255, 255, 0.1);
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --font-sans: 'Inter', sans-serif;
-            --font-serif: 'Playfair Display', serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-sans);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a { text-decoration: none; color: inherit; transition: var(--transition); }
-        button { cursor: pointer; border: none; outline: none; font-family: inherit; }
-        ul { list-style: none; }
-        img { display: block; max-width: 100%; height: auto; }
-
-        /* --- Utilities --- */
-        .container { max-width: 1440px; margin: 0 auto; padding: 0 20px; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .grid { display: grid; }
-        .hidden { display: none !important; }
-        .text-primary { color: var(--primary); }
-        .glass {
-            background: var(--bg-glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-        }
-        .badge {
-            padding: 4px 8px;
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-weight: 600;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--border);
-        }
-        .btn {
-            padding: 10px 24px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-        }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
-        .btn-secondary { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(4px); }
-        .btn-secondary:hover { background: rgba(255,255,255,0.3); }
-
-        /* --- Header --- */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 20px 0;
-            transition: var(--transition);
-        }
-        header.scrolled {
-            background: rgba(10, 10, 10, 0.95);
-            padding: 15px 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        .logo {
-            font-family: var(--font-serif);
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-        .logo span { color: var(--primary); }
-        
-        .nav-links { gap: 30px; }
-        .nav-link { 
-            font-size: 0.9rem; 
-            font-weight: 500; 
-            color: var(--text-muted); 
-            position: relative;
-        }
-        .nav-link:hover, .nav-link.active { color: white; }
-        .nav-link::after {
-            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
-            background: var(--primary); transition: var(--transition);
-        }
-        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
-
-        .header-actions { gap: 20px; }
-        .search-trigger { font-size: 1.2rem; color: white; background: transparent; }
-        
-        /* Mobile Menu */
-        .mobile-menu-btn { display: none; font-size: 1.5rem; color: white; background: transparent; }
-        .mobile-nav {
-            position: fixed; top: 0; right: -100%; width: 80%; height: 100vh;
-            background: #111; z-index: 1001; padding: 80px 30px;
-            transition: var(--transition);
-        }
-        .mobile-nav.open { right: 0; }
-        .mobile-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000;
-            opacity: 0; pointer-events: none; transition: var(--transition);
-        }
-        .mobile-overlay.open { opacity: 1; pointer-events: auto; }
-
-        /* --- Hero --- */
-        .hero {
-            position: relative;
-            height: 85vh;
-            min-height: 600px;
-            display: flex;
-            align-items: flex-end;
-            padding-bottom: 80px;
-            background-size: cover;
-            background-position: center top;
-        }
-        .hero::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, #0a0a0a 0%, rgba(10,10,10,0.6) 50%, rgba(10,10,10,0.3) 100%);
-        }
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-        }
-        .hero-title {
-            font-family: var(--font-serif);
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 1rem;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .hero-meta {
-            display: flex; gap: 15px; margin-bottom: 1.5rem;
-            font-size: 0.9rem; color: var(--text-muted);
-        }
-        .hero-desc {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            color: #ddd;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .hero-actions { display: flex; gap: 15px; flex-wrap: wrap; }
-
-        /* --- Sections --- */
-        .section { padding: 60px 0; }
-        .section-header {
-            display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: 30px;
-        }
-        .section-title { font-size: 1.8rem; font-weight: 600; }
-        .see-all { color: var(--primary); font-size: 0.9rem; font-weight: 500; }
-
-        /* --- Grid & Cards --- */
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-        }
-        .movie-card {
-            position: relative;
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            background: var(--bg-card);
-            transition: var(--transition);
-            cursor: pointer;
-            aspect-ratio: 2/3;
-        }
-        .movie-card:hover { transform: scale(1.05); z-index: 10; box-shadow: var(--shadow); }
-        .card-img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: var(--transition);
-        }
-        .card-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
-            opacity: 0; transition: var(--transition);
-            display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 15px;
-        }
-        .movie-card:hover .card-overlay { opacity: 1; }
-        .card-title { font-weight: 600; font-size: 1rem; margin-bottom: 5px; }
-        .card-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; }
-        .card-rating { color: #ffd700; }
-        
-        /* Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #1f1f1f 25%, #2a2a2a 50%, #1f1f1f 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-        /* --- Search & Filters --- */
-        .search-container {
-            padding-top: 120px;
-            min-height: 100vh;
-        }
-        .search-bar-wrapper {
-            position: relative; margin-bottom: 40px;
-        }
-        .search-input {
-            width: 100%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--border);
-            padding: 15px 50px 15px 20px;
-            border-radius: var(--radius-lg);
-            color: white;
-            font-size: 1.1rem;
-        }
-        .search-input:focus { border-color: var(--primary); outline: none; }
-        .search-icon {
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-        
-        .filters-drawer {
-            display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px;
-        }
-        .filter-select {
-            background: var(--bg-card); color: white; border: 1px solid var(--border);
-            padding: 8px 15px; border-radius: var(--radius-sm);
-            font-size: 0.9rem; appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-            padding-right: 35px;
-        }
-
-        /* --- Modal --- */
-        .modal {
-            position: fixed; inset: 0; z-index: 2000;
-            display: flex; justify-content: center; align-items: center;
-            background: rgba(0,0,0,0.9);
-            opacity: 0; pointer-events: none; transition: var(--transition);
-        }
-        .modal.open { opacity: 1; pointer-events: auto; }
-        .modal-content {
-            width: 90%; max-width: 1000px; max-height: 90vh;
-            background: #111; border-radius: var(--radius-lg);
-            overflow-y: auto; position: relative;
-            transform: translateY(50px); transition: var(--transition);
-        }
-        .modal.open .modal-content { transform: translateY(0); }
-        .close-modal {
-            position: absolute; top: 20px; right: 20px;
-            background: rgba(0,0,0,0.5); color: white;
-            width: 40px; height: 40px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 10;
-        }
-
-        /* Detail View inside Modal */
-        .detail-hero {
-            position: relative; height: 400px;
-        }
-        .detail-backdrop {
-            width: 100%; height: 100%; object-fit: cover;
-            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-        }
-        .detail-body { padding: 0 40px 40px; margin-top: -60px; position: relative; }
-        .detail-grid {
-            display: grid; grid-template-columns: 250px 1fr; gap: 40px;
-        }
-        .detail-poster {
-            border-radius: var(--radius-md); box-shadow: var(--shadow);
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-        .detail-info h2 { font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 10px; }
-        .detail-meta-row { display: flex; gap: 15px; margin: 15px 0; flex-wrap: wrap; }
-        .detail-section { margin-top: 30px; }
-        .detail-label { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px; display: block; }
-        .detail-text { font-size: 1rem; line-height: 1.6; }
-
-        /* Trailer Modal Specific */
-        .trailer-container {
-            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-        }
-        .trailer-container iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        }
-
-        /* --- Footer --- */
-        footer {
-            background: #050505; padding: 60px 0 30px;
-            border-top: 1px solid var(--border);
-            margin-top: 60px;
-        }
-        .footer-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px; margin-bottom: 40px;
-        }
-        .footer-col h4 { color: white; margin-bottom: 20px; font-size: 1.1rem; }
-        .footer-col ul li { margin-bottom: 10px; }
-        .footer-col a { color: var(--text-muted); font-size: 0.9rem; }
-        .footer-col a:hover { color: var(--primary); }
-        .copyright {
-            text-align: center; color: #555; font-size: 0.8rem;
-            border-top: 1px solid #1a1a1a; padding-top: 20px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .mobile-menu-btn { display: block; }
-            .hero-title { font-size: 2.5rem; }
-            .hero { height: 70vh; align-items: center; text-align: center; padding: 0 20px; }
-            .hero-actions { justify-content: center; }
-            .hero-meta { justify-content: center; }
-            .detail-grid { grid-template-columns: 1fr; }
-            .detail-poster { width: 150px; margin: 0 auto; display: block; }
-            .detail-info { text-align: center; }
-            .detail-meta-row { justify-content: center; }
-            .movie-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HMDB - Your Movie Universe</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-inter@5.0.0/index.css">
+<style>
+  * { font-family: 'Inter', sans-serif; }
+  body { background: #0a0a0f; color: #fff; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .movie-row { scroll-behavior: smooth; }
+  .movie-card { transition: all 0.3s ease; }
+  .movie-card:hover { transform: scale(1.08); z-index: 10; }
+  .movie-card:hover .overlay { opacity: 1; }
+  .overlay { opacity: 0; transition: opacity 0.3s; }
+  .gradient-mask-r { mask-image: linear-gradient(to right, transparent, black 90%); -webkit-mask-image: linear-gradient(to right, transparent, black 90%); }
+  .gradient-mask-l { mask-image: linear-gradient(to left, transparent, black 90%); -webkit-mask-image: linear-gradient(to left, transparent, black 90%); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeIn 0.6s ease-out; }
+  @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+  .skeleton { background: linear-gradient(90deg, #1a1a24 0%, #2a2a3a 50%, #1a1a24 100%); background-size: 1000px 100%; animation: shimmer 2s infinite; }
+  .hero-gradient { background: linear-gradient(to bottom, transparent 0%, #0a0a0f 100%); }
+  .nav-blur { backdrop-filter: blur(20px); background: rgba(10,10,15,0.8); }
+  .btn-primary { background: linear-gradient(135deg, #e50914 0%, #b20710 100%); }
+  .btn-primary:hover { background: linear-gradient(135deg, #ff0a16 0%, #d40812 100%); }
+  .section-title::before { content: ''; position: absolute; left: 0; top: 50%; width: 4px; height: 24px; background: #e50914; border-radius: 2px; transform: translateY(-50%); }
+  .scroll-btn { background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); }
+  .scroll-btn:hover { background: rgba(229,9,20,0.9); }
+  .modal-backdrop { background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); }
+  .rating-badge { background: linear-gradient(135deg, #f5c518 0%, #d4a017 100%); color: #000; }
+  .genre-tag { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
+  .autocomplete-item:hover { background: rgba(229,9,20,0.2); }
+</style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header id="main-header">
-        <div class="container flex justify-between items-center">
-            <a href="/" class="logo">CINE<span>HUB</span></a>
-            
-            <nav class="nav-links flex">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/movies" class="nav-link">Movies</a>
-                <a href="/tv" class="nav-link">TV Shows</a>
-                <a href="/trending" class="nav-link">Trending</a>
-                <a href="/top-rated" class="nav-link">Top Rated</a>
-            </nav>
-
-            <div class="header-actions flex items-center">
-                <button class="search-trigger" onclick="Router.navigate('/search')"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <button class="search-trigger" onclick="Router.navigate('/watchlist')"><i class="fa-regular fa-bookmark"></i></button>
-                <button class="mobile-menu-btn" onclick="UI.toggleMobileMenu()"><i class="fa-solid fa-bars"></i></button>
-            </div>
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center gap-8">
+        <a href="#" class="text-2xl font-black tracking-tight">
+          <span class="text-red-600">HM</span><span class="text-white">DB</span>
+        </a>
+        <div class="hidden md:flex items-center gap-6 text-sm">
+          <a href="#home" class="text-white hover:text-red-500 transition">Home</a>
+          <a href="#top250" class="text-gray-400 hover:text-red-500 transition">Top 250</a>
+          <a href="#popular" class="text-gray-400 hover:text-red-500 transition">Popular</a>
+          <a href="#boxoffice" class="text-gray-400 hover:text-red-500 transition">Box Office</a>
         </div>
-    </header>
+      </div>
+      <div class="relative flex-1 max-w-md mx-4">
+        <input type="text" id="searchInput" placeholder="Search movies..." 
+          class="w-full bg-white/10 border border-white/20 rounded-full px-5 py-2 pl-11 text-sm focus:outline-none focus:border-red-500 transition" />
+        <svg class="absolute left-4 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <div id="autocompleteDropdown" class="absolute top-full left-0 right-0 mt-2 bg-gray-900 border border-white/10 rounded-lg shadow-2xl hidden overflow-hidden max-h-96 overflow-y-auto"></div>
+      </div>
+      <button onclick="loadRandomMovie()" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full btn-primary text-white text-sm font-semibold transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        Random
+      </button>
+    </div>
+  </div>
+</nav>
 
-    <!-- Mobile Nav -->
-    <div class="mobile-overlay" onclick="UI.toggleMobileMenu()"></div>
-    <div class="mobile-nav">
-        <div class="flex justify-between items-center" style="margin-bottom: 30px;">
-            <div class="logo">CINE<span>HUB</span></div>
-            <button onclick="UI.toggleMobileMenu()" style="background:none; color:white; font-size:1.5rem;"><i class="fa-solid fa-xmark"></i></button>
+<!-- Hero Section -->
+<section id="home" class="relative h-screen overflow-hidden">
+  <div class="absolute inset-0">
+    <img src="https://image.qwenlm.ai/public_source/40df90ba-55e2-4ce1-a1d7-ca95f454e8b0/108484106-e314-4ea7-8d51-59549e2b2d17.png" 
+         alt="Hero" class="w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+    <div class="absolute inset-0 hero-gradient"></div>
+  </div>
+  <div class="relative h-full flex items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div class="max-w-2xl fade-in">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="rating-badge px-3 py-1 rounded text-xs font-bold">IMDb TOP</span>
+          <span class="text-gray-300 text-sm">Featured Collection</span>
         </div>
-        <ul style="display:flex; flex-direction:column; gap:20px;">
-            <li><a href="/" class="nav-link" onclick="UI.toggleMobileMenu()">Home</a></li>
-            <li><a href="/movies" class="nav-link" onclick="UI.toggleMobileMenu()">Movies</a></li>
-            <li><a href="/tv" class="nav-link" onclick="UI.toggleMobileMenu()">TV Shows</a></li>
-            <li><a href="/trending" class="nav-link" onclick="UI.toggleMobileMenu()">Trending</a></li>
-            <li><a href="/top-rated" class="nav-link" onclick="UI.toggleMobileMenu()">Top Rated</a></li>
-            <li><a href="/watchlist" class="nav-link" onclick="UI.toggleMobileMenu()">Watchlist</a></li>
+        <h1 class="text-5xl md:text-7xl font-black mb-4 leading-tight">
+          Discover Your Next<br/>
+          <span class="text-red-500">Favorite Movie</span>
+        </h1>
+        <p class="text-gray-300 text-lg mb-8 max-w-xl">
+          Explore thousands of movies, from timeless classics to the latest blockbusters. Your ultimate movie companion.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#top250" class="btn-primary px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+            Explore Top 250
+          </a>
+          <button onclick="loadRandomMovie()" class="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 px-8 py-3 rounded-full font-semibold transition flex items-center gap-2">
+            🎲 Surprise Me
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Top 250 Section -->
+<section id="top250" class="py-16 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+      <div class="relative">
+        <h2 class="section-title text-3xl font-bold pl-6">🏆 Top 250 Movies</h2>
+        <p class="text-gray-400 mt-2 ml-6">The greatest films of all time</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="scrollRow('top250-row', -1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="scrollRow('top250-row', 1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="top250-row" class="movie-row hide-scrollbar flex gap-4 overflow-x-auto pb-4"></div>
+  </div>
+</section>
+
+<!-- Most Popular Section -->
+<section id="popular" class="py-16 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+      <div class="relative">
+        <h2 class="section-title text-3xl font-bold pl-6">🔥 Most Popular</h2>
+        <p class="text-gray-400 mt-2 ml-6">What everyone's watching right now</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="scrollRow('popular-row', -1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="scrollRow('popular-row', 1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="popular-row" class="movie-row hide-scrollbar flex gap-4 overflow-x-auto pb-4"></div>
+  </div>
+</section>
+
+<!-- Top Box Office Section -->
+<section id="boxoffice" class="py-16 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+      <div class="relative">
+        <h2 class="section-title text-3xl font-bold pl-6">💰 Top Box Office (US)</h2>
+        <p class="text-gray-400 mt-2 ml-6">Blockbusters dominating theaters</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="scrollRow('boxoffice-row', -1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="scrollRow('boxoffice-row', 1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="boxoffice-row" class="movie-row hide-scrollbar flex gap-4 overflow-x-auto pb-4"></div>
+  </div>
+</section>
+
+<!-- Top Rated English Movies -->
+<section id="toprated" class="py-16 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+      <div class="relative">
+        <h2 class="section-title text-3xl font-bold pl-6">⭐ Top Rated English</h2>
+        <p class="text-gray-400 mt-2 ml-6">Critically acclaimed English films</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="scrollRow('toprated-row', -1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="scrollRow('toprated-row', 1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="toprated-row" class="movie-row hide-scrollbar flex gap-4 overflow-x-auto pb-4"></div>
+  </div>
+</section>
+
+<!-- Lowest Rated Movies -->
+<section id="lowest" class="py-16 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+      <div class="relative">
+        <h2 class="section-title text-3xl font-bold pl-6">👎 Lowest Rated</h2>
+        <p class="text-gray-400 mt-2 ml-6">The films you might want to skip</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="scrollRow('lowest-row', -1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="scrollRow('lowest-row', 1)" class="scroll-btn w-10 h-10 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="lowest-row" class="movie-row hide-scrollbar flex gap-4 overflow-x-auto pb-4"></div>
+  </div>
+</section>
+
+<!-- Search Results Section -->
+<section id="search-results" class="py-16 relative hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold">🔍 Search Results</h2>
+      <p id="search-query" class="text-gray-400 mt-2"></p>
+    </div>
+    <div id="search-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-white/10 py-12 mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h3 class="font-bold mb-4 text-red-500">HMDB</h3>
+        <p class="text-gray-400 text-sm">Your ultimate movie companion. Discover, explore, and enjoy.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-4">Explore</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#top250" class="hover:text-white">Top 250</a></li>
+          <li><a href="#popular" class="hover:text-white">Popular</a></li>
+          <li><a href="#boxoffice" class="hover:text-white">Box Office</a></li>
         </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-4">Categories</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#toprated" class="hover:text-white">Top Rated</a></li>
+          <li><a href="#lowest" class="hover:text-white">Lowest Rated</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-4">About</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#" class="hover:text-white">About HMDB</a></li>
+          <li><a href="#" class="hover:text-white">Contact</a></li>
+          <li><a href="#" class="hover:text-white">Privacy</a></li>
+        </ul>
+      </div>
     </div>
-
-    <!-- Main Content Area -->
-    <main id="app">
-        <!-- Content injected by JS -->
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <div class="logo" style="margin-bottom: 15px;">CINE<span>HUB</span></div>
-                    <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6;">
-                        Your premium destination for discovering movies and TV shows. Powered by advanced metadata APIs.
-                    </p>
-                </div>
-                <div class="footer-col">
-                    <h4>Explore</h4>
-                    <ul>
-                        <li><a href="/movies">Movies</a></li>
-                        <li><a href="/tv">TV Shows</a></li>
-                        <li><a href="/trending">Trending</a></li>
-                        <li><a href="/top-rated">Top Rated</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Help</h4>
-                    <ul>
-                        <li><a href="#">Account</a></li>
-                        <li><a href="#">Support Center</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                &copy; 2026 CINEHUB. All rights reserved. Data provided by external APIs.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modals -->
-    <div id="details-modal" class="modal">
-        <div class="modal-content glass">
-            <button class="close-modal" onclick="UI.closeModal('details-modal')"><i class="fa-solid fa-xmark"></i></button>
-            <div id="modal-details-content"></div>
-        </div>
+    <div class="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
+      <p>© 2026 HMDB. Powered by IMDb API. All rights reserved.</p>
     </div>
+  </div>
+</footer>
 
-    <div id="trailer-modal" class="modal">
-        <div class="modal-content" style="background:transparent; box-shadow:none; max-width:1200px;">
-            <button class="close-modal" onclick="UI.closeModal('trailer-modal')" style="top:-40px; right:0;"><i class="fa-solid fa-xmark"></i></button>
-            <div class="trailer-container">
-                <iframe id="trailer-frame" src="" frameborder="0" allowfullscreen></iframe>
-            </div>
+<!-- Movie Detail Modal -->
+<div id="movieModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 modal-backdrop">
+  <div class="bg-gray-900 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const API_KEY = 'b51d957631mshcc2d2fe52917d48p1a318ajsna4f6330c9e9e';
+const API_HOST = 'imdb236.p.rapidapi.com';
+
+async function fetchAPI(endpoint) {
+  try {
+    const res = await fetch(`https://${API_HOST}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': API_KEY,
+        'x-rapidapi-host': API_HOST
+      }
+    });
+    if (!res.ok) throw new Error('API error');
+    return await res.json();
+  } catch (err) {
+    console.error('API Error:', err);
+    return null;
+  }
+}
+
+function createSkeletonCard() {
+  return `<div class="flex-shrink-0 w-40"><div class="skeleton rounded-lg h-60 w-40"></div><div class="skeleton rounded h-4 w-32 mt-2"></div><div class="skeleton rounded h-3 w-20 mt-1"></div></div>`;
+}
+
+function createMovieCard(movie, index, type) {
+  const title = movie.title || movie.name || 'Unknown';
+  const year = movie.year || '';
+  const rating = movie.rating || movie.imDbRating || 'N/A';
+  const poster = movie.image || movie.posterUrl || movie.imageUrl || '';
+  const id = movie.id || '';
+  const rank = index !== undefined ? index + 1 : null;
+
+  const posterHTML = poster 
+    ? `<img src="${poster}" alt="${title}" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450/1a1a24/ffffff?text=No+Image'"/>`
+    : `<div class="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 text-xs text-center p-2">${title}</div>`;
+
+  return `
+    <div class="movie-card flex-shrink-0 w-40 cursor-pointer relative group" onclick='openMovieModal(${JSON.stringify(movie).replace(/'/g, "&#39;")})'>
+      <div class="relative rounded-lg overflow-hidden h-60 shadow-lg">
+        ${posterHTML}
+        ${rank ? `<div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">#${rank}</div>` : ''}
+        ${rating !== 'N/A' ? `<div class="absolute bottom-2 right-2 rating-badge text-xs font-bold px-2 py-1 rounded flex items-center gap-1">⭐ ${rating}</div>` : ''}
+        <div class="overlay absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex items-end p-3">
+          <div>
+            <p class="text-xs text-gray-300 line-clamp-2">${title}</p>
+            ${year ? `<p class="text-xs text-gray-400 mt-1">${year}</p>` : ''}
+          </div>
         </div>
+      </div>
+      <h3 class="text-sm font-semibold mt-2 truncate">${title}</h3>
+      ${year ? `<p class="text-xs text-gray-500">${year}</p>` : ''}
     </div>
+  `;
+}
 
-    <script>
-        /**
-         * CINEHUB - Core Application Logic
-         * Vanilla JS, No Frameworks
-         */
+function renderRow(containerId, movies, type) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  if (!movies || movies.length === 0) {
+    container.innerHTML = '<p class="text-gray-500 p-4">No movies available</p>';
+    return;
+  }
+  container.innerHTML = movies.map((m, i) => createMovieCard(m, i, type)).join('');
+}
 
-        // --- Configuration ---
-        const API_CONFIG = {
-            BASE_URL: "https://imdb-api-com.p.rapidapi.com", // Base inferred from reference context
-            HEADERS: {
-                "x-rapidapi-key": "b51d957631mshcc2d2fe52917d48p1a318ajsna4f6330c9e9e",
-                "x-rapidapi-host": "imdb-api-com.p.rapidapi.com"
-            }
-        };
+function renderSkeletons(containerId, count = 10) {
+  const container = document.getElementById(containerId);
+  if (container) container.innerHTML = Array(count).fill(createSkeletonCard()).join('');
+}
 
-        // --- State Management ---
-        const Store = {
-            watchlist: JSON.parse(localStorage.getItem('cinehub_watchlist')) || [],
-            
-            addToWatchlist(item) {
-                if (!this.watchlist.find(i => i.id === item.id)) {
-                    this.watchlist.push(item);
-                    this.save();
-                    UI.showToast('Added to Watchlist');
-                } else {
-                    UI.showToast('Already in Watchlist');
-                }
-            },
-            
-            removeFromWatchlist(id) {
-                this.watchlist = this.watchlist.filter(i => i.id !== id);
-                this.save();
-                UI.renderWatchlist(); // Re-render if on watchlist page
-            },
-            
-            isInWatchlist(id) {
-                return this.watchlist.some(i => i.id === id);
-            },
-            
-            save() {
-                localStorage.setItem('cinehub_watchlist', JSON.stringify(this.watchlist));
-            }
-        };
+async function loadTop250() {
+  renderSkeletons('top250-row');
+  const data = await fetchAPI('/api/imdb/top250-movies');
+  if (data) {
+    const movies = data.items || data.results || data;
+    renderRow('top250-row', Array.isArray(movies) ? movies.slice(0, 30) : []);
+  }
+}
 
-        // --- API Service ---
-        const API = {
-            async request(endpoint, params = {}) {
-                const url = new URL(`${API_CONFIG.BASE_URL}${endpoint}`);
-                Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-                
-                try {
-                    const response = await fetch(url, {
-                        method: 'GET',
-                        headers: API_CONFIG.HEADERS
-                    });
-                    
-                    if (!response.ok) throw new Error(`API Error: ${response.status}`);
-                    return await response.json();
-                } catch (error) {
-                    console.error("API Request Failed:", error);
-                    return null;
-                }
-            },
+async function loadPopular() {
+  renderSkeletons('popular-row');
+  const data = await fetchAPI('/api/imdb/most-popular-movies');
+  if (data) {
+    const movies = data.items || data.results || data;
+    renderRow('popular-row', Array.isArray(movies) ? movies.slice(0, 30) : []);
+  }
+}
 
-            // Mapping reference endpoints to functions
-            search: (query, type = null, genre = null, country = null, year = null, rating = null, start = 0) => {
-                const params = { q: query, start: start };
-                if (type) params.type = type;
-                if (genre) params.genre = genre;
-                if (country) params.country = country;
-                if (year) params.year = year;
-                if (rating) params.rating = rating;
-                // Note: The reference implies a unified search structure. 
-                // We map standard params. If the specific API uses different param names, adjust here.
-                return API.request('/search', params);
-            },
+async function loadBoxOffice() {
+  renderSkeletons('boxoffice-row');
+  const data = await fetchAPI('/api/imdb/top-box-office');
+  if (data) {
+    const movies = data.items || data.results || data;
+    renderRow('boxoffice-row', Array.isArray(movies) ? movies.slice(0, 30) : []);
+  }
+}
 
-            getTypes: () => API.request('/types'),
-            getGenres: () => API.request('/genres'),
-            getCountries: () => API.request('/countries'),
-            getLanguages: () => API.request('/languages'),
-            getContentRatings: () => API.request('/contentRatings'),
-            
-            // Since specific ID endpoint wasn't explicitly detailed in snippet but implied by "Get Movie Details",
-            // we assume a standard pattern or use search with exact ID if needed.
-            // For this implementation, we will rely on the rich data from search results or a specific ID call if available.
-            getById: (id) => API.request(`/title/${id}`), // Hypothetical standard endpoint
-            
-            getTrending: () => API.request('/trending'), // Hypothetical
-            getTopRated: () => API.request('/top-rated'), // Hypothetical
-        };
+async function loadTopRated() {
+  renderSkeletons('toprated-row');
+  const data = await fetchAPI('/api/imdb/top-rated-english-movies');
+  if (data) {
+    const movies = data.items || data.results || data;
+    renderRow('toprated-row', Array.isArray(movies) ? movies.slice(0, 30) : []);
+  }
+}
 
-        // --- Utilities ---
-        const Utils = {
-            debounce(func, wait) {
-                let timeout;
-                return function(...args) {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(this, args), wait);
-                };
-            },
-            
-            formatNumber(num) {
-                if (!num) return 'N/A';
-                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            },
-            
-            formatCurrency(num) {
-                if (!num) return 'N/A';
-                return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
-            },
-            
-            extractYoutubeId(url) {
-                if (!url) return null;
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
-                const match = url.match(regExp);
-                return (match && match[2].length === 11) ? match[2] : null;
-            },
+async function loadLowest() {
+  renderSkeletons('lowest-row');
+  const data = await fetchAPI('/api/imdb/lowest-rated-movies');
+  if (data) {
+    const movies = data.items || data.results || data;
+    renderRow('lowest-row', Array.isArray(movies) ? movies.slice(0, 30) : []);
+  }
+}
 
-            normalizeMovie(data) {
-                if (!data) return null;
-                return {
-                    id: data.id,
-                    title: data.primaryTitle || data.title || 'Unknown Title',
-                    originalTitle: data.originalTitle,
-                    type: data.type || 'movie',
-                    description: data.description || data.plot || 'No description available.',
-                    image: data.primaryImage || data.poster || null,
-                    thumbnails: data.thumbnails || [],
-                    trailer: data.trailer || null,
-                    year: data.startYear || data.year || 'N/A',
-                    releaseDate: data.releaseDate,
-                    genres: data.genres || [],
-                    countries: data.countriesOfOrigin || [],
-                    languages: data.spokenLanguages || [],
-                    rating: data.averageRating,
-                    votes: data.numVotes,
-                    metascore: data.metascore,
-                    runtime: data.runtimeMinutes,
-                    contentRating: data.contentRating,
-                    budget: data.budget,
-                    gross: data.grossWorldwide,
-                    companies: data.productionCompanies || [],
-                    locations: data.filmingLocations || []
-                };
-            }
-        };
+function scrollRow(rowId, direction) {
+  const row = document.getElementById(rowId);
+  if (row) row.scrollBy({ left: direction * 600, behavior: 'smooth' });
+}
 
-        // --- UI Components ---
-        const UI = {
-            app: document.getElementById('app'),
-            
-            showLoading() {
-                return `
-                    <div class="movie-grid">
-                        ${Array(8).fill(0).map(() => `
-                            <div class="movie-card skeleton" style="height: 300px;"></div>
-                        `).join('')}
-                    </div>
-                `;
-            },
+// Search with autocomplete
+const searchInput = document.getElementById('searchInput');
+const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+let searchTimeout;
 
-            createCard(movie) {
-                const imgUrl = movie.image || 'https://via.placeholder.com/300x450/1a1a1a/555?text=No+Image';
-                const isWatchlisted = Store.isInWatchlist(movie.id);
-                
-                return `
-                    <div class="movie-card" onclick="UI.openDetails('${movie.id}')">
-                        <img src="${imgUrl}" alt="${movie.title}" class="card-img" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450/1a1a1a/555?text=Error'">
-                        <div class="card-overlay">
-                            <h3 class="card-title">${movie.title}</h3>
-                            <div class="card-meta">
-                                <span>${movie.year}</span>
-                                <span class="card-rating"><i class="fa-solid fa-star"></i> ${movie.rating || '-'}</span>
-                            </div>
-                            <div style="margin-top:10px; display:flex; gap:10px;">
-                                <button class="btn btn-primary" style="padding:5px 10px; font-size:0.8rem;" onclick="event.stopPropagation(); UI.playTrailer('${movie.id}', '${movie.trailer || ''}')">
-                                    <i class="fa-solid fa-play"></i>
-                                </button>
-                                <button class="btn btn-secondary" style="padding:5px 10px; font-size:0.8rem;" onclick="event.stopPropagation(); UI.toggleWatchlistBtn(this, '${movie.id}')">
-                                    <i class="${isWatchlisted ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                                </button>
-                            </div>
-                        </div>
-                        ${movie.contentRating ? `<div class="badge" style="position:absolute; top:10px; right:10px;">${movie.contentRating}</div>` : ''}
-                    </div>
-                `;
-            },
+searchInput.addEventListener('input', (e) => {
+  const query = e.target.value.trim();
+  clearTimeout(searchTimeout);
+  
+  if (query.length < 2) {
+    autocompleteDropdown.classList.add('hidden');
+    document.getElementById('search-results').classList.add('hidden');
+    return;
+  }
 
-            renderHero(movie) {
-                if (!movie) return '';
-                const bgImg = movie.image || '';
-                return `
-                    <section class="hero" style="background-image: url('${bgImg}');">
-                        <div class="container hero-content">
-                            <h1 class="hero-title">${movie.title}</h1>
-                            <div class="hero-meta">
-                                <span class="badge">${movie.type.toUpperCase()}</span>
-                                <span>${movie.year}</span>
-                                <span>${movie.runtime ? movie.runtime + ' min' : ''}</span>
-                                <span class="text-primary"><i class="fa-solid fa-star"></i> ${movie.rating || 'N/A'}</span>
-                            </div>
-                            <p class="hero-desc">${movie.description}</p>
-                            <div class="hero-actions">
-                                <button class="btn btn-primary" onclick="UI.playTrailer('${movie.id}', '${movie.trailer || ''}')">
-                                    <i class="fa-solid fa-play"></i> Watch Trailer
-                                </button>
-                                <button class="btn btn-secondary" onclick="UI.openDetails('${movie.id}')">
-                                    More Details
-                                </button>
-                                <button class="btn btn-secondary" onclick="UI.toggleWatchlistBtn(this, '${movie.id}')">
-                                    <i class="fa-regular fa-bookmark"></i> Watchlist
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-                `;
-            },
+  searchTimeout = setTimeout(async () => {
+    // Autocomplete
+    const acData = await fetchAPI(`/api/imdb/autocomplete?query=${encodeURIComponent(query)}`);
+    if (acData) {
+      const results = acData.d || acData.results || acData;
+      if (Array.isArray(results) && results.length > 0) {
+        autocompleteDropdown.innerHTML = results.slice(0, 8).map(item => `
+          <div class="autocomplete-item p-3 cursor-pointer border-b border-white/5 flex items-center gap-3" onclick='selectSearch("${(item.id || '').replace(/"/g, '\\"')}")'>
+            <img src="${item.i?.imageUrl || item.image || ''}" class="w-10 h-14 object-cover rounded" onerror="this.style.display='none'"/>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-sm truncate">${item.l || item.title || 'Unknown'}</p>
+              <p class="text-xs text-gray-400">${item.s || item.year || item.q || ''}</p>
+            </div>
+          </div>
+        `).join('');
+        autocompleteDropdown.classList.remove('hidden');
+      } else {
+        autocompleteDropdown.classList.add('hidden');
+      }
+    }
+  }, 300);
+});
 
-            renderSection(title, movies, link = null) {
-                if (!movies || movies.length === 0) return '';
-                return `
-                    <section class="section container">
-                        <div class="section-header">
-                            <h2 class="section-title">${title}</h2>
-                            ${link ? `<a href="${link}" class="see-all">View All <i class="fa-solid fa-arrow-right"></i></a>` : ''}
-                        </div>
-                        <div class="movie-grid">
-                            ${movies.map(m => this.createCard(m)).join('')}
-                        </div>
-                    </section>
-                `;
-            },
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const query = e.target.value.trim();
+    if (query.length >= 2) {
+      autocompleteDropdown.classList.add('hidden');
+      performSearch(query);
+    }
+  }
+});
 
-            toggleMobileMenu() {
-                document.querySelector('.mobile-nav').classList.toggle('open');
-                document.querySelector('.mobile-overlay').classList.toggle('open');
-            },
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#searchInput') && !e.target.closest('#autocompleteDropdown')) {
+    autocompleteDropdown.classList.add('hidden');
+  }
+});
 
-            openModal(id) {
-                document.getElementById(id).classList.add('open');
-                document.body.style.overflow = 'hidden';
-            },
+function selectSearch(id) {
+  autocompleteDropdown.classList.add('hidden');
+  if (id) {
+    // Could load specific movie details here
+    console.log('Selected:', id);
+  }
+}
 
-            closeModal(id) {
-                document.getElementById(id).classList.remove('open');
-                document.body.style.overflow = '';
-                if(id === 'trailer-modal') {
-                    document.getElementById('trailer-frame').src = ""; // Stop video
-                }
-            },
+async function performSearch(query) {
+  const searchSection = document.getElementById('search-results');
+  const searchGrid = document.getElementById('search-grid');
+  const searchQuery = document.getElementById('search-query');
+  
+  searchSection.classList.remove('hidden');
+  searchQuery.textContent = `Results for "${query}"`;
+  searchGrid.innerHTML = Array(10).fill(`<div class="skeleton rounded-lg h-60"></div><div class="skeleton rounded h-4 w-32 mt-2"></div>`).join('');
+  
+  const data = await fetchAPI(`/api/imdb/search?type=movie&query=${encodeURIComponent(query)}&rows=20`);
+  if (data) {
+    const movies = data.results || data.items || data;
+    if (Array.isArray(movies) && movies.length > 0) {
+      searchGrid.innerHTML = movies.map(m => `
+        <div class="movie-card cursor-pointer" onclick='openMovieModal(${JSON.stringify(m).replace(/'/g, "&#39;")})'>
+          <div class="relative rounded-lg overflow-hidden h-60 shadow-lg">
+            ${m.image || m.posterUrl ? `<img src="${m.image || m.posterUrl}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/300x450/1a1a24/ffffff?text=No+Image'"/>` : `<div class="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900"></div>`}
+            ${m.rating || m.imDbRating ? `<div class="absolute bottom-2 right-2 rating-badge text-xs font-bold px-2 py-1 rounded">⭐ ${m.rating || m.imDbRating}</div>` : ''}
+          </div>
+          <h3 class="text-sm font-semibold mt-2 truncate">${m.title || m.name || 'Unknown'}</h3>
+          <p class="text-xs text-gray-500">${m.year || ''}</p>
+        </div>
+      `).join('');
+    } else {
+      searchGrid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-8">No results found</p>';
+    }
+  }
+}
 
-            playTrailer(id, url) {
-                const videoId = Utils.extractYoutubeId(url);
-                if (videoId) {
-                    document.getElementById('trailer-frame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                    this.openModal('trailer-modal');
-                } else {
-                    this.showToast('Trailer not available');
-                }
-            },
+// Random movie
+async function loadRandomMovie() {
+  const data = await fetchAPI('/api/imdb/random?type=movie');
+  if (data) {
+    const movie = data.result || data;
+    openMovieModal(movie);
+  } else {
+    alert('Could not fetch random movie');
+  }
+}
 
-            async openDetails(id) {
-                this.openModal('details-modal');
-                const container = document.getElementById('modal-details-content');
-                container.innerHTML = '<div class="skeleton" style="height:500px;"></div>';
+// Movie modal
+function openMovieModal(movie) {
+  const modal = document.getElementById('movieModal');
+  const content = document.getElementById('modalContent');
+  
+  const title = movie.title || movie.name || 'Unknown';
+  const year = movie.year || '';
+  const rating = movie.rating || movie.imDbRating || 'N/A';
+  const poster = movie.image || movie.posterUrl || movie.imageUrl || '';
+  const plot = movie.plot || movie.plotOutline?.text || movie.description || 'No plot available';
+  const genres = movie.genres || movie.genre || '';
+  const directors = movie.directors || movie.director || '';
+  const stars = movie.stars || movie.starList?.map(s => s.name).join(', ') || '';
+  const runtime = movie.runtime || movie.runtimeStr || '';
+  const contentRating = movie.contentRating || movie.rated || '';
 
-                // Try to get full details, fallback to search result if cached or limited
-                let data = await API.getById(id);
-                
-                // If specific endpoint fails or returns minimal data, we might need to rely on what we have.
-                // For this demo, assuming getById works or we simulate it with search limit 1.
-                if (!data || !data.primaryTitle) {
-                     // Fallback logic if getById isn't fully implemented in API wrapper
-                     const res = await API.search(id, null, null, null, null, null, 0); // Search by ID
-                     if(res && res.results && res.results.length > 0) data = res.results[0];
-                }
+  content.innerHTML = `
+    <div class="relative">
+      ${poster ? `<img src="${poster}" class="w-full h-64 md:h-96 object-cover" onerror="this.style.display='none'"/>` : ''}
+      <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
+      <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 hover:bg-red-600 flex items-center justify-center transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-6 md:p-8 -mt-20 relative">
+      <h2 class="text-3xl md:text-4xl font-bold mb-3">${title}</h2>
+      <div class="flex flex-wrap items-center gap-3 mb-4 text-sm">
+        ${year ? `<span class="text-gray-400">${year}</span>` : ''}
+        ${runtime ? `<span class="text-gray-400">• ${runtime}</span>` : ''}
+        ${contentRating ? `<span class="border border-white/30 px-2 py-0.5 rounded text-xs">${contentRating}</span>` : ''}
+        ${rating !== 'N/A' ? `<span class="rating-badge px-3 py-1 rounded text-xs font-bold">⭐ ${rating}</span>` : ''}
+      </div>
+      ${genres ? `<div class="flex flex-wrap gap-2 mb-4">${(typeof genres === 'string' ? genres.split(',') : genres).map(g => `<span class="genre-tag px-3 py-1 rounded-full text-xs">${g.trim()}</span>`).join('')}</div>` : ''}
+      <p class="text-gray-300 leading-relaxed mb-6">${plot}</p>
+      ${directors ? `<p class="mb-2"><span class="text-gray-500 text-sm">Director:</span> <span class="text-white text-sm">${typeof directors === 'string' ? directors : directors.map(d => d.name || d).join(', ')}</span></p>` : ''}
+      ${stars ? `<p class="mb-2"><span class="text-gray-500 text-sm">Stars:</span> <span class="text-white text-sm">${typeof stars === 'string' ? stars : stars.map(s => s.name || s).join(', ')}</span></p>` : ''}
+      <div class="flex gap-3 mt-6">
+        <button class="btn-primary px-6 py-2 rounded-full font-semibold text-sm">▶ Watch Trailer</button>
+        <button class="bg-white/10 hover:bg-white/20 px-6 py-2 rounded-full font-semibold text-sm transition">+ Watchlist</button>
+      </div>
+    </div>
+  `;
+  
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+}
 
-                if (!data) {
-                    container.innerHTML = '<p style="padding:40px; text-align:center;">Failed to load details.</p>';
-                    return;
-                }
+function closeModal() {
+  const modal = document.getElementById('movieModal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  document.body.style.overflow = '';
+}
 
-                const m = Utils.normalizeMovie(data);
-                const bg = m.image || '';
-                
-                container.innerHTML = `
-                    <div class="detail-hero">
-                        <img src="${bg}" class="detail-backdrop" onerror="this.style.display='none'">
-                    </div>
-                    <div class="detail-body">
-                        <div class="detail-grid">
-                            <img src="${m.image}" class="detail-poster" onerror="this.src='https://via.placeholder.com/250x375'">
-                            <div class="detail-info">
-                                <h2>${m.title}</h2>
-                                ${m.originalTitle && m.originalTitle !== m.title ? `<p style="color:var(--text-muted); font-style:italic;">Original: ${m.originalTitle}</p>` : ''}
-                                
-                                <div class="detail-meta-row">
-                                    <span class="badge">${m.contentRating || 'NR'}</span>
-                                    <span class="badge">${m.year}</span>
-                                    ${m.runtime ? `<span class="badge">${m.runtime} min</span>` : ''}
-                                    <span class="text-primary"><i class="fa-solid fa-star"></i> ${m.rating}/10</span>
-                                </div>
+document.getElementById('movieModal').addEventListener('click', (e) => {
+  if (e.target.id === 'movieModal') closeModal();
+});
 
-                                <div class="detail-meta-row">
-                                    ${m.genres.map(g => `<span class="badge" style="background:rgba(229,9,20,0.2); border-color:var(--primary); color:white;">${g}</span>`).join('')}
-                                </div>
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
 
-                                <p class="detail-text" style="margin-top:20px;">${m.description}</p>
-
-                                <div class="detail-section flex" style="gap:15px;">
-                                    <button class="btn btn-primary" onclick="UI.playTrailer('${m.id}', '${m.trailer || ''}')">
-                                        <i class="fa-solid fa-play"></i> Trailer
-                                    </button>
-                                    <button class="btn btn-secondary" onclick="UI.toggleWatchlistBtn(this, '${m.id}')">
-                                        <i class="fa-regular fa-bookmark"></i> Watchlist
-                                    </button>
-                                </div>
-
-                                <div class="detail-section" style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                                    <div>
-                                        <span class="detail-label">Countries</span>
-                                        <span class="detail-text">${m.countries.map(c => c.name || c).join(', ') || 'N/A'}</span>
-                                    </div>
-                                    <div>
-                                        <span class="detail-label">Languages</span>
-                                        <span class="detail-text">${m.languages.map(l => l.name || l).join(', ') || 'N/A'}</span>
-                                    </div>
-                                    <div>
-                                        <span class="detail-label">Budget</span>
-                                        <span class="detail-text">${Utils.formatCurrency(m.budget)}</span>
-                                    </div>
-                                    <div>
-                                        <span class="detail-label">Gross Worldwide</span>
-                                        <span class="detail-text">${Utils.formatCurrency(m.gross)}</span>
-                                    </div>
-                                </div>
-                                
-                                ${m.companies.length > 0 ? `
-                                <div class="detail-section">
-                                    <span class="detail-label">Production Companies</span>
-                                    <div class="flex" style="gap:10px; flex-wrap:wrap;">
-                                        ${m.companies.map(c => `<span class="badge">${c.name || c}</span>`).join('')}
-                                    </div>
-                                </div>` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            },
-
-            toggleWatchlistBtn(btn, id) {
-                // Find movie data from DOM or context is hard here without passing object.
-                // Simplified: We assume user adds from card where we might have data, 
-                // but for generic ID button, we need to fetch or find it.
-                // For this demo, let's just toggle visual state and call Store.
-                // Ideally, we pass the movie object.
-                
-                // Hack for demo: Check if already in list
-                if (Store.isInWatchlist(id)) {
-                    Store.removeFromWatchlist(id);
-                    btn.innerHTML = '<i class="fa-regular fa-bookmark"></i>';
-                    this.showToast('Removed from Watchlist');
-                } else {
-                    // We need the movie object. In a real app, we'd pass it.
-                    // Here we'll just add the ID and a placeholder, or fetch it.
-                    // To keep it simple and robust:
-                    this.showToast('Please add from main list or details view for full data.');
-                    // Actually, let's just trigger an event or assume we can't easily get full obj here without API hit.
-                    // Better approach: The button in card has access to data. The button in modal has access to data.
-                }
-            },
-            
-            // Helper to handle watchlist logic properly when object is available
-            handleWatchlistClick(e, movie) {
-                e.stopPropagation();
-                if (Store.isInWatchlist(movie.id)) {
-                    Store.removeFromWatchlist(movie.id);
-                    e.currentTarget.innerHTML = '<i class="fa-regular fa-bookmark"></i>';
-                } else {
-                    Store.addToWatchlist(movie);
-                    e.currentTarget.innerHTML = '<i class="fa-solid fa-bookmark"></i>';
-                }
-            },
-
-            showToast(msg) {
-                const toast = document.createElement('div');
-                toast.className = 'badge';
-                toast.style.position = 'fixed';
-                toast.style.bottom = '20px';
-                toast.style.left = '50%';
-                toast.style.transform = 'translateX(-50%)';
-                toast.style.zIndex = '3000';
-                toast.style.padding = '10px 20px';
-                toast.style.background = 'var(--primary)';
-                toast.style.color = 'white';
-                toast.innerText = msg;
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 3000);
-            },
-
-            renderWatchlist() {
-                const list = Store.watchlist;
-                const html = `
-                    <div class="container search-container">
-                        <h1 class="section-title" style="margin-bottom:30px;">My Watchlist</h1>
-                        ${list.length === 0 ? '<p>Your watchlist is empty.</p>' : `
-                            <div class="movie-grid">
-                                ${list.map(m => this.createCard(m)).join('')}
-                            </div>
-                        `}
-                    </div>
-                `;
-                this.app.innerHTML = html;
-            }
-        };
-
-        // --- Router & Pages ---
-        const Router = {
-            routes: {
-                '/': 'home',
-                '/movies': 'movies',
-                '/tv': 'tv',
-                '/trending': 'trending',
-                '/top-rated': 'topRated',
-                '/search': 'search',
-                '/watchlist': 'watchlist'
-            },
-
-            init() {
-                window.addEventListener('popstate', () => this.handleRoute());
-                this.handleRoute();
-                
-                // Header scroll effect
-                window.addEventListener('scroll', () => {
-                    const header = document.getElementById('main-header');
-                    if (window.scrollY > 50) header.classList.add('scrolled');
-                    else header.classList.remove('scrolled');
-                });
-            },
-
-            navigate(path) {
-                history.pushState({}, '', path);
-                this.handleRoute();
-            },
-
-            async handleRoute() {
-                const path = window.location.pathname;
-                const app = UI.app;
-                window.scrollTo(0, 0);
-
-                // Close mobile menu if open
-                document.querySelector('.mobile-nav').classList.remove('open');
-                document.querySelector('.mobile-overlay').classList.remove('open');
-
-                if (path === '/' || path === '') {
-                    await Pages.home(app);
-                } else if (path === '/movies') {
-                    await Pages.movies(app);
-                } else if (path === '/tv') {
-                    await Pages.tv(app);
-                } else if (path === '/trending') {
-                    await Pages.trending(app);
-                } else if (path === '/top-rated') {
-                    await Pages.topRated(app);
-                } else if (path === '/watchlist') {
-                    UI.renderWatchlist();
-                } else if (path.startsWith('/search')) {
-                    await Pages.search(app);
-                } else {
-                    app.innerHTML = '<div class="container" style="padding-top:100px;"><h1>404 Not Found</h1></div>';
-                }
-            }
-        };
-
-        const Pages = {
-            async home(container) {
-                container.innerHTML = UI.showLoading();
-                
-                // Fetch Hero Data (Trending/Popular)
-                // Using search with empty query or specific trending endpoint if available
-                // Simulating "Featured" by getting top result from popular search
-                const heroData = await API.search('', 'movie', null, null, null, null, 0); 
-                let heroHtml = '';
-                if (heroData && heroData.results && heroData.results.length > 0) {
-                    const featured = Utils.normalizeMovie(heroData.results[0]);
-                    heroHtml = UI.renderHero(featured);
-                }
-
-                // Fetch Trending/Movies
-                const moviesRes = await API.search('', 'movie', null, null, null, null, 0);
-                const tvRes = await API.search('', 'tvSeries', null, null, null, null, 0);
-                
-                const movies = moviesRes ? moviesRes.results.slice(0, 6).map(Utils.normalizeMovie) : [];
-                const tvShows = tvRes ? tvRes.results.slice(0, 6).map(Utils.normalizeMovie) : [];
-
-                container.innerHTML = `
-                    ${heroHtml}
-                    ${UI.renderSection('Popular Movies', movies, '/movies')}
-                    ${UI.renderSection('Popular TV Shows', tvShows, '/tv')}
-                    
-                    <section class="section container">
-                        <div class="glass" style="padding:40px; border-radius:var(--radius-lg); text-align:center;">
-                            <h2 style="font-family:var(--font-serif); margin-bottom:15px;">Discover Unlimited Stories</h2>
-                            <p style="color:var(--text-muted); margin-bottom:25px;">Search through thousands of titles across all genres and countries.</p>
-                            <button class="btn btn-primary" onclick="Router.navigate('/search')">Start Exploring</button>
-                        </div>
-                    </section>
-                `;
-            },
-
-            async movies(container) {
-                container.innerHTML = `<div class="container search-container">${UI.showLoading()}</div>`;
-                const res = await API.search('', 'movie');
-                const results = res ? res.results.map(Utils.normalizeMovie) : [];
-                
-                container.innerHTML = `
-                    <div class="container search-container">
-                        <h1 class="section-title">Movies</h1>
-                        <div class="movie-grid" style="margin-top:30px;">
-                            ${results.map(m => UI.createCard(m)).join('')}
-                        </div>
-                    </div>
-                `;
-            },
-
-            async tv(container) {
-                container.innerHTML = `<div class="container search-container">${UI.showLoading()}</div>`;
-                const res = await API.search('', 'tvSeries');
-                const results = res ? res.results.map(Utils.normalizeMovie) : [];
-                
-                container.innerHTML = `
-                    <div class="container search-container">
-                        <h1 class="section-title">TV Shows</h1>
-                        <div class="movie-grid" style="margin-top:30px;">
-                            ${results.map(m => UI.createCard(m)).join('')}
-                        </div>
-                    </div>
-                `;
-            },
-
-            async trending(container) {
-                 container.innerHTML = `<div class="container search-container">${UI.showLoading()}</div>`;
-                 // Mocking trending as API might not have explicit "trending" sort in free tier
-                 const res = await API.search('', null, null, null, null, null, 0);
-                 const results = res ? res.results.map(Utils.normalizeMovie) : [];
-                 
-                 container.innerHTML = `
-                    <div class="container search-container">
-                        <h1 class="section-title">🔥 Trending Now</h1>
-                        <div class="movie-grid" style="margin-top:30px;">
-                            ${results.map(m => UI.createCard(m)).join('')}
-                        </div>
-                    </div>
-                 `;
-            },
-
-            async topRated(container) {
-                container.innerHTML = `<div class="container search-container">${UI.showLoading()}</div>`;
-                // Sorting by rating isn't always supported in basic search, so we fetch and sort client side for demo
-                const res = await API.search('', null, null, null, null, null, 0); // Get broad results
-                let results = res ? res.results.map(Utils.normalizeMovie) : [];
-                results.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-                
-                container.innerHTML = `
-                    <div class="container search-container">
-                        <h1 class="section-title">⭐ Top Rated</h1>
-                        <div class="movie-grid" style="margin-top:30px;">
-                            ${results.map(m => UI.createCard(m)).join('')}
-                        </div>
-                    </div>
-                `;
-            },
-
-            async search(container) {
-                const urlParams = new URLSearchParams(window.location.search);
-                const query = urlParams.get('q') || '';
-                
-                container.innerHTML = `
-                    <div class="container search-container">
-                        <div class="search-bar-wrapper">
-                            <input type="text" id="search-input" class="search-input" placeholder="Search movies, TV shows..." value="${query}">
-                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        </div>
-                        
-                        <div class="filters-drawer">
-                            <select id="filter-type" class="filter-select">
-                                <option value="">All Types</option>
-                                <option value="movie">Movie</option>
-                                <option value="tvSeries">TV Series</option>
-                                <option value="tvMiniSeries">Mini Series</option>
-                            </select>
-                            <select id="filter-genre" class="filter-select">
-                                <option value="">All Genres</option>
-                                <option value="Action">Action</option>
-                                <option value="Drama">Drama</option>
-                                <option value="Comedy">Comedy</option>
-                                <option value="Horror">Horror</option>
-                                <option value="Sci-Fi">Sci-Fi</option>
-                            </select>
-                             <select id="filter-country" class="filter-select">
-                                <option value="">All Countries</option>
-                                <option value="US">USA</option>
-                                <option value="GB">UK</option>
-                                <option value="IN">India</option>
-                                <option value="KR">South Korea</option>
-                            </select>
-                        </div>
-
-                        <div id="search-results">
-                            ${query ? UI.showLoading() : '<p style="color:var(--text-muted); text-align:center;">Enter a title to search...</p>'}
-                        </div>
-                    </div>
-                `;
-
-                const input = document.getElementById('search-input');
-                const resultsContainer = document.getElementById('search-results');
-                const typeFilter = document.getElementById('filter-type');
-                const genreFilter = document.getElementById('filter-genre');
-                const countryFilter = document.getElementById('filter-country');
-
-                const performSearch = async () => {
-                    const q = input.value.trim();
-                    if (!q) {
-                        resultsContainer.innerHTML = '';
-                        return;
-                    }
-                    
-                    // Update URL without reload
-                    const newUrl = `/search?q=${encodeURIComponent(q)}`;
-                    history.replaceState({}, '', newUrl);
-
-                    resultsContainer.innerHTML = UI.showLoading();
-                    
-                    const res = await API.search(
-                        q, 
-                        typeFilter.value, 
-                        genreFilter.value, 
-                        countryFilter.value
-                    );
-                    
-                    if (res && res.results && res.results.length > 0) {
-                        const movies = res.results.map(Utils.normalizeMovie);
-                        resultsContainer.innerHTML = `
-                            <p style="margin-bottom:20px; color:var(--text-muted);">Found ${res.numFound} results</p>
-                            <div class="movie-grid">
-                                ${movies.map(m => UI.createCard(m)).join('')}
-                            </div>
-                        `;
-                    } else {
-                        resultsContainer.innerHTML = '<p style="text-align:center; padding:40px;">No results found.</p>';
-                    }
-                };
-
-                input.addEventListener('keyup', Utils.debounce(performSearch, 500));
-                typeFilter.addEventListener('change', performSearch);
-                genreFilter.addEventListener('change', performSearch);
-                countryFilter.addEventListener('change', performSearch);
-
-                if (query) performSearch();
-            }
-        };
-
-        // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
-            Router.init();
-        });
-
-    </script>
+// Initialize
+window.addEventListener('DOMContentLoaded', () => {
+  loadTop250();
+  loadPopular();
+  loadBoxOffice();
+  loadTopRated();
+  loadLowest();
+});
+</script>
 </body>
 </html>

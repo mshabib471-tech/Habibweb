@@ -15,18 +15,21 @@
         body {
             background-color: #0f0f0f;
             color: #ffffff;
+            padding-bottom: 50px;
         }
 
         header {
             background-color: #141414;
-            padding: 20px 50px;
+            padding: 15px 50px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
@@ -37,10 +40,41 @@
             letter-spacing: 2px;
         }
 
+        .header-buttons a {
+            background-color: #f5c518;
+            color: #000;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+
+        .header-buttons a.offer-btn {
+            background-color: #e50914;
+            color: #fff;
+        }
+
+        .header-buttons a:hover {
+            opacity: 0.8;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+        }
+
+        .ad-container {
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px;
+            background: #1f1f1f;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
         }
 
         .section-title {
@@ -67,7 +101,7 @@
 
         .movie-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.4); /* Red glow effect on hover */
+            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.4);
         }
 
         .movie-poster {
@@ -95,7 +129,6 @@
             font-size: 14px;
         }
 
-        /* Load More Button Styling */
         .load-more-container {
             text-align: center;
             margin: 40px 0;
@@ -121,14 +154,40 @@
 <body>
 
     <header>
-        <a href="#" class="logo">HMBD MOVIES</a>
+        <a href="#" class="logo">HMBD</a>
+        <div class="header-buttons">
+            <!-- Smartlink 1 (Watch in HD) -->
+            <a href="https://www.profitableratecpmnetwork.com/ggjmk8i2j?key=a251b31cdefa0940555facd387b4e6c1" target="_blank">Watch in HD (Free)</a>
+            <!-- Smart Offer Link (Special Offer) -->
+            <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="offer-btn">Special Offer</a>
+        </div>
     </header>
 
     <div class="container">
+        <!-- Native Banner Ad (Top of the page) -->
+        <div class="ad-container">
+            <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
+            <div id="container-8e9094986a453471eab78291c50b779f"></div>
+        </div>
+
         <h2 class="section-title">Trending Popular Movies</h2>
         
         <div class="movie-grid" id="movie-grid">
             <!-- Movies will be injected here -->
+        </div>
+
+        <!-- Banner Ad 160x300 (Below the movies) -->
+        <div class="ad-container">
+            <script>
+              atOptions = {
+                'key' : '28d9a86d009d105b82893c63bcb4a2cd',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highrevenueformat.com/28d9a86d009d105b82893c63bcb4a2cd/invoke.js"></script>
         </div>
 
         <div class="load-more-container">
@@ -136,11 +195,17 @@
         </div>
     </div>
 
+    <!-- Adsterra Popunder Ad -->
+    <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
+
+    <!-- Adsterra Social Bar Ad -->
+    <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
+
     <script>
         const API_KEY = '93a5c52b939ffbcb3cd561c8a1f8b880';
         const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
         
-        let currentPage = 1; // পেজ ট্র্যাকিং এর জন্য
+        let currentPage = 1; 
 
         async function fetchMovies(page) {
             const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
@@ -157,12 +222,11 @@
                         ? `${IMAGE_BASE_URL}${movie.poster_path}` 
                         : 'https://via.placeholder.com/500x750?text=No+Image';
 
-                    // TMDB এর অরিজিনাল মুভি পেজের লিংক তৈরি করা হলো
-                    const tmdbLink = `https://www.themoviedb.org/movie/${movie.id}`;
+                    // Vidsrc URL for playing the full movie using TMDB ID
+                    const watchLink = `https://vidsrc.me/embed/movie?tmdb=${movie.id}`;
 
-                    // onclick ইভেন্ট যুক্ত করা হয়েছে, যাতে ক্লিক করলে নতুন ট্যাবে মুভি ওপেন হয়
                     htmlOutput += `
-                        <div class="movie-card" onclick="window.open('${tmdbLink}', '_blank')">
+                        <div class="movie-card" onclick="window.open('${watchLink}', '_blank')">
                             <img src="${posterPath}" alt="${movie.title}" class="movie-poster">
                             <div class="movie-info">
                                 <div class="movie-title">${movie.title}</div>
@@ -172,22 +236,18 @@
                     `;
                 });
 
-                // নতুন মুভিগুলো আগের মুভিগুলোর সাথে যুক্ত করা হচ্ছে (রিপ্লেস না করে)
                 movieGrid.insertAdjacentHTML('beforeend', htmlOutput);
 
             } catch (error) {
                 console.error('Error fetching data:', error);
-                alert('ডেটা লোড করতে সমস্যা হয়েছে!');
             }
         }
 
-        // বাটন ক্লিক করলে পেজ নাম্বার বাড়বে এবং নতুন মুভি আসবে
         function loadMoreMovies() {
             currentPage++;
             fetchMovies(currentPage);
         }
 
-        // প্রথমে ওয়েবসাইট ওপেন হলেই পেজ-১ এর ডেটা লোড হবে
         fetchMovies(currentPage);
     </script>
 </body>

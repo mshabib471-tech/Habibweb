@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CINEFLIX - Premium Movies</title>
+    <title>HMBD - Premium Movies</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,15 +40,27 @@
         
         .nav-link { cursor: pointer; transition: 0.3s; font-weight: 500; font-size: 15px; }
         .nav-link:hover { color: #E50914; }
+
+        /* Loader Animation */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #E50914;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-background text-textMain antialiased overflow-x-hidden">
 
-    <!-- Header / Navbar with Menus & Search -->
+    <!-- Header / Navbar -->
     <header class="fixed w-full top-0 z-50 glass-panel py-4 transition-all">
         <div class="max-w-[1920px] mx-auto px-6 md:px-12 flex flex-wrap justify-between items-center gap-4">
             <!-- Logo -->
-            <a onclick="setCategory('home')" class="text-primary font-black text-3xl tracking-tighter cursor-pointer">CINEFLIX</a>
+            <a onclick="setCategory('home')" class="text-primary font-black text-3xl tracking-tighter cursor-pointer">HMBD</a>
             
             <!-- Navigation Menus -->
             <nav class="hidden md:flex gap-6 text-textMuted">
@@ -59,14 +71,13 @@
                 <span onclick="setCategory('adult')" class="nav-link">18+ / Thriller</span>
             </nav>
 
-            <!-- Search Bar -->
+            <!-- Search Bar (Live Search Added) -->
             <div class="flex items-center gap-3 w-full md:w-auto mt-2 md:mt-0">
-                <input type="text" id="search-input" placeholder="Search movies..." class="bg-surface border border-white/20 text-white px-4 py-2 rounded-full focus:outline-none focus:border-primary text-sm w-full md:w-64">
-                <button onclick="searchMovies()" class="bg-primary px-4 py-2 rounded-full font-bold text-sm hover:bg-red-700 transition">Search</button>
+                <input type="text" id="search-input" oninput="handleLiveSearch()" placeholder="Search movies..." class="bg-surface border border-white/20 text-white px-4 py-2 rounded-full focus:outline-none focus:border-primary text-sm w-full md:w-64">
             </div>
         </div>
         
-        <!-- Mobile Menu (Scrollable horizontal on small screens) -->
+        <!-- Mobile Menu -->
         <div class="md:hidden flex overflow-x-auto gap-4 px-6 mt-3 pb-2 text-textMuted text-sm whitespace-nowrap">
             <span onclick="setCategory('home')" class="nav-link">Home</span>
             <span onclick="setCategory('topRated')" class="nav-link">Top Hits</span>
@@ -98,10 +109,10 @@
             <!-- Movie Cards will be injected here -->
         </div>
 
-        <div class="text-center mt-12">
-            <button onclick="loadMoreMovies()" class="bg-surface border border-white/20 text-white px-8 py-3 rounded-full font-bold hover:bg-primary hover:border-transparent transition-all duration-300">
-                Load More Movies
-            </button>
+        <!-- Auto Load Indicator (Infinite Scroll) -->
+        <div id="loading-indicator" class="text-center mt-12 hidden">
+            <div class="loader"></div>
+            <p class="text-textMuted text-sm mt-3">Loading more movies...</p>
         </div>
     </main>
 
@@ -121,7 +132,7 @@
 
     <!-- Footer -->
     <footer class="border-t border-white/10 py-10 text-center text-textMuted text-sm">
-        <p>© 2026 CINEFLIX - Movie Discovery Platform.</p>
+        <p>© 2026 HMBD - Movie Discovery Platform.</p>
     </footer>
 
     <!-- Adsterra Popunder & Social Bar -->
@@ -135,15 +146,16 @@
         const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w500';
         
         let currentPage = 1;
+        let isFetching = false;
         let currentUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`;
+        let searchTimeout = null;
 
-        // TMDB API Endpoints for Categories
         const endpoints = {
             home: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`,
             topRated: `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US`,
             action: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=28`,
             romance: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=10749`,
-            adult: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=53,27&include_adult=true` // Thriller/Horror for 18+ vibe
+            adult: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=53,27&include_adult=true`
         };
 
         const categoryTitles = {
@@ -154,26 +166,24 @@
             adult: "18+ & Thriller Movies"
         };
 
-        // Click Handler for Ad Smartlink and Movie Play
+        // Ad Logic / Watch Movie Logic
         function handleMovieClick(movieId) {
             const watchLink = `https://vidsrc.me/embed/movie?tmdb=${movieId}`;
             const smartLink = "https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e";
             
-            // Check if user has already clicked this movie
             let hasSeenAd = sessionStorage.getItem('ad_seen_' + movieId);
             
             if (!hasSeenAd) {
-                // First Click: Save state and Redirect to Ad (Smart Link)
                 sessionStorage.setItem('ad_seen_' + movieId, 'true');
                 window.location.href = smartLink;
             } else {
-                // Second Click (after user comes back): Open Movie Player
                 window.open(watchLink, '_blank');
             }
         }
 
-        // Change Category function
+        // Category Selection
         function setCategory(category) {
+            document.getElementById('search-input').value = ''; // Clear search box
             currentUrl = endpoints[category];
             currentPage = 1;
             document.getElementById('section-title').innerText = categoryTitles[category];
@@ -182,21 +192,33 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Search function
-        function searchMovies() {
-            const query = document.getElementById('search-input').value;
-            if (!query) return;
+        // Live Search Logic
+        function handleLiveSearch() {
+            clearTimeout(searchTimeout);
+            const query = document.getElementById('search-input').value.trim();
             
-            currentUrl = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`;
-            currentPage = 1;
-            document.getElementById('section-title').innerText = `Search Results for: "${query}"`;
-            document.getElementById('movie-grid').innerHTML = '';
-            fetchMovies(currentUrl, currentPage);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // If user deletes search text, go back to Home automatically
+            if (query === '') {
+                setCategory('home');
+                return;
+            }
+            
+            // Wait 500ms before searching to avoid spamming the API while typing
+            searchTimeout = setTimeout(() => {
+                currentUrl = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`;
+                currentPage = 1;
+                document.getElementById('section-title').innerText = `Search Results for: "${query}"`;
+                document.getElementById('movie-grid').innerHTML = '';
+                fetchMovies(currentUrl, currentPage);
+            }, 500);
         }
 
-        // Main Fetch Function
+        // Core Fetch Logic
         async function fetchMovies(url, page) {
+            if (isFetching) return;
+            isFetching = true;
+            document.getElementById('loading-indicator').classList.remove('hidden');
+
             const fetchUrl = `${url}&page=${page}`;
             const movieGrid = document.getElementById('movie-grid');
 
@@ -204,23 +226,22 @@
                 const response = await fetch(fetchUrl);
                 const data = await response.json();
                 
-                // Update Hero only on page 1
                 if (page === 1 && data.results.length > 0) {
                     setupHero(data.results[0]);
                 } else if (page === 1 && data.results.length === 0) {
-                    movieGrid.innerHTML = '<p class="text-textMuted col-span-full text-center">No movies found.</p>';
+                    movieGrid.innerHTML = '<p class="text-textMuted col-span-full text-center py-10">No movies found. Try a different search.</p>';
+                    document.getElementById('hero-section').innerHTML = ''; // Clear hero if no results
                 }
 
                 let htmlOutput = '';
 
                 data.results.forEach((movie, index) => {
-                    // Skip the first movie on page 1 to avoid duplicate with Hero section
+                    // Skip the first movie on page 1 for the grid, as it's in the Hero
                     if (page === 1 && index === 0) return;
 
                     const posterPath = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Poster';
                     const year = movie.release_date ? movie.release_date.split('-')[0] : 'N/A';
 
-                    // Notice the onclick function uses handleMovieClick()
                     htmlOutput += `
                         <div onclick="handleMovieClick('${movie.id}')" class="group relative rounded-xl overflow-hidden cursor-pointer bg-surface aspect-[2/3] transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-primary hover:z-10">
                             <img src="${posterPath}" alt="${movie.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
@@ -245,13 +266,19 @@
 
             } catch (error) {
                 console.error('Error fetching data:', error);
+            } finally {
+                isFetching = false;
+                document.getElementById('loading-indicator').classList.add('hidden');
             }
         }
 
+        // Hero Section Logic
         function setupHero(movie) {
             const heroSection = document.getElementById('hero-section');
-            const backdropPath = movie.backdrop_path ? `${IMAGE_BASE_URL}${movie.backdrop_path}` : `${IMAGE_BASE_URL}${movie.poster_path}`;
+            const backdropPath = movie.backdrop_path ? `${IMAGE_BASE_URL}${movie.backdrop_path}` : (movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '');
             const year = movie.release_date ? movie.release_date.split('-')[0] : '';
+            
+            if(!backdropPath) return; // Skip if no image
 
             heroSection.innerHTML = `
                 <div class="absolute inset-0">
@@ -285,21 +312,19 @@
             `;
         }
 
-        function loadMoreMovies() {
-            currentPage++;
-            fetchMovies(currentUrl, currentPage);
-        }
-
-        // Initialize App on Home Category
-        fetchMovies(currentUrl, currentPage);
-
-        // Allow Search by pressing Enter key
-        document.getElementById("search-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                searchMovies();
+        // Infinite Scroll Logic
+        window.addEventListener('scroll', () => {
+            // Check if user is near the bottom of the page
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
+                if (!isFetching) {
+                    currentPage++;
+                    fetchMovies(currentUrl, currentPage);
+                }
             }
         });
+
+        // Initialize App
+        fetchMovies(currentUrl, currentPage);
     </script>
 </body>
 </html>

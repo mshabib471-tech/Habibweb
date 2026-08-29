@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HMBD - Movies & Shows</title>
     <style>
-        /* CSS Styling */
         * {
             margin: 0;
             padding: 0;
@@ -18,12 +17,11 @@
             color: #ffffff;
         }
 
-        /* Navbar */
         header {
             background-color: #141414;
             padding: 20px 50px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             position: sticky;
             top: 0;
@@ -32,31 +30,13 @@
         }
 
         .logo {
-            color: #e50914; /* Netflix Red */
+            color: #e50914; 
             font-size: 32px;
             font-weight: bold;
             text-decoration: none;
             letter-spacing: 2px;
         }
 
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
-            background: linear-gradient(to bottom, #141414, #0f0f0f);
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: #aaaaaa;
-        }
-
-        /* Movie Grid */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -68,6 +48,7 @@
             font-size: 24px;
             border-left: 5px solid #e50914;
             padding-left: 10px;
+            margin-top: 20px;
         }
 
         .movie-grid {
@@ -76,7 +57,6 @@
             gap: 25px;
         }
 
-        /* Movie Card */
         .movie-card {
             background-color: #1f1f1f;
             border-radius: 10px;
@@ -87,7 +67,7 @@
 
         .movie-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.4); /* Red glow effect on hover */
         }
 
         .movie-poster {
@@ -110,98 +90,105 @@
         }
 
         .movie-rating {
-            color: #f5c518; /* IMDB Yellow */
+            color: #f5c518; 
             font-weight: bold;
             font-size: 14px;
         }
 
-        .movie-date {
-            color: #888;
-            font-size: 12px;
-            margin-top: 5px;
+        /* Load More Button Styling */
+        .load-more-container {
+            text-align: center;
+            margin: 40px 0;
         }
 
-        /* Loader */
-        #loader {
-            text-align: center;
-            padding: 50px;
-            font-size: 20px;
-            color: #aaaaaa;
+        .load-more-btn {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .load-more-btn:hover {
+            background-color: #b8070f;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo">HMBD</a>
+        <a href="#" class="logo">HMBD MOVIES</a>
     </header>
 
-    <section class="hero">
-        <h1>Welcome to HMBD</h1>
-        <p>Discover the most popular movies right now.</p>
-    </section>
-
     <div class="container">
-        <h2 class="section-title">Trending Now</h2>
-        <div id="loader">ডেটা লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</div>
+        <h2 class="section-title">Trending Popular Movies</h2>
+        
         <div class="movie-grid" id="movie-grid">
-            </div>
+            <!-- Movies will be injected here -->
+        </div>
+
+        <div class="load-more-container">
+            <button class="load-more-btn" id="load-more-btn" onclick="loadMoreMovies()">Load More Movies</button>
+        </div>
     </div>
 
     <script>
-        // আপনার দেওয়া TMDB API Key
         const API_KEY = '93a5c52b939ffbcb3cd561c8a1f8b880';
-        
-        // TMDB এর Popular Movies Endpoint
-        const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
-        
-        // TMDB থেকে ইমেজ লোড করার Base URL
         const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+        
+        let currentPage = 1; // পেজ ট্র্যাকিং এর জন্য
 
-        async function fetchPopularMovies() {
+        async function fetchMovies(page) {
+            const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
             const movieGrid = document.getElementById('movie-grid');
-            const loader = document.getElementById('loader');
 
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
                 
-                // ডেটা সফলভাবে পেলে লোডার সরিয়ে দিন
-                loader.style.display = 'none';
-
                 let htmlOutput = '';
 
-                // API থেকে পাওয়া মুভিগুলোর লিস্ট (data.results) লুপ করা হচ্ছে
                 data.results.forEach(movie => {
-                    // যদি কোনো মুভির পোস্টার না থাকে, তবে একটি ডিফল্ট ইমেজ দেখাবে
                     const posterPath = movie.poster_path 
                         ? `${IMAGE_BASE_URL}${movie.poster_path}` 
                         : 'https://via.placeholder.com/500x750?text=No+Image';
 
+                    // TMDB এর অরিজিনাল মুভি পেজের লিংক তৈরি করা হলো
+                    const tmdbLink = `https://www.themoviedb.org/movie/${movie.id}`;
+
+                    // onclick ইভেন্ট যুক্ত করা হয়েছে, যাতে ক্লিক করলে নতুন ট্যাবে মুভি ওপেন হয়
                     htmlOutput += `
-                        <div class="movie-card">
+                        <div class="movie-card" onclick="window.open('${tmdbLink}', '_blank')">
                             <img src="${posterPath}" alt="${movie.title}" class="movie-poster">
                             <div class="movie-info">
                                 <div class="movie-title">${movie.title}</div>
-                                <div class="movie-rating">⭐ ${movie.vote_average.toFixed(1)}</div>
-                                <div class="movie-date">${movie.release_date}</div>
+                                <div class="movie-rating">⭐ ${movie.vote_average.toFixed(1)} | 📅 ${movie.release_date}</div>
                             </div>
                         </div>
                     `;
                 });
 
-                // HTML এ ইনজেক্ট করা হচ্ছে
-                movieGrid.innerHTML = htmlOutput;
+                // নতুন মুভিগুলো আগের মুভিগুলোর সাথে যুক্ত করা হচ্ছে (রিপ্লেস না করে)
+                movieGrid.insertAdjacentHTML('beforeend', htmlOutput);
 
             } catch (error) {
                 console.error('Error fetching data:', error);
-                loader.innerHTML = 'ডেটা লোড করতে সমস্যা হয়েছে। দয়া করে ইন্টারনেট কানেকশন চেক করুন।';
-                loader.style.color = '#e50914';
+                alert('ডেটা লোড করতে সমস্যা হয়েছে!');
             }
         }
 
-        // পেজ লোড হওয়ার সাথে সাথে ফাংশনটি কল করা হবে
-        fetchPopularMovies();
+        // বাটন ক্লিক করলে পেজ নাম্বার বাড়বে এবং নতুন মুভি আসবে
+        function loadMoreMovies() {
+            currentPage++;
+            fetchMovies(currentPage);
+        }
+
+        // প্রথমে ওয়েবসাইট ওপেন হলেই পেজ-১ এর ডেটা লোড হবে
+        fetchMovies(currentPage);
     </script>
 </body>
 </html>

@@ -3,234 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HMBD - Movies & Shows</title>
+    <title>CINEFLIX - Premium Movies</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#050505",
+                        surface: "#121212",
+                        primary: "#E50914",
+                        textMain: "#F5F5F5",
+                        textMuted: "#A3A3A3",
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E50914; }
 
-        body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-            padding-bottom: 50px;
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        header {
-            background-color: #141414;
-            padding: 15px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .logo {
-            color: #e50914; 
-            font-size: 32px;
-            font-weight: bold;
-            text-decoration: none;
-            letter-spacing: 2px;
-        }
-
-        .header-buttons a {
-            background-color: #f5c518;
-            color: #000;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-left: 10px;
-            transition: 0.3s;
-        }
-
-        .header-buttons a.offer-btn {
-            background-color: #e50914;
-            color: #fff;
-        }
-
-        .header-buttons a:hover {
-            opacity: 0.8;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .ad-container {
-            text-align: center;
-            margin: 20px auto;
-            padding: 10px;
-            background: #1f1f1f;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-        }
-
-        .section-title {
-            margin-bottom: 20px;
-            font-size: 24px;
-            border-left: 5px solid #e50914;
-            padding-left: 10px;
-            margin-top: 20px;
-        }
-
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-        }
-
-        .movie-card {
-            background-color: #1f1f1f;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .movie-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.4);
-        }
-
-        .movie-poster {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .movie-info {
-            padding: 15px;
-        }
-
-        .movie-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .movie-rating {
-            color: #f5c518; 
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .load-more-container {
-            text-align: center;
-            margin: 40px 0;
-        }
-
-        .load-more-btn {
-            background-color: #e50914;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .load-more-btn:hover {
-            background-color: #b8070f;
-        }
+        
+        .hero-gradient { background: linear-gradient(to top, #050505 0%, rgba(5,5,5,0.6) 50%, rgba(5,5,5,0) 100%); }
+        .card-gradient { background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%); }
+        
+        .nav-link { cursor: pointer; transition: 0.3s; font-weight: 500; font-size: 15px; }
+        .nav-link:hover { color: #E50914; }
     </style>
 </head>
-<body>
+<body class="bg-background text-textMain antialiased overflow-x-hidden">
 
-    <header>
-        <a href="#" class="logo">HMBD</a>
-        <div class="header-buttons">
-            <!-- Smartlink 1 (Watch in HD) -->
-            <a href="https://www.profitableratecpmnetwork.com/ggjmk8i2j?key=a251b31cdefa0940555facd387b4e6c1" target="_blank">Watch in HD (Free)</a>
-            <!-- Smart Offer Link (Special Offer) -->
-            <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="offer-btn">Special Offer</a>
+    <!-- Header / Navbar with Menus & Search -->
+    <header class="fixed w-full top-0 z-50 glass-panel py-4 transition-all">
+        <div class="max-w-[1920px] mx-auto px-6 md:px-12 flex flex-wrap justify-between items-center gap-4">
+            <!-- Logo -->
+            <a onclick="setCategory('home')" class="text-primary font-black text-3xl tracking-tighter cursor-pointer">CINEFLIX</a>
+            
+            <!-- Navigation Menus -->
+            <nav class="hidden md:flex gap-6 text-textMuted">
+                <span onclick="setCategory('home')" class="nav-link">Home</span>
+                <span onclick="setCategory('topRated')" class="nav-link">Top Hits</span>
+                <span onclick="setCategory('action')" class="nav-link">Action / Fight</span>
+                <span onclick="setCategory('romance')" class="nav-link">Romantic</span>
+                <span onclick="setCategory('adult')" class="nav-link">18+ / Thriller</span>
+            </nav>
+
+            <!-- Search Bar -->
+            <div class="flex items-center gap-3 w-full md:w-auto mt-2 md:mt-0">
+                <input type="text" id="search-input" placeholder="Search movies..." class="bg-surface border border-white/20 text-white px-4 py-2 rounded-full focus:outline-none focus:border-primary text-sm w-full md:w-64">
+                <button onclick="searchMovies()" class="bg-primary px-4 py-2 rounded-full font-bold text-sm hover:bg-red-700 transition">Search</button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu (Scrollable horizontal on small screens) -->
+        <div class="md:hidden flex overflow-x-auto gap-4 px-6 mt-3 pb-2 text-textMuted text-sm whitespace-nowrap">
+            <span onclick="setCategory('home')" class="nav-link">Home</span>
+            <span onclick="setCategory('topRated')" class="nav-link">Top Hits</span>
+            <span onclick="setCategory('action')" class="nav-link">Action</span>
+            <span onclick="setCategory('romance')" class="nav-link">Romantic</span>
+            <span onclick="setCategory('adult')" class="nav-link">18+ Movies</span>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Native Banner Ad (Top of the page) -->
-        <div class="ad-container">
-            <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
-            <div id="container-8e9094986a453471eab78291c50b779f"></div>
+    <!-- Dynamic Hero Section -->
+    <section id="hero-section" class="relative h-[70vh] md:h-[85vh] w-full overflow-hidden flex items-end mt-16 md:mt-0">
+        <div class="absolute inset-0 bg-surface animate-pulse" id="hero-skeleton"></div>
+    </section>
+
+    <!-- Native Banner Ad -->
+    <div class="flex justify-center mt-6">
+        <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
+        <div id="container-8e9094986a453471eab78291c50b779f"></div>
+    </div>
+
+    <!-- Movie Grid Section -->
+    <main class="max-w-[1920px] mx-auto px-6 md:px-12 py-8 relative z-20">
+        <div class="flex items-center gap-3 mb-8">
+            <div class="w-1.5 h-8 bg-primary rounded-full"></div>
+            <h2 id="section-title" class="text-2xl md:text-3xl font-bold tracking-tight">Trending Now</h2>
         </div>
 
-        <h2 class="section-title">Trending Popular Movies</h2>
-        
-        <div class="movie-grid" id="movie-grid">
-            <!-- Movies will be injected here -->
+        <div id="movie-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+            <!-- Movie Cards will be injected here -->
         </div>
 
-        <!-- Banner Ad 160x300 (Below the movies) -->
-        <div class="ad-container">
-            <script>
-              atOptions = {
+        <div class="text-center mt-12">
+            <button onclick="loadMoreMovies()" class="bg-surface border border-white/20 text-white px-8 py-3 rounded-full font-bold hover:bg-primary hover:border-transparent transition-all duration-300">
+                Load More Movies
+            </button>
+        </div>
+    </main>
+
+    <!-- Banner Ad 160x300 -->
+    <div class="flex justify-center my-10">
+        <script>
+            atOptions = {
                 'key' : '28d9a86d009d105b82893c63bcb4a2cd',
                 'format' : 'iframe',
                 'height' : 300,
                 'width' : 160,
                 'params' : {}
-              };
-            </script>
-            <script src="https://www.highrevenueformat.com/28d9a86d009d105b82893c63bcb4a2cd/invoke.js"></script>
-        </div>
-
-        <div class="load-more-container">
-            <button class="load-more-btn" id="load-more-btn" onclick="loadMoreMovies()">Load More Movies</button>
-        </div>
+            };
+        </script>
+        <script src="https://www.highrevenueformat.com/28d9a86d009d105b82893c63bcb4a2cd/invoke.js"></script>
     </div>
 
-    <!-- Adsterra Popunder Ad -->
-    <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-10 text-center text-textMuted text-sm">
+        <p>© 2026 CINEFLIX - Movie Discovery Platform.</p>
+    </footer>
 
-    <!-- Adsterra Social Bar Ad -->
+    <!-- Adsterra Popunder & Social Bar -->
+    <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
     <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
 
+    <!-- App Logic -->
     <script>
         const API_KEY = '93a5c52b939ffbcb3cd561c8a1f8b880';
-        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
+        const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w500';
         
-        let currentPage = 1; 
+        let currentPage = 1;
+        let currentUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`;
 
-        async function fetchMovies(page) {
-            const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
+        // TMDB API Endpoints for Categories
+        const endpoints = {
+            home: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`,
+            topRated: `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US`,
+            action: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=28`,
+            romance: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=10749`,
+            adult: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=53,27&include_adult=true` // Thriller/Horror for 18+ vibe
+        };
+
+        const categoryTitles = {
+            home: "Trending Now",
+            topRated: "Top Hit Movies",
+            action: "Action & Fight Movies",
+            romance: "Romantic Movies",
+            adult: "18+ & Thriller Movies"
+        };
+
+        // Click Handler for Ad Smartlink and Movie Play
+        function handleMovieClick(movieId) {
+            const watchLink = `https://vidsrc.me/embed/movie?tmdb=${movieId}`;
+            const smartLink = "https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e";
+            
+            // Check if user has already clicked this movie
+            let hasSeenAd = sessionStorage.getItem('ad_seen_' + movieId);
+            
+            if (!hasSeenAd) {
+                // First Click: Save state and Redirect to Ad (Smart Link)
+                sessionStorage.setItem('ad_seen_' + movieId, 'true');
+                window.location.href = smartLink;
+            } else {
+                // Second Click (after user comes back): Open Movie Player
+                window.open(watchLink, '_blank');
+            }
+        }
+
+        // Change Category function
+        function setCategory(category) {
+            currentUrl = endpoints[category];
+            currentPage = 1;
+            document.getElementById('section-title').innerText = categoryTitles[category];
+            document.getElementById('movie-grid').innerHTML = '';
+            fetchMovies(currentUrl, currentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Search function
+        function searchMovies() {
+            const query = document.getElementById('search-input').value;
+            if (!query) return;
+            
+            currentUrl = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`;
+            currentPage = 1;
+            document.getElementById('section-title').innerText = `Search Results for: "${query}"`;
+            document.getElementById('movie-grid').innerHTML = '';
+            fetchMovies(currentUrl, currentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Main Fetch Function
+        async function fetchMovies(url, page) {
+            const fetchUrl = `${url}&page=${page}`;
             const movieGrid = document.getElementById('movie-grid');
 
             try {
-                const response = await fetch(API_URL);
+                const response = await fetch(fetchUrl);
                 const data = await response.json();
                 
+                // Update Hero only on page 1
+                if (page === 1 && data.results.length > 0) {
+                    setupHero(data.results[0]);
+                } else if (page === 1 && data.results.length === 0) {
+                    movieGrid.innerHTML = '<p class="text-textMuted col-span-full text-center">No movies found.</p>';
+                }
+
                 let htmlOutput = '';
 
-                data.results.forEach(movie => {
-                    const posterPath = movie.poster_path 
-                        ? `${IMAGE_BASE_URL}${movie.poster_path}` 
-                        : 'https://via.placeholder.com/500x750?text=No+Image';
+                data.results.forEach((movie, index) => {
+                    // Skip the first movie on page 1 to avoid duplicate with Hero section
+                    if (page === 1 && index === 0) return;
 
-                    // Vidsrc URL for playing the full movie using TMDB ID
-                    const watchLink = `https://vidsrc.me/embed/movie?tmdb=${movie.id}`;
+                    const posterPath = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Poster';
+                    const year = movie.release_date ? movie.release_date.split('-')[0] : 'N/A';
 
+                    // Notice the onclick function uses handleMovieClick()
                     htmlOutput += `
-                        <div class="movie-card" onclick="window.open('${watchLink}', '_blank')">
-                            <img src="${posterPath}" alt="${movie.title}" class="movie-poster">
-                            <div class="movie-info">
-                                <div class="movie-title">${movie.title}</div>
-                                <div class="movie-rating">⭐ ${movie.vote_average.toFixed(1)} | 📅 ${movie.release_date}</div>
+                        <div onclick="handleMovieClick('${movie.id}')" class="group relative rounded-xl overflow-hidden cursor-pointer bg-surface aspect-[2/3] transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-primary hover:z-10">
+                            <img src="${posterPath}" alt="${movie.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            
+                            <div class="absolute inset-0 card-gradient"></div>
+                            
+                            <div class="absolute inset-0 p-4 flex flex-col justify-end opacity-90 group-hover:opacity-100 transition-opacity">
+                                <h3 class="font-bold text-sm md:text-lg leading-tight mb-1 truncate">${movie.title}</h3>
+                                <div class="flex justify-between items-center text-[10px] md:text-xs text-textMuted mb-3">
+                                    <span>${year}</span>
+                                    <span class="text-[#f5c518] font-bold">⭐ ${movie.vote_average.toFixed(1)}</span>
+                                </div>
+                                <button class="w-full bg-primary text-white py-1.5 md:py-2 rounded font-bold text-xs md:text-sm opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                    ▶ Play Now
+                                </button>
                             </div>
                         </div>
                     `;
@@ -243,12 +248,58 @@
             }
         }
 
-        function loadMoreMovies() {
-            currentPage++;
-            fetchMovies(currentPage);
+        function setupHero(movie) {
+            const heroSection = document.getElementById('hero-section');
+            const backdropPath = movie.backdrop_path ? `${IMAGE_BASE_URL}${movie.backdrop_path}` : `${IMAGE_BASE_URL}${movie.poster_path}`;
+            const year = movie.release_date ? movie.release_date.split('-')[0] : '';
+
+            heroSection.innerHTML = `
+                <div class="absolute inset-0">
+                    <img src="${backdropPath}" alt="${movie.title}" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute inset-0 hero-gradient"></div>
+                
+                <div class="relative z-10 w-full p-6 md:p-12 pb-16 max-w-[1920px] mx-auto flex flex-col justify-end h-full">
+                    <div class="max-w-3xl space-y-4">
+                        <div class="flex items-center gap-3 text-sm font-bold tracking-wider">
+                            <span class="text-primary border border-primary px-2 py-0.5 rounded text-xs">FEATURED</span>
+                            <span class="text-textMuted">${year}</span>
+                            <span class="text-[#f5c518]">⭐ ${movie.vote_average.toFixed(1)}</span>
+                        </div>
+                        
+                        <h1 class="text-4xl md:text-7xl font-black text-white tracking-tight leading-none shadow-black drop-shadow-xl">
+                            ${movie.title}
+                        </h1>
+                        
+                        <p class="text-textMuted text-sm md:text-lg line-clamp-2 md:line-clamp-3 max-w-2xl text-shadow hidden md:block">
+                            ${movie.overview}
+                        </p>
+                        
+                        <div class="pt-4 md:pt-6">
+                            <button onclick="handleMovieClick('${movie.id}')" class="bg-primary text-white px-6 py-3 md:px-8 md:py-3.5 rounded-full font-bold text-sm md:text-lg hover:bg-red-700 transition-colors shadow-lg shadow-red-500/30 flex items-center gap-2">
+                                ▶ Watch Full Movie
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
-        fetchMovies(currentPage);
+        function loadMoreMovies() {
+            currentPage++;
+            fetchMovies(currentUrl, currentPage);
+        }
+
+        // Initialize App on Home Category
+        fetchMovies(currentUrl, currentPage);
+
+        // Allow Search by pressing Enter key
+        document.getElementById("search-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                searchMovies();
+            }
+        });
     </script>
 </body>
 </html>

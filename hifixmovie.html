@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HMBD - Premium Movies</title>
+    <title>HMBD - Movie Download & Streaming</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,11 +12,11 @@
             theme: {
                 extend: {
                     colors: {
-                        background: "#050505",
-                        surface: "#121212",
-                        primary: "#E50914",
-                        textMain: "#F5F5F5",
-                        textMuted: "#A3A3A3",
+                        background: "#0a0a0a",
+                        surface: "#141414",
+                        primary: "#ff0000", /* Red accent like screenshot */
+                        textMain: "#ffffff",
+                        textMuted: "#9ca3af",
                     }
                 }
             }
@@ -24,100 +24,154 @@
     </script>
 
     <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #E50914; }
-
-        .glass-panel {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        /* Hide scrollbar for horizontal scrolling but allow scroll */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .hero-gradient { background: linear-gradient(to top, #050505 0%, rgba(5,5,5,0.6) 50%, rgba(5,5,5,0) 100%); }
-        .card-gradient { background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%); }
-        
-        .nav-link { cursor: pointer; transition: 0.3s; font-weight: 500; font-size: 15px; }
-        .nav-link:hover { color: #E50914; }
-
-        /* Loader Animation */
-        .loader {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-left-color: #E50914;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 18px;
+            background-color: #ff0000;
+            margin-right: 8px;
+            vertical-align: middle;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Sidebar Transition */
+        #sidebar { transition: left 0.3s ease-in-out; }
+        #sidebar-overlay { transition: opacity 0.3s ease-in-out; }
+
+        /* Carousel Transition */
+        .carousel-track { transition: transform 0.5s ease-in-out; }
+        
+        .dot { height: 4px; width: 16px; background-color: rgba(255,255,255,0.3); transition: background-color 0.3s; }
+        .dot.active { background-color: #ffffff; }
     </style>
 </head>
 <body class="bg-background text-textMain antialiased overflow-x-hidden">
 
-    <!-- Header / Navbar -->
-    <header class="fixed w-full top-0 z-50 glass-panel py-4 transition-all">
-        <div class="max-w-[1920px] mx-auto px-6 md:px-12 flex flex-wrap justify-between items-center gap-4">
-            <!-- Logo -->
-            <a onclick="setCategory('home')" class="text-primary font-black text-3xl tracking-tighter cursor-pointer">HMBD</a>
-            
-            <!-- Navigation Menus -->
-            <nav class="hidden md:flex gap-6 text-textMuted">
-                <span onclick="setCategory('home')" class="nav-link">Home</span>
-                <span onclick="setCategory('topRated')" class="nav-link">Top Hits</span>
-                <span onclick="setCategory('action')" class="nav-link">Action / Fight</span>
-                <span onclick="setCategory('romance')" class="nav-link">Romantic</span>
-                <span onclick="setCategory('adult')" class="nav-link">18+ / Thriller</span>
-            </nav>
+    <!-- Top Navigation Bar -->
+    <header class="fixed w-full top-0 z-50 bg-[#111111] border-b border-white/5 h-14 flex items-center justify-between px-4">
+        <!-- Menu Icon -->
+        <button onclick="toggleSidebar()" class="text-white p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+        
+        <!-- Logo -->
+        <a onclick="setCategory('home')" class="text-xl font-bold tracking-wider cursor-pointer flex items-center gap-2">
+            <span class="text-white">HMBD</span><span class="text-primary text-sm font-normal">.com</span>
+        </a>
 
-            <!-- Search Bar (Live Search Added) -->
-            <div class="flex items-center gap-3 w-full md:w-auto mt-2 md:mt-0">
-                <input type="text" id="search-input" oninput="handleLiveSearch()" placeholder="Search movies..." class="bg-surface border border-white/20 text-white px-4 py-2 rounded-full focus:outline-none focus:border-primary text-sm w-full md:w-64">
+        <!-- Search Icon -->
+        <button onclick="toggleSearch()" class="text-white p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </button>
+    </header>
+
+    <!-- Hidden Search Bar -->
+    <div id="search-bar" class="fixed top-14 w-full bg-[#111] z-40 hidden p-3 border-b border-white/10">
+        <input type="text" id="search-input" oninput="handleLiveSearch()" placeholder="Search movies..." class="w-full bg-[#222] text-white px-4 py-2 rounded focus:outline-none text-sm">
+    </div>
+
+    <!-- Sidebar Menu (Drawer) -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 z-[60] hidden opacity-0"></div>
+    <div id="sidebar" class="fixed inset-y-0 left-[-100%] w-[80%] max-w-sm bg-[#111111] z-[70] overflow-y-auto pb-10">
+        <div class="flex items-center justify-between p-4 border-b border-white/10">
+            <span class="text-lg font-bold">Menu</span>
+            <button onclick="toggleSidebar()" class="text-primary p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        </div>
+        
+        <!-- Alphabet Filter (Visual) -->
+        <div class="flex overflow-x-auto hide-scroll gap-4 p-4 border-b border-white/10 text-xs text-textMuted">
+            <span>#</span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+        </div>
+
+        <div class="p-4 space-y-6">
+            <div>
+                <h3 class="text-sm font-bold mb-3 text-white">Categories</h3>
+                <ul class="grid grid-cols-2 gap-y-3 text-sm text-textMuted">
+                    <li onclick="setCategory('home')" class="cursor-pointer hover:text-white">Bollywood Hindi</li>
+                    <li onclick="setCategory('home')" class="cursor-pointer hover:text-white">English (Hollywood)</li>
+                    <li onclick="setCategory('home')" class="cursor-pointer hover:text-white">Dual Audio</li>
+                    <li onclick="setCategory('home')" class="cursor-pointer hover:text-white">South Indian</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-sm font-bold mb-3 text-white">Genres</h3>
+                <ul class="grid grid-cols-2 gap-y-3 text-sm text-textMuted">
+                    <li onclick="setCategory('action')" class="cursor-pointer hover:text-white">- Action</li>
+                    <li onclick="setCategory('romance')" class="cursor-pointer hover:text-white">- Romance</li>
+                    <li onclick="setCategory('adult')" class="cursor-pointer hover:text-white">- Thriller</li>
+                    <li onclick="setCategory('home')" class="cursor-pointer hover:text-white">- Comedy</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Adds margin for fixed header) -->
+    <main class="mt-14 pb-20">
+        
+        <!-- 3-Second Auto Update Banner (Hero Carousel) -->
+        <div class="relative w-full h-[220px] md:h-[400px] bg-surface overflow-hidden">
+            <div id="carousel-track" class="carousel-track flex w-full h-full">
+                <!-- Carousel items injected by JS -->
+            </div>
+            
+            <!-- Carousel Dots -->
+            <div id="carousel-dots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                <!-- Dots injected by JS -->
+            </div>
+        </div>
+
+        <!-- Ad Banner Above Featured -->
+        <div class="flex justify-center my-4">
+            <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
+            <div id="container-8e9094986a453471eab78291c50b779f"></div>
+        </div>
+
+        <!-- Featured Section (Horizontal Scroll) -->
+        <div class="mt-6">
+            <div class="flex justify-between items-center px-4 mb-3">
+                <h2 class="text-lg text-white section-title">Featured</h2>
+                <div class="flex gap-1">
+                    <button onclick="scrollFeatured(-1)" class="bg-[#222] p-1 rounded"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <button onclick="scrollFeatured(1)" class="bg-[#222] p-1 rounded"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                </div>
+            </div>
+            <div id="featured-grid" class="flex overflow-x-auto hide-scroll gap-3 px-4 snap-x">
+                <!-- Featured Cards injected by JS -->
+            </div>
+        </div>
+
+        <!-- Latest Movies (Grid View) -->
+        <div class="mt-8 px-4">
+            <div class="flex justify-between items-center mb-3">
+                <h2 id="main-section-title" class="text-lg text-white section-title">Latest Movies</h2>
+                <button class="bg-primary text-white text-[10px] font-bold px-2 py-1 rounded">SEE ALL</button>
+            </div>
+            <div id="movie-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                <!-- Grid Cards injected by JS -->
+            </div>
+        </div>
+
+        <!-- Latest Updates (List View) -->
+        <div class="mt-8 px-4">
+            <h2 class="text-lg text-white mb-3 font-bold">Latest Updates</h2>
+            <div id="list-view-container" class="space-y-3">
+                <!-- List items injected by JS -->
             </div>
         </div>
         
-        <!-- Mobile Menu -->
-        <div class="md:hidden flex overflow-x-auto gap-4 px-6 mt-3 pb-2 text-textMuted text-sm whitespace-nowrap">
-            <span onclick="setCategory('home')" class="nav-link">Home</span>
-            <span onclick="setCategory('topRated')" class="nav-link">Top Hits</span>
-            <span onclick="setCategory('action')" class="nav-link">Action</span>
-            <span onclick="setCategory('romance')" class="nav-link">Romantic</span>
-            <span onclick="setCategory('adult')" class="nav-link">18+ Movies</span>
-        </div>
-    </header>
-
-    <!-- Dynamic Hero Section -->
-    <section id="hero-section" class="relative h-[70vh] md:h-[85vh] w-full overflow-hidden flex items-end mt-16 md:mt-0">
-        <div class="absolute inset-0 bg-surface animate-pulse" id="hero-skeleton"></div>
-    </section>
-
-    <!-- Native Banner Ad -->
-    <div class="flex justify-center mt-6">
-        <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
-        <div id="container-8e9094986a453471eab78291c50b779f"></div>
-    </div>
-
-    <!-- Movie Grid Section -->
-    <main class="max-w-[1920px] mx-auto px-6 md:px-12 py-8 relative z-20">
-        <div class="flex items-center gap-3 mb-8">
-            <div class="w-1.5 h-8 bg-primary rounded-full"></div>
-            <h2 id="section-title" class="text-2xl md:text-3xl font-bold tracking-tight">Trending Now</h2>
+        <!-- Auto Load Loader -->
+        <div id="loading-indicator" class="text-center mt-8 hidden">
+            <p class="text-textMuted text-sm">Loading...</p>
         </div>
 
-        <div id="movie-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-            <!-- Movie Cards will be injected here -->
-        </div>
-
-        <!-- Auto Load Indicator (Infinite Scroll) -->
-        <div id="loading-indicator" class="text-center mt-12 hidden">
-            <div class="loader"></div>
-            <p class="text-textMuted text-sm mt-3">Loading more movies...</p>
-        </div>
     </main>
 
-    <!-- Banner Ad 160x300 -->
-    <div class="flex justify-center my-10">
+    <!-- Ad Banner Below Content -->
+    <div class="flex justify-center my-6">
         <script>
             atOptions = {
                 'key' : '28d9a86d009d105b82893c63bcb4a2cd',
@@ -130,11 +184,6 @@
         <script src="https://www.highrevenueformat.com/28d9a86d009d105b82893c63bcb4a2cd/invoke.js"></script>
     </div>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/10 py-10 text-center text-textMuted text-sm">
-        <p>© 2026 HMBD - Movie Discovery Platform.</p>
-    </footer>
-
     <!-- Adsterra Popunder & Social Bar -->
     <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
     <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
@@ -142,31 +191,58 @@
     <!-- App Logic -->
     <script>
         const API_KEY = '93a5c52b939ffbcb3cd561c8a1f8b880';
-        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
-        const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w780';
+        const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w342';
+        const THUMB_BASE_URL = 'https://image.tmdb.org/t/p/w154';
         
         let currentPage = 1;
         let isFetching = false;
         let currentUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`;
         let searchTimeout = null;
+        
+        // Carousel Variables
+        let carouselInterval;
+        let currentSlide = 0;
+        let totalSlides = 5;
 
         const endpoints = {
             home: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`,
-            topRated: `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US`,
             action: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=28`,
             romance: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=10749`,
             adult: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=53,27&include_adult=true`
         };
 
-        const categoryTitles = {
-            home: "Trending Now",
-            topRated: "Top Hit Movies",
-            action: "Action & Fight Movies",
-            romance: "Romantic Movies",
-            adult: "18+ & Thriller Movies"
-        };
+        // --- UI Interactions ---
 
-        // Ad Logic / Watch Movie Logic
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (sidebar.style.left === '0px') {
+                sidebar.style.left = '-100%';
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            } else {
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.style.opacity = '1', 10);
+                sidebar.style.left = '0px';
+            }
+        }
+
+        function toggleSearch() {
+            const searchBar = document.getElementById('search-bar');
+            searchBar.classList.toggle('hidden');
+            if(!searchBar.classList.contains('hidden')){
+                document.getElementById('search-input').focus();
+            }
+        }
+
+        function scrollFeatured(direction) {
+            const container = document.getElementById('featured-grid');
+            container.scrollBy({ left: direction * 150, behavior: 'smooth' });
+        }
+
+        // --- Ad / Movie Play Logic ---
+        
         function handleMovieClick(movieId) {
             const watchLink = `https://vidsrc.me/embed/movie?tmdb=${movieId}`;
             const smartLink = "https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e";
@@ -181,141 +257,174 @@
             }
         }
 
-        // Category Selection
+        // --- Fetch & Render Logic ---
+
         function setCategory(category) {
-            document.getElementById('search-input').value = ''; // Clear search box
-            currentUrl = endpoints[category];
+            toggleSidebar(); // Close sidebar
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-bar').classList.add('hidden');
+            
+            currentUrl = endpoints[category] || endpoints['home'];
             currentPage = 1;
-            document.getElementById('section-title').innerText = categoryTitles[category];
+            document.getElementById('main-section-title').innerText = category === 'home' ? 'Latest Movies' : 'Search Results';
+            
             document.getElementById('movie-grid').innerHTML = '';
+            document.getElementById('list-view-container').innerHTML = '';
+            
             fetchMovies(currentUrl, currentPage);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Live Search Logic
         function handleLiveSearch() {
             clearTimeout(searchTimeout);
             const query = document.getElementById('search-input').value.trim();
             
-            // If user deletes search text, go back to Home automatically
             if (query === '') {
-                setCategory('home');
+                currentUrl = endpoints['home'];
+                currentPage = 1;
+                document.getElementById('movie-grid').innerHTML = '';
+                document.getElementById('list-view-container').innerHTML = '';
+                fetchMovies(currentUrl, currentPage);
                 return;
             }
             
-            // Wait 500ms before searching to avoid spamming the API while typing
             searchTimeout = setTimeout(() => {
                 currentUrl = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`;
                 currentPage = 1;
-                document.getElementById('section-title').innerText = `Search Results for: "${query}"`;
+                document.getElementById('main-section-title').innerText = `Search Results`;
                 document.getElementById('movie-grid').innerHTML = '';
+                document.getElementById('list-view-container').innerHTML = '';
                 fetchMovies(currentUrl, currentPage);
             }, 500);
         }
 
-        // Core Fetch Logic
         async function fetchMovies(url, page) {
             if (isFetching) return;
             isFetching = true;
             document.getElementById('loading-indicator').classList.remove('hidden');
 
-            const fetchUrl = `${url}&page=${page}`;
-            const movieGrid = document.getElementById('movie-grid');
-
             try {
-                const response = await fetch(fetchUrl);
+                const response = await fetch(`${url}&page=${page}`);
                 const data = await response.json();
                 
-                if (page === 1 && data.results.length > 0) {
-                    setupHero(data.results[0]);
-                } else if (page === 1 && data.results.length === 0) {
-                    movieGrid.innerHTML = '<p class="text-textMuted col-span-full text-center py-10">No movies found. Try a different search.</p>';
-                    document.getElementById('hero-section').innerHTML = ''; // Clear hero if no results
+                if (page === 1) {
+                    setupHeroCarousel(data.results.slice(0, 5));
+                    setupFeatured(data.results.slice(5, 12));
+                    renderGrid(data.results.slice(12, 20));
+                    renderList(data.results.slice(0, 8)); // Re-use some for the list view
+                } else {
+                    renderGrid(data.results);
                 }
 
-                let htmlOutput = '';
-
-                data.results.forEach((movie, index) => {
-                    // Skip the first movie on page 1 for the grid, as it's in the Hero
-                    if (page === 1 && index === 0) return;
-
-                    const posterPath = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Poster';
-                    const year = movie.release_date ? movie.release_date.split('-')[0] : 'N/A';
-
-                    htmlOutput += `
-                        <div onclick="handleMovieClick('${movie.id}')" class="group relative rounded-xl overflow-hidden cursor-pointer bg-surface aspect-[2/3] transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-primary hover:z-10">
-                            <img src="${posterPath}" alt="${movie.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                            
-                            <div class="absolute inset-0 card-gradient"></div>
-                            
-                            <div class="absolute inset-0 p-4 flex flex-col justify-end opacity-90 group-hover:opacity-100 transition-opacity">
-                                <h3 class="font-bold text-sm md:text-lg leading-tight mb-1 truncate">${movie.title}</h3>
-                                <div class="flex justify-between items-center text-[10px] md:text-xs text-textMuted mb-3">
-                                    <span>${year}</span>
-                                    <span class="text-[#f5c518] font-bold">⭐ ${movie.vote_average.toFixed(1)}</span>
-                                </div>
-                                <button class="w-full bg-primary text-white py-1.5 md:py-2 rounded font-bold text-xs md:text-sm opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                    ▶ Play Now
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                movieGrid.insertAdjacentHTML('beforeend', htmlOutput);
-
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error:', error);
             } finally {
                 isFetching = false;
                 document.getElementById('loading-indicator').classList.add('hidden');
             }
         }
 
-        // Hero Section Logic
-        function setupHero(movie) {
-            const heroSection = document.getElementById('hero-section');
-            const backdropPath = movie.backdrop_path ? `${IMAGE_BASE_URL}${movie.backdrop_path}` : (movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '');
-            const year = movie.release_date ? movie.release_date.split('-')[0] : '';
-            
-            if(!backdropPath) return; // Skip if no image
+        // 1. Auto Update Banner (Hero)
+        function setupHeroCarousel(movies) {
+            const track = document.getElementById('carousel-track');
+            const dotsContainer = document.getElementById('carousel-dots');
+            track.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            totalSlides = movies.length;
 
-            heroSection.innerHTML = `
-                <div class="absolute inset-0">
-                    <img src="${backdropPath}" alt="${movie.title}" class="w-full h-full object-cover">
-                </div>
-                <div class="absolute inset-0 hero-gradient"></div>
+            movies.forEach((movie, index) => {
+                const img = movie.backdrop_path ? `${IMAGE_BASE_URL}${movie.backdrop_path}` : `${POSTER_BASE_URL}${movie.poster_path}`;
+                const year = movie.release_date ? movie.release_date.substring(0, 4) : '';
                 
-                <div class="relative z-10 w-full p-6 md:p-12 pb-16 max-w-[1920px] mx-auto flex flex-col justify-end h-full">
-                    <div class="max-w-3xl space-y-4">
-                        <div class="flex items-center gap-3 text-sm font-bold tracking-wider">
-                            <span class="text-primary border border-primary px-2 py-0.5 rounded text-xs">FEATURED</span>
-                            <span class="text-textMuted">${year}</span>
-                            <span class="text-[#f5c518]">⭐ ${movie.vote_average.toFixed(1)}</span>
-                        </div>
-                        
-                        <h1 class="text-4xl md:text-7xl font-black text-white tracking-tight leading-none shadow-black drop-shadow-xl">
-                            ${movie.title}
-                        </h1>
-                        
-                        <p class="text-textMuted text-sm md:text-lg line-clamp-2 md:line-clamp-3 max-w-2xl text-shadow hidden md:block">
-                            ${movie.overview}
-                        </p>
-                        
-                        <div class="pt-4 md:pt-6">
-                            <button onclick="handleMovieClick('${movie.id}')" class="bg-primary text-white px-6 py-3 md:px-8 md:py-3.5 rounded-full font-bold text-sm md:text-lg hover:bg-red-700 transition-colors shadow-lg shadow-red-500/30 flex items-center gap-2">
-                                ▶ Watch Full Movie
-                            </button>
+                track.innerHTML += `
+                    <div onclick="handleMovieClick('${movie.id}')" class="min-w-full h-full relative cursor-pointer">
+                        <img src="${img}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 left-4 right-4">
+                            <h2 class="text-white font-bold text-lg leading-tight shadow-black drop-shadow-md">${movie.title} (${year})</h2>
+                            <span class="inline-block mt-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded">MOVIE</span>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
+                
+                dotsContainer.innerHTML += `<div class="dot ${index === 0 ? 'active' : ''}"></div>`;
+            });
+
+            // Start Auto Slide (3 seconds)
+            clearInterval(carouselInterval);
+            currentSlide = 0;
+            carouselInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // Update dots
+                document.querySelectorAll('.dot').forEach((dot, idx) => {
+                    dot.classList.toggle('active', idx === currentSlide);
+                });
+            }, 3000);
         }
 
-        // Infinite Scroll Logic
+        // 2. Featured Section (Horizontal Scroll)
+        function setupFeatured(movies) {
+            const container = document.getElementById('featured-grid');
+            container.innerHTML = '';
+            
+            movies.forEach(movie => {
+                const poster = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/342x513';
+                const year = movie.release_date ? movie.release_date.substring(0, 4) : '';
+                
+                container.innerHTML += `
+                    <div onclick="handleMovieClick('${movie.id}')" class="min-w-[130px] w-[130px] snap-start relative cursor-pointer bg-[#1a1a1a] rounded overflow-hidden">
+                        <div class="absolute top-0 left-0 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 z-10">FEATURE</div>
+                        <img src="${poster}" class="w-full h-[190px] object-cover">
+                        <div class="absolute bottom-0 right-0 bg-black/80 text-[#f5c518] text-[10px] font-bold px-1.5 py-0.5 z-10 flex items-center gap-1">
+                            ⭐ ${movie.vote_average.toFixed(1)}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 3. Grid View (Latest Movies)
+        function renderGrid(movies) {
+            const grid = document.getElementById('movie-grid');
+            
+            movies.forEach(movie => {
+                const poster = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/342x513';
+                const year = movie.release_date ? movie.release_date.substring(0, 4) : '';
+                
+                grid.innerHTML += `
+                    <div onclick="handleMovieClick('${movie.id}')" class="relative cursor-pointer bg-[#1a1a1a] rounded overflow-hidden">
+                        <div class="absolute top-0 left-0 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 z-10">Dual Audio</div>
+                        <img src="${poster}" class="w-full aspect-[2/3] object-cover">
+                    </div>
+                `;
+            });
+        }
+
+        // 4. List View (Latest Updates)
+        function renderList(movies) {
+            const listContainer = document.getElementById('list-view-container');
+            
+            movies.forEach(movie => {
+                const thumb = movie.poster_path ? `${THUMB_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/154x231';
+                const year = movie.release_date ? movie.release_date.substring(0, 4) : '';
+                
+                listContainer.innerHTML += `
+                    <div onclick="handleMovieClick('${movie.id}')" class="flex gap-3 items-center cursor-pointer hover:bg-white/5 p-1 rounded transition">
+                        <img src="${thumb}" class="w-[60px] h-[90px] object-cover rounded">
+                        <div class="flex-1">
+                            <h3 class="text-white text-sm font-medium line-clamp-2">${movie.title} [${year}] Dual Audio</h3>
+                            <p class="text-textMuted text-xs mt-1">${year}</p>
+                            <p class="text-textMuted text-xs mt-1 flex items-center gap-1">⭐ ${movie.vote_average.toFixed(1)}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Infinite Scroll
         window.addEventListener('scroll', () => {
-            // Check if user is near the bottom of the page
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
                 if (!isFetching) {
                     currentPage++;
                     fetchMovies(currentUrl, currentPage);
@@ -323,8 +432,9 @@
             }
         });
 
-        // Initialize App
+        // Init
         fetchMovies(currentUrl, currentPage);
+
     </script>
 </body>
 </html>

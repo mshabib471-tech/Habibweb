@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HMBD - Movie Download & Streaming</title>
+    <title>HMBD - Premium Movie Discovery</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,9 +12,10 @@
             theme: {
                 extend: {
                     colors: {
-                        background: "#0a0a0a",
-                        surface: "#141414",
-                        primary: "#ff0000",
+                        background: "#07070a",
+                        surface: "rgba(20, 20, 30, 0.6)",
+                        surfaceBorder: "rgba(255, 255, 255, 0.08)",
+                        primary: "#f97316",
                         textMain: "#ffffff",
                         textMuted: "#9ca3af",
                     }
@@ -27,191 +28,246 @@
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
+        .glass-panel {
+            background: rgba(15, 15, 25, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(25, 25, 40, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
         .section-title::before {
             content: '';
             display: inline-block;
             width: 3px;
             height: 18px;
-            background-color: #ff0000;
+            background-color: #f97316;
             margin-right: 8px;
             vertical-align: middle;
         }
 
-        #sidebar { transition: left 0.3s ease-in-out; }
-        #sidebar-overlay { transition: opacity 0.3s ease-in-out; }
-        .carousel-track { transition: transform 0.5s ease-in-out; }
-        .dot { height: 4px; width: 16px; background-color: rgba(255,255,255,0.3); transition: background-color 0.3s; }
-        .dot.active { background-color: #ffffff; }
+        .hero-gradient { background: linear-gradient(to top, #07070a 0%, rgba(7,7,10,0.6) 50%, rgba(7,7,10,0) 100%); }
     </style>
 </head>
 <body class="bg-background text-textMain antialiased overflow-x-hidden">
 
-    <!-- Top Navigation Bar -->
-    <header class="fixed w-full top-0 z-50 bg-[#111111] border-b border-white/5 h-14 flex items-center justify-between px-4">
-        <button onclick="toggleSidebar()" class="text-white p-2">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </button>
-        
-        <a onclick="setCategory('home')" class="text-xl font-bold tracking-wider cursor-pointer flex items-center gap-2">
-            <span class="text-white">HMBD</span><span class="text-primary text-sm font-normal">.com</span>
-        </a>
+    <!-- Top Navigation Bar (Glassmorphism) -->
+    <header class="fixed w-full top-0 z-50 glass-panel h-16 flex items-center justify-between px-6 md:px-12">
+        <div class="flex items-center gap-8">
+            <a href="#" onclick="setCategory('home')" class="text-primary font-black text-2xl tracking-wider cursor-pointer flex items-center gap-2">
+                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> HMBD
+            </a>
+            <nav class="hidden md:flex gap-6 text-sm text-textMuted font-medium">
+                <span onclick="setCategory('home')" class="cursor-pointer hover:text-white transition">Browse</span>
+                <span onclick="setCategory('tv')" class="cursor-pointer hover:text-white transition">TV Shows</span>
+                <span onclick="setCategory('movies')" class="cursor-pointer hover:text-white transition">Movies</span>
+                <span onclick="openAdBlockModal()" class="cursor-pointer text-primary font-bold hover:underline">🚫 Ad-Free VIP</span>
+            </nav>
+        </div>
 
-        <button onclick="toggleSearch()" class="text-white p-2">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        </button>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleSearch()" class="text-textMuted hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
+            <div id="auth-area" class="flex items-center gap-3">
+                <button onclick="openAuthModal('login')" class="text-xs glass-panel px-4 py-2 rounded-full font-bold hover:bg-white/10 transition">Sign In</button>
+            </div>
+        </div>
     </header>
 
     <!-- Hidden Search Bar -->
-    <div id="search-bar" class="fixed top-14 w-full bg-[#111] z-40 hidden p-3 border-b border-white/10">
-        <input type="text" id="search-input" oninput="handleLiveSearch()" placeholder="Search movies..." class="w-full bg-[#222] text-white px-4 py-2 rounded focus:outline-none text-sm">
+    <div id="search-bar" class="fixed top-16 w-full glass-panel z-40 hidden p-4 border-b border-white/10">
+        <input type="text" id="search-input" oninput="handleLiveSearch()" placeholder="Search movies, TV shows..." class="w-full bg-[#07070a]/80 text-white px-4 py-2.5 rounded-xl focus:outline-none focus:border-primary border border-white/10 text-sm">
     </div>
 
-    <!-- Sidebar Menu -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 z-[60] hidden opacity-0"></div>
-    <div id="sidebar" class="fixed inset-y-0 left-[-100%] w-[80%] max-w-sm bg-[#111111] z-[70] overflow-y-auto pb-10">
-        <div class="flex items-center justify-between p-4 border-b border-white/10">
-            <span class="text-lg font-bold">Menu</span>
-            <button onclick="toggleSidebar()" class="text-primary p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-        </div>
-        
-        <div class="p-4 space-y-6">
-            <div>
-                <h3 class="text-sm font-bold mb-3 text-white">Language & Region</h3>
-                <ul class="grid grid-cols-2 gap-y-3 text-sm text-textMuted">
-                    <li onclick="setCategory('hindi')" class="cursor-pointer hover:text-white">Bollywood Hindi</li>
-                    <li onclick="setCategory('bengali')" class="cursor-pointer hover:text-white">Bangla Movies</li>
-                    <li onclick="setCategory('home')" class="cursor-pointer hover:text-white">Hollywood (English)</li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-sm font-bold mb-3 text-white">Genres</h3>
-                <ul class="grid grid-cols-2 gap-y-3 text-sm text-textMuted">
-                    <li onclick="setCategory('action')" class="cursor-pointer hover:text-white">- Action</li>
-                    <li onclick="setCategory('romance')" class="cursor-pointer hover:text-white">- Romance</li>
-                    <li onclick="setCategory('adult')" class="cursor-pointer hover:text-white">- Thriller</li>
-                </ul>
-            </div>
+    <!-- Ad-Block / VIP Premium Modal -->
+    <div id="adblock-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[110] hidden flex items-center justify-center p-4">
+        <div class="glass-panel p-8 rounded-3xl w-full max-w-md relative text-center border border-primary/30 shadow-2xl shadow-primary/20">
+            <button onclick="closeAdBlockModal()" class="absolute top-4 right-4 text-textMuted hover:text-white">✕</button>
+            <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4 text-primary text-2xl font-bold">VIP</div>
+            <h2 class="text-2xl font-black mb-2 text-white">HMBD Ad-Free Premium</h2>
+            <p class="text-textMuted text-xs mb-6">Remove all pop-up ads, enjoy lightning-fast streaming without interruptions, and get direct ad-free video access!</p>
+            
+            <a href="https://wa.me/01868461577?text=Hello,%20I%20want%20to%20buy%20HMBD%20Ad-Free%20Premium%20Subscription." target="_blank" class="block w-full bg-gradient-to-r from-green-600 to-emerald-500 text-white py-3 rounded-2xl font-bold text-sm shadow-lg hover:opacity-90 transition mb-3">
+                💬 Buy VIP via WhatsApp (01868461577)
+            </a>
+            <button onclick="closeAdBlockModal()" class="text-xs text-textMuted hover:text-white">Close Window</button>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <main class="mt-14 pb-20">
-        
-        <!-- 3-Second Auto Update Banner (Hero Carousel) -->
-        <div class="relative w-full h-[220px] md:h-[400px] bg-surface overflow-hidden">
-            <div id="carousel-track" class="carousel-track flex w-full h-full"></div>
-            <div id="carousel-dots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5"></div>
+    <!-- Firebase Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+        <div class="glass-panel p-6 rounded-3xl w-full max-w-md relative border border-white/10">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-textMuted hover:text-white">✕</button>
+            <h2 id="modal-title" class="text-xl font-bold mb-4">Sign In to HMBD</h2>
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Email</label>
+                    <input type="email" id="auth-email" required class="w-full bg-[#07070a]/80 border border-white/10 p-2.5 rounded-xl text-sm text-white focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Password</label>
+                    <input type="password" id="auth-password" required class="w-full bg-[#07070a]/80 border border-white/10 p-2.5 rounded-xl text-sm text-white focus:outline-none focus:border-primary">
+                </div>
+                <button type="submit" id="auth-btn" class="w-full bg-primary text-white py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition">Sign In</button>
+            </form>
+            <p id="auth-switch-text" class="text-xs text-textMuted text-center mt-4">
+                New to HMBD? <span onclick="switchAuthMode()" class="text-primary cursor-pointer font-bold">Sign up now</span>
+            </p>
         </div>
+    </div>
 
-        <!-- Ad Banner Above Featured -->
-        <div class="flex justify-center my-4">
+    <!-- Main Hero & Sections -->
+    <main class="mt-16 pb-20">
+        
+        <!-- Hero Section -->
+        <section id="hero-section" class="relative h-[70vh] md:h-[80vh] w-full overflow-hidden flex items-end">
+            <div class="absolute inset-0 bg-surface animate-pulse"></div>
+        </section>
+
+        <!-- Ad Banner -->
+        <div class="flex justify-center my-6">
             <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
             <div id="container-8e9094986a453471eab78291c50b779f"></div>
         </div>
 
-        <!-- Featured Section -->
-        <div class="mt-6">
-            <div class="flex justify-between items-center px-4 mb-3">
-                <h2 class="text-lg text-white section-title">Featured</h2>
-                <div class="flex gap-1">
-                    <button onclick="scrollFeatured(-1)" class="bg-[#222] p-1 rounded"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                    <button onclick="scrollFeatured(1)" class="bg-[#222] p-1 rounded"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
-                </div>
+        <!-- Trending Now Section -->
+        <div class="mt-8 px-6 md:px-12">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg md:text-xl font-bold text-white section-title">Trending Now</h2>
+                <button onclick="openAdBlockModal()" class="text-xs text-primary font-semibold flex items-center gap-1 glass-card px-3 py-1 rounded-full border border-primary/30">
+                    🚫 Remove Ads (VIP)
+                </button>
             </div>
-            <div id="featured-grid" class="flex overflow-x-auto hide-scroll gap-3 px-4 snap-x"></div>
+            <div id="trending-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
         </div>
 
-        <!-- Latest Movies (Grid View) -->
-        <div class="mt-8 px-4">
-            <div class="flex justify-between items-center mb-3">
-                <h2 id="main-section-title" class="text-lg text-white section-title">Latest Movies</h2>
-                <button class="bg-primary text-white text-[10px] font-bold px-2 py-1 rounded">SEE ALL</button>
-            </div>
-            <div id="movie-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+        <!-- HMBD Originals Section -->
+        <div class="mt-12 px-6 md:px-12">
+            <h2 class="text-lg md:text-xl font-bold text-white section-title mb-4">HMBD Originals</h2>
+            <div id="originals-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
         </div>
-        
+
         <!-- Auto Load Loader -->
         <div id="loading-indicator" class="text-center mt-8 hidden">
-            <p class="text-textMuted text-sm">Loading more movies...</p>
+            <p class="text-textMuted text-sm">Loading more movies automatically...</p>
         </div>
 
     </main>
 
-    <!-- Ad Banner Below Content -->
-    <div class="flex justify-center my-6">
-        <script>
-            atOptions = {
-                'key' : '28d9a86d009d105b82893c63bcb4a2cd',
-                'format' : 'iframe',
-                'height' : 300,
-                'width' : 160,
-                'params' : {}
-            };
-        </script>
-        <script src="https://www.highrevenueformat.com/28d9a86d009d105b82893c63bcb4a2cd/invoke.js"></script>
-    </div>
+    <!-- Footer -->
+    <footer class="glass-panel mt-20 border-t border-white/10 py-10 px-6 md:px-12 text-textMuted text-xs flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex gap-6">
+            <a href="#" class="hover:text-white">About</a>
+            <a href="#" onclick="openAdBlockModal()" class="text-primary font-bold hover:underline">Ad-Free VIP</a>
+            <a href="#" class="hover:text-white">Terms</a>
+            <a href="#" class="hover:text-white">Privacy</a>
+        </div>
+        <p>© 2026 HMBD Inc. All rights reserved.</p>
+    </footer>
 
-    <!-- Adsterra Popunder & Social Bar -->
+    <!-- Adsterra Scripts -->
     <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
     <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
 
-    <!-- App Logic -->
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
+            authDomain: "habib-yt.firebaseapp.com",
+            projectId: "habib-yt",
+            storageBucket: "habib-yt.firebasestorage.app",
+            messagingSenderId: "656628491244",
+            appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
+            measurementId: "G-GNY1T88D34"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        let isSignUp = false;
+
+        window.openAuthModal = function(mode) {
+            isSignUp = (mode === 'signup');
+            document.getElementById('modal-title').innerText = isSignUp ? 'Sign Up for HMBD' : 'Sign In to HMBD';
+            document.getElementById('auth-btn').innerText = isSignUp ? 'Sign Up' : 'Sign In';
+            document.getElementById('auth-switch-text').innerHTML = isSignUp ? 
+                `Already have an account? <span onclick="openAuthModal('login')" class="text-primary cursor-pointer font-bold">Sign in</span>` :
+                `New to HMBD? <span onclick="openAuthModal('signup')" class="text-primary cursor-pointer font-bold">Sign up now</span>`;
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        window.closeAuthModal = function() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        window.openAdBlockModal = function() {
+            document.getElementById('adblock-modal').classList.remove('hidden');
+        }
+
+        window.closeAdBlockModal = function() {
+            document.getElementById('adblock-modal').classList.add('hidden');
+        }
+
+        window.handleAuthSubmit = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+
+            try {
+                if (isSignUp) {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    alert('Account created successfully!');
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+                closeAuthModal();
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        window.handleLogout = async function() {
+            await signOut(auth);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            const authArea = document.getElementById('auth-area');
+            if (user) {
+                const username = user.email.split('@')[0];
+                authArea.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-white">${username}</span>
+                        <button onclick="handleLogout()" class="text-xs glass-panel px-3 py-1.5 rounded-xl text-textMuted hover:text-white">Logout</button>
+                    </div>
+                `;
+            } else {
+                authArea.innerHTML = `<button onclick="openAuthModal('login')" class="text-xs glass-panel px-4 py-2 rounded-full font-bold hover:bg-white/10 transition">Sign In</button>`;
+            }
+        });
+    </script>
+
+    <!-- TMDB & Infinite Scroll App Logic -->
     <script>
         const API_KEY = '93a5c52b939ffbcb3cd561c8a1f8b880';
-        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w780';
-        const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w342';
-        
+        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
+        const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+
         let currentPage = 1;
         let isFetching = false;
         let currentUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`;
-        let searchTimeout = null;
-        
-        let carouselInterval;
-        let currentSlide = 0;
-        let totalSlides = 5;
-
-        const endpoints = {
-            home: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`,
-            hindi: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=hi`,
-            bengali: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_original_language=bn`,
-            action: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=28`,
-            romance: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=10749`,
-            adult: `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=53,27&include_adult=true`
-        };
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            if (sidebar.style.left === '0px') {
-                sidebar.style.left = '-100%';
-                overlay.style.opacity = '0';
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-            } else {
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.style.opacity = '1', 10);
-                sidebar.style.left = '0px';
-            }
-        }
-
-        function toggleSearch() {
-            const searchBar = document.getElementById('search-bar');
-            searchBar.classList.toggle('hidden');
-            if(!searchBar.classList.contains('hidden')){
-                document.getElementById('search-input').focus();
-            }
-        }
-
-        function scrollFeatured(direction) {
-            const container = document.getElementById('featured-grid');
-            container.scrollBy({ left: direction * 150, behavior: 'smooth' });
-        }
 
         function handleMovieClick(movieId) {
             const watchLink = `https://vidsrc.me/embed/movie?tmdb=${movieId}`;
             const smartLink = "https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e";
             
             let hasSeenAd = sessionStorage.getItem('ad_seen_' + movieId);
-            
             if (!hasSeenAd) {
                 sessionStorage.setItem('ad_seen_' + movieId, 'true');
                 window.location.href = smartLink;
@@ -220,146 +276,139 @@
             }
         }
 
-        function setCategory(category) {
-            toggleSidebar();
-            document.getElementById('search-input').value = '';
-            document.getElementById('search-bar').classList.add('hidden');
-            
-            currentUrl = endpoints[category] || endpoints['home'];
-            currentPage = 1;
-            document.getElementById('main-section-title').innerText = category === 'home' ? 'Latest Movies' : category.toUpperCase() + ' Movies';
-            
-            document.getElementById('movie-grid').innerHTML = '';
-            fetchMovies(currentUrl, currentPage);
+        function toggleSearch() {
+            const searchBar = document.getElementById('search-bar');
+            searchBar.classList.toggle('hidden');
+            if(!searchBar.classList.contains('hidden')) document.getElementById('search-input').focus();
         }
 
-        function handleLiveSearch() {
-            clearTimeout(searchTimeout);
-            const query = document.getElementById('search-input').value.trim();
-            
-            if (query === '') {
-                currentUrl = endpoints['home'];
-                currentPage = 1;
-                document.getElementById('movie-grid').innerHTML = '';
-                fetchMovies(currentUrl, currentPage);
-                return;
-            }
-            
-            searchTimeout = setTimeout(() => {
-                currentUrl = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`;
-                currentPage = 1;
-                document.getElementById('main-section-title').innerText = `Search Results`;
-                document.getElementById('movie-grid').innerHTML = '';
-                fetchMovies(currentUrl, currentPage);
-            }, 500);
-        }
-
-        async function fetchMovies(url, page) {
+        async function fetchMovies(page = 1) {
             if (isFetching) return;
             isFetching = true;
             document.getElementById('loading-indicator').classList.remove('hidden');
 
             try {
-                const response = await fetch(`${url}&page=${page}`);
-                const data = await response.json();
+                const res = await fetch(`${currentUrl}&page=${page}`);
+                const data = await res.json();
                 
-                if (page === 1) {
-                    setupHeroCarousel(data.results.slice(0, 5));
-                    setupFeatured(data.results.slice(5, 12));
-                    renderGrid(data.results.slice(12, 20));
+                if(page === 1 && data.results.length > 0) {
+                    setupHero(data.results[0]);
+                    renderGrid('trending-grid', data.results.slice(1, 6));
+                    renderGrid('originals-grid', data.results.slice(6, 11));
                 } else {
-                    renderGrid(data.results);
+                    renderGridAppend('trending-grid', data.results);
                 }
-
-            } catch (error) {
-                console.error('Error:', error);
+            } catch (err) {
+                console.error(err);
             } finally {
                 isFetching = false;
                 document.getElementById('loading-indicator').classList.add('hidden');
             }
         }
 
-        function setupHeroCarousel(movies) {
-            const track = document.getElementById('carousel-track');
-            const dotsContainer = document.getElementById('carousel-dots');
-            track.innerHTML = '';
-            dotsContainer.innerHTML = '';
-            totalSlides = movies.length;
-
-            movies.forEach((movie, index) => {
-                const img = movie.backdrop_path ? `${IMAGE_BASE_URL}${movie.backdrop_path}` : `${POSTER_BASE_URL}${movie.poster_path}`;
-                const year = movie.release_date ? movie.release_date.substring(0, 4) : '';
-                
-                track.innerHTML += `
-                    <div onclick="handleMovieClick('${movie.id}')" class="min-w-full h-full relative cursor-pointer">
-                        <img src="${img}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent"></div>
-                        <div class="absolute bottom-6 left-4 right-4">
-                            <h2 class="text-white font-bold text-lg leading-tight shadow-black drop-shadow-md">${movie.title} (${year})</h2>
-                            <span class="inline-block mt-1 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded">MOVIE</span>
-                        </div>
+        function setupHero(movie) {
+            const hero = document.getElementById('hero-section');
+            const bg = movie.backdrop_path ? `${IMAGE_BASE_URL}${movie.backdrop_path}` : '';
+            
+            hero.innerHTML = `
+                <div class="absolute inset-0"><img src="${bg}" class="w-full h-full object-cover"></div>
+                <div class="absolute inset-0 hero-gradient"></div>
+                <div class="relative z-10 p-6 md:p-12 max-w-2xl space-y-3">
+                    <span class="text-primary text-xs font-bold tracking-widest uppercase">Featured HMBD Original</span>
+                    <h1 class="text-4xl md:text-6xl font-black text-white">${movie.title}</h1>
+                    <div class="flex items-center gap-3 text-xs text-textMuted font-bold">
+                        <span class="text-[#f5c518]">⭐ ${movie.vote_average.toFixed(1)}</span>
+                        <span>${movie.release_date ? movie.release_date.split('-')[0] : ''}</span>
                     </div>
-                `;
-                
-                dotsContainer.innerHTML += `<div class="dot ${index === 0 ? 'active' : ''}"></div>`;
-            });
-
-            clearInterval(carouselInterval);
-            currentSlide = 0;
-            carouselInterval = setInterval(() => {
-                currentSlide = (currentSlide + 1) % totalSlides;
-                track.style.transform = `translateX(-${currentSlide * 100}%)`;
-                
-                document.querySelectorAll('.dot').forEach((dot, idx) => {
-                    dot.classList.toggle('active', idx === currentSlide);
-                });
-            }, 3000);
+                    <p class="text-textMuted text-sm md:text-base line-clamp-2">${movie.overview}</p>
+                    <div class="flex gap-3 pt-2">
+                        <button onclick="handleMovieClick('${movie.id}')" class="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 hover:opacity-90 shadow-lg shadow-primary/30">
+                            ▶ Play Now
+                        </button>
+                        <button onclick="openAdBlockModal()" class="glass-card text-white px-6 py-2.5 rounded-full font-bold text-sm border border-white/20 hover:bg-white/10">
+                            🚫 Go Ad-Free
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
-        function setupFeatured(movies) {
-            const container = document.getElementById('featured-grid');
-            container.innerHTML = '';
-            
+        function renderGrid(containerId, movies) {
+            const grid = document.getElementById(containerId);
+            grid.innerHTML = '';
             movies.forEach(movie => {
-                const poster = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/342x513';
-                
-                container.innerHTML += `
-                    <div onclick="handleMovieClick('${movie.id}')" class="min-w-[130px] w-[130px] snap-start relative cursor-pointer bg-[#1a1a1a] rounded overflow-hidden">
-                        <div class="absolute top-0 left-0 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 z-10">FEATURE</div>
-                        <img src="${poster}" class="w-full h-[190px] object-cover">
-                        <div class="absolute bottom-0 right-0 bg-black/80 text-[#f5c518] text-[10px] font-bold px-1.5 py-0.5 z-10 flex items-center gap-1">
-                            ⭐ ${movie.vote_average.toFixed(1)}
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function renderGrid(movies) {
-            const grid = document.getElementById('movie-grid');
-            
-            movies.forEach(movie => {
-                const poster = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : 'https://via.placeholder.com/342x513';
+                const poster = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : '';
+                const year = movie.release_date ? movie.release_date.split('-')[0] : '';
                 
                 grid.innerHTML += `
-                    <div onclick="handleMovieClick('${movie.id}')" class="relative cursor-pointer bg-[#1a1a1a] rounded overflow-hidden">
-                        <div class="absolute top-0 left-0 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 z-10">Dual Audio</div>
-                        <img src="${poster}" class="w-full aspect-[2/3] object-cover">
+                    <div onclick="handleMovieClick('${movie.id}')" class="glass-card rounded-2xl overflow-hidden cursor-pointer group hover:scale-105 transition duration-300 border border-white/10">
+                        <img src="${poster}" class="w-full aspect-[16/9] object-cover">
+                        <div class="p-3">
+                            <h3 class="font-bold text-sm truncate">${movie.title}</h3>
+                            <div class="flex justify-between items-center text-[11px] text-textMuted mt-1">
+                                <span>${year}</span>
+                                <span class="text-[#f5c518]">⭐ ${movie.vote_average.toFixed(1)}</span>
+                            </div>
+                        </div>
                     </div>
                 `;
             });
         }
 
+        function renderGridAppend(containerId, movies) {
+            const grid = document.getElementById(containerId);
+            movies.forEach(movie => {
+                const poster = movie.poster_path ? `${POSTER_BASE_URL}${movie.poster_path}` : '';
+                const year = movie.release_date ? movie.release_date.split('-')[0] : '';
+                
+                grid.innerHTML += `
+                    <div onclick="handleMovieClick('${movie.id}')" class="glass-card rounded-2xl overflow-hidden cursor-pointer group hover:scale-105 transition duration-300 border border-white/10">
+                        <img src="${poster}" class="w-full aspect-[16/9] object-cover">
+                        <div class="p-3">
+                            <h3 class="font-bold text-sm truncate">${movie.title}</h3>
+                            <div class="flex justify-between items-center text-[11px] text-textMuted mt-1">
+                                <span>${year}</span>
+                                <span class="text-[#f5c518]">⭐ ${movie.vote_average.toFixed(1)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function handleLiveSearch() {
+            const query = document.getElementById('search-input').value.trim();
+            if(!query) {
+                currentUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`;
+                currentPage = 1;
+                fetchMovies(1);
+                return;
+            }
+            try {
+                const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
+                const data = await res.json();
+                renderGrid('trending-grid', data.results);
+                document.getElementById('originals-grid').innerHTML = '';
+            } catch(e) { console.error(e); }
+        }
+
+        function setCategory(cat) {
+            currentUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`;
+            currentPage = 1;
+            fetchMovies(1);
+        }
+
+        // Infinite Scroll
         window.addEventListener('scroll', () => {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 600) {
                 if (!isFetching) {
                     currentPage++;
-                    fetchMovies(currentUrl, currentPage);
+                    fetchMovies(currentPage);
                 }
             }
         });
 
-        fetchMovies(currentUrl, currentPage);
+        fetchMovies(1);
     </script>
 </body>
 </html>

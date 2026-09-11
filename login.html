@@ -401,7 +401,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { 
       getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, 
-      signInWithPopup, GoogleAuthProvider, RecaptchaVerifier, signInWithPhoneNumber 
+      signInWithPopup, GoogleAuthProvider, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -417,6 +417,17 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
+
+    // Already logged in check: Redirect to index.html if active user exists
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        localStorage.setItem('habib_logged_in', 'true');
+        if (user.photoURL) {
+          localStorage.setItem('habib_user_avatar', user.photoURL);
+        }
+        window.location.href = 'index.html';
+      }
+    });
 
     // Slider logic
     var signUpBtn = document.getElementById('signUp');
@@ -449,7 +460,6 @@
       }
     }
 
-    // FIX: Successfully set localStorage state so index.html syncs immediately without failing to show profile
     function handleLoginSuccess(user, msgId) {
       localStorage.setItem('habib_logged_in', 'true');
       if (user.photoURL) {
@@ -483,7 +493,7 @@
       });
     }
 
-    // Google Login Fix
+    // Google Login
     window.loginWithGoogle = function() {
       signInWithPopup(auth, googleProvider).then(function(result) {
         handleLoginSuccess(result.user, "loginMessage");

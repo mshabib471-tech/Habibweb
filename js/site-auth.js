@@ -18,7 +18,65 @@ const storage = getStorage(app);
 const DEFAULT_AVATAR = "https://www.svgrepo.com/show/5125/avatar.svg";
 
 function byId(id){ return document.getElementById(id); }
-function setVisible(el, visible){ if(el) el.classList.toggle("hidden", !visible); }
+
+// instant check with localStorage fallback to prevent UI flickering on load
+function updateUIState(user) {
+  const loginButtons = document.querySelectorAll('#loginBtn, #loginNavBtn, a[href*="login.html"]');
+  const profileButtons = document.querySelectorAll('#profileBtn, #userProfileMenu');
+  const avatars = document.querySelectorAll('#headerAvatar, #userAvatarImg');
+
+  if (user) {
+    // Hide login buttons
+    loginButtons.forEach(el => {
+      if (el) {
+        el.style.display = 'none';
+        el.classList.add('hidden');
+      }
+    });
+
+    // Show profile/avatar buttons
+    profileButtons.forEach(el => {
+      if (el) {
+        el.style.display = 'flex';
+        el.classList.remove('hidden');
+      }
+    });
+
+    const avatarUrl = user.photoURL || DEFAULT_AVATAR;
+    avatars.forEach(el => {
+      if (el) el.src = avatarUrl;
+    });
+
+    localStorage.setItem('habib_logged_in', 'true');
+    if (user.photoURL) localStorage.setItem('habib_user_avatar', user.photoURL);
+  } else {
+    // Show login buttons
+    loginButtons.forEach(el => {
+      if (el) {
+        el.style.display = 'flex';
+        el.classList.remove('hidden');
+      }
+    });
+
+    // Hide profile/avatar buttons
+    profileButtons.forEach(el => {
+      if (el) {
+        el.style.display = 'none';
+        el.classList.add('hidden');
+      }
+    });
+
+    localStorage.removeItem('habib_logged_in');
+  }
+
+  window.currentHabibUser = user || null;
+}
+
+// Run quick UI check immediately using localStorage before Firebase fully boots up
+if (localStorage.getItem('habib_logged_in') === 'true') {
+  const savedAvatar = localStorage.getItem('habib_user_avatar') || DEFAULT_AVATAR;
+  updateUIState({ photoURL: savedAvatar });
+}
 
 async function uploadAvatar(file, user, avatarEl){
   if(!file || !user) return;
@@ -30,27 +88,18 @@ async function uploadAvatar(file, user, avatarEl){
   const url = await getDownloadURL(storageRef);
   await updateProfile(user, { photoURL: url });
   if(avatarEl) avatarEl.src = url;
+  localStorage.setItem('habib_user_avatar', url);
   return url;
 }
 
 onAuthStateChanged(auth, user => {
-  const loginButtons = [byId("loginBtn"), byId("loginNavBtn")].filter(Boolean);
-  const profileButtons = [byId("profileBtn"), byId("userProfileMenu")].filter(Boolean);
-  const avatars = [byId("headerAvatar")].filter(Boolean);
-
-  loginButtons.forEach(el => setVisible(el, !user));
-  profileButtons.forEach(el => setVisible(el, !!user));
-
-  if(user){
-    const avatar = user.photoURL || DEFAULT_AVATAR;
-    avatars.forEach(el => el.src = avatar);
-  }
-
-  window.currentHabibUser = user || null;
+  updateUIState(user);
 });
 
 window.doLogout = async function(){
   try {
+    localStorage.removeItem('habib_logged_in');
+    localStorage.removeItem('habib_user_avatar');
     await signOut(auth);
     window.location.reload();
   } catch(err) {

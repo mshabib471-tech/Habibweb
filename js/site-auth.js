@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -12,7 +12,8 @@ const firebaseConfig = {
   measurementId: "G-GNY1T88D34"
 };
 
-const app = getApps().find(a => a.name === "habib-public") || initializeApp(firebaseConfig, "habib-public");
+// Fixed initialization to match default app across all pages
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const storage = getStorage(app);
 const DEFAULT_AVATAR = "https://www.svgrepo.com/show/5125/avatar.svg";
@@ -26,7 +27,6 @@ function updateUIState(user) {
   const avatars = document.querySelectorAll('#headerAvatar, #userAvatarImg');
 
   if (user) {
-    // Hide login buttons
     loginButtons.forEach(el => {
       if (el) {
         el.style.display = 'none';
@@ -34,7 +34,6 @@ function updateUIState(user) {
       }
     });
 
-    // Show profile/avatar buttons
     profileButtons.forEach(el => {
       if (el) {
         el.style.display = 'flex';
@@ -50,7 +49,6 @@ function updateUIState(user) {
     localStorage.setItem('habib_logged_in', 'true');
     if (user.photoURL) localStorage.setItem('habib_user_avatar', user.photoURL);
   } else {
-    // Show login buttons
     loginButtons.forEach(el => {
       if (el) {
         el.style.display = 'flex';
@@ -58,7 +56,6 @@ function updateUIState(user) {
       }
     });
 
-    // Hide profile/avatar buttons
     profileButtons.forEach(el => {
       if (el) {
         el.style.display = 'none';

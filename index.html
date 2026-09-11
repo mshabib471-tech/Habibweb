@@ -124,14 +124,15 @@
 
         <!-- CTA & Profile & Mobile Menu Toggle -->
         <div class="flex items-center gap-2 sm:gap-3">
-            <a href="login.html" class="hidden sm:flex glass bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors items-center gap-2 shadow-sm">
-                Let's Talk <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            <!-- Sign In / Sign Up Button (Hidden when logged in via site-auth.js) -->
+            <a href="login.html" id="loginNavBtn" class="glass bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-sm">
+                Sign In / Sign Up <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </a>
             
-            <!-- Profile Avatar (Hidden by default) -->
+            <!-- Profile Avatar & Logout Dropdown (Shown when logged in) -->
             <div id="profileBtn" class="hidden relative cursor-pointer group">
-                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-white shadow-sm object-cover">
-                <div class="absolute top-full right-0 mt-3 w-48 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
+                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-indigo-400 shadow-sm object-cover">
+                <div class="absolute top-full right-0 mt-3 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
                     <label class="px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-xl cursor-pointer flex items-center gap-2 transition-colors mb-1">
                         <i class="fa-solid fa-camera text-xs"></i> Change Pic
                         <input type="file" id="profilePicInput" accept="image/*" class="hidden">
@@ -156,7 +157,7 @@
         <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Services</a>
         <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Blog</a>
         <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Contact</a>
-        <a href="login.html" onclick="toggleMobileMenu()" class="w-full bg-black text-white text-center py-3 rounded-xl font-semibold text-xs mt-2 shadow-md">Let's Talk</a>
+        <a href="login.html" id="mobileLoginBtn" onclick="toggleMobileMenu()" class="w-full bg-black text-white text-center py-3 rounded-xl font-semibold text-xs mt-2 shadow-md">Sign In / Sign Up</a>
     </div>
 
     <main class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-28 overflow-x-hidden">
@@ -688,7 +689,8 @@
             });
         });
     </script>
-      
+    
+    <!-- Firebase Auth Integration Script -->
     <script type="module" src="js/site-auth.js"></script>
 </body>
 </html>

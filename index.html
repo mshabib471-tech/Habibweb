@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title data-en="Habib iFix - Gadget Specialist" data-bn="হাবিব আইফিক্স - গ্যাজেট স্পেশালিস্ট">Habib iFix - Gadget Specialist</title>
+    <title data-en="Habib - Expert Mobile Technician & Online Services" data-bn="হাবিব - এক্সপার্ট মোবাইল টেকনিশিয়ান ও অনলাইন সার্ভিস">Habib - Expert Mobile Technician & Online Services</title>
     
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
     
-    <!-- Adsterra Popunder Scripts -->
-    <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
-    <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
@@ -79,14 +75,10 @@
 
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .animate-float { animation: float 4s ease-in-out infinite; }
-        .animate-float-delayed { animation: float 5s ease-in-out infinite 1s; }
         
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-
-        .chat-reveal { opacity: 0; transform: scale(0.95) translateY(20px); transition: all 0.3s ease; pointer-events: none; }
-        .chat-reveal.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
     </style>
 </head>
 <body class="antialiased relative selection:bg-indigo-200 selection:text-indigo-900">
@@ -100,15 +92,14 @@
         <a href="index.html" class="flex items-center gap-2.5">
             <div class="w-9 h-9 sm:w-10 sm:h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-md">H</div>
             <div class="leading-tight">
-                <h1 class="font-bold text-slate-800 text-xs sm:text-sm">Habib<span class="text-slate-400 font-normal">iFix</span></h1>
-                <p class="text-[9px] sm:text-[10px] text-slate-500 font-medium tracking-wide">Gadget Specialist</p>
+                <h1 class="font-bold text-slate-800 text-xs sm:text-sm">Habib <span class="text-indigo-600">iFix</span></h1>
+                <p class="text-[9px] sm:text-[10px] text-slate-500 font-medium tracking-wide" data-en="Trusted Mobile Technician" data-bn="বিশ্বস্ত মোবাইল টেকনিশিয়ান">Trusted Mobile Technician</p>
             </div>
         </a>
 
         <!-- Desktop Nav -->
         <nav class="hidden lg:flex glass rounded-full px-6 py-2.5 items-center gap-6 text-sm font-medium text-slate-600 shadow-sm">
             <a href="index.html" class="text-black bg-white px-4 py-1.5 rounded-full shadow-sm" data-en="Home" data-bn="হোম">Home</a>
-            <a href="about.html" class="hover:text-black transition-colors" data-en="About" data-bn="সম্পর্কে">About</a>
             <a href="services.html" class="hover:text-black transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
             <a href="blog.html" class="hover:text-black transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
             <a href="contact.html" class="hover:text-black transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
@@ -117,7 +108,6 @@
 
         <!-- CTA & Language Switch & Profile -->
         <div class="flex items-center gap-2 sm:gap-3">
-            <!-- Language Switcher Button (ENG | BAN) -->
             <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass bg-indigo-50 px-3 py-2 rounded-full font-bold text-xs text-indigo-700 hover:bg-indigo-100 transition-colors shadow-sm">
                 বাংলা (BAN)
             </button>
@@ -148,7 +138,6 @@
     <!-- Mobile Dropdown Menu -->
     <div id="mobileMenu" class="fixed inset-x-0 top-0 pt-20 bg-white/95 backdrop-blur-2xl border-b border-slate-200 shadow-2xl px-6 pb-6 flex flex-col gap-3 transform -translate-y-full opacity-0 invisible transition-all duration-300 z-40 lg:hidden">
         <a href="index.html" onclick="toggleMobileMenu()" class="text-slate-800 font-semibold text-sm py-2.5 px-4 rounded-xl bg-slate-100" data-en="Home" data-bn="হোম">Home</a>
-        <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors" data-en="About" data-bn="সম্পর্কে">About</a>
         <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
         <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
         <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
@@ -160,189 +149,129 @@
         <!-- HERO SECTION -->
         <section class="flex flex-col-reverse lg:flex-row items-center justify-between gap-10 mt-4 mb-16 relative">
             <div class="lg:w-1/2 z-10 text-center lg:text-left w-full">
-                <span class="text-indigo-500 font-semibold tracking-widest text-[10px] sm:text-xs uppercase mb-3 block" data-en="HELLO, I'M HABIB" data-bn="হ্যালো, আমি হাবিব">HELLO, I'M HABIB</span>
-                <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-2">Habib iFix</h1>
-                <h2 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gradient mb-4 sm:mb-6" data-en="Gadget Specialist" data-bn="গ্যাজেট স্পেশালিস্ট">Gadget Specialist</h2>
-                <p class="text-slate-500 text-sm sm:text-base md:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed mb-8" data-en="I craft meaningful digital experiences and repair solutions that are intuitive, beautiful, and built with purpose." data-bn="আমি আধুনিক ডিজিটাল অভিজ্ঞতা এবং গ্যাজেট রিপেয়ার সলিউশন তৈরি করি যা নির্ভরযোগ্য এবং সুন্দর।">
-                    I craft meaningful digital experiences and repair solutions that are intuitive, beautiful, and built with purpose.
+                <span class="text-indigo-500 font-semibold tracking-widest text-[10px] sm:text-xs uppercase mb-3 block" data-en="AS-SALAMU ALAIKUM, I'M HABIB" data-bn="আসসালামু আলাইকুম, আমি মো: হাবিবুর রহমান">AS-SALAMU ALAIKUM, I'M HABIB</span>
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-2">Habib <span class="text-gradient">iFix</span></h1>
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-slate-700 mb-4 sm:mb-6" data-en="Professional Mobile Technician & Online Service Provider" data-bn="প্রফেশনাল মোবাইল টেকনিশিয়ান ও অনলাইন সার্ভিস এক্সপার্ট">Professional Mobile Technician</h2>
+                <p class="text-slate-600 text-sm sm:text-base md:text-lg max-w-lg mx-auto lg:mx-0 leading-relaxed mb-8" data-en="Your trusted partner for all model mobile hardware & software solutions, FRP unlock, online services (Job applications, CV design, Graphics, Facebook-Google Ads), premium packages, and original mobile accessories." data-bn="আপনার যেকোনো মডেলের ফোনের বিশ্বস্ত রিপেয়ার, সফটওয়্যার ফিক্স, এফআরপি আনলক, অনলাইনে চাকরির আবেদন, সিভি মেক, গ্রাফিক ডিজাইন, ফেসবুক-গুগল অ্যাডস, ভার্চুয়াল কার্ড এবং অরিজিনাল মোবাইল এক্সেসরিজের নির্ভরযোগ্য ঠিকানা।">
+                    আপনার যেকোনো মডেলের ফোনের বিশ্বস্ত রিপেয়ার, সফটওয়্যার ফিক্স, এফআরপি আনলক, অনলাইনে চাকরির আবেদন, সিভি মেক, গ্রাফিক ডিজাইন এবং অরিজিনাল মোবাইল এক্সেসরিজের বিশ্বস্ত ঠিকানা। শতভাগ সততা ও দক্ষতার সাথে কাজ করা হয়।
                 </p>
                 <div class="flex flex-wrap justify-center lg:justify-start items-center gap-3 sm:gap-4 mb-10">
                     <a href="services.html" class="bg-black text-white px-5 sm:px-6 py-3.5 rounded-full font-medium flex items-center gap-2 hover:scale-105 transition-transform shadow-xl text-xs sm:text-sm">
-                        <span data-en="View My Work" data-bn="আমার কাজ দেখুন">View My Work</span> <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        <span data-en="View My Services" data-bn="আমার সেবাসমূহ দেখুন">View My Services</span> <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                     </a>
                     <a href="contact.html" class="glass px-5 sm:px-6 py-3.5 rounded-full font-medium flex items-center gap-2 hover:bg-white/80 transition-colors text-slate-700 text-xs sm:text-sm">
-                        <span data-en="Contact Me" data-bn="যোগাযোগ করুন">Contact Me</span> <i class="fa-regular fa-envelope text-xs"></i>
+                        <span data-en="Contact Me" data-bn="সরাসরি যোগাযোগ">Contact Me</span> <i class="fa-regular fa-envelope text-xs"></i>
                     </a>
-                    <!-- Android FRP Remove 2026 Button Box -->
                     <a href="frp.html" class="bg-gradient-to-r from-cyan-600 to-indigo-600 text-white px-5 sm:px-6 py-3.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-transform shadow-xl text-xs sm:text-sm">
                         <i class="fa-solid fa-unlock-keyhole text-xs"></i> <span data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</span>
                     </a>
                 </div>
-                
-                <!-- Trusted By -->
-                <div>
-                    <p class="text-[10px] sm:text-xs text-slate-400 font-medium mb-3 uppercase tracking-widest" data-en="Trusted by" data-bn="যাঁদের দ্বারা বিশ্বস্ত">Trusted by</p>
-                    <div class="flex items-center justify-center lg:justify-start gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 flex-wrap">
-                        <span class="font-bold text-xl sm:text-2xl text-slate-600 tracking-tighter">Samsung</span>
-                        <i class="fa-brands fa-apple text-2xl sm:text-3xl text-slate-600"></i>
-                        <span class="font-bold text-xl sm:text-2xl text-slate-600 tracking-tighter">Xiaomi</span>
-                    </div>
-                </div>
             </div>
 
-            <!-- Right Image Content -->
+            <!-- Right Image Content (Updated with your custom image link) -->
             <div class="lg:w-1/2 relative flex justify-center w-full">
-                <div class="absolute top-4 right-4 sm:right-10 glass p-3 sm:p-5 rounded-2xl sm:rounded-3xl animate-float-delayed shadow-xl z-20 text-center border-white/50 bg-white/60">
-                    <h3 class="text-2xl sm:text-4xl font-extrabold text-slate-800 text-gradient">5+</h3>
-                    <p class="text-[8px] sm:text-[10px] text-slate-500 font-semibold uppercase tracking-wider" data-en="Years Exp" data-bn="বছরের অভিজ্ঞতা">Years Exp</p>
-                </div>
-                
-                <div class="absolute bottom-4 left-4 sm:left-6 glass px-4 py-2 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl animate-float shadow-xl z-20 bg-white/70">
-                    <p class="text-[10px] sm:text-xs text-slate-500 font-medium" data-en="Repair Impact" data-bn="রিপেয়ার ইমপ্যাক্ট">Repair Impact</p>
-                    <h4 class="text-lg sm:text-2xl font-bold text-slate-800 mb-1">+120%</h4>
-                    <svg class="w-14 sm:w-16 h-5 sm:h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 100 20">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M0 20 Q 20 5, 40 15 T 80 5 T 100 10" />
-                    </svg>
-                </div>
-
-                <div class="relative w-[280px] h-[360px] sm:w-[380px] sm:h-[480px] md:w-[450px] md:h-[550px] rounded-[40px] sm:rounded-[60px] overflow-hidden glass border-4 border-white/50 shadow-2xl z-10">
-                    <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80&w=800" alt="Habib iFix Technician" class="w-full h-full object-cover">
+                <div class="relative w-[280px] h-[360px] sm:w-[380px] sm:h-[480px] md:w-[420px] md:h-[500px] rounded-[40px] sm:rounded-[60px] overflow-hidden glass border-4 border-white/50 shadow-2xl z-10">
+                    <img src="https://i.ibb.co.com/qYHv8LZc/Chat-GPT-Image-Sep-11-2026-08-20-13-PM.png" alt="Habib Mobile Technician" class="w-full h-full object-cover">
                 </div>
             </div>
         </section>
 
-        <!-- ADSTERRA NATIVE BANNER -->
-        <div class="mb-16 glass-card p-3 text-center overflow-hidden">
-            <div class="text-[10px] text-slate-400 mb-2 uppercase tracking-widest font-semibold" data-en="Advertisement" data-bn="বিজ্ঞাপন">Advertisement</div>
-            <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
-            <div id="container-8e9094986a453471eab78291c50b779f" class="flex justify-center"></div>
-        </div>
-
-        <!-- ABOUT ME SECTION -->
-        <section class="mb-20" id="about">
-            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block" data-en="ABOUT ME" data-bn="আমার সম্পর্কে">ABOUT ME</span>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                <div>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-6" data-en="Designing with Empathy<br>Building with Purpose" data-bn="সহানুভূতি দিয়ে ডিজাইন<br>উদ্দেশ্য নিয়ে তৈরি">Designing with Empathy<br>Building with Purpose</h2>
-                    <div class="glass-card p-5 sm:p-8 flex justify-between items-center text-center">
-                        <div>
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-regular fa-calendar text-xs sm:text-sm"></i></div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">5+</h3>
-                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide" data-en="Years Exp" data-bn="অভিজ্ঞতা">Years Exp</p>
-                        </div>
-                        <div class="w-px h-12 sm:h-16 bg-slate-200"></div>
-                        <div>
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-layer-group text-xs sm:text-sm"></i></div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">30+</h3>
-                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide" data-en="Projects" data-bn="প্রজেক্ট">Projects</p>
-                        </div>
-                        <div class="w-px h-12 sm:h-16 bg-slate-200"></div>
-                        <div>
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-regular fa-face-smile text-xs sm:text-sm"></i></div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">15+</h3>
-                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide" data-en="Happy Clients" data-bn="সন্তুষ্ট ক্লায়েন্ট">Happy Clients</p>
-                        </div>
+        <!-- SERVICES WE OFFER -->
+        <section class="mb-20" id="services">
+            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block text-center" data-en="WHAT I PROVIDE" data-bn="আমি কী কী সেবা দিয়ে থাকি">WHAT I PROVIDE</span>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-10 text-center" data-en="Mobile Repair & All Online Services" data-bn="মোবাইল রিপেয়ার ও সকল অনলাইন সেবা">Mobile Repair & All Online Services</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl mb-4 shadow-sm"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="All Model Mobile Repair" data-bn="সকল মডেলের মোবাইল রিপেয়ার">All Model Mobile Repair</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed" data-en="Display change, touch issue, charging port replacement, camera repair, and dead phone recovery with care." data-bn="ডিসপ্লে পরিবর্তন, টাচ সমস্যা, চার্জিং পোর্ট ও ক্যামেরা রিপেয়ার এবং ডেড ফোন সলিউশন।">Display change, touch issue, charging port replacement, and dead phone recovery with care.</p>
                     </div>
                 </div>
-                <div>
-                    <p class="text-slate-500 text-xs sm:text-sm md:text-base leading-relaxed mb-6 font-medium" data-en="I'm a digital product designer and technician with 5+ years of experience turning complex problems into simple, intuitive and engaging experiences. I believe in user-centered design, clean aesthetics and thoughtful details." data-bn="আমি একজন ডিজিটাল প্রোডাক্ট ডিজাইনার ও টেকনিশিয়ান। ৫ বছরেরও বেশি অভিজ্ঞতা নিয়ে জটিল সমস্যাগুলোকে সহজ ও সুন্দর সমাধানে রূপান্তর করি।">
-                        I'm a digital product designer and technician with 5+ years of experience turning complex problems into simple, intuitive and engaging experiences. I believe in user-centered design, clean aesthetics and thoughtful details.
-                    </p>
-                    <a href="about.html" class="glass bg-white px-6 py-3 rounded-full font-semibold text-xs sm:text-sm inline-flex items-center gap-2 hover:-translate-y-1 transition-transform shadow-sm">
-                        <span data-en="More About Me" data-bn="আমার সম্পর্কে আরও জানুন">More About Me</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                    </a>
+                <div class="glass-card p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl mb-4 shadow-sm"><i class="fa-solid fa-microchip"></i></div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Software & FRP Fix" data-bn="সফটওয়্যার ও এফআরপি ফিক্স">Software & FRP Fix</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed" data-en="Android FRP bypass, flashing, bootloop fix, unlocking network, and software troubleshooting." data-bn="অ্যান্ড্রয়েড এফআরপি বাইপাস, ফ্লাশিং, নেটওয়ার্ক আনলক এবং যেকোনো সফটওয়্যার সমস্যা সমাধান।">Android FRP bypass, flashing, bootloop fix, unlocking network, and software troubleshooting.</p>
+                    </div>
+                </div>
+                <div class="glass-card p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl mb-4 shadow-sm"><i class="fa-solid fa-laptop-file"></i></div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Online & Creative Work" data-bn="অনলাইন ও ক্রিয়েটিভ কাজ">Online & Creative Work</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed" data-en="Job applications, professional CV making, Photoshop editing, graphic design, Facebook & Google ads setup." data-bn="অনলাইন চাকরির আবেদন, প্রফেশনাল সিভি তৈরি, ফটোশপ ও গ্রাফিক ডিজাইন, ফেসবুক এবং গুগল অ্যাডস সেটআপ।">Job applications, professional CV making, Photoshop editing, graphic design, Facebook & Google ads setup.</p>
+                    </div>
+                </div>
+                <div class="glass-card p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl mb-4 shadow-sm"><i class="fa-solid fa-headphones"></i></div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Mobile Accessories & More" data-bn="মোবাইল এক্সেসরিজ ও অন্যান্য">Mobile Accessories & More</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed" data-en="Chargers, cables, headphones, airpods, microphones, covers, glass protectors, sticker printing, and virtual cards." data-bn="চার্জার, ক্যাবল, হেডফোন, এয়ারপডস, কাভার, গ্লাস, স্টিকার প্রিন্ট, ভার্চুয়াল কার্ড এবং প্রিমিয়াম প্যাকেজ।">Chargers, cables, headphones, airpods, microphones, covers, glass protectors, sticker printing, virtual cards.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- SERVICES SECTION -->
-        <section class="mb-20" id="services">
-            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block" data-en="WHAT I DO" data-bn="আমি যা করি">WHAT I DO</span>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-8" data-en="Services I Offer" data-bn="আমার সেবাসমূহ">Services I Offer</h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
-                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-mobile-screen"></i></div>
-                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Mobile Repair" data-bn="মোবাইল রিপেয়ার">Mobile Repair</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed" data-en="Designing intuitive and engaging user interfaces for web and mobile products." data-bn="মোবাইল ও ট্যাবলেটের হার্ডওয়্যার ও সফটওয়্যার ত্রুটি সমাধান।">Designing intuitive and engaging user interfaces for web and mobile products.</p>
-                </div>
-                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
-                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-laptop-code"></i></div>
-                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Laptop Service" data-bn="ল্যাপটপ সার্ভিস">Laptop Service</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed" data-en="Creating seamless user experiences through research, wireframing and prototyping." data-bn="ল্যাপটপ মাদারবোর্ড রিপেয়ার ও পার্টস রিপ্লেসমেন্ট।">Creating seamless user experiences through research, wireframing and prototyping.</p>
-                </div>
-                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-microchip"></i></div>
-                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Hardware Fix" data-bn="হার্ডওয়্যার ফিক্স">Hardware Fix</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed" data-en="Building scalable design systems and component libraries for consistent experiences." data-bn="মাইক্রোকন্ট্রোলার ও চিপ লেভেল সোল্ডারিং।">Building scalable design systems and component libraries for consistent experiences.</p>
-                </div>
-                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Data Recovery" data-bn="ডেটা রিকভারি">Data Recovery</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed" data-en="Understanding users deeply through research and data to inform better design." data-bn="ডিলিট বা লস্ট ফাইল রিকভারি এবং ব্যাকআপ সার্ভিস।">Understanding users deeply through research and data to inform better design.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- COURSES PLANS SECTION -->
+        <!-- COURSES & SERVICE PLANS (WITH WHATSAPP AUTOMATION & LOGIN CHECK) -->
         <section class="mb-20" id="courses">
-            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block text-center" data-en="PREMIUM LEARNING" data-bn="প্রিমিয়াম লার্নিং">PREMIUM LEARNING</span>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-10 text-center" data-en="Our Course Plans" data-bn="আমাদের কোর্স প্ল্যানসমূহ">Our Course Plans</h2>
+            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block text-center" data-en="BOOKING & PLANS" data-bn="বুকিং ও সার্ভিস প্ল্যান">BOOKING & PLANS</span>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 text-center" data-en="Choose Your Service Plan" data-bn="আপনার প্রয়োজনীয় প্ল্যানটি বেছে নিন">Choose Your Service Plan</h2>
+            <p class="text-xs sm:text-sm text-slate-500 text-center max-w-xl mx-auto mb-10" data-en="Click on any plan to book instantly. Make sure you are logged in so your details will be sent directly to my WhatsApp!" data-bn="যেকোনো প্ল্যানে ক্লিক করে ইনস্ট্যান্ট বুক করুন। বুক করার জন্য অবশ্যই সাইন ইন বা লগইন থাকতে হবে, যাতে আপনার তথ্য সরাসরি আমার হোয়াটসঅ্যাপে চলে আসে!">Click on any plan to book instantly. Make sure you are logged in so your details will be sent directly to my WhatsApp!</p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Free Plan -->
+                <!-- Plan 1 -->
                 <div class="glass-card p-8 flex flex-col justify-between border-t-4 border-slate-400">
                     <div>
-                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Free Plan" data-bn="ফ্রি প্ল্যান">Free Plan</h3>
-                        <p class="text-xs text-slate-500 mb-6" data-en="Basic tutorials to get started with mobile flashing." data-bn="মোবাইল ফ্লাশিং শেখার প্রাথমিক টিউটোরিয়াল।">Basic tutorials to get started with mobile flashing.</p>
-                        <div class="text-3xl font-extrabold text-slate-900 mb-6">$0 <span class="text-xs font-normal text-slate-500" data-en="/ lifetime" data-bn="/ আজীবন">/ lifetime</span></div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Basic Software Support" data-bn="বেসিক সফটওয়্যার সাপোর্ট">Basic Software Support</h3>
+                        <p class="text-xs text-slate-500 mb-6" data-en="For quick software fixes and minor FRP unlocking." data-bn="সাধারণ সফটওয়্যার সমস্যা ও ছোটখাটো এফআরপি আনলককাজের জন্য।">For quick software fixes and minor FRP unlocking.</p>
+                        <div class="text-3xl font-extrabold text-slate-900 mb-6">৳৫০০ <span class="text-xs font-normal text-slate-500" data-en="/ service" data-bn="/ প্রতি সার্ভিস">/ service</span></div>
                         <ul class="space-y-3 text-xs text-slate-600 mb-8">
-                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Basic YouTube Guides" data-bn="বেসিক ইউটিউব গাইড">Basic YouTube Guides</span></li>
-                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Community Support" data-bn="কমিউনিটি সাপোর্ট">Community Support</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Fast Remote/Shop Support" data-bn="দ্রুত রিমোট বা দোকান সাপোর্ট">Fast Remote/Shop Support</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="100% Secure Solution" data-bn="শতভাগ নিরাপদ সমাধান">100% Secure Solution</span></li>
                         </ul>
                     </div>
-                    <button onclick="alert('Enrolled in Free Plan!')" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold text-xs hover:bg-black transition-colors" data-en="Get Started Free" data-bn="ফ্রি শুরু করুন">Get Started Free</button>
+                    <button onclick="openPlanModal('Basic Software Support', '৳৫০০')" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold text-xs hover:bg-black transition-colors shadow-md" data-en="Book This Plan" data-bn="এই প্ল্যানটি নিন">Book This Plan</button>
                 </div>
 
-                <!-- Basic Plan -->
+                <!-- Plan 2 -->
                 <div class="glass-card p-8 flex flex-col justify-between border-t-4 border-indigo-500 shadow-xl relative scale-105 bg-white/90">
-                    <span class="absolute -top-3 right-6 bg-indigo-500 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider" data-en="POPULAR" data-bn="জনপ্রিয়">POPULAR</span>
+                    <span class="absolute -top-3 right-6 bg-indigo-500 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider" data-en="MOST POPULAR" data-bn="সবচেয়ে জনপ্রিয়">MOST POPULAR</span>
                     <div>
-                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Basic Plan" data-bn="বেসিক প্ল্যান">Basic Plan</h3>
-                        <p class="text-xs text-slate-500 mb-6" data-en="Essential firmware and FRP bypass tools access." data-bn="প্রয়োজনীয় ফার্মওয়্যার এবং এফআরপি বাইপাস টুলস অ্যাক্সেস।">Essential firmware and FRP bypass tools access.</p>
-                        <div class="text-3xl font-extrabold text-indigo-600 mb-6">$19 <span class="text-xs font-normal text-slate-500" data-en="/ month" data-bn="/ মাস">/ month</span></div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Advanced Mobile Repair" data-bn="এডভান্সড মোবাইল রিপেয়ার">Advanced Mobile Repair</h3>
+                        <p class="text-xs text-slate-500 mb-6" data-en="Complete hardware checkup, display change & deep software fix." data-bn="সম্পূর্ণ হার্ডওয়্যার চেকআপ, ডিসপ্লে পরিবর্তন ও গভীর সফটওয়্যার ফিক্স।">Complete hardware checkup, display change & deep software fix.</p>
+                        <div class="text-3xl font-extrabold text-indigo-600 mb-6">৳১,৫০০ <span class="text-xs font-normal text-slate-500" data-en="/ service" data-bn="/ প্রতি সার্ভিস">/ service</span></div>
                         <ul class="space-y-3 text-xs text-slate-600 mb-8">
-                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="All FRP Bypass Files" data-bn="সকল এফআরপি বাইপাস ফাইল">All FRP Bypass Files</span></li>
-                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Direct WhatsApp Help" data-bn="সরাসরি ওয়াটসঅ্যাপ হেল্প">Direct WhatsApp Help</span></li>
-                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Weekly Updates" data-bn="সাপ্তাহিক আপডেট">Weekly Updates</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Priority Service" data-bn="অগ্রাধিকার ভিত্তিতে সার্ভিস">Priority Service</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Original Parts Guarantee" data-bn="অরিজিনাল পার্টস গ্যারান্টি">Original Parts Guarantee</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="WhatsApp Direct Chat" data-bn="সরাসরি হোয়াটসঅ্যাপ চ্যাট">WhatsApp Direct Chat</span></li>
                         </ul>
                     </div>
-                    <button onclick="alert('Redirecting to Checkout...')" class="w-full soft-ui-btn bg-indigo-600 text-white py-3 rounded-xl font-bold text-xs hover:bg-indigo-700 transition-colors shadow-md" data-en="Choose Basic" data-bn="বেসিক সিলেক্ট করুন">Choose Basic</button>
+                    <button onclick="openPlanModal('Advanced Mobile Repair', '৳১,৫০০')" class="w-full soft-ui-btn bg-indigo-600 text-white py-3 rounded-xl font-bold text-xs hover:bg-indigo-700 transition-colors shadow-md" data-en="Book Advanced Plan" data-bn="এই প্ল্যানটি নিন">Book Advanced Plan</button>
                 </div>
 
-                <!-- Premium Plan -->
+                <!-- Plan 3 -->
                 <div class="glass-card p-8 flex flex-col justify-between border-t-4 border-purple-500">
                     <div>
-                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Premium Plan" data-bn="প্রিমিয়াম প্ল্যান">Premium Plan</h3>
-                        <p class="text-xs text-slate-500 mb-6" data-en="Full professional unlocking training & server access." data-bn="সম্পূর্ণ প্রফেশনাল আনলকিং ট্রেনিং ও সার্ভার অ্যাক্সেস।">Full professional unlocking training & server access.</p>
-                        <div class="text-3xl font-extrabold text-purple-600 mb-6">$49 <span class="text-xs font-normal text-slate-500" data-en="/ lifetime" data-bn="/ আজীবন">/ lifetime</span></div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Online Services & Ads Package" data-bn="অনলাইন সার্ভিস ও অ্যাডস প্যাকেজ">Online Services & Ads Package</h3>
+                        <p class="text-xs text-slate-500 mb-6" data-en="Professional Facebook/Google ads setup, CV & graphic design." data-bn="প্রফেশনাল ফেসবুক/গুগল অ্যাডস সেটআপ, সিভি ও গ্রাফিক ডিজাইন।">Professional Facebook/Google ads setup, CV & graphic design.</p>
+                        <div class="text-3xl font-extrabold text-purple-600 mb-6">৳২,০০০ <span class="text-xs font-normal text-slate-500" data-en="/ package" data-bn="/ প্যাকেজ">/ package</span></div>
                         <ul class="space-y-3 text-xs text-slate-600 mb-8">
-                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Master Hardware & Software" data-bn="মাস্টার হার্ডওয়্যার ও সফটওয়্যার">Master Hardware & Software</span></li>
-                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="1-on-1 Video Support" data-bn="১-অন-১ ভিডিও সাপোর্ট">1-on-1 Video Support</span></li>
-                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Lifetime Server Files" data-bn="আজীবন সার্ভার ফাইল">Lifetime Server Files</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Complete Business Setup" data-bn="সম্পূর্ণ বিজনেস সেটআপ">Complete Business Setup</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Dedicated Support" data-bn="ডেডিকেটেড সাপোর্ট">Dedicated Support</span></li>
                         </ul>
                     </div>
-                    <button onclick="alert('Redirecting to Checkout...')" class="w-full bg-purple-600 text-white py-3 rounded-xl font-bold text-xs hover:bg-purple-700 transition-colors shadow-md" data-en="Go Premium" data-bn="প্রিমিয়াম নিন">Go Premium</button>
+                    <button onclick="openPlanModal('Online Services & Ads Package', '৳২,০০০')" class="w-full bg-purple-600 text-white py-3 rounded-xl font-bold text-xs hover:bg-purple-700 transition-colors shadow-md" data-en="Book Package" data-bn="এই প্ল্যানটি নিন">Book Package</button>
                 </div>
             </div>
         </section>
 
-        <!-- BLOG FOLDER SECTION (Renders Real Posts from blog.html or admin storage) -->
+        <!-- BLOG FOLDER SECTION -->
         <section class="mb-20" id="blogFolder">
             <div class="flex justify-between items-end mb-8">
                 <div>
                     <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-1 block" data-en="BLOG FOLDER" data-bn="ব্লগ ফোল্ডার">BLOG FOLDER</span>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900" data-en="Latest Blog Posts" data-bn="সর্বশেষ ব্লগ পোস্টসমূহ">Latest Blog Posts</h2>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900" data-en="Latest Tips & Guides" data-bn="সর্বশেষ টিপস ও গাইড">Latest Tips & Guides</h2>
                 </div>
                 <a href="blog.html" class="glass bg-white px-4 py-2 rounded-full font-semibold text-xs inline-flex items-center gap-1 shadow-sm">
                     <span data-en="View All" data-bn="সব দেখুন">View All</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
@@ -350,49 +279,48 @@
             </div>
 
             <div id="dynamicBlogGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Dynamically loaded from localStorage (blog.html posts) -->
+                <!-- Dynamically loaded posts -->
             </div>
         </section>
 
         <!-- SMARTLINK AD -->
         <section class="mb-6">
             <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="block w-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-5 sm:p-6 text-center text-white font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-indigo-500/20 glass border-none text-xs sm:text-sm">
-                🚀 <span data-en="Exclusive FRP & Unlock Tools - Click Here!" data-bn="এক্সক্লুসিভ এফআরপি এবং আনলক টুলস - এখানে ক্লিক করুন!">Exclusive Offers & Deals - Click Here!</span>
+                🚀 <span data-en="Exclusive Mobile & Online Deals - Click Here!" data-bn="এক্সক্লুসিভ মোবাইল ও অনলাইন অফার - এখানে ক্লিক করুন!">Exclusive Offers & Deals - Click Here!</span>
             </a>
         </section>
 
     </main>
 
-    <!-- AI CHAT WIDGET -->
-    <div class="fixed bottom-5 right-5 z-[60] flex flex-col items-end">
-        <div id="chatWin" class="chat-reveal hidden w-[290px] sm:w-[350px] h-[400px] sm:h-[420px] mb-4 glass bg-white/95 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
-            <div class="bg-black/90 backdrop-blur-md p-4 flex justify-between items-center rounded-t-[28px]">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-lg">AI</div>
-                    <div>
-                        <h3 class="text-white font-bold text-sm tracking-wide">Habib AI</h3>
-                        <p class="text-white/60 text-[9px] flex items-center gap-1 uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p>
-                    </div>
+    <!-- BOOKING POPUP MODAL -->
+    <div id="bookingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99] hidden flex items-center justify-center p-4">
+        <div class="glass bg-white/95 w-full max-w-md p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white">
+            <button onclick="closePlanModal()" class="absolute top-5 right-5 text-slate-400 hover:text-black w-8 h-8 rounded-full flex items-center justify-center bg-slate-100"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-extrabold text-slate-900 mb-1" id="modalPlanTitle">Book Service</h3>
+            <p class="text-xs text-slate-500 mb-6" id="modalPlanPrice">Price: ৳০</p>
+            
+            <form onsubmit="submitBooking(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Your Name</label>
+                    <input type="text" id="bName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 font-medium text-slate-800">
                 </div>
-                <button onclick="toggleChat()" class="text-white/50 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="chatBody" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3">
-                <div class="flex gap-2 max-w-[85%]">
-                    <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
-                    <div class="bg-white border border-white/50 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
-                        Hello! Welcome to Habib iFix. How can I help you today?
-                    </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Mobile Number</label>
+                    <input type="tel" id="bPhone" required placeholder="01XXXXXXXXX" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 font-medium text-slate-800">
                 </div>
-            </div>
-            <div class="p-3 border-t border-white/50 bg-white/50 backdrop-blur-md flex gap-2">
-                <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-white border border-slate-100 rounded-xl px-4 py-2 text-xs outline-none focus:border-indigo-300 transition-colors" onkeypress="if(event.key==='Enter')sendMsg()">
-                <button onclick="sendMsg()" class="bg-black text-white w-10 h-10 rounded-xl flex items-center justify-center text-xs hover:scale-105 transition-transform shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Email Address</label>
+                    <input type="email" id="bEmail" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 font-medium text-slate-800">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Full Address / Details</label>
+                    <textarea id="bAddress" rows="2" required placeholder="আপনার ঠিকানা বা সমস্যার বিবরণ লিখুন..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 font-medium text-slate-800 resize-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 text-white py-3.5 rounded-xl font-bold text-xs hover:bg-emerald-700 transition-colors shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Send Booking to WhatsApp
+                </button>
+            </form>
         </div>
-
-        <button onclick="toggleChat()" id="chatBtn" class="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform text-white border-2 border-white/20">
-            <i class="fa-solid fa-message text-base sm:text-lg"></i>
-        </button>
     </div>
 
     <!-- FOOTER -->
@@ -402,9 +330,9 @@
                 <div class="space-y-3">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
-                        <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
+                        <span class="font-bold text-slate-800 text-base">Habib <span class="text-indigo-600">iFix</span></span>
                     </div>
-                    <p class="text-slate-500 text-xs leading-relaxed" data-en="Beautifully crafted repair services, designed for builders creating next-generation tech experiences." data-bn="নির্ভরযোগ্য মোবাইল রিপেয়ার ও এফআরপি সলিউশন সেবা।">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed" data-en="Your trusted partner for all mobile repair and online technical solutions." data-bn="আপনার সকল মোবাইল রিপেয়ার ও অনলাইন টেকনিক্যাল সেবার বিশ্বস্ত প্রতিষ্ঠান।">Your trusted partner for all mobile repair and online technical solutions.</p>
                 </div>
 
                 <div>
@@ -418,16 +346,16 @@
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider" data-en="Resources" data-bn="রিসোর্সেস">Resources</h4>
+                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider" data-en="Contact Info" data-bn="যোগাযোগের তথ্য">Contact Info</h4>
                     <ul class="space-y-2 text-xs text-slate-500">
-                        <li><a href="#" class="hover:text-indigo-600 transition-colors" data-en="Documentation" data-bn="ডকুমেন্টেশন">Documentation</a></li>
-                        <li><a href="#" class="hover:text-indigo-600 transition-colors" data-en="Privacy Policy" data-bn="প্রাইভেসি পলিসি">Privacy Policy</a></li>
+                        <li><i class="fa-solid fa-phone text-indigo-500 mr-2"></i> +880 1868 461577</li>
+                        <li><i class="fa-solid fa-location-dot text-indigo-500 mr-2"></i> Gachbaria, Chattogram</li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider" data-en="Newsletter" data-bn="নিউজলেটার">Newsletter</h4>
-                    <p class="text-slate-500 text-xs mb-3" data-en="Subscribe for monthly updates." data-bn="আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for monthly updates.</p>
+                    <p class="text-slate-500 text-xs mb-3" data-en="Subscribe for updates." data-bn="নতুন আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for monthly updates.</p>
                     <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
                         <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-700 placeholder-slate-400">
                         <button type="submit" class="bg-black hover:bg-slate-800 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors" data-en="Join" data-bn="জয়েন">Join</button>
@@ -464,38 +392,6 @@
             }
         }
 
-        function toggleChat(){
-            const w = document.getElementById('chatWin');
-            const b = document.getElementById('chatBtn');
-            const icon = b.querySelector('i');
-            if(w.classList.contains('hidden')){
-                w.classList.remove('hidden');
-                void w.offsetWidth;
-                w.classList.add('active');
-                icon.classList.remove('fa-message');
-                icon.classList.add('fa-xmark');
-            } else {
-                w.classList.remove('active');
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-message');
-                setTimeout(() => { w.classList.add('hidden'); }, 300);
-            }
-        }
-
-        window.sendMsg = function() {
-            const input = document.getElementById('chatInput');
-            const txt = input.value.trim();
-            if(!txt) return;
-            const body = document.getElementById('chatBody');
-            body.innerHTML += `<div class="flex gap-2 max-w-[85%] self-end"><div class="bg-indigo-500 text-white text-xs p-3 rounded-2xl rounded-br-none shadow-md font-medium leading-relaxed">${txt}</div></div>`;
-            input.value = '';
-            body.scrollTop = body.scrollHeight;
-            setTimeout(() => {
-                body.innerHTML += `<div class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div><div class="bg-white border border-white/50 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">I am Habib AI. How can I assist you with your gadget repairs?</div></div>`;
-                body.scrollTop = body.scrollHeight;
-            }, 1000);
-        }
-
         // LANGUAGE SWITCHER (ENG <-> BAN)
         let currentLang = localStorage.getItem('habib_lang') || 'en';
         
@@ -523,15 +419,52 @@
             applyLanguage(currentLang === 'en' ? 'bn' : 'en');
         }
 
-        // Load Real Blog Posts from localStorage (synced with blog.html / admin.html)
+        // LOGIN CHECK & BOOKING MODAL LOGIC
+        let selectedPlanName = "";
+        let selectedPlanPrice = "";
+
+        function openPlanModal(planName, planPrice) {
+            const isLoggedIn = localStorage.getItem('habib_logged_in') === 'true';
+            if (!isLoggedIn) {
+                alert("⚠️ ইউজার লগইন নেই! সেবা বুক করার জন্য দয়া করে আগে সাইন ইন বা লগইন করুন। (User login please)");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            selectedPlanName = planName;
+            selectedPlanPrice = planPrice;
+            
+            document.getElementById('modalPlanTitle').innerText = "Booking: " + planName;
+            document.getElementById('modalPlanPrice').innerText = "Price: " + planPrice;
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function closePlanModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+        }
+
+        function submitBooking(e) {
+            e.preventDefault();
+            const name = document.getElementById('bName').value;
+            const phone = document.getElementById('bPhone').value;
+            const email = document.getElementById('bEmail').value;
+            const address = document.getElementById('bAddress').value;
+
+            const whatsappMessage = `Hello Habib! I want to book a service.%0A%0A*Plan:* ${selectedPlanName}%0A*Price:* ${selectedPlanPrice}%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Email:* ${email}%0A*Details/Address:* ${address}`;
+            
+            const whatsappUrl = `https://wa.me/8801868461577?text=${whatsappMessage}`;
+            window.open(whatsappUrl, '_blank');
+            closePlanModal();
+        }
+
+        // Load Real Blog Posts from localStorage (synced with blog.html)
         function loadStoredBlogs() {
             const blogs = JSON.parse(localStorage.getItem('habib_custom_blogs') || '[]');
             const grid = document.getElementById('dynamicBlogGrid');
             if(!grid) return;
 
             let html = '';
-            // Render real custom blogs first (up to 5 posts)
-            blogs.slice(0, 5).forEach(b => {
+            blogs.slice(0, 3).forEach(b => {
                 html += `
                 <div class="glass-card p-3 group cursor-pointer flex flex-col border-2 border-indigo-200">
                     <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-44 flex items-center justify-center relative">
@@ -545,7 +478,6 @@
                 </div>`;
             });
 
-            // Default fallback sample posts if no custom blogs exist yet
             if(blogs.length === 0) {
                 html += `
                 <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
@@ -554,8 +486,8 @@
                     </div>
                     <div class="px-2 pb-2">
                         <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">REPAIR TIP</p>
-                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">How to fix a cracked screen easily</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">Learn the professional way to replace your smartphone screen without damaging other components.</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">How to check display original quality</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">Learn professional tips to identify genuine display and touch panels for Android & iPhones.</p>
                     </div>
                 </div>
                 <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
@@ -564,8 +496,8 @@
                     </div>
                     <div class="px-2 pb-2">
                         <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">TECH NEWS</p>
-                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Android FRP Remove 2026 Ultimate Guide</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">Exploring the newest security patches and bypass methodologies for modern Android devices.</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Android FRP Remove 2026 Guide</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">Exploring the newest security bypass methods for modern Android devices safely.</p>
                     </div>
                 </div>
                 <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
@@ -573,9 +505,9 @@
                         <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover">
                     </div>
                     <div class="px-2 pb-2">
-                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">GUIDE</p>
-                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Choosing genuine replacement parts</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">A complete guide to identifying genuine vs fake replacement parts for your gadgets.</p>
+                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">ONLINE WORK</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Importance of a professional CV & Job Apply</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">Why a clean CV increases your chances of getting hired quickly in government and private jobs.</p>
                     </div>
                 </div>`;
             }

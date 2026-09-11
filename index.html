@@ -26,7 +26,7 @@
         
         /* Premium Glassmorphism Utility */
         .glass {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.4) 100%);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.8);
@@ -34,7 +34,7 @@
         }
         
         .glass-card {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.9);
@@ -45,7 +45,7 @@
         
         .glass-card:hover {
             transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.8);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
         }
 
@@ -57,7 +57,7 @@
         }
 
         /* Abstract Background Blobs */
-        .blob { position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; pointer-events: none; }
         .blob-1 { top: -10%; left: -5%; width: 500px; height: 500px; background: #e0e7ff; }
         .blob-2 { top: 20%; right: -10%; width: 600px; height: 600px; background: #f3e8ff; }
         .blob-3 { bottom: -10%; left: 20%; width: 700px; height: 700px; background: #e0e7ff; }
@@ -85,18 +85,18 @@
     <div class="blob blob-3"></div>
 
     <!-- HEADER / NAVBAR -->
-    <header class="fixed top-0 left-0 w-full z-50 py-5 px-6 md:px-12 flex justify-between items-center transition-all duration-300">
+    <header class="fixed top-0 left-0 w-full z-50 py-4 px-6 md:px-12 flex justify-between items-center transition-all duration-300 glass border-b border-white/50">
         <!-- Logo -->
         <a href="index.html" class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-xl">H</div>
-            <div class="hidden md:block leading-tight">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-xl shadow-md">H</div>
+            <div class="leading-tight">
                 <h1 class="font-bold text-slate-800 text-sm">Habib<span class="text-slate-400 font-normal">iFix</span></h1>
                 <p class="text-[10px] text-slate-500 font-medium tracking-wide">Gadget Specialist</p>
             </div>
         </a>
 
-        <!-- Pill Nav -->
-        <nav class="hidden lg:flex glass rounded-full px-6 py-3 items-center gap-8 text-sm font-medium text-slate-600">
+        <!-- Desktop Nav -->
+        <nav class="hidden lg:flex glass rounded-full px-6 py-2.5 items-center gap-8 text-sm font-medium text-slate-600 shadow-sm">
             <a href="index.html" class="text-black bg-white px-4 py-1.5 rounded-full shadow-sm">Home</a>
             <a href="about.html" class="hover:text-black transition-colors">About</a>
             <a href="services.html" class="hover:text-black transition-colors">Services</a>
@@ -104,11 +104,12 @@
             <a href="contact.html" class="hover:text-black transition-colors">Contact</a>
         </nav>
 
-        <!-- CTA & Profile -->
+        <!-- CTA & Profile & Mobile Menu Toggle -->
         <div class="flex items-center gap-3">
-            <a href="login.html" class="glass bg-white/80 px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-sm">
+            <a href="login.html" class="hidden sm:flex glass bg-white/80 px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-white transition-colors items-center gap-2 shadow-sm">
                 Let's Talk <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </a>
+            
             <!-- Profile Avatar (Hidden by default) -->
             <div id="profileBtn" class="hidden relative cursor-pointer group">
                 <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover">
@@ -122,34 +123,49 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 glass bg-white/80 rounded-xl flex items-center justify-center text-slate-700 shadow-sm focus:outline-none">
+                <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="fixed inset-x-0 top-[73px] bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-2xl py-6 px-8 flex flex-col gap-4 transform -translate-y-full opacity-0 invisible transition-all duration-300 z-40 lg:hidden">
+        <a href="index.html" onclick="toggleMobileMenu()" class="text-slate-800 font-semibold text-base py-2 border-b border-slate-100">Home</a>
+        <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-base py-2 border-b border-slate-100 hover:text-black">About</a>
+        <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-base py-2 border-b border-slate-100 hover:text-black">Services</a>
+        <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-base py-2 border-b border-slate-100 hover:text-black">Blog</a>
+        <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-base py-2 border-b border-slate-100 hover:text-black">Contact</a>
+        <a href="login.html" onclick="toggleMobileMenu()" class="w-full bg-black text-white text-center py-3 rounded-xl font-semibold text-sm mt-2 shadow-md">Let's Talk</a>
+    </div>
 
     <main class="max-w-[1400px] mx-auto px-6 md:px-12 pt-32">
         
         <!-- HERO SECTION -->
-        <section class="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 mt-10 mb-20 relative">
+        <section class="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 mt-6 mb-20 relative">
             <!-- Left Text Content -->
-            <div class="lg:w-1/2 z-10">
+            <div class="lg:w-1/2 z-10 text-center lg:text-left">
                 <span class="text-indigo-500 font-semibold tracking-widest text-xs uppercase mb-4 block">HELLO, I'M HABIB</span>
-                <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-2">Habib iFix</h1>
-                <h2 class="text-4xl md:text-6xl font-extrabold text-gradient mb-6">Gadget Specialist</h2>
-                <p class="text-slate-500 text-lg md:text-xl max-w-md leading-relaxed mb-10">
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-2">Habib iFix</h1>
+                <h2 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gradient mb-6">Gadget Specialist</h2>
+                <p class="text-slate-500 text-base md:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed mb-10">
                     I craft meaningful digital experiences and repair solutions that are intuitive, beautiful, and built with purpose.
                 </p>
-                <div class="flex flex-wrap items-center gap-4 mb-14">
-                    <a href="services.html" class="bg-black text-white px-8 py-4 rounded-full font-medium flex items-center gap-3 hover:scale-105 transition-transform shadow-xl">
-                        View My Work <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                <div class="flex flex-wrap justify-center lg:justify-start items-center gap-4 mb-14">
+                    <a href="services.html" class="bg-black text-white px-8 py-4 rounded-full font-medium flex items-center gap-3 hover:scale-105 transition-transform shadow-xl text-sm">
+                        View My Work <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                     </a>
-                    <a href="contact.html" class="glass px-8 py-4 rounded-full font-medium flex items-center gap-3 hover:bg-white/80 transition-colors text-slate-700 font-semibold">
-                        Contact Me <i class="fa-regular fa-envelope text-sm"></i>
+                    <a href="contact.html" class="glass px-8 py-4 rounded-full font-medium flex items-center gap-3 hover:bg-white/80 transition-colors text-slate-700 text-sm">
+                        Contact Me <i class="fa-regular fa-envelope text-xs"></i>
                     </a>
                 </div>
                 
                 <!-- Trusted By -->
                 <div>
                     <p class="text-xs text-slate-400 font-medium mb-4 uppercase tracking-widest">Trusted by</p>
-                    <div class="flex items-center gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 flex-wrap">
+                    <div class="flex items-center justify-center lg:justify-start gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 flex-wrap">
                         <span class="font-bold text-2xl text-slate-600 tracking-tighter">Samsung</span>
                         <i class="fa-brands fa-apple text-3xl text-slate-600"></i>
                         <span class="font-bold text-2xl text-slate-600 tracking-tighter">Xiaomi</span>
@@ -158,27 +174,27 @@
             </div>
 
             <!-- Right Image Content -->
-            <div class="lg:w-1/2 relative flex justify-end">
+            <div class="lg:w-1/2 relative flex justify-center lg:justify-end w-full">
                 <!-- Decorative Star -->
-                <div class="absolute top-1/3 -left-10 w-12 h-12 glass rounded-full flex items-center justify-center text-indigo-400 text-xl animate-float shadow-xl z-20">✦</div>
+                <div class="absolute top-1/3 left-4 lg:-left-10 w-12 h-12 glass rounded-full flex items-center justify-center text-indigo-400 text-xl animate-float shadow-xl z-20">✦</div>
                 
                 <!-- Floating Card 1 -->
-                <div class="absolute top-10 -right-5 glass p-5 rounded-3xl animate-float-delayed shadow-2xl z-20 text-center border-white/50 backdrop-blur-xl bg-white/40">
-                    <h3 class="text-4xl font-extrabold text-slate-800 text-gradient">5+</h3>
-                    <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Years Exp</p>
+                <div class="absolute top-6 right-2 sm:right-6 glass p-4 sm:p-5 rounded-3xl animate-float-delayed shadow-2xl z-20 text-center border-white/50 backdrop-blur-xl bg-white/40">
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-800 text-gradient">5+</h3>
+                    <p class="text-[9px] sm:text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Years Exp</p>
                 </div>
                 
                 <!-- Floating Card 2 -->
-                <div class="absolute bottom-10 right-0 glass px-6 py-4 rounded-2xl animate-float shadow-2xl z-20 bg-white/60 backdrop-blur-md">
+                <div class="absolute bottom-6 left-2 sm:left-6 glass px-5 py-3 sm:px-6 sm:py-4 rounded-2xl animate-float shadow-2xl z-20 bg-white/60 backdrop-blur-md">
                     <p class="text-xs text-slate-500 font-medium">Repair Impact</p>
-                    <h4 class="text-2xl font-bold text-slate-800 mb-1">+120%</h4>
+                    <h4 class="text-xl sm:text-2xl font-bold text-slate-800 mb-1">+120%</h4>
                     <svg class="w-16 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 100 20">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M0 20 Q 20 5, 40 15 T 80 5 T 100 10" />
                     </svg>
                 </div>
 
                 <!-- Main Image Mask -->
-                <div class="relative w-[400px] h-[500px] md:w-[500px] md:h-[600px] rounded-[60px] overflow-hidden glass border-4 border-white/50 shadow-2xl z-10">
+                <div class="relative w-[300px] h-[380px] sm:w-[400px] sm:h-[500px] md:w-[450px] md:h-[550px] rounded-[40px] sm:rounded-[60px] overflow-hidden glass border-4 border-white/50 shadow-2xl z-10">
                     <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80&w=800" alt="Habib iFix Technician" class="w-full h-full object-cover">
                 </div>
             </div>
@@ -470,7 +486,6 @@
 
         <!-- CONTACT SECTION -->
         <section class="mb-10 glass-card p-8 md:p-12 overflow-hidden relative">
-            <!-- Abstract 3D Glass asset placeholder bottom right -->
             <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-gradient-to-tr from-indigo-300/40 to-purple-400/40 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
@@ -498,7 +513,7 @@
                 <!-- Form -->
                 <div class="glass p-8 rounded-3xl bg-white/40 border-white/60">
                     <form class="flex flex-col gap-4" onsubmit="event.preventDefault(); alert('Message sent!');">
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <input type="text" placeholder="Your Name" class="w-full bg-white/60 border border-white focus:border-indigo-300 focus:outline-none rounded-xl px-4 py-3 text-xs text-slate-700 placeholder-slate-400 transition-colors">
                             <input type="email" placeholder="Your Email" class="w-full bg-white/60 border border-white focus:border-indigo-300 focus:outline-none rounded-xl px-4 py-3 text-xs text-slate-700 placeholder-slate-400 transition-colors">
                         </div>
@@ -511,7 +526,6 @@
                 </div>
             </div>
             
-            <!-- Footer tiny text inside contact card -->
             <div class="mt-12 text-left relative z-10">
                 <p class="text-[9px] text-slate-400">&copy; 2026 Habib iFix. All rights reserved.</p>
             </div>
@@ -526,10 +540,10 @@
 
     </main>
 
-    <!-- AI CHAT WIDGET -->
-    <div class="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
+    <!-- AI CHAT WIDGET (Position adjusted so it doesn't overlap text) -->
+    <div class="fixed bottom-6 right-6 z-[60] flex flex-col items-end">
         <!-- Chat Window -->
-        <div id="chatWin" class="chat-reveal hidden w-[320px] sm:w-[350px] h-[450px] mb-4 glass bg-white/70 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
+        <div id="chatWin" class="chat-reveal hidden w-[300px] sm:w-[350px] h-[420px] mb-4 glass bg-white/90 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
             <!-- Header -->
             <div class="bg-black/90 backdrop-blur-md p-4 flex justify-between items-center rounded-t-[28px]">
                 <div class="flex items-center gap-3">
@@ -565,6 +579,24 @@
 
     <!-- JAVASCRIPT -->
     <script>
+        // Mobile Menu Toggle Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            
+            if (menu.classList.contains('-translate-y-full')) {
+                menu.classList.remove('-translate-y-full', 'opacity-0', 'invisible');
+                menu.classList.add('translate-y-0', 'opacity-100', 'visible');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.remove('translate-y-0', 'opacity-100', 'visible');
+                menu.classList.add('-translate-y-full', 'opacity-0', 'invisible');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+
         // AI Chat Toggle Logic
         function toggleChat(){
             const w = document.getElementById('chatWin');
@@ -573,7 +605,6 @@
 
             if(w.classList.contains('hidden')){
                 w.classList.remove('hidden');
-                // Trigger reflow
                 void w.offsetWidth;
                 w.classList.add('active');
                 icon.classList.remove('fa-message');
@@ -595,7 +626,6 @@
             if(!txt) return;
             
             const body = document.getElementById('chatBody');
-            // User Message
             const safeTxt = escapeHtml(txt);
             body.innerHTML += `
                 <div class="flex gap-2 max-w-[85%] self-end">
@@ -604,7 +634,6 @@
             input.value = '';
             body.scrollTop = body.scrollHeight;
 
-            // AI Response Mock
             setTimeout(() => {
                 body.innerHTML += `
                     <div class="flex gap-2 max-w-[85%]">
@@ -623,7 +652,7 @@
             });
         }
 
-        // Prevent the newsletter demo form from reloading the page.
+        // Newsletter form handling
         document.querySelectorAll('footer form').forEach(function(newsletterForm) {
             newsletterForm.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -638,70 +667,70 @@
         });
     </script>
 
-<!-- FOOTER -->
-<footer class="bg-white/80 backdrop-blur-md border-t border-slate-100 pt-16 pb-8 mt-20 relative z-10">
-    <div class="max-w-[1400px] mx-auto px-6 md:px-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <!-- Brand -->
-            <div class="space-y-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
-                    <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
+    <!-- FOOTER -->
+    <footer class="bg-white/80 backdrop-blur-md border-t border-slate-100 pt-16 pb-8 mt-20 relative z-10">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
+                        <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
+                    </div>
+                    <p class="text-slate-500 text-xs leading-relaxed">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
+                    <div class="flex gap-3 text-slate-400">
+                        <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-github text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-x-twitter text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-discord text-xs"></i></a>
+                    </div>
                 </div>
-                <p class="text-slate-500 text-xs leading-relaxed">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
-                <div class="flex gap-3 text-slate-400">
-                    <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-github text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-x-twitter text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-discord text-xs"></i></a>
+
+                <!-- Explore -->
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4 text-xs uppercase tracking-wider">Explore</h4>
+                    <ul class="space-y-2 text-xs text-slate-500">
+                        <li><a href="index.html" class="hover:text-indigo-600 transition-colors">Home</a></li>
+                        <li><a href="services.html" class="hover:text-indigo-600 transition-colors">Components</a></li>
+                        <li><a href="about.html" class="hover:text-indigo-600 transition-colors">Templates</a></li>
+                        <li><a href="contact.html" class="hover:text-indigo-600 transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4 text-xs uppercase tracking-wider">Resources</h4>
+                    <ul class="space-y-2 text-xs text-slate-500">
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors">License Agreement</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4 text-xs uppercase tracking-wider">Newsletter</h4>
+                    <p class="text-slate-500 text-xs mb-3">Subscribe for monthly updates.</p>
+                    <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm">
+                        <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-700 placeholder-slate-400">
+                        <button type="submit" class="bg-black hover:bg-slate-800 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors">Join</button>
+                    </form>
                 </div>
             </div>
 
-            <!-- Explore -->
-            <div>
-                <h4 class="font-bold text-slate-900 mb-4 text-xs uppercase tracking-wider">Explore</h4>
-                <ul class="space-y-2 text-xs text-slate-500">
-                    <li><a href="index.html" class="hover:text-indigo-600 transition-colors">Home</a></li>
-                    <li><a href="services.html" class="hover:text-indigo-600 transition-colors">Components</a></li>
-                    <li><a href="about.html" class="hover:text-indigo-600 transition-colors">Templates</a></li>
-                    <li><a href="contact.html" class="hover:text-indigo-600 transition-colors">Pricing</a></li>
-                </ul>
-            </div>
-
-            <!-- Resources -->
-            <div>
-                <h4 class="font-bold text-slate-900 mb-4 text-xs uppercase tracking-wider">Resources</h4>
-                <ul class="space-y-2 text-xs text-slate-500">
-                    <li><a href="#" class="hover:text-indigo-600 transition-colors">Documentation</a></li>
-                    <li><a href="#" class="hover:text-indigo-600 transition-colors">License Agreement</a></li>
-                    <li><a href="#" class="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
-                </ul>
-            </div>
-
-            <!-- Newsletter -->
-            <div>
-                <h4 class="font-bold text-slate-900 mb-4 text-xs uppercase tracking-wider">Newsletter</h4>
-                <p class="text-slate-500 text-xs mb-3">Subscribe for monthly updates.</p>
-                <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm">
-                    <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-700 placeholder-slate-400">
-                    <button type="submit" class="bg-black hover:bg-slate-800 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors">Join</button>
-                </form>
+            <!-- Bottom Bar -->
+            <div class="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-400 gap-4">
+                <p>&copy; 2026 Habib iFix. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-slate-700 transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-slate-700 transition-colors">Terms</a>
+                    <a href="#" class="hover:text-slate-700 transition-colors">Refund Policy</a>
+                    <a href="#" class="hover:text-slate-700 transition-colors">Support</a>
+                </div>
             </div>
         </div>
-
-        <!-- Bottom Bar -->
-        <div class="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-400 gap-4">
-            <p>&copy; 2026 Habib iFix. All rights reserved.</p>
-            <div class="flex gap-6">
-                <a href="#" class="hover:text-slate-700 transition-colors">Privacy</a>
-                <a href="#" class="hover:text-slate-700 transition-colors">Terms</a>
-                <a href="#" class="hover:text-slate-700 transition-colors">Refund Policy</a>
-                <a href="#" class="hover:text-slate-700 transition-colors">Support</a>
-            </div>
-        </div>
-    </div>
-</footer>
-  
-  <script type="module" src="js/site-auth.js"></script>
+    </footer>
+      
+    <script type="module" src="js/site-auth.js"></script>
 </body>
 </html>

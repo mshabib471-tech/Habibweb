@@ -8,6 +8,10 @@
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
     
+    <!-- Adsterra Popunder Scripts -->
+    <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
+    <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
@@ -80,6 +84,9 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .chat-reveal { opacity: 0; transform: scale(0.95) translateY(20px); transition: all 0.3s ease; pointer-events: none; }
+        .chat-reveal.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
     </style>
 </head>
 <body class="antialiased relative selection:bg-indigo-200 selection:text-indigo-900">
@@ -115,8 +122,8 @@
                 বাংলা (BAN)
             </button>
 
-            <a href="login.html" id="loginNavBtn" class="glass bg-white/80 px-4 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-sm">
-                <span data-en="Sign In" data-bn="লগইন">Sign In</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            <a href="login.html" id="loginNavBtn" class="glass bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-sm">
+                <span data-en="Sign In / Sign Up" data-bn="সাইন ইন / সাইন আপ">Sign In / Sign Up</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </a>
             
             <div id="profileBtn" class="hidden relative cursor-pointer group">
@@ -153,7 +160,7 @@
         <!-- HERO SECTION -->
         <section class="flex flex-col-reverse lg:flex-row items-center justify-between gap-10 mt-4 mb-16 relative">
             <div class="lg:w-1/2 z-10 text-center lg:text-left w-full">
-                <span class="text-indigo-500 font-semibold tracking-widest text-[10px] sm:text-xs uppercase mb-3 block" data-en="HELLO, I'S HABIB" data-bn="হ্যালো, আমি হাবিব">HELLO, I'M HABIB</span>
+                <span class="text-indigo-500 font-semibold tracking-widest text-[10px] sm:text-xs uppercase mb-3 block" data-en="HELLO, I'M HABIB" data-bn="হ্যালো, আমি হাবিব">HELLO, I'M HABIB</span>
                 <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-2">Habib iFix</h1>
                 <h2 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gradient mb-4 sm:mb-6" data-en="Gadget Specialist" data-bn="গ্যাজেট স্পেশালিস্ট">Gadget Specialist</h2>
                 <p class="text-slate-500 text-sm sm:text-base md:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed mb-8" data-en="I craft meaningful digital experiences and repair solutions that are intuitive, beautiful, and built with purpose." data-bn="আমি আধুনিক ডিজিটাল অভিজ্ঞতা এবং গ্যাজেট রিপেয়ার সলিউশন তৈরি করি যা নির্ভরযোগ্য এবং সুন্দর।">
@@ -171,11 +178,108 @@
                         <i class="fa-solid fa-unlock-keyhole text-xs"></i> <span data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</span>
                     </a>
                 </div>
+                
+                <!-- Trusted By -->
+                <div>
+                    <p class="text-[10px] sm:text-xs text-slate-400 font-medium mb-3 uppercase tracking-widest" data-en="Trusted by" data-bn="যাঁদের দ্বারা বিশ্বস্ত">Trusted by</p>
+                    <div class="flex items-center justify-center lg:justify-start gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 flex-wrap">
+                        <span class="font-bold text-xl sm:text-2xl text-slate-600 tracking-tighter">Samsung</span>
+                        <i class="fa-brands fa-apple text-2xl sm:text-3xl text-slate-600"></i>
+                        <span class="font-bold text-xl sm:text-2xl text-slate-600 tracking-tighter">Xiaomi</span>
+                    </div>
+                </div>
             </div>
 
+            <!-- Right Image Content -->
             <div class="lg:w-1/2 relative flex justify-center w-full">
+                <div class="absolute top-4 right-4 sm:right-10 glass p-3 sm:p-5 rounded-2xl sm:rounded-3xl animate-float-delayed shadow-xl z-20 text-center border-white/50 bg-white/60">
+                    <h3 class="text-2xl sm:text-4xl font-extrabold text-slate-800 text-gradient">5+</h3>
+                    <p class="text-[8px] sm:text-[10px] text-slate-500 font-semibold uppercase tracking-wider" data-en="Years Exp" data-bn="বছরের অভিজ্ঞতা">Years Exp</p>
+                </div>
+                
+                <div class="absolute bottom-4 left-4 sm:left-6 glass px-4 py-2 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl animate-float shadow-xl z-20 bg-white/70">
+                    <p class="text-[10px] sm:text-xs text-slate-500 font-medium" data-en="Repair Impact" data-bn="রিপেয়ার ইমপ্যাক্ট">Repair Impact</p>
+                    <h4 class="text-lg sm:text-2xl font-bold text-slate-800 mb-1">+120%</h4>
+                    <svg class="w-14 sm:w-16 h-5 sm:h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 100 20">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M0 20 Q 20 5, 40 15 T 80 5 T 100 10" />
+                    </svg>
+                </div>
+
                 <div class="relative w-[280px] h-[360px] sm:w-[380px] sm:h-[480px] md:w-[450px] md:h-[550px] rounded-[40px] sm:rounded-[60px] overflow-hidden glass border-4 border-white/50 shadow-2xl z-10">
                     <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80&w=800" alt="Habib iFix Technician" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- ADSTERRA NATIVE BANNER -->
+        <div class="mb-16 glass-card p-3 text-center overflow-hidden">
+            <div class="text-[10px] text-slate-400 mb-2 uppercase tracking-widest font-semibold" data-en="Advertisement" data-bn="বিজ্ঞাপন">Advertisement</div>
+            <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
+            <div id="container-8e9094986a453471eab78291c50b779f" class="flex justify-center"></div>
+        </div>
+
+        <!-- ABOUT ME SECTION -->
+        <section class="mb-20" id="about">
+            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block" data-en="ABOUT ME" data-bn="আমার সম্পর্কে">ABOUT ME</span>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-6" data-en="Designing with Empathy<br>Building with Purpose" data-bn="সহানুভূতি দিয়ে ডিজাইন<br>উদ্দেশ্য নিয়ে তৈরি">Designing with Empathy<br>Building with Purpose</h2>
+                    <div class="glass-card p-5 sm:p-8 flex justify-between items-center text-center">
+                        <div>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-regular fa-calendar text-xs sm:text-sm"></i></div>
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">5+</h3>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide" data-en="Years Exp" data-bn="অভিজ্ঞতা">Years Exp</p>
+                        </div>
+                        <div class="w-px h-12 sm:h-16 bg-slate-200"></div>
+                        <div>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-layer-group text-xs sm:text-sm"></i></div>
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">30+</h3>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide" data-en="Projects" data-bn="প্রজেক্ট">Projects</p>
+                        </div>
+                        <div class="w-px h-12 sm:h-16 bg-slate-200"></div>
+                        <div>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-regular fa-face-smile text-xs sm:text-sm"></i></div>
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">15+</h3>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide" data-en="Happy Clients" data-bn="সন্তুষ্ট ক্লায়েন্ট">Happy Clients</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-slate-500 text-xs sm:text-sm md:text-base leading-relaxed mb-6 font-medium" data-en="I'm a digital product designer and technician with 5+ years of experience turning complex problems into simple, intuitive and engaging experiences. I believe in user-centered design, clean aesthetics and thoughtful details." data-bn="আমি একজন ডিজিটাল প্রোডাক্ট ডিজাইনার ও টেকনিশিয়ান। ৫ বছরেরও বেশি অভিজ্ঞতা নিয়ে জটিল সমস্যাগুলোকে সহজ ও সুন্দর সমাধানে রূপান্তর করি।">
+                        I'm a digital product designer and technician with 5+ years of experience turning complex problems into simple, intuitive and engaging experiences. I believe in user-centered design, clean aesthetics and thoughtful details.
+                    </p>
+                    <a href="about.html" class="glass bg-white px-6 py-3 rounded-full font-semibold text-xs sm:text-sm inline-flex items-center gap-2 hover:-translate-y-1 transition-transform shadow-sm">
+                        <span data-en="More About Me" data-bn="আমার সম্পর্কে আরও জানুন">More About Me</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES SECTION -->
+        <section class="mb-20" id="services">
+            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block" data-en="WHAT I DO" data-bn="আমি যা করি">WHAT I DO</span>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-8" data-en="Services I Offer" data-bn="আমার সেবাসমূহ">Services I Offer</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Mobile Repair" data-bn="মোবাইল রিপেয়ার">Mobile Repair</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed" data-en="Designing intuitive and engaging user interfaces for web and mobile products." data-bn="মোবাইল ও ট্যাবলেটের হার্ডওয়্যার ও সফটওয়্যার ত্রুটি সমাধান।">Designing intuitive and engaging user interfaces for web and mobile products.</p>
+                </div>
+                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Laptop Service" data-bn="ল্যাপটপ সার্ভিস">Laptop Service</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed" data-en="Creating seamless user experiences through research, wireframing and prototyping." data-bn="ল্যাপটপ মাদারবোর্ড রিপেয়ার ও পার্টস রিপ্লেসমেন্ট।">Creating seamless user experiences through research, wireframing and prototyping.</p>
+                </div>
+                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-microchip"></i></div>
+                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Hardware Fix" data-bn="হার্ডওয়্যার ফিক্স">Hardware Fix</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed" data-en="Building scalable design systems and component libraries for consistent experiences." data-bn="মাইক্রোকন্ট্রোলার ও চিপ লেভেল সোল্ডারিং।">Building scalable design systems and component libraries for consistent experiences.</p>
+                </div>
+                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2" data-en="Data Recovery" data-bn="ডেটা রিকভারি">Data Recovery</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed" data-en="Understanding users deeply through research and data to inform better design." data-bn="ডিলিট বা লস্ট ফাইল রিকভারি এবং ব্যাকআপ সার্ভিস।">Understanding users deeply through research and data to inform better design.</p>
                 </div>
             </div>
         </section>
@@ -233,38 +337,7 @@
             </div>
         </section>
 
-        <!-- ADMIN PANEL & BLOG POST MANAGER -->
-        <section class="mb-20 glass-card p-6 sm:p-8 border-2 border-indigo-200">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-1 block" data-en="ADMIN DASHBOARD" data-bn="অ্যাডমিন ড্যাশবোর্ড">ADMIN DASHBOARD</span>
-                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900" data-en="Add Course / Blog Post" data-bn="কোর্স বা ব্লগ পোস্ট যুক্ত করুন">Add Course / Blog Post</h2>
-                </div>
-                <button onclick="toggleAdminPanel()" class="bg-black text-white px-4 py-2 rounded-xl text-xs font-bold" data-en="Toggle Panel" data-bn="প্যানেল খুলুন/বন্ধ করুন">Toggle Panel</button>
-            </div>
-
-            <div id="adminFormContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Add Course Form -->
-                <form id="courseForm" onsubmit="handleAddCourse(event)" class="glass p-5 rounded-2xl flex flex-col gap-3">
-                    <h3 class="font-bold text-sm text-slate-800" data-en="Add New Course" data-bn="নতুন কোর্স যুক্ত করুন">Add New Course</h3>
-                    <input type="text" id="courseTitle" placeholder="Course Title" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none">
-                    <input type="text" id="coursePrice" placeholder="Price (e.g. $29)" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none">
-                    <textarea id="courseDesc" placeholder="Course Short Description" rows="2" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none resize-none"></textarea>
-                    <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl font-bold text-xs hover:bg-indigo-700" data-en="Publish Course" data-bn="কোর্স পাবলিশ করুন">Publish Course</button>
-                </form>
-
-                <!-- Add Blog Post Form -->
-                <form id="blogForm" onsubmit="handleAddBlog(event)" class="glass p-5 rounded-2xl flex flex-col gap-3">
-                    <h3 class="font-bold text-sm text-slate-800" data-en="Publish Blog Post" data-bn="ব্লগ পোস্ট পাবলিশ করুন">Publish Blog Post</h3>
-                    <input type="text" id="blogTitle" placeholder="Blog Title" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none">
-                    <input type="text" id="blogCategory" placeholder="Category (e.g. REPAIR TIP)" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none">
-                    <textarea id="blogDesc" placeholder="Blog Content Snippet" rows="2" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none resize-none"></textarea>
-                    <button type="submit" class="bg-purple-600 text-white py-2.5 rounded-xl font-bold text-xs hover:bg-purple-700" data-en="Publish Blog" data-bn="ব্লগ পাবলিশ করুন">Publish Blog</button>
-                </form>
-            </div>
-        </section>
-
-        <!-- BLOG FOLDER SECTION (Shows latest 5 posts) -->
+        <!-- BLOG FOLDER SECTION (Renders Real Posts from blog.html or admin storage) -->
         <section class="mb-20" id="blogFolder">
             <div class="flex justify-between items-end mb-8">
                 <div>
@@ -277,37 +350,7 @@
             </div>
 
             <div id="dynamicBlogGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Dynamically populated or default 3 items -->
-                <div class="glass-card p-3 group cursor-pointer flex flex-col">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-44 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75" class="w-full h-full object-cover">
-                    </div>
-                    <div class="px-2 pb-2">
-                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">REPAIR TIP</p>
-                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">How to fix a cracked screen easily</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">Learn the professional way to replace your smartphone screen without damaging other components.</p>
-                    </div>
-                </div>
-                <div class="glass-card p-3 group cursor-pointer flex flex-col">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-blue-50 h-44 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=75" class="w-full h-full object-cover">
-                    </div>
-                    <div class="px-2 pb-2">
-                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">TECH NEWS</p>
-                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Android FRP Remove 2026 Ultimate Guide</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">Exploring the newest security patches and bypass methodologies for modern Android devices.</p>
-                    </div>
-                </div>
-                <div class="glass-card p-3 group cursor-pointer flex flex-col">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-slate-100 h-44 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover">
-                    </div>
-                    <div class="px-2 pb-2">
-                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">GUIDE</p>
-                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Choosing genuine replacement parts</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">A complete guide to identifying genuine vs fake replacement parts for your gadgets.</p>
-                    </div>
-                </div>
+                <!-- Dynamically loaded from localStorage (blog.html posts) -->
             </div>
         </section>
 
@@ -320,6 +363,38 @@
 
     </main>
 
+    <!-- AI CHAT WIDGET -->
+    <div class="fixed bottom-5 right-5 z-[60] flex flex-col items-end">
+        <div id="chatWin" class="chat-reveal hidden w-[290px] sm:w-[350px] h-[400px] sm:h-[420px] mb-4 glass bg-white/95 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
+            <div class="bg-black/90 backdrop-blur-md p-4 flex justify-between items-center rounded-t-[28px]">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-lg">AI</div>
+                    <div>
+                        <h3 class="text-white font-bold text-sm tracking-wide">Habib AI</h3>
+                        <p class="text-white/60 text-[9px] flex items-center gap-1 uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="text-white/50 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="chatBody" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3">
+                <div class="flex gap-2 max-w-[85%]">
+                    <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
+                    <div class="bg-white border border-white/50 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
+                        Hello! Welcome to Habib iFix. How can I help you today?
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 border-t border-white/50 bg-white/50 backdrop-blur-md flex gap-2">
+                <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-white border border-slate-100 rounded-xl px-4 py-2 text-xs outline-none focus:border-indigo-300 transition-colors" onkeypress="if(event.key==='Enter')sendMsg()">
+                <button onclick="sendMsg()" class="bg-black text-white w-10 h-10 rounded-xl flex items-center justify-center text-xs hover:scale-105 transition-transform shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+        <button onclick="toggleChat()" id="chatBtn" class="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform text-white border-2 border-white/20">
+            <i class="fa-solid fa-message text-base sm:text-lg"></i>
+        </button>
+    </div>
+
     <!-- FOOTER -->
     <footer class="bg-white/90 backdrop-blur-md border-t border-slate-100 pt-10 sm:pt-12 pb-6 mt-10 relative z-10">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
@@ -329,7 +404,7 @@
                         <div class="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
                         <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
                     </div>
-                    <p class="text-slate-500 text-xs leading-relaxed" data-en="Beautifully crafted repair services and FRP solutions." data-bn="নির্ভরযোগ্য মোবাইল রিপেয়ার ও এফআরপি সলিউশন সেবা।">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed" data-en="Beautifully crafted repair services, designed for builders creating next-generation tech experiences." data-bn="নির্ভরযোগ্য মোবাইল রিপেয়ার ও এফআরপি সলিউশন সেবা।">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
                 </div>
 
                 <div>
@@ -352,7 +427,7 @@
 
                 <div>
                     <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider" data-en="Newsletter" data-bn="নিউজলেটার">Newsletter</h4>
-                    <p class="text-slate-500 text-xs mb-3" data-en="Subscribe for updates." data-bn="আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for monthly updates.</p>
+                    <p class="text-slate-500 text-xs mb-3" data-en="Subscribe for monthly updates." data-bn="আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for monthly updates.</p>
                     <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
                         <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-700 placeholder-slate-400">
                         <button type="submit" class="bg-black hover:bg-slate-800 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors" data-en="Join" data-bn="জয়েন">Join</button>
@@ -389,6 +464,38 @@
             }
         }
 
+        function toggleChat(){
+            const w = document.getElementById('chatWin');
+            const b = document.getElementById('chatBtn');
+            const icon = b.querySelector('i');
+            if(w.classList.contains('hidden')){
+                w.classList.remove('hidden');
+                void w.offsetWidth;
+                w.classList.add('active');
+                icon.classList.remove('fa-message');
+                icon.classList.add('fa-xmark');
+            } else {
+                w.classList.remove('active');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-message');
+                setTimeout(() => { w.classList.add('hidden'); }, 300);
+            }
+        }
+
+        window.sendMsg = function() {
+            const input = document.getElementById('chatInput');
+            const txt = input.value.trim();
+            if(!txt) return;
+            const body = document.getElementById('chatBody');
+            body.innerHTML += `<div class="flex gap-2 max-w-[85%] self-end"><div class="bg-indigo-500 text-white text-xs p-3 rounded-2xl rounded-br-none shadow-md font-medium leading-relaxed">${txt}</div></div>`;
+            input.value = '';
+            body.scrollTop = body.scrollHeight;
+            setTimeout(() => {
+                body.innerHTML += `<div class="flex gap-2 max-w-[85%]"><div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div><div class="bg-white border border-white/50 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">I am Habib AI. How can I assist you with your gadget repairs?</div></div>`;
+                body.scrollTop = body.scrollHeight;
+            }, 1000);
+        }
+
         // LANGUAGE SWITCHER (ENG <-> BAN)
         let currentLang = localStorage.getItem('habib_lang') || 'en';
         
@@ -416,69 +523,32 @@
             applyLanguage(currentLang === 'en' ? 'bn' : 'en');
         }
 
-        // Run on load
-        window.addEventListener('DOMContentLoaded', () => {
-            applyLanguage(currentLang);
-            loadStoredBlogs();
-        });
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('adminFormContainer');
-            panel.classList.toggle('hidden');
-        }
-
-        // Admin: Add Course
-        function handleAddCourse(e) {
-            e.preventDefault();
-            const title = document.getElementById('courseTitle').value;
-            const price = document.getElementById('coursePrice').value;
-            const desc = document.getElementById('courseDesc').value;
-            
-            alert(`Course "${title}" (${price}) added successfully!`);
-            document.getElementById('courseForm').reset();
-        }
-
-        // Admin: Add Blog Post (Stores in LocalStorage and displays up to 5 posts)
-        function handleAddBlog(e) {
-            e.preventDefault();
-            const title = document.getElementById('blogTitle').value;
-            const cat = document.getElementById('blogCategory').value;
-            const desc = document.getElementById('blogDesc').value;
-
-            let blogs = JSON.parse(localStorage.getItem('habib_custom_blogs') || '[]');
-            blogs.unshift({ title, cat, desc, date: 'Just now' });
-            if(blogs.length > 5) blogs = blogs.slice(0, 5); // Keep max 5 posts
-            localStorage.setItem('habib_custom_blogs', JSON.stringify(blogs));
-
-            document.getElementById('blogForm').reset();
-            loadStoredBlogs();
-            alert('Blog Post published successfully to Blog Folder!');
-        }
-
+        // Load Real Blog Posts from localStorage (synced with blog.html / admin.html)
         function loadStoredBlogs() {
             const blogs = JSON.parse(localStorage.getItem('habib_custom_blogs') || '[]');
             const grid = document.getElementById('dynamicBlogGrid');
             if(!grid) return;
 
             let html = '';
-            // Render custom blogs first
-            blogs.forEach(b => {
+            // Render real custom blogs first (up to 5 posts)
+            blogs.slice(0, 5).forEach(b => {
                 html += `
-                <div class="glass-card p-3 group cursor-pointer flex flex-col border-2 border-indigo-300">
+                <div class="glass-card p-3 group cursor-pointer flex flex-col border-2 border-indigo-200">
                     <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-44 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover">
+                        <img src="${b.image || 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75'}" class="w-full h-full object-cover">
                     </div>
                     <div class="px-2 pb-2">
-                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">${b.cat}</p>
+                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">${b.cat || 'BLOG'}</p>
                         <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">${b.title}</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">${b.desc}</p>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">${b.desc || b.content || ''}</p>
                     </div>
                 </div>`;
             });
 
-            // Add default demo posts to fill up to 3-5 items if needed
-            html += `
-                <div class="glass-card p-3 group cursor-pointer flex flex-col">
+            // Default fallback sample posts if no custom blogs exist yet
+            if(blogs.length === 0) {
+                html += `
+                <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
                     <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-44 flex items-center justify-center relative">
                         <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75" class="w-full h-full object-cover">
                     </div>
@@ -488,7 +558,7 @@
                         <p class="text-[11px] text-slate-500 line-clamp-2">Learn the professional way to replace your smartphone screen without damaging other components.</p>
                     </div>
                 </div>
-                <div class="glass-card p-3 group cursor-pointer flex flex-col">
+                <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
                     <div class="rounded-2xl overflow-hidden mb-4 bg-blue-50 h-44 flex items-center justify-center relative">
                         <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=75" class="w-full h-full object-cover">
                     </div>
@@ -497,10 +567,26 @@
                         <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Android FRP Remove 2026 Ultimate Guide</h3>
                         <p class="text-[11px] text-slate-500 line-clamp-2">Exploring the newest security patches and bypass methodologies for modern Android devices.</p>
                     </div>
+                </div>
+                <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-slate-100 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">GUIDE</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Choosing genuine replacement parts</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">A complete guide to identifying genuine vs fake replacement parts for your gadgets.</p>
+                    </div>
                 </div>`;
+            }
 
             grid.innerHTML = html;
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applyLanguage(currentLang);
+            loadStoredBlogs();
+        });
     </script>
     
     <!-- Firebase Auth Integration Script -->

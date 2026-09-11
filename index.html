@@ -23,8 +23,16 @@
     
     <style>
         * { box-sizing: border-box; }
-        html, body { width: 100%; overflow-x: hidden !important; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; color: #334155; }
+        html, body { 
+            width: 100%; 
+            max-width: 100%; 
+            overflow-x: hidden !important; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f8f9ff;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+        }
         
         /* Premium Glassmorphism Utility */
         .glass {
@@ -58,11 +66,19 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Abstract Background Blobs */
-        .blob { position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.5; pointer-events: none; }
+        /* Abstract Background Blobs - Fixed to prevent bottom blank space */
+        .blob { 
+            position: absolute; 
+            border-radius: 50%; 
+            filter: blur(80px); 
+            z-index: -1; 
+            opacity: 0.4; 
+            pointer-events: none; 
+            max-width: 100vw;
+        }
         .blob-1 { top: -10%; left: -5%; width: 300px; height: 300px; background: #e0e7ff; }
         .blob-2 { top: 20%; right: -5%; width: 350px; height: 350px; background: #f3e8ff; }
-        .blob-3 { bottom: -10%; left: 10%; width: 400px; height: 400px; background: #e0e7ff; }
+        .blob-3 { bottom: 10%; left: 10%; width: 400px; height: 400px; background: #e0e7ff; }
 
         /* Floating Animations */
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -250,25 +266,21 @@
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-8">Services I Offer</h2>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- Card 1 -->
                 <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
                     <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-mobile-screen"></i></div>
                     <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2">Mobile Repair</h3>
                     <p class="text-xs text-slate-500 leading-relaxed">Designing intuitive and engaging user interfaces for web and mobile products.</p>
                 </div>
-                <!-- Card 2 -->
                 <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
                     <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-laptop-code"></i></div>
                     <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2">Laptop Service</h3>
                     <p class="text-xs text-slate-500 leading-relaxed">Creating seamless user experiences through research, wireframing and prototyping.</p>
                 </div>
-                <!-- Card 3 -->
                 <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
                     <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-microchip"></i></div>
                     <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2">Hardware Fix</h3>
                     <p class="text-xs text-slate-500 leading-relaxed">Building scalable design systems and component libraries for consistent experiences.</p>
                 </div>
-                <!-- Card 4 -->
                 <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
                     <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
                     <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2">Data Recovery</h3>
@@ -314,7 +326,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Blog 1 -->
                 <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
                     <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-48 sm:h-56 flex items-center justify-center relative">
                         <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
@@ -325,7 +336,6 @@
                         <p class="text-[11px] text-slate-500 line-clamp-2">Learn the professional way to replace your smartphone screen without damaging other components.</p>
                     </div>
                 </div>
-                <!-- Blog 2 -->
                 <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
                     <div class="rounded-2xl overflow-hidden mb-4 bg-blue-50 h-48 sm:h-56 flex items-center justify-center relative">
                         <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=75" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
@@ -336,7 +346,6 @@
                         <p class="text-[11px] text-slate-500 line-clamp-2">Exploring the latest trends in mobile hardware and what it means for repairs.</p>
                     </div>
                 </div>
-                <!-- Blog 3 -->
                 <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
                     <div class="rounded-2xl overflow-hidden mb-4 bg-slate-100 h-48 sm:h-56 flex items-center justify-center relative">
                         <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
@@ -411,7 +420,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Testimonial 1 -->
                 <div class="glass-card p-6 sm:p-8 flex flex-col justify-between relative">
                     <div class="text-indigo-200 text-4xl font-serif absolute top-6 right-6">❝</div>
                     <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-6 relative z-10">
@@ -425,7 +433,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Testimonial 2 -->
                 <div class="glass-card p-6 sm:p-8 flex flex-col justify-between relative bg-white/70">
                     <div class="text-indigo-200 text-4xl font-serif absolute top-6 right-6">❝</div>
                     <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-6 relative z-10">
@@ -439,7 +446,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Testimonial 3 -->
                 <div class="glass-card p-6 sm:p-8 flex flex-col justify-between relative">
                     <div class="text-indigo-200 text-4xl font-serif absolute top-6 right-6">❝</div>
                     <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-6 relative z-10">
@@ -461,7 +467,6 @@
             <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-gradient-to-tr from-indigo-300/40 to-purple-400/40 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 relative z-10">
-                <!-- Info -->
                 <div class="flex flex-col justify-center">
                     <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block">LET'S CONNECT</span>
                     <h2 class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">Have a project in mind?<br>Let's create something amazing together.</h2>
@@ -482,7 +487,6 @@
                     </div>
                 </div>
 
-                <!-- Form -->
                 <div class="glass p-6 sm:p-8 rounded-3xl bg-white/40 border-white/60">
                     <form class="flex flex-col gap-4" onsubmit="event.preventDefault(); alert('Message sent!');">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -500,7 +504,7 @@
         </section>
 
         <!-- SMARTLINK AD -->
-        <section class="mb-10">
+        <section class="mb-6">
             <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="block w-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-5 sm:p-6 text-center text-white font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-indigo-500/20 glass border-none text-xs sm:text-sm">
                 🚀 Exclusive Offers & Deals - Click Here!
             </a>
@@ -510,9 +514,7 @@
 
     <!-- AI CHAT WIDGET -->
     <div class="fixed bottom-5 right-5 z-[60] flex flex-col items-end">
-        <!-- Chat Window -->
         <div id="chatWin" class="chat-reveal hidden w-[290px] sm:w-[350px] h-[400px] sm:h-[420px] mb-4 glass bg-white/95 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
-            <!-- Header -->
             <div class="bg-black/90 backdrop-blur-md p-4 flex justify-between items-center rounded-t-[28px]">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-lg">AI</div>
@@ -523,7 +525,6 @@
                 </div>
                 <button onclick="toggleChat()" class="text-white/50 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <!-- Body -->
             <div id="chatBody" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3">
                 <div class="flex gap-2 max-w-[85%]">
                     <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
@@ -532,25 +533,22 @@
                     </div>
                 </div>
             </div>
-            <!-- Input -->
             <div class="p-3 border-t border-white/50 bg-white/50 backdrop-blur-md flex gap-2">
                 <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-white border border-slate-100 rounded-xl px-4 py-2 text-xs outline-none focus:border-indigo-300 transition-colors" onkeypress="if(event.key==='Enter')sendMsg()">
                 <button onclick="sendMsg()" class="bg-black text-white w-10 h-10 rounded-xl flex items-center justify-center text-xs hover:scale-105 transition-transform shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
 
-        <!-- Chat Toggle Button -->
         <button onclick="toggleChat()" id="chatBtn" class="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform text-white border-2 border-white/20">
             <i class="fa-solid fa-message text-base sm:text-lg"></i>
         </button>
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-white/90 backdrop-blur-md border-t border-slate-100 pt-12 sm:pt-16 pb-8 mt-12 relative z-10">
+    <footer class="bg-white/90 backdrop-blur-md border-t border-slate-100 pt-10 sm:pt-12 pb-6 mt-10 relative z-10">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 mb-10">
-                <!-- Brand -->
-                <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-3">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
                         <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
@@ -563,9 +561,8 @@
                     </div>
                 </div>
 
-                <!-- Explore -->
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-3 sm:mb-4 text-xs uppercase tracking-wider">Explore</h4>
+                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Explore</h4>
                     <ul class="space-y-2 text-xs text-slate-500">
                         <li><a href="index.html" class="hover:text-indigo-600 transition-colors">Home</a></li>
                         <li><a href="services.html" class="hover:text-indigo-600 transition-colors">Components</a></li>
@@ -574,9 +571,8 @@
                     </ul>
                 </div>
 
-                <!-- Resources -->
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-3 sm:mb-4 text-xs uppercase tracking-wider">Resources</h4>
+                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Resources</h4>
                     <ul class="space-y-2 text-xs text-slate-500">
                         <li><a href="#" class="hover:text-indigo-600 transition-colors">Documentation</a></li>
                         <li><a href="#" class="hover:text-indigo-600 transition-colors">License Agreement</a></li>
@@ -585,9 +581,8 @@
                     </ul>
                 </div>
 
-                <!-- Newsletter -->
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-3 sm:mb-4 text-xs uppercase tracking-wider">Newsletter</h4>
+                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Newsletter</h4>
                     <p class="text-slate-500 text-xs mb-3">Subscribe for monthly updates.</p>
                     <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm">
                         <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-700 placeholder-slate-400">
@@ -596,7 +591,6 @@
                 </div>
             </div>
 
-            <!-- Bottom Bar -->
             <div class="border-t border-slate-100 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-400 gap-4 text-center sm:text-left">
                 <p>&copy; 2026 Habib iFix. All rights reserved.</p>
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
@@ -611,7 +605,6 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // Mobile Menu Toggle Logic
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('mobileMenuIcon');
@@ -629,7 +622,6 @@
             }
         }
 
-        // AI Chat Toggle Logic
         function toggleChat(){
             const w = document.getElementById('chatWin');
             const b = document.getElementById('chatBtn');
@@ -651,7 +643,6 @@
             }
         }
 
-        // Mock Chat Send Message
         window.sendMsg = function() {
             const input = document.getElementById('chatInput');
             const txt = input.value.trim();
@@ -684,7 +675,6 @@
             });
         }
 
-        // Newsletter form handling
         document.querySelectorAll('footer form').forEach(function(newsletterForm) {
             newsletterForm.addEventListener('submit', function(e) {
                 e.preventDefault();

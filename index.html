@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Habib iFix - Gadget Specialist</title>
+    <title data-en="Habib iFix - Gadget Specialist" data-bn="হাবিব আইফিক্স - গ্যাজেট স্পেশালিস্ট">Habib iFix - Gadget Specialist</title>
     
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
     
-    <!-- Adsterra Popunder Scripts -->
-    <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
-    <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
@@ -34,7 +30,6 @@
             font-family: 'Inter', sans-serif;
         }
         
-        /* Premium Glassmorphism Utility */
         .glass {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.5) 100%);
             backdrop-filter: blur(20px);
@@ -59,14 +54,12 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
         }
 
-        /* Gradient Text */
         .text-gradient {
             background: linear-gradient(90deg, #6366f1, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Abstract Background Blobs - Fixed to prevent bottom blank space */
         .blob { 
             position: absolute; 
             border-radius: 50%; 
@@ -80,31 +73,23 @@
         .blob-2 { top: 20%; right: -5%; width: 350px; height: 350px; background: #f3e8ff; }
         .blob-3 { bottom: 10%; left: 10%; width: 400px; height: 400px; background: #e0e7ff; }
 
-        /* Floating Animations */
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .animate-float { animation: float 4s ease-in-out infinite; }
         .animate-float-delayed { animation: float 5s ease-in-out infinite 1s; }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-
-        /* AI Chat Animation */
-        .chat-reveal { opacity: 0; transform: scale(0.95) translateY(20px); transition: all 0.3s ease; pointer-events: none; }
-        .chat-reveal.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
     </style>
 </head>
 <body class="antialiased relative selection:bg-indigo-200 selection:text-indigo-900">
 
-    <!-- Background Blobs -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
 
     <!-- HEADER / NAVBAR -->
     <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass border-b border-white/50">
-        <!-- Logo -->
         <a href="index.html" class="flex items-center gap-2.5">
             <div class="w-9 h-9 sm:w-10 sm:h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-md">H</div>
             <div class="leading-tight">
@@ -114,36 +99,39 @@
         </a>
 
         <!-- Desktop Nav -->
-        <nav class="hidden lg:flex glass rounded-full px-6 py-2.5 items-center gap-8 text-sm font-medium text-slate-600 shadow-sm">
-            <a href="index.html" class="text-black bg-white px-4 py-1.5 rounded-full shadow-sm">Home</a>
-            <a href="about.html" class="hover:text-black transition-colors">About</a>
-            <a href="services.html" class="hover:text-black transition-colors">Services</a>
-            <a href="blog.html" class="hover:text-black transition-colors">Blog</a>
-            <a href="contact.html" class="hover:text-black transition-colors">Contact</a>
+        <nav class="hidden lg:flex glass rounded-full px-6 py-2.5 items-center gap-6 text-sm font-medium text-slate-600 shadow-sm">
+            <a href="index.html" class="text-black bg-white px-4 py-1.5 rounded-full shadow-sm" data-en="Home" data-bn="হোম">Home</a>
+            <a href="about.html" class="hover:text-black transition-colors" data-en="About" data-bn="সম্পর্কে">About</a>
+            <a href="services.html" class="hover:text-black transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
+            <a href="blog.html" class="hover:text-black transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
+            <a href="contact.html" class="hover:text-black transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
+            <a href="frp.html" class="text-indigo-600 font-bold hover:underline" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</a>
         </nav>
 
-        <!-- CTA & Profile & Mobile Menu Toggle -->
+        <!-- CTA & Language Switch & Profile -->
         <div class="flex items-center gap-2 sm:gap-3">
-            <!-- Sign In / Sign Up Button (Hidden when logged in via site-auth.js) -->
-            <a href="login.html" id="loginNavBtn" class="glass bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-sm">
-                Sign In / Sign Up <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            <!-- Language Switcher Button (ENG | BAN) -->
+            <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass bg-indigo-50 px-3 py-2 rounded-full font-bold text-xs text-indigo-700 hover:bg-indigo-100 transition-colors shadow-sm">
+                বাংলা (BAN)
+            </button>
+
+            <a href="login.html" id="loginNavBtn" class="glass bg-white/80 px-4 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-sm">
+                <span data-en="Sign In" data-bn="লগইন">Sign In</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </a>
             
-            <!-- Profile Avatar & Logout Dropdown (Shown when logged in) -->
             <div id="profileBtn" class="hidden relative cursor-pointer group">
                 <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-indigo-400 shadow-sm object-cover">
                 <div class="absolute top-full right-0 mt-3 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
                     <label class="px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-xl cursor-pointer flex items-center gap-2 transition-colors mb-1">
-                        <i class="fa-solid fa-camera text-xs"></i> Change Pic
+                        <i class="fa-solid fa-camera text-xs"></i> <span data-en="Change Pic" data-bn="ছবি বদলান">Change Pic</span>
                         <input type="file" id="profilePicInput" accept="image/*" class="hidden">
                     </label>
                     <button onclick="doLogout()" class="w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-xl text-left flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-sign-out-alt text-xs"></i> Logout
+                        <i class="fa-solid fa-sign-out-alt text-xs"></i> <span data-en="Logout" data-bn="লগআউট">Logout</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Mobile Menu Button -->
             <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 glass bg-white/90 rounded-xl flex items-center justify-center text-slate-800 shadow-md focus:outline-none z-50">
                 <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
             </button>
@@ -152,354 +140,173 @@
 
     <!-- Mobile Dropdown Menu -->
     <div id="mobileMenu" class="fixed inset-x-0 top-0 pt-20 bg-white/95 backdrop-blur-2xl border-b border-slate-200 shadow-2xl px-6 pb-6 flex flex-col gap-3 transform -translate-y-full opacity-0 invisible transition-all duration-300 z-40 lg:hidden">
-        <a href="index.html" onclick="toggleMobileMenu()" class="text-slate-800 font-semibold text-sm py-2.5 px-4 rounded-xl bg-slate-100">Home</a>
-        <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">About</a>
-        <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Services</a>
-        <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Blog</a>
-        <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Contact</a>
-        <a href="login.html" id="mobileLoginBtn" onclick="toggleMobileMenu()" class="w-full bg-black text-white text-center py-3 rounded-xl font-semibold text-xs mt-2 shadow-md">Sign In / Sign Up</a>
+        <a href="index.html" onclick="toggleMobileMenu()" class="text-slate-800 font-semibold text-sm py-2.5 px-4 rounded-xl bg-slate-100" data-en="Home" data-bn="হোম">Home</a>
+        <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors" data-en="About" data-bn="সম্পর্কে">About</a>
+        <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
+        <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
+        <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
+        <a href="frp.html" onclick="toggleMobileMenu()" class="text-indigo-600 font-bold text-sm py-2.5 px-4 rounded-xl bg-indigo-50" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</a>
     </div>
 
     <main class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-28 overflow-x-hidden">
         
         <!-- HERO SECTION -->
         <section class="flex flex-col-reverse lg:flex-row items-center justify-between gap-10 mt-4 mb-16 relative">
-            <!-- Left Text Content -->
             <div class="lg:w-1/2 z-10 text-center lg:text-left w-full">
-                <span class="text-indigo-500 font-semibold tracking-widest text-[10px] sm:text-xs uppercase mb-3 block">HELLO, I'M HABIB</span>
+                <span class="text-indigo-500 font-semibold tracking-widest text-[10px] sm:text-xs uppercase mb-3 block" data-en="HELLO, I'S HABIB" data-bn="হ্যালো, আমি হাবিব">HELLO, I'M HABIB</span>
                 <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-2">Habib iFix</h1>
-                <h2 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gradient mb-4 sm:mb-6">Gadget Specialist</h2>
-                <p class="text-slate-500 text-sm sm:text-base md:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed mb-8">
+                <h2 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gradient mb-4 sm:mb-6" data-en="Gadget Specialist" data-bn="গ্যাজেট স্পেশালিস্ট">Gadget Specialist</h2>
+                <p class="text-slate-500 text-sm sm:text-base md:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed mb-8" data-en="I craft meaningful digital experiences and repair solutions that are intuitive, beautiful, and built with purpose." data-bn="আমি আধুনিক ডিজিটাল অভিজ্ঞতা এবং গ্যাজেট রিপেয়ার সলিউশন তৈরি করি যা নির্ভরযোগ্য এবং সুন্দর।">
                     I craft meaningful digital experiences and repair solutions that are intuitive, beautiful, and built with purpose.
                 </p>
                 <div class="flex flex-wrap justify-center lg:justify-start items-center gap-3 sm:gap-4 mb-10">
-                    <a href="services.html" class="bg-black text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-medium flex items-center gap-2 hover:scale-105 transition-transform shadow-xl text-xs sm:text-sm">
-                        View My Work <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    <a href="services.html" class="bg-black text-white px-5 sm:px-6 py-3.5 rounded-full font-medium flex items-center gap-2 hover:scale-105 transition-transform shadow-xl text-xs sm:text-sm">
+                        <span data-en="View My Work" data-bn="আমার কাজ দেখুন">View My Work</span> <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                     </a>
-                    <a href="contact.html" class="glass px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-medium flex items-center gap-2 hover:bg-white/80 transition-colors text-slate-700 text-xs sm:text-sm">
-                        Contact Me <i class="fa-regular fa-envelope text-xs"></i>
+                    <a href="contact.html" class="glass px-5 sm:px-6 py-3.5 rounded-full font-medium flex items-center gap-2 hover:bg-white/80 transition-colors text-slate-700 text-xs sm:text-sm">
+                        <span data-en="Contact Me" data-bn="যোগাযোগ করুন">Contact Me</span> <i class="fa-regular fa-envelope text-xs"></i>
                     </a>
-                </div>
-                
-                <!-- Trusted By -->
-                <div>
-                    <p class="text-[10px] sm:text-xs text-slate-400 font-medium mb-3 uppercase tracking-widest">Trusted by</p>
-                    <div class="flex items-center justify-center lg:justify-start gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 flex-wrap">
-                        <span class="font-bold text-xl sm:text-2xl text-slate-600 tracking-tighter">Samsung</span>
-                        <i class="fa-brands fa-apple text-2xl sm:text-3xl text-slate-600"></i>
-                        <span class="font-bold text-xl sm:text-2xl text-slate-600 tracking-tighter">Xiaomi</span>
-                    </div>
+                    <!-- Android FRP Remove 2026 Button Box -->
+                    <a href="frp.html" class="bg-gradient-to-r from-cyan-600 to-indigo-600 text-white px-5 sm:px-6 py-3.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-transform shadow-xl text-xs sm:text-sm">
+                        <i class="fa-solid fa-unlock-keyhole text-xs"></i> <span data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</span>
+                    </a>
                 </div>
             </div>
 
-            <!-- Right Image Content -->
             <div class="lg:w-1/2 relative flex justify-center w-full">
-                <!-- Floating Card 1 -->
-                <div class="absolute top-4 right-4 sm:right-10 glass p-3 sm:p-5 rounded-2xl sm:rounded-3xl animate-float-delayed shadow-xl z-20 text-center border-white/50 bg-white/60">
-                    <h3 class="text-2xl sm:text-4xl font-extrabold text-slate-800 text-gradient">5+</h3>
-                    <p class="text-[8px] sm:text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Years Exp</p>
-                </div>
-                
-                <!-- Floating Card 2 -->
-                <div class="absolute bottom-4 left-4 sm:left-6 glass px-4 py-2 sm:px-6 sm:py-4 rounded-xl sm:rounded-2xl animate-float shadow-xl z-20 bg-white/70">
-                    <p class="text-[10px] sm:text-xs text-slate-500 font-medium">Repair Impact</p>
-                    <h4 class="text-lg sm:text-2xl font-bold text-slate-800 mb-1">+120%</h4>
-                    <svg class="w-14 sm:w-16 h-5 sm:h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 100 20">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M0 20 Q 20 5, 40 15 T 80 5 T 100 10" />
-                    </svg>
-                </div>
-
-                <!-- Main Image Mask -->
                 <div class="relative w-[280px] h-[360px] sm:w-[380px] sm:h-[480px] md:w-[450px] md:h-[550px] rounded-[40px] sm:rounded-[60px] overflow-hidden glass border-4 border-white/50 shadow-2xl z-10">
                     <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80&w=800" alt="Habib iFix Technician" class="w-full h-full object-cover">
                 </div>
             </div>
         </section>
 
-        <!-- ADSTERRA NATIVE BANNER -->
-        <div class="mb-16 glass-card p-3 text-center overflow-hidden">
-            <div class="text-[10px] text-slate-400 mb-2 uppercase tracking-widest font-semibold">Advertisement</div>
-            <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
-            <div id="container-8e9094986a453471eab78291c50b779f" class="flex justify-center"></div>
-        </div>
-
-        <!-- ABOUT ME SECTION -->
-        <section class="mb-20" id="about">
-            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block">ABOUT ME</span>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                <div>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-6">Designing with Empathy<br>Building with Purpose</h2>
-                    <!-- Stats Card -->
-                    <div class="glass-card p-5 sm:p-8 flex justify-between items-center text-center">
-                        <div>
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-regular fa-calendar text-xs sm:text-sm"></i></div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">5+</h3>
-                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide">Years Exp</p>
-                        </div>
-                        <div class="w-px h-12 sm:h-16 bg-slate-200"></div>
-                        <div>
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-layer-group text-xs sm:text-sm"></i></div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">30+</h3>
-                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide">Projects</p>
-                        </div>
-                        <div class="w-px h-12 sm:h-16 bg-slate-200"></div>
-                        <div>
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-2"><i class="fa-regular fa-face-smile text-xs sm:text-sm"></i></div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800">15+</h3>
-                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wide">Happy Clients</p>
-                        </div>
+        <!-- COURSES PLANS SECTION -->
+        <section class="mb-20" id="courses">
+            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block text-center" data-en="PREMIUM LEARNING" data-bn="প্রিমিয়াম লার্নিং">PREMIUM LEARNING</span>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-10 text-center" data-en="Our Course Plans" data-bn="আমাদের কোর্স প্ল্যানসমূহ">Our Course Plans</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Free Plan -->
+                <div class="glass-card p-8 flex flex-col justify-between border-t-4 border-slate-400">
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Free Plan" data-bn="ফ্রি প্ল্যান">Free Plan</h3>
+                        <p class="text-xs text-slate-500 mb-6" data-en="Basic tutorials to get started with mobile flashing." data-bn="মোবাইল ফ্লাশিং শেখার প্রাথমিক টিউটোরিয়াল।">Basic tutorials to get started with mobile flashing.</p>
+                        <div class="text-3xl font-extrabold text-slate-900 mb-6">$0 <span class="text-xs font-normal text-slate-500" data-en="/ lifetime" data-bn="/ আজীবন">/ lifetime</span></div>
+                        <ul class="space-y-3 text-xs text-slate-600 mb-8">
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Basic YouTube Guides" data-bn="বেসিক ইউটিউব গাইড">Basic YouTube Guides</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Community Support" data-bn="কমিউনিটি সাপোর্ট">Community Support</span></li>
+                        </ul>
                     </div>
+                    <button onclick="alert('Enrolled in Free Plan!')" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold text-xs hover:bg-black transition-colors" data-en="Get Started Free" data-bn="ফ্রি শুরু করুন">Get Started Free</button>
                 </div>
+
+                <!-- Basic Plan -->
+                <div class="glass-card p-8 flex flex-col justify-between border-t-4 border-indigo-500 shadow-xl relative scale-105 bg-white/90">
+                    <span class="absolute -top-3 right-6 bg-indigo-500 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider" data-en="POPULAR" data-bn="জনপ্রিয়">POPULAR</span>
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Basic Plan" data-bn="বেসিক প্ল্যান">Basic Plan</h3>
+                        <p class="text-xs text-slate-500 mb-6" data-en="Essential firmware and FRP bypass tools access." data-bn="প্রয়োজনীয় ফার্মওয়্যার এবং এফআরপি বাইপাস টুলস অ্যাক্সেস।">Essential firmware and FRP bypass tools access.</p>
+                        <div class="text-3xl font-extrabold text-indigo-600 mb-6">$19 <span class="text-xs font-normal text-slate-500" data-en="/ month" data-bn="/ মাস">/ month</span></div>
+                        <ul class="space-y-3 text-xs text-slate-600 mb-8">
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="All FRP Bypass Files" data-bn="সকল এফআরপি বাইপাস ফাইল">All FRP Bypass Files</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Direct WhatsApp Help" data-bn="সরাসরি ওয়াটসঅ্যাপ হেল্প">Direct WhatsApp Help</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Weekly Updates" data-bn="সাপ্তাহিক আপডেট">Weekly Updates</span></li>
+                        </ul>
+                    </div>
+                    <button onclick="alert('Redirecting to Checkout...')" class="w-full soft-ui-btn bg-indigo-600 text-white py-3 rounded-xl font-bold text-xs hover:bg-indigo-700 transition-colors shadow-md" data-en="Choose Basic" data-bn="বেসিক সিলেক্ট করুন">Choose Basic</button>
+                </div>
+
+                <!-- Premium Plan -->
+                <div class="glass-card p-8 flex flex-col justify-between border-t-4 border-purple-500">
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-2" data-en="Premium Plan" data-bn="প্রিমিয়াম প্ল্যান">Premium Plan</h3>
+                        <p class="text-xs text-slate-500 mb-6" data-en="Full professional unlocking training & server access." data-bn="সম্পূর্ণ প্রফেশনাল আনলকিং ট্রেনিং ও সার্ভার অ্যাক্সেস।">Full professional unlocking training & server access.</p>
+                        <div class="text-3xl font-extrabold text-purple-600 mb-6">$49 <span class="text-xs font-normal text-slate-500" data-en="/ lifetime" data-bn="/ আজীবন">/ lifetime</span></div>
+                        <ul class="space-y-3 text-xs text-slate-600 mb-8">
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Master Hardware & Software" data-bn="মাস্টার হার্ডওয়্যার ও সফটওয়্যার">Master Hardware & Software</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="1-on-1 Video Support" data-bn="১-অন-১ ভিডিও সাপোর্ট">1-on-1 Video Support</span></li>
+                            <li><i class="fa-solid fa-check text-green-500 mr-2"></i> <span data-en="Lifetime Server Files" data-bn="আজীবন সার্ভার ফাইল">Lifetime Server Files</span></li>
+                        </ul>
+                    </div>
+                    <button onclick="alert('Redirecting to Checkout...')" class="w-full bg-purple-600 text-white py-3 rounded-xl font-bold text-xs hover:bg-purple-700 transition-colors shadow-md" data-en="Go Premium" data-bn="প্রিমিয়াম নিন">Go Premium</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN PANEL & BLOG POST MANAGER -->
+        <section class="mb-20 glass-card p-6 sm:p-8 border-2 border-indigo-200">
+            <div class="flex justify-between items-center mb-6">
                 <div>
-                    <p class="text-slate-500 text-xs sm:text-sm md:text-base leading-relaxed mb-6 font-medium">
-                        I'm a digital product designer and technician with 5+ years of experience turning complex problems into simple, intuitive and engaging experiences. I believe in user-centered design, clean aesthetics and thoughtful details.
-                    </p>
-                    <a href="about.html" class="glass bg-white px-6 py-3 rounded-full font-semibold text-xs sm:text-sm inline-flex items-center gap-2 hover:-translate-y-1 transition-transform shadow-sm">
-                        More About Me <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                    </a>
+                    <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-1 block" data-en="ADMIN DASHBOARD" data-bn="অ্যাডমিন ড্যাশবোর্ড">ADMIN DASHBOARD</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900" data-en="Add Course / Blog Post" data-bn="কোর্স বা ব্লগ পোস্ট যুক্ত করুন">Add Course / Blog Post</h2>
                 </div>
+                <button onclick="toggleAdminPanel()" class="bg-black text-white px-4 py-2 rounded-xl text-xs font-bold" data-en="Toggle Panel" data-bn="প্যানেল খুলুন/বন্ধ করুন">Toggle Panel</button>
+            </div>
+
+            <div id="adminFormContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Add Course Form -->
+                <form id="courseForm" onsubmit="handleAddCourse(event)" class="glass p-5 rounded-2xl flex flex-col gap-3">
+                    <h3 class="font-bold text-sm text-slate-800" data-en="Add New Course" data-bn="নতুন কোর্স যুক্ত করুন">Add New Course</h3>
+                    <input type="text" id="courseTitle" placeholder="Course Title" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none">
+                    <input type="text" id="coursePrice" placeholder="Price (e.g. $29)" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none">
+                    <textarea id="courseDesc" placeholder="Course Short Description" rows="2" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none resize-none"></textarea>
+                    <button type="submit" class="bg-indigo-600 text-white py-2.5 rounded-xl font-bold text-xs hover:bg-indigo-700" data-en="Publish Course" data-bn="কোর্স পাবলিশ করুন">Publish Course</button>
+                </form>
+
+                <!-- Add Blog Post Form -->
+                <form id="blogForm" onsubmit="handleAddBlog(event)" class="glass p-5 rounded-2xl flex flex-col gap-3">
+                    <h3 class="font-bold text-sm text-slate-800" data-en="Publish Blog Post" data-bn="ব্লগ পোস্ট পাবলিশ করুন">Publish Blog Post</h3>
+                    <input type="text" id="blogTitle" placeholder="Blog Title" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none">
+                    <input type="text" id="blogCategory" placeholder="Category (e.g. REPAIR TIP)" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none">
+                    <textarea id="blogDesc" placeholder="Blog Content Snippet" rows="2" required class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs outline-none resize-none"></textarea>
+                    <button type="submit" class="bg-purple-600 text-white py-2.5 rounded-xl font-bold text-xs hover:bg-purple-700" data-en="Publish Blog" data-bn="ব্লগ পাবলিশ করুন">Publish Blog</button>
+                </form>
             </div>
         </section>
 
-        <!-- SERVICES SECTION -->
-        <section class="mb-20" id="services">
-            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block">WHAT I DO</span>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-8">Services I Offer</h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
-                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-mobile-screen"></i></div>
-                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2">Mobile Repair</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Designing intuitive and engaging user interfaces for web and mobile products.</p>
-                </div>
-                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
-                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-laptop-code"></i></div>
-                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2">Laptop Service</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Creating seamless user experiences through research, wireframing and prototyping.</p>
-                </div>
-                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-microchip"></i></div>
-                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2">Hardware Fix</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Building scalable design systems and component libraries for consistent experiences.</p>
-                </div>
-                <div class="glass-card p-6 sm:p-8 group relative overflow-hidden cursor-pointer" onclick="window.location.href='services.html'">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl mb-5 shadow-sm"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-                    <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-2">Data Recovery</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Understanding users deeply through research and data to inform better design.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- TOOLS & SKILLS SECTION -->
-        <section class="mb-20">
-            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block">TOOLS & SKILLS</span>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-8">Technologies I Use</h2>
-            
-            <div class="flex flex-wrap gap-3 sm:gap-4">
-                <div class="glass bg-white/60 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:-translate-y-1 transition-transform cursor-pointer w-24 h-24 sm:w-28 sm:h-28">
-                    <span class="text-2xl sm:text-3xl">🛠️</span><span class="text-[9px] sm:text-[10px] font-bold text-slate-600 text-center">Repair Tools</span>
-                </div>
-                <div class="glass bg-white/60 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:-translate-y-1 transition-transform cursor-pointer w-24 h-24 sm:w-28 sm:h-28">
-                    <span class="text-2xl sm:text-3xl">💻</span><span class="text-[9px] sm:text-[10px] font-bold text-slate-600 text-center">Diagnostics</span>
-                </div>
-                <div class="glass bg-white/60 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:-translate-y-1 transition-transform cursor-pointer w-24 h-24 sm:w-28 sm:h-28">
-                    <span class="text-2xl sm:text-3xl">📱</span><span class="text-[9px] sm:text-[10px] font-bold text-slate-600 text-center">Mobile Tech</span>
-                </div>
-                <div class="glass bg-white/60 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:-translate-y-1 transition-transform cursor-pointer w-24 h-24 sm:w-28 sm:h-28">
-                    <span class="text-2xl sm:text-3xl">🔋</span><span class="text-[9px] sm:text-[10px] font-bold text-slate-600 text-center">Battery</span>
-                </div>
-                <div class="glass bg-white/60 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:-translate-y-1 transition-transform cursor-pointer w-24 h-24 sm:w-28 sm:h-28">
-                    <span class="text-2xl sm:text-3xl">🖥️</span><span class="text-[9px] sm:text-[10px] font-bold text-slate-600 text-center">PC Build</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- FEATURED UPDATES / BLOG SECTION -->
-        <section class="mb-20" id="updates">
+        <!-- BLOG FOLDER SECTION (Shows latest 5 posts) -->
+        <section class="mb-20" id="blogFolder">
             <div class="flex justify-between items-end mb-8">
                 <div>
-                    <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-1 block">FEATURED UPDATES</span>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900">Latest News</h2>
+                    <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-1 block" data-en="BLOG FOLDER" data-bn="ব্লগ ফোল্ডার">BLOG FOLDER</span>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900" data-en="Latest Blog Posts" data-bn="সর্বশেষ ব্লগ পোস্টসমূহ">Latest Blog Posts</h2>
                 </div>
                 <a href="blog.html" class="glass bg-white px-4 py-2 rounded-full font-semibold text-xs inline-flex items-center gap-1 shadow-sm">
-                    View All <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    <span data-en="View All" data-bn="সব দেখুন">View All</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-48 sm:h-56 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+            <div id="dynamicBlogGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Dynamically populated or default 3 items -->
+                <div class="glass-card p-3 group cursor-pointer flex flex-col">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75" class="w-full h-full object-cover">
                     </div>
                     <div class="px-2 pb-2">
                         <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">REPAIR TIP</p>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-800 leading-tight mb-2">How to fix a cracked screen</h3>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">How to fix a cracked screen easily</h3>
                         <p class="text-[11px] text-slate-500 line-clamp-2">Learn the professional way to replace your smartphone screen without damaging other components.</p>
                     </div>
                 </div>
-                <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-blue-50 h-48 sm:h-56 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=75" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                <div class="glass-card p-3 group cursor-pointer flex flex-col">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-blue-50 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=75" class="w-full h-full object-cover">
                     </div>
                     <div class="px-2 pb-2">
                         <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">TECH NEWS</p>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-800 leading-tight mb-2">The future of mobile tech</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">Exploring the latest trends in mobile hardware and what it means for repairs.</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Android FRP Remove 2026 Ultimate Guide</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">Exploring the newest security patches and bypass methodologies for modern Android devices.</p>
                     </div>
                 </div>
-                <div class="glass-card p-3 group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-slate-100 h-48 sm:h-56 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                <div class="glass-card p-3 group cursor-pointer flex flex-col">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-slate-100 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover">
                     </div>
                     <div class="px-2 pb-2">
                         <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">GUIDE</p>
-                        <h3 class="font-bold text-base sm:text-lg text-slate-800 leading-tight mb-2">Choosing the right parts</h3>
-                        <p class="text-[11px] text-slate-500 line-clamp-2">A guide to identifying genuine vs fake replacement parts for your devices.</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Choosing genuine replacement parts</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">A complete guide to identifying genuine vs fake replacement parts for your gadgets.</p>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PROCESS SECTION -->
-        <section class="mb-20">
-            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block">MY PROCESS</span>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-8">Repair Process I Follow</h2>
-            
-            <div class="glass-card p-6 md:p-10 flex flex-col lg:flex-row justify-between items-start lg:items-center relative gap-6 lg:gap-0">
-                <div class="flex items-start gap-4 p-2 lg:w-1/5">
-                    <div class="text-2xl sm:text-3xl text-indigo-300 font-light mt-1"><i class="fa-solid fa-magnifying-glass"></i></div>
-                    <div>
-                        <span class="text-xl sm:text-2xl font-bold text-slate-800">01</span>
-                        <h4 class="font-bold text-sm text-slate-700 mt-1">Discover</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Understanding user needs and project goals.</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4 p-2 lg:w-1/5">
-                    <div class="text-2xl sm:text-3xl text-indigo-300 font-light mt-1"><i class="fa-solid fa-microscope"></i></div>
-                    <div>
-                        <span class="text-xl sm:text-2xl font-bold text-slate-800">02</span>
-                        <h4 class="font-bold text-sm text-slate-700 mt-1">Define</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Research, analyze and define the problem.</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4 p-2 lg:w-1/5">
-                    <div class="text-2xl sm:text-3xl text-indigo-300 font-light mt-1"><i class="fa-regular fa-lightbulb"></i></div>
-                    <div>
-                        <span class="text-xl sm:text-2xl font-bold text-slate-800">03</span>
-                        <h4 class="font-bold text-sm text-slate-700 mt-1">Ideate</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Brainstorm and create wireframes & concepts.</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4 p-2 lg:w-1/5">
-                    <div class="text-2xl sm:text-3xl text-indigo-300 font-light mt-1"><i class="fa-solid fa-wrench"></i></div>
-                    <div>
-                        <span class="text-xl sm:text-2xl font-bold text-slate-800">04</span>
-                        <h4 class="font-bold text-sm text-slate-700 mt-1">Repair</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Crafting clean, intuitive and engaging interfaces.</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4 p-2 lg:w-1/5">
-                    <div class="text-2xl sm:text-3xl text-indigo-300 font-light mt-1"><i class="fa-solid fa-check-double"></i></div>
-                    <div>
-                        <span class="text-xl sm:text-2xl font-bold text-slate-800">05</span>
-                        <h4 class="font-bold text-sm text-slate-700 mt-1">Test & Iterate</h4>
-                        <p class="text-[10px] text-slate-500 mt-1">Iterate with users and refine for the best experience.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TESTIMONIALS SECTION -->
-        <section class="mb-20 relative">
-            <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block">TESTIMONIALS</span>
-            <div class="flex justify-between items-end mb-8">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900">What Clients Say</h2>
-                <div class="flex gap-2">
-                    <button class="w-8 h-8 rounded-full glass flex items-center justify-center text-slate-600 hover:bg-white transition-colors"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-                    <button class="w-8 h-8 rounded-full glass flex items-center justify-center text-slate-600 hover:bg-white transition-colors"><i class="fa-solid fa-chevron-right text-xs"></i></button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-card p-6 sm:p-8 flex flex-col justify-between relative">
-                    <div class="text-indigo-200 text-4xl font-serif absolute top-6 right-6">❝</div>
-                    <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-6 relative z-10">
-                        "Habib is an exceptional technician. He understands user needs deeply and delivers outstanding results on every project."
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" alt="Rohit" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover">
-                        <div>
-                            <h4 class="font-bold text-xs text-slate-800">Rohit Sharma</h4>
-                            <p class="text-[9px] text-slate-400 uppercase">Product Manager, Google</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card p-6 sm:p-8 flex flex-col justify-between relative bg-white/70">
-                    <div class="text-indigo-200 text-4xl font-serif absolute top-6 right-6">❝</div>
-                    <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-6 relative z-10">
-                        "Working with Habib was a smooth and inspiring experience. His attention to detail is truly impressive."
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Neha" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover">
-                        <div>
-                            <h4 class="font-bold text-xs text-slate-800">Neha Verma</h4>
-                            <p class="text-[9px] text-slate-400 uppercase">Design Lead, Microsoft</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card p-6 sm:p-8 flex flex-col justify-between relative">
-                    <div class="text-indigo-200 text-4xl font-serif absolute top-6 right-6">❝</div>
-                    <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed mb-6 relative z-10">
-                        "Habib's designs not only look amazing but also solve real user problems. Highly recommended!"
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Karan" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover">
-                        <div>
-                            <h4 class="font-bold text-xs text-slate-800">Karan Malhotra</h4>
-                            <p class="text-[9px] text-slate-400 uppercase">Founder, StartupX</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTACT SECTION -->
-        <section class="mb-12 glass-card p-6 sm:p-8 md:p-12 overflow-hidden relative">
-            <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-gradient-to-tr from-indigo-300/40 to-purple-400/40 rounded-full blur-3xl z-0 pointer-events-none"></div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 relative z-10">
-                <div class="flex flex-col justify-center">
-                    <span class="text-indigo-500 font-bold tracking-widest text-[10px] uppercase mb-2 block">LET'S CONNECT</span>
-                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">Have a project in mind?<br>Let's create something amazing together.</h2>
-                    
-                    <div class="space-y-4 sm:space-y-6">
-                        <div class="flex items-center gap-3 sm:gap-4">
-                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass bg-white/60 flex items-center justify-center text-slate-600 shrink-0"><i class="fa-regular fa-envelope text-xs"></i></div>
-                            <p class="text-xs sm:text-sm font-semibold text-slate-700 break-all">tec.habiburrahman@gmail.com</p>
-                        </div>
-                        <div class="flex items-center gap-3 sm:gap-4">
-                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass bg-white/60 flex items-center justify-center text-slate-600 shrink-0"><i class="fa-solid fa-phone text-xs"></i></div>
-                            <p class="text-xs sm:text-sm font-semibold text-slate-700">+880 1868 461577</p>
-                        </div>
-                        <div class="flex items-center gap-3 sm:gap-4">
-                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full glass bg-white/60 flex items-center justify-center text-slate-600 shrink-0"><i class="fa-solid fa-location-dot text-xs"></i></div>
-                            <p class="text-xs sm:text-sm font-semibold text-slate-700">Gachbaria, Chattogram</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass p-6 sm:p-8 rounded-3xl bg-white/40 border-white/60">
-                    <form class="flex flex-col gap-4" onsubmit="event.preventDefault(); alert('Message sent!');">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <input type="text" placeholder="Your Name" class="w-full bg-white/60 border border-white focus:border-indigo-300 focus:outline-none rounded-xl px-4 py-3 text-xs text-slate-700 placeholder-slate-400 transition-colors">
-                            <input type="email" placeholder="Your Email" class="w-full bg-white/60 border border-white focus:border-indigo-300 focus:outline-none rounded-xl px-4 py-3 text-xs text-slate-700 placeholder-slate-400 transition-colors">
-                        </div>
-                        <input type="text" placeholder="Your Project" class="w-full bg-white/60 border border-white focus:border-indigo-300 focus:outline-none rounded-xl px-4 py-3 text-xs text-slate-700 placeholder-slate-400 transition-colors">
-                        <textarea placeholder="Your Message" rows="4" class="w-full bg-white/60 border border-white focus:border-indigo-300 focus:outline-none rounded-xl px-4 py-3 text-xs text-slate-700 placeholder-slate-400 transition-colors resize-none"></textarea>
-                        <button type="submit" class="w-full bg-black text-white font-semibold text-xs py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors mt-2 shadow-lg">
-                            Send Message <i class="fa-solid fa-paper-plane"></i>
-                        </button>
-                    </form>
                 </div>
             </div>
         </section>
@@ -507,43 +314,11 @@
         <!-- SMARTLINK AD -->
         <section class="mb-6">
             <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="block w-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-5 sm:p-6 text-center text-white font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-indigo-500/20 glass border-none text-xs sm:text-sm">
-                🚀 Exclusive Offers & Deals - Click Here!
+                🚀 <span data-en="Exclusive FRP & Unlock Tools - Click Here!" data-bn="এক্সক্লুসিভ এফআরপি এবং আনলক টুলস - এখানে ক্লিক করুন!">Exclusive Offers & Deals - Click Here!</span>
             </a>
         </section>
 
     </main>
-
-    <!-- AI CHAT WIDGET -->
-    <div class="fixed bottom-5 right-5 z-[60] flex flex-col items-end">
-        <div id="chatWin" class="chat-reveal hidden w-[290px] sm:w-[350px] h-[400px] sm:h-[420px] mb-4 glass bg-white/95 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
-            <div class="bg-black/90 backdrop-blur-md p-4 flex justify-between items-center rounded-t-[28px]">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-lg">AI</div>
-                    <div>
-                        <h3 class="text-white font-bold text-sm tracking-wide">Habib AI</h3>
-                        <p class="text-white/60 text-[9px] flex items-center gap-1 uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p>
-                    </div>
-                </div>
-                <button onclick="toggleChat()" class="text-white/50 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="chatBody" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3">
-                <div class="flex gap-2 max-w-[85%]">
-                    <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
-                    <div class="bg-white border border-white/50 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
-                        Hello! Welcome to Habib iFix. How can I help you today?
-                    </div>
-                </div>
-            </div>
-            <div class="p-3 border-t border-white/50 bg-white/50 backdrop-blur-md flex gap-2">
-                <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-white border border-slate-100 rounded-xl px-4 py-2 text-xs outline-none focus:border-indigo-300 transition-colors" onkeypress="if(event.key==='Enter')sendMsg()">
-                <button onclick="sendMsg()" class="bg-black text-white w-10 h-10 rounded-xl flex items-center justify-center text-xs hover:scale-105 transition-transform shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </div>
-
-        <button onclick="toggleChat()" id="chatBtn" class="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform text-white border-2 border-white/20">
-            <i class="fa-solid fa-message text-base sm:text-lg"></i>
-        </button>
-    </div>
 
     <!-- FOOTER -->
     <footer class="bg-white/90 backdrop-blur-md border-t border-slate-100 pt-10 sm:pt-12 pb-6 mt-10 relative z-10">
@@ -554,40 +329,33 @@
                         <div class="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
                         <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
                     </div>
-                    <p class="text-slate-500 text-xs leading-relaxed">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
-                    <div class="flex gap-3 text-slate-400">
-                        <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-github text-xs"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-x-twitter text-xs"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-discord text-xs"></i></a>
-                    </div>
+                    <p class="text-slate-500 text-xs leading-relaxed" data-en="Beautifully crafted repair services and FRP solutions." data-bn="নির্ভরযোগ্য মোবাইল রিপেয়ার ও এফআরপি সলিউশন সেবা।">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Explore</h4>
+                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider" data-en="Explore" data-bn="এক্সপ্লোর">Explore</h4>
                     <ul class="space-y-2 text-xs text-slate-500">
-                        <li><a href="index.html" class="hover:text-indigo-600 transition-colors">Home</a></li>
-                        <li><a href="services.html" class="hover:text-indigo-600 transition-colors">Components</a></li>
-                        <li><a href="about.html" class="hover:text-indigo-600 transition-colors">Templates</a></li>
-                        <li><a href="contact.html" class="hover:text-indigo-600 transition-colors">Pricing</a></li>
+                        <li><a href="index.html" class="hover:text-indigo-600 transition-colors" data-en="Home" data-bn="হোম">Home</a></li>
+                        <li><a href="frp.html" class="hover:text-indigo-600 transition-colors" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি ২০২৬">Android FRP Remove 2026</a></li>
+                        <li><a href="services.html" class="hover:text-indigo-600 transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a></li>
+                        <li><a href="contact.html" class="hover:text-indigo-600 transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Resources</h4>
+                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider" data-en="Resources" data-bn="রিসোর্সেস">Resources</h4>
                     <ul class="space-y-2 text-xs text-slate-500">
-                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Documentation</a></li>
-                        <li><a href="#" class="hover:text-indigo-600 transition-colors">License Agreement</a></li>
-                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors" data-en="Documentation" data-bn="ডকুমেন্টেশন">Documentation</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition-colors" data-en="Privacy Policy" data-bn="প্রাইভেসি পলিসি">Privacy Policy</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Newsletter</h4>
-                    <p class="text-slate-500 text-xs mb-3">Subscribe for monthly updates.</p>
-                    <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm">
+                    <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider" data-en="Newsletter" data-bn="নিউজলেটার">Newsletter</h4>
+                    <p class="text-slate-500 text-xs mb-3" data-en="Subscribe for updates." data-bn="আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for monthly updates.</p>
+                    <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
                         <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-700 placeholder-slate-400">
-                        <button type="submit" class="bg-black hover:bg-slate-800 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors">Join</button>
+                        <button type="submit" class="bg-black hover:bg-slate-800 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors" data-en="Join" data-bn="জয়েন">Join</button>
                     </form>
                 </div>
             </div>
@@ -595,21 +363,19 @@
             <div class="border-t border-slate-100 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-400 gap-4 text-center sm:text-left">
                 <p>&copy; 2026 Habib iFix. All rights reserved.</p>
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                    <a href="#" class="hover:text-slate-700 transition-colors">Privacy</a>
-                    <a href="#" class="hover:text-slate-700 transition-colors">Terms</a>
-                    <a href="#" class="hover:text-slate-700 transition-colors">Refund Policy</a>
-                    <a href="#" class="hover:text-slate-700 transition-colors">Support</a>
+                    <a href="#" class="hover:text-slate-700 transition-colors" data-en="Privacy" data-bn="প্রাইভেসি">Privacy</a>
+                    <a href="#" class="hover:text-slate-700 transition-colors" data-en="Terms" data-bn="টার্মস">Terms</a>
+                    <a href="#" class="hover:text-slate-700 transition-colors" data-en="Support" data-bn="সাপোর্ট">Support</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT -->
+    <!-- JAVASCRIPT & LOGIC -->
     <script>
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('mobileMenuIcon');
-            
             if (menu.classList.contains('-translate-y-full')) {
                 menu.classList.remove('-translate-y-full', 'opacity-0', 'invisible');
                 menu.classList.add('translate-y-0', 'opacity-100', 'visible');
@@ -623,71 +389,118 @@
             }
         }
 
-        function toggleChat(){
-            const w = document.getElementById('chatWin');
-            const b = document.getElementById('chatBtn');
-            const icon = b.querySelector('i');
-
-            if(w.classList.contains('hidden')){
-                w.classList.remove('hidden');
-                void w.offsetWidth;
-                w.classList.add('active');
-                icon.classList.remove('fa-message');
-                icon.classList.add('fa-xmark');
-            } else {
-                w.classList.remove('active');
-                icon.classList.remove('fa-xmark');
-                icon.classList.add('fa-message');
-                setTimeout(() => {
-                    w.classList.add('hidden');
-                }, 300);
+        // LANGUAGE SWITCHER (ENG <-> BAN)
+        let currentLang = localStorage.getItem('habib_lang') || 'en';
+        
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('habib_lang', lang);
+            const btn = document.getElementById('langSwitchBtn');
+            if(btn) {
+                btn.innerText = lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)';
             }
-        }
-
-        window.sendMsg = function() {
-            const input = document.getElementById('chatInput');
-            const txt = input.value.trim();
-            if(!txt) return;
             
-            const body = document.getElementById('chatBody');
-            const safeTxt = escapeHtml(txt);
-            body.innerHTML += `
-                <div class="flex gap-2 max-w-[85%] self-end">
-                    <div class="bg-indigo-500 text-white text-xs p-3 rounded-2xl rounded-br-none shadow-md font-medium leading-relaxed">${safeTxt}</div>
-                </div>`;
-            input.value = '';
-            body.scrollTop = body.scrollHeight;
-
-            setTimeout(() => {
-                body.innerHTML += `
-                    <div class="flex gap-2 max-w-[85%]">
-                        <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
-                        <div class="bg-white border border-white/50 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
-                            I am a demo AI designed for Habib iFix. I will be connected to the Gemini API in the final version to assist with your gadget repair queries!
-                        </div>
-                    </div>`;
-                body.scrollTop = body.scrollHeight;
-            }, 1000);
-        }
-
-        function escapeHtml(value) {
-            return String(value).replace(/[&<>"']/g, function(ch) {
-                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if (text) {
+                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = text;
+                    } else {
+                        el.innerText = text;
+                    }
+                }
             });
         }
 
-        document.querySelectorAll('footer form').forEach(function(newsletterForm) {
-            newsletterForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const input = newsletterForm.querySelector('input[type="email"]');
-                if (!input || !input.value.trim()) return;
-                const button = newsletterForm.querySelector('button');
-                const original = button ? button.innerText : '';
-                if (button) { button.innerText = 'Joined ✓'; button.disabled = true; }
-                input.value = '';
-                setTimeout(function(){ if(button){button.innerText=original;button.disabled=false;} }, 2500);
-            });
+        function toggleLanguage() {
+            applyLanguage(currentLang === 'en' ? 'bn' : 'en');
+        }
+
+        // Run on load
+        window.addEventListener('DOMContentLoaded', () => {
+            applyLanguage(currentLang);
+            loadStoredBlogs();
         });
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminFormContainer');
+            panel.classList.toggle('hidden');
+        }
+
+        // Admin: Add Course
+        function handleAddCourse(e) {
+            e.preventDefault();
+            const title = document.getElementById('courseTitle').value;
+            const price = document.getElementById('coursePrice').value;
+            const desc = document.getElementById('courseDesc').value;
+            
+            alert(`Course "${title}" (${price}) added successfully!`);
+            document.getElementById('courseForm').reset();
+        }
+
+        // Admin: Add Blog Post (Stores in LocalStorage and displays up to 5 posts)
+        function handleAddBlog(e) {
+            e.preventDefault();
+            const title = document.getElementById('blogTitle').value;
+            const cat = document.getElementById('blogCategory').value;
+            const desc = document.getElementById('blogDesc').value;
+
+            let blogs = JSON.parse(localStorage.getItem('habib_custom_blogs') || '[]');
+            blogs.unshift({ title, cat, desc, date: 'Just now' });
+            if(blogs.length > 5) blogs = blogs.slice(0, 5); // Keep max 5 posts
+            localStorage.setItem('habib_custom_blogs', JSON.stringify(blogs));
+
+            document.getElementById('blogForm').reset();
+            loadStoredBlogs();
+            alert('Blog Post published successfully to Blog Folder!');
+        }
+
+        function loadStoredBlogs() {
+            const blogs = JSON.parse(localStorage.getItem('habib_custom_blogs') || '[]');
+            const grid = document.getElementById('dynamicBlogGrid');
+            if(!grid) return;
+
+            let html = '';
+            // Render custom blogs first
+            blogs.forEach(b => {
+                html += `
+                <div class="glass-card p-3 group cursor-pointer flex flex-col border-2 border-indigo-300">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">${b.cat}</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">${b.title}</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">${b.desc}</p>
+                    </div>
+                </div>`;
+            });
+
+            // Add default demo posts to fill up to 3-5 items if needed
+            html += `
+                <div class="glass-card p-3 group cursor-pointer flex flex-col">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-50 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75" class="w-full h-full object-cover">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">REPAIR TIP</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">How to fix a cracked screen easily</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">Learn the professional way to replace your smartphone screen without damaging other components.</p>
+                    </div>
+                </div>
+                <div class="glass-card p-3 group cursor-pointer flex flex-col">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-blue-50 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=75" class="w-full h-full object-cover">
+                    </div>
+                    <div class="px-2 pb-2">
+                        <p class="text-[9px] font-bold text-indigo-500 mb-1 uppercase tracking-wider">TECH NEWS</p>
+                        <h3 class="font-bold text-base text-slate-800 leading-tight mb-2">Android FRP Remove 2026 Ultimate Guide</h3>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">Exploring the newest security patches and bypass methodologies for modern Android devices.</p>
+                    </div>
+                </div>`;
+
+            grid.innerHTML = html;
+        }
     </script>
     
     <!-- Firebase Auth Integration Script -->

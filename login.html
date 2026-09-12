@@ -73,19 +73,16 @@
     <main class="flex-grow flex items-center justify-center px-4 pt-28 pb-16">
         <div class="glass-3d w-full max-w-md p-8 sm:p-10 rounded-[35px] shadow-2xl border border-white/20 relative overflow-hidden text-center">
             
-            <!-- VIEW 1: WELCOME / SPLASH SCREEN (MATCHING REFERENCE IMAGE) -->
+            <!-- VIEW 1: SPLASH SCREEN -->
             <div id="splashScreen" class="py-8 flex flex-col items-center justify-between min-h-[380px]">
                 <div class="my-auto">
-                    <!-- H LOGO -->
                     <div class="w-24 h-24 bg-gradient-to-tr from-indigo-600 to-purple-600 text-white rounded-[32px] flex items-center justify-center text-5xl font-extrabold mx-auto mb-6 shadow-2xl shadow-indigo-600/50 border border-white/20">
                         H
                     </div>
-                    <!-- Habib iFix -->
                     <h2 class="text-3xl font-extrabold text-white tracking-wide mb-2">Habib <span class="text-indigo-400">iFix</span></h2>
                     <p class="text-xs text-slate-400 max-w-xs mx-auto">Your trusted partner for all mobile repair and online technical solutions.</p>
                 </div>
 
-                <!-- SIGN IN & CREATE ACCOUNT BUTTONS AT BOTTOM -->
                 <div class="w-full space-y-3 mt-8">
                     <button onclick="showAuthForm('signin')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
                         Sign In
@@ -96,7 +93,7 @@
                 </div>
             </div>
 
-            <!-- ERROR OR SUCCESS ALERT MESSAGE -->
+            <!-- ALERT MESSAGE -->
             <div id="authAlert" class="hidden mb-6 p-3 rounded-xl text-xs text-center font-medium"></div>
 
             <!-- VIEW 2: SIGN IN FORM -->
@@ -108,7 +105,7 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
-                    <input type="email" id="siEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                    <input type="email" id="siEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
                 </div>
                 <div>
                     <div class="flex justify-between items-center mb-1">
@@ -116,8 +113,8 @@
                         <button type="button" onclick="handleForgotPassword()" class="text-[10px] text-indigo-400 hover:underline">Forgot Password?</button>
                     </div>
                     <div class="relative">
-                        <input type="password" id="siPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
-                        <button type="button" onclick="togglePassword('siPassword', this)" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-white text-xs">
+                        <input type="password" id="siPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
+                        <button type="button" onclick="togglePassword('siPassword', this)" class="absolute right-3.5 top-3 text-slate-400 hover:text-white text-xs">
                             <i class="fa-solid fa-eye"></i>
                         </button>
                     </div>
@@ -125,54 +122,67 @@
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
                     Sign In
                 </button>
-                <div class="relative my-4 text-center">
+                <div class="relative my-3 text-center">
                     <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
                     <span class="relative px-3 bg-slate-900/40 text-[10px] uppercase text-slate-400 font-semibold">Or</span>
                 </div>
-                <button type="button" onclick="handleGoogleLogin()" class="w-full glass-3d bg-white/5 hover:bg-white/10 text-white font-semibold py-3.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-3 border border-white/10">
+                <button type="button" onclick="handleGoogleLogin()" class="w-full glass-3d bg-white/5 hover:bg-white/10 text-white font-semibold py-3 rounded-2xl text-xs transition-all flex items-center justify-center gap-3 border border-white/10">
                     <i class="fa-brands fa-google text-red-400"></i> Continue with Google
                 </button>
+                <p class="text-center text-xs text-slate-400 mt-4">
+                    Don't have an account? <button type="button" onclick="showAuthForm('signup')" class="text-indigo-400 font-bold hover:underline ml-1">Create Account</button>
+                </p>
             </form>
 
             <!-- VIEW 3: CREATE ACCOUNT FORM -->
-            <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-4 text-left hidden">
-                <div class="flex items-center justify-between mb-4">
+            <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-3.5 text-left hidden">
+                <div class="flex items-center justify-between mb-3">
                     <button type="button" onclick="backToSplash()" class="text-xs text-indigo-400 hover:text-white flex items-center gap-1.5"><i class="fa-solid fa-arrow-left"></i> Back</button>
                     <h3 class="text-lg font-bold text-white">Create Account</h3>
                     <div class="w-8"></div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Full Name</label>
-                    <input type="text" id="suName" required placeholder="Md Habibur Rahman" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Full Name</label>
+                    <input type="text" id="suName" required placeholder="Md Habibur Rahman" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
-                    <input type="email" id="suEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
+                    <input type="email" id="suEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Password</label>
+                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Password</label>
                     <div class="relative">
-                        <input type="password" id="suPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
-                        <button type="button" onclick="togglePassword('suPassword', this)" class="absolute right-3.5 top-3 text-slate-400 hover:text-white text-xs">
+                        <input type="password" id="suPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
+                        <button type="button" onclick="togglePassword('suPassword', this)" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
                             <i class="fa-solid fa-eye"></i>
                         </button>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Confirm Password</label>
-                    <input type="password" id="suConfirmPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Confirm Password</label>
+                    <input type="password" id="suConfirmPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
                     Create Account
                 </button>
+                <div class="relative my-2 text-center">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+                    <span class="relative px-3 bg-slate-900/40 text-[10px] uppercase text-slate-400 font-semibold">Or</span>
+                </div>
+                <button type="button" onclick="handleGoogleLogin()" class="w-full glass-3d bg-white/5 hover:bg-white/10 text-white font-semibold py-3 rounded-2xl text-xs transition-all flex items-center justify-center gap-3 border border-white/10">
+                    <i class="fa-brands fa-google text-red-400"></i> Continue with Google
+                </button>
+                <p class="text-center text-xs text-slate-400 mt-3">
+                    Already sign in? <button type="button" onclick="showAuthForm('signin')" class="text-indigo-400 font-bold hover:underline ml-1">Sign In</button>
+                </p>
             </form>
 
-            <p class="text-center text-[10px] text-slate-500 mt-6">&copy; 2026 Habib iFix. All rights reserved.</p>
+            <p class="text-center text-[10px] text-slate-500 mt-4">&copy; 2026 Habib iFix. All rights reserved.</p>
 
         </div>
     </main>
 
-    <!-- FIREBASE AUTH & UI LOGIC -->
+    <!-- FIREBASE & UI LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
@@ -194,12 +204,10 @@
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
 
-        const adminEmail = "tec.habiburrahman@gmail.com";
-
         function showAlert(msg, isError = true) {
             const alertBox = document.getElementById('authAlert');
             alertBox.innerText = msg;
-            alertBox.className = `mb-6 p-3 rounded-xl text-xs text-center font-medium ${isError ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}`;
+            alertBox.className = `mb-4 p-3 rounded-xl text-xs text-center font-medium ${isError ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}`;
             alertBox.classList.remove('hidden');
         }
 

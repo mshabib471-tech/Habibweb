@@ -1,640 +1,305 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Login & Register - Habib iFix</title>
-
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    * { box-sizing: border-box; }
-    html, body { 
-        width: 100%; 
-        max-width: 100%; 
-        overflow-x: hidden !important; 
-        margin: 0; 
-        padding: 0; 
-        background-color: #f8f9ff;
-        color: #334155;
-        font-family: 'Inter', sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-en="Sign In / Sign Up - Habib iFix" data-bn="সাইন ইন / সাইন আপ - হাবিব আইফিক্স">Sign In / Sign Up - Habib iFix</title>
     
-    /* Premium Glassmorphism Utility */
-    .glass {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.5) 100%);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
-    }
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    .glass-card {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-        border-radius: 24px;
-        transition: all 0.3s ease;
-    }
+    <style>
+        * { box-sizing: border-box; }
+        html, body { 
+            width: 100%; 
+            max-width: 100%; 
+            overflow-x: hidden !important; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311045 100%);
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .glass-3d {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
 
-    /* Abstract Background Blobs */
-    .blob { 
-        position: absolute; 
-        border-radius: 50%; 
-        filter: blur(80px); 
-        z-index: -1; 
-        opacity: 0.4; 
-        pointer-events: none; 
-        max-width: 100vw;
-    }
-    .blob-1 { top: -10%; left: -5%; width: 300px; height: 300px; background: #e0e7ff; }
-    .blob-2 { top: 20%; right: -5%; width: 350px; height: 350px; background: #f3e8ff; }
-    .blob-3 { bottom: 10%; left: 10%; width: 400px; height: 400px; background: #e0e7ff; }
-
-    /* Sliding Panel Logic */
-    .container-slider { position: relative; overflow: hidden; }
-    .form-container { position: absolute; top: 0; height: 100%; transition: all 0.6s ease-in-out; }
-
-    .sign-in-container { left: 0; width: 50%; z-index: 2; opacity: 1; pointer-events: auto; }
-    .container-slider.right-panel-active .sign-in-container { transform: translateX(100%); opacity: 0; pointer-events: none; }
-
-    .sign-up-container { left: 0; width: 50%; opacity: 0; z-index: 1; pointer-events: none; }
-    .container-slider.right-panel-active .sign-up-container { transform: translateX(100%); opacity: 1; z-index: 5; animation: show 0.6s; pointer-events: auto; }
-
-    @keyframes show { 0%,49.99%{opacity:0;z-index:1}50%,100%{opacity:1;z-index:5} }
-
-    .overlay-container { position: absolute; top: 0; left: 50%; width: 50%; height: 100%; overflow: hidden; transition: transform 0.6s ease-in-out; z-index: 100; }
-    .container-slider.right-panel-active .overlay-container { transform: translateX(-100%); }
-
-    .overlay { position: absolute; top: 0; left: -100%; width: 200%; height: 100%; background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; transition: transform 0.6s ease-in-out; }
-    .container-slider.right-panel-active .overlay { transform: translateX(50%); }
-
-    .overlay-panel { position: absolute; top: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 40px; height: 100%; width: 50%; text-align: center; transition: transform 0.6s ease-in-out; }
-    .overlay-left { transform: translateX(-20%); }
-    .container-slider.right-panel-active .overlay-left { transform: translateX(0); }
-    .overlay-right { right: 0; transform: translateX(0); }
-    .container-slider.right-panel-active .overlay-right { transform: translateX(20%); }
-
-    @media (max-width: 768px) {
-      .sign-in-container, .sign-up-container { width: 100%; left: 0; }
-      .overlay-container { display: none; }
-      .container-slider.right-panel-active .sign-in-container { transform: none; opacity: 0; pointer-events: none; }
-      .container-slider.right-panel-active .sign-up-container { transform: none; opacity: 1; pointer-events: all; }
-      .sign-up-container { transform: none; }
-      .mobile-toggle { display: block !important; }
-    }
-    @media (min-width: 769px) { .mobile-toggle { display: none !important; } }
-
-    /* Soft UI Inputs */
-    .soft-ui-input {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      transition: all 0.3s ease;
-    }
-    .soft-ui-input:focus {
-      outline: none;
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-    }
-
-    /* Soft UI Button */
-    .soft-ui-btn {
-      background: linear-gradient(135deg, #6366f1, #a855f7);
-      color: white;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
-      transition: all 0.2s ease;
-    }
-    .soft-ui-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
-    }
-
-    /* Social Buttons */
-    .social-btn {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-      transition: all 0.2s ease;
-    }
-    .social-btn:hover {
-      transform: translateY(-2px);
-      border-color: #cbd5e1;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-  </style>
+        .blob { 
+            position: absolute; 
+            border-radius: 50%; 
+            filter: blur(100px); 
+            z-index: -1; 
+            opacity: 0.5; 
+            pointer-events: none; 
+        }
+        .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #4f46e5; }
+        .blob-2 { top: 30%; right: -10%; width: 500px; height: 500px; background: #9333ea; }
+        .blob-3 { bottom: 10%; left: 20%; width: 450px; height: 450px; background: #06b6d4; }
+    </style>
 </head>
-<body class="antialiased relative selection:bg-indigo-200 selection:text-indigo-900 min-h-screen flex flex-col justify-between">
+<body class="antialiased relative selection:bg-indigo-500 selection:text-white flex flex-col min-h-screen">
 
-  <!-- Background Blobs -->
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
 
-  <!-- HEADER / NAVBAR -->
-  <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass border-b border-white/50">
-      <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-2.5">
-          <div class="w-9 h-9 sm:w-10 sm:h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-md">H</div>
-          <div class="leading-tight">
-              <h1 class="font-bold text-slate-800 text-xs sm:text-sm">Habib<span class="text-slate-400 font-normal">iFix</span></h1>
-              <p class="text-[9px] sm:text-[10px] text-slate-500 font-medium tracking-wide">Gadget Specialist</p>
-          </div>
-      </a>
-
-      <!-- Desktop Nav -->
-      <nav class="hidden lg:flex glass rounded-full px-6 py-2.5 items-center gap-8 text-sm font-medium text-slate-600 shadow-sm">
-          <a href="index.html" class="hover:text-black transition-colors">Home</a>
-          <a href="about.html" class="hover:text-black transition-colors">About</a>
-          <a href="services.html" class="hover:text-black transition-colors">Services</a>
-          <a href="blog.html" class="hover:text-black transition-colors">Blog</a>
-          <a href="contact.html" class="hover:text-black transition-colors">Contact</a>
-      </nav>
-
-      <!-- CTA & Profile & Mobile Menu Toggle -->
-      <div class="flex items-center gap-2 sm:gap-3">
-          <a href="login.html" id="loginNavBtn" class="glass bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors flex items-center gap-2 shadow-sm">
-              Sign In / Sign Up <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </a>
-          
-          <!-- Profile Avatar (Hidden by default, shown when logged in) -->
-          <div id="profileBtn" class="hidden relative cursor-pointer group">
-              <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-indigo-400 shadow-sm object-cover">
-              <div class="absolute top-full right-0 mt-3 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
-                  <label class="px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-xl cursor-pointer flex items-center gap-2 transition-colors mb-1">
-                      <i class="fa-solid fa-camera text-xs"></i> Change Pic
-                      <input type="file" id="profilePicInput" accept="image/*" class="hidden">
-                  </label>
-                  <button onclick="doLogout()" class="w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-xl text-left flex items-center gap-2 transition-colors">
-                      <i class="fa-solid fa-sign-out-alt text-xs"></i> Logout
-                  </button>
-              </div>
-          </div>
-
-          <!-- Mobile Menu Button -->
-          <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 glass bg-white/90 rounded-xl flex items-center justify-center text-slate-800 shadow-md focus:outline-none z-50">
-              <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
-          </button>
-      </div>
-  </header>
-
-  <!-- Mobile Dropdown Menu -->
-  <div id="mobileMenu" class="fixed inset-x-0 top-0 pt-20 bg-white/95 backdrop-blur-2xl border-b border-slate-200 shadow-2xl px-6 pb-6 flex flex-col gap-3 transform -translate-y-full opacity-0 invisible transition-all duration-300 z-40 lg:hidden">
-      <a href="index.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Home</a>
-      <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">About</a>
-      <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Services</a>
-      <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Blog</a>
-      <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Contact</a>
-      <a href="login.html" id="mobileLoginBtn" onclick="toggleMobileMenu()" class="w-full bg-black text-white text-center py-3 rounded-xl font-semibold text-xs mt-2 shadow-md">Sign In / Sign Up</a>
-  </div>
-
-  <!-- MAIN CONTAINER AREA -->
-  <main class="flex-grow flex items-center justify-center px-4 pt-32 pb-16">
-    <div class="container-slider w-full max-w-[850px] min-h-[560px] bg-white rounded-[40px] shadow-2xl overflow-hidden relative glass" id="mainContainer">
-
-      <!-- ===== SIGN UP FORM ===== -->
-      <div class="form-container sign-up-container flex flex-col justify-center px-8 md:px-12 bg-white/80">
-        <form id="registerForm" class="flex flex-col items-center w-full">
-          <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Join with us</h2>
-          <p class="text-sm text-slate-500 mb-6">Create your account to get started</p>
-
-          <div class="w-full space-y-4 mb-6">
-            <input type="text" id="regName" placeholder="Username" required class="soft-ui-input w-full px-5 py-3.5 rounded-xl text-slate-600 placeholder-slate-400 text-sm">
-            <input type="email" id="regEmail" placeholder="Email" required class="soft-ui-input w-full px-5 py-3.5 rounded-xl text-slate-600 placeholder-slate-400 text-sm">
-            <input type="password" id="regPassword" placeholder="Password" required minlength="6" class="soft-ui-input w-full px-5 py-3.5 rounded-xl text-slate-600 placeholder-slate-400 text-sm">
-            <input type="password" id="regConfirmPassword" placeholder="Confirm password" required class="soft-ui-input w-full px-5 py-3.5 rounded-xl text-slate-600 placeholder-slate-400 text-sm">
-          </div>
-
-          <button type="submit" class="soft-ui-btn w-full py-3.5 rounded-xl font-bold text-sm tracking-wide">
-            Sign up
-          </button>
-
-          <p class="text-xs text-slate-500 mt-6">Already have an account? <span class="mobile-toggle text-indigo-600 font-semibold cursor-pointer hover:underline">Sign in here</span></p>
-
-          <div id="regMessage" class="hidden text-xs text-center font-medium mt-4 p-2 rounded-lg"></div>
-        </form>
-      </div>
-
-      <!-- ===== SIGN IN FORM ===== -->
-      <div class="form-container sign-in-container flex flex-col justify-center px-8 md:px-12 bg-white/80">
-        <form id="loginForm" class="flex flex-col items-center w-full">
-          <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Welcome</h2>
-          <p class="text-sm text-slate-500 mb-6">Please sign in to continue</p>
-
-          <div class="w-full space-y-4 mb-6">
-            <input type="email" id="loginEmail" placeholder="Username / Email" required class="soft-ui-input w-full px-5 py-3.5 rounded-xl text-slate-600 placeholder-slate-400 text-sm">
-            <input type="password" id="loginPassword" placeholder="Password" required class="soft-ui-input w-full px-5 py-3.5 rounded-xl text-slate-600 placeholder-slate-400 text-sm">
-          </div>
-
-          <button type="submit" class="soft-ui-btn w-full py-3.5 rounded-xl font-bold text-sm tracking-wide">
-            Sign in
-          </button>
-
-          <div class="flex items-center justify-between w-full mt-4 px-1">
-            <label class="flex items-center gap-2 cursor-pointer select-none">
-              <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 accent-indigo-600">
-              <span class="text-xs text-slate-500 font-medium">Remember me</span>
-            </label>
-            <button type="button" id="forgotPasswordBtn" class="text-xs text-slate-500 hover:text-indigo-600 transition-colors font-medium">Forgot password?</button>
-          </div>
-
-          <div class="relative flex items-center justify-center my-6 w-full">
-            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
-            <div class="relative bg-white px-4 text-xs text-slate-400 uppercase tracking-widest font-medium">Or continue with</div>
-          </div>
-
-          <div class="flex justify-center gap-4 w-full">
-            <button type="button" onclick="loginWithGoogle()" class="social-btn w-12 h-12 rounded-full flex items-center justify-center text-slate-600 hover:text-indigo-600">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-            </button>
-            <button type="button" class="social-btn w-12 h-12 rounded-full flex items-center justify-center text-slate-600 hover:text-slate-900">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            </button>
-            <button type="button" onclick="togglePhoneAuth()" class="social-btn w-12 h-12 rounded-full flex items-center justify-center text-slate-600 hover:text-emerald-600">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-            </button>
-          </div>
-
-          <p class="text-xs text-slate-500 mt-6">Don't have an account? <span class="mobile-toggle text-indigo-600 font-semibold cursor-pointer hover:underline">Sign up here</span></p>
-
-          <div id="loginMessage" class="hidden text-xs text-center font-medium mt-4 p-2 rounded-lg"></div>
-        </form>
-
-        <!-- Phone Auth Form (Hidden by default) -->
-        <div id="phoneAuthForm" class="flex flex-col items-center w-full hidden">
-          <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Phone Login</h2>
-          <p class="text-sm text-slate-500 mb-6">Verify with OTP</p>
-
-          <div id="phoneInputSection" class="w-full space-y-4 mb-6">
-            <div class="flex gap-3">
-              <select id="countryCode" class="soft-ui-input px-3 py-3.5 rounded-xl text-slate-600 text-sm w-1/3 appearance-none cursor-pointer">
-                <option value="+880" class="bg-white">+880</option>
-                <option value="+91" class="bg-white">+91</option>
-                <option value="+1" class="bg-white">+1</option>
-              </select>
-              <input type="tel" id="phoneNumber" placeholder="1XXXXXXXXX" class="soft-ui-input w-2/3 px-5 py-3.5 rounded-xl text-slate-600 placeholder-slate-400 text-sm">
+    <!-- HEADER / NAVBAR -->
+    <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass-3d border-b border-white/10">
+        <a href="index.html" class="flex items-center gap-2.5">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg shadow-indigo-500/30">H</div>
+            <div class="leading-tight">
+                <h1 class="font-bold text-white text-xs sm:text-sm">Habib <span class="text-indigo-400">iFix</span></h1>
+                <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium tracking-wide">Trusted Mobile Technician</p>
             </div>
-            <div id="recaptcha-container" class="flex justify-center"></div>
-            <button id="sendOtpBtn" class="soft-ui-btn w-full py-3.5 rounded-xl font-bold text-sm tracking-wide">Send OTP</button>
-          </div>
+        </a>
+        <a href="index.html" class="glass-3d bg-white/10 px-4 py-2 rounded-full font-semibold text-xs text-white hover:bg-white/20 transition-colors">
+            <i class="fa-solid fa-house mr-1"></i> Home
+        </a>
+    </header>
 
-          <div id="otpInputSection" class="w-full space-y-4 mb-6 hidden">
-            <p class="text-xs text-slate-500 text-center">Enter the 6-digit code sent to your phone</p>
-            <input type="text" id="otpCode" placeholder="• • • • • •" maxlength="6" class="soft-ui-input w-full px-5 py-3.5 rounded-xl text-slate-600 text-center tracking-[0.5em] text-xl font-bold">
-            <button id="verifyOtpBtn" class="soft-ui-btn w-full py-3.5 rounded-xl font-bold text-sm tracking-wide" style="background: linear-gradient(135deg, #10b981, #059669);">Verify & Login</button>
-          </div>
+    <!-- MAIN CONTAINER (MATCHING DESIGN REFERENCE) -->
+    <main class="flex-grow flex items-center justify-center px-4 pt-28 pb-16">
+        <div class="glass-3d w-full max-w-md p-8 sm:p-10 rounded-[35px] shadow-2xl border border-white/20 relative overflow-hidden">
+            
+            <!-- LOGO / BRAND ICON -->
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-indigo-600/30 text-indigo-400 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-4 border border-indigo-500/30 shadow-inner">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h2 id="formTitle" class="text-2xl font-extrabold text-white mb-1">Welcome Back</h2>
+                <p id="formSubTitle" class="text-xs text-slate-400">Sign in to your Habib iFix account</p>
+            </div>
 
-          <button type="button" onclick="togglePhoneAuth()" class="text-xs text-slate-500 hover:text-indigo-600 transition-colors font-medium mt-2">← Back to Email Login</button>
+            <!-- ERROR OR SUCCESS ALERT MESSAGE -->
+            <div id="authAlert" class="hidden mb-6 p-3 rounded-xl text-xs text-center font-medium"></div>
 
-          <div id="phoneMessage" class="hidden text-xs text-center font-medium mt-4 p-2 rounded-lg"></div>
-        </div>
-      </div>
+            <!-- SIGN IN FORM -->
+            <form id="signInForm" onsubmit="handleSignIn(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
+                    <input type="email" id="siEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-[11px] font-bold text-slate-300 uppercase">Password</label>
+                        <button type="button" onclick="handleForgotPassword()" class="text-[10px] text-indigo-400 hover:underline">Forgot Password?</button>
+                    </div>
+                    <div class="relative">
+                        <input type="password" id="siPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
+                        <button type="button" onclick="togglePassword('siPassword', this)" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-white text-xs">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
+                    Sign In
+                </button>
+            </form>
 
-      <!-- ===== OVERLAY SLIDER ===== -->
-      <div class="overlay-container hidden md:block">
-        <div class="overlay">
-          <!-- Left Panel -->
-          <div class="overlay-panel overlay-left">
-            <h2 class="text-4xl font-extrabold mb-4 text-white">Welcome</h2>
-            <p class="text-white/80 mb-8 font-medium text-sm leading-relaxed">To keep connected with us please login with your personal info.</p>
-            <button class="bg-transparent border-2 border-white text-white font-bold py-3 px-10 rounded-xl transition-all hover:bg-white hover:text-indigo-600 shadow-lg text-sm tracking-wide" id="signIn">
-              Sign In
+            <!-- SIGN UP FORM (HIDDEN BY DEFAULT) -->
+            <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Full Name</label>
+                    <input type="text" id="suName" required placeholder="Md Habibur Rahman" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
+                    <input type="email" id="suEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Password</label>
+                    <div class="relative">
+                        <input type="password" id="suPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
+                        <button type="button" onclick="togglePassword('suPassword', this)" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-white text-xs">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Confirm Password</label>
+                    <input type="password" id="suConfirmPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
+                    Create Account
+                </button>
+            </form>
+
+            <!-- DIVIDER -->
+            <div class="relative my-6 text-center">
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+                <span class="relative px-3 bg-slate-900/40 text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Or</span>
+            </div>
+
+            <!-- SOCIAL LOGIN BUTTONS -->
+            <button onclick="handleGoogleLogin()" class="w-full glass-3d bg-white/5 hover:bg-white/10 text-white font-semibold py-3.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-3 mb-3 border border-white/10">
+                <i class="fa-brands fa-google text-red-400"></i> Continue with Google
             </button>
-          </div>
-          <!-- Right Panel -->
-          <div class="overlay-panel overlay-right">
-            <h2 class="text-4xl font-extrabold mb-4 text-white">Join with us</h2>
-            <p class="text-white/80 mb-8 font-medium text-sm leading-relaxed">Enter your personal details and start your journey with us.</p>
-            <button class="bg-transparent border-2 border-white text-white font-bold py-3 px-10 rounded-xl transition-all hover:bg-white hover:text-indigo-600 shadow-lg text-sm tracking-wide" id="signUp">
-              Sign Up
-            </button>
-          </div>
+
+            <!-- SWITCH BETWEEN SIGN IN & SIGN UP -->
+            <p class="text-center text-xs text-slate-400 mt-6">
+                <span id="switchText">Don't have an account?</span> 
+                <button onclick="toggleAuthMode()" id="switchBtn" class="text-indigo-400 font-bold hover:underline ml-1">Sign up</button>
+            </p>
+
+            <p class="text-center text-[10px] text-slate-500 mt-6">&copy; 2026 Habib iFix. All rights reserved.</p>
+
         </div>
-      </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- FOOTER -->
-  <footer class="bg-white/90 backdrop-blur-md border-t border-slate-100 pt-10 sm:pt-12 pb-6 relative z-10">
-      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-              <div class="space-y-3">
-                  <div class="flex items-center gap-3">
-                      <div class="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
-                      <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
-                  </div>
-                  <p class="text-slate-500 text-xs leading-relaxed">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
-              </div>
+    <!-- FIREBASE AUTH LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, 
+            signInWithPopup, GoogleAuthProvider, onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-              <div>
-                  <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Explore</h4>
-                  <ul class="space-y-2 text-xs text-slate-500">
-                      <li><a href="index.html" class="hover:text-indigo-600 transition-colors">Home</a></li>
-                      <li><a href="services.html" class="hover:text-indigo-600 transition-colors">Components</a></li>
-                      <li><a href="about.html" class="hover:text-indigo-600 transition-colors">Templates</a></li>
-                      <li><a href="contact.html" class="hover:text-indigo-600 transition-colors">Pricing</a></li>
-                  </ul>
-              </div>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
+            authDomain: "habib-yt.firebaseapp.com",
+            projectId: "habib-yt",
+            storageBucket: "habib-yt.firebasestorage.app",
+            messagingSenderId: "656628491244",
+            appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
+            measurementId: "G-GNY1T88D34"
+        };
 
-              <div>
-                  <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Resources</h4>
-                  <ul class="space-y-2 text-xs text-slate-500">
-                      <li><a href="#" class="hover:text-indigo-600 transition-colors">Documentation</a></li>
-                      <li><a href="#" class="hover:text-indigo-600 transition-colors">License Agreement</a></li>
-                      <li><a href="#" class="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
-                      <li><a href="#" class="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
-                  </ul>
-              </div>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
 
-              <div>
-                  <h4 class="font-bold text-slate-900 mb-3 text-xs uppercase tracking-wider">Newsletter</h4>
-                  <p class="text-slate-500 text-xs mb-3">Subscribe for monthly updates.</p>
-                  <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm" onsubmit="event.preventDefault();">
-                      <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-700 placeholder-slate-400">
-                      <button type="submit" class="bg-black hover:bg-slate-800 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors">Join</button>
-                  </form>
-              </div>
-          </div>
+        const adminEmail = "tec.habiburrahman@gmail.com";
 
-          <div class="border-t border-slate-100 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-400 gap-4 text-center sm:text-left">
-              <p>&copy; 2026 Habib iFix. All rights reserved.</p>
-              <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                  <a href="#" class="hover:text-slate-700 transition-colors">Privacy</a>
-                  <a href="#" class="hover:text-slate-700 transition-colors">Terms</a>
-                  <a href="#" class="hover:text-slate-700 transition-colors">Refund Policy</a>
-                  <a href="#" class="hover:text-slate-700 transition-colors">Support</a>
-              </div>
-          </div>
-      </div>
-  </footer>
-
-  <!-- JAVASCRIPT -->
-  <script>
-      function toggleMobileMenu() {
-          const menu = document.getElementById('mobileMenu');
-          const icon = document.getElementById('mobileMenuIcon');
-          
-          if (menu.classList.contains('-translate-y-full')) {
-              menu.classList.remove('-translate-y-full', 'opacity-0', 'invisible');
-              menu.classList.add('translate-y-0', 'opacity-100', 'visible');
-              icon.classList.remove('fa-bars');
-              icon.classList.add('fa-xmark');
-          } else {
-              menu.classList.remove('translate-y-0', 'opacity-100', 'visible');
-              menu.classList.add('-translate-y-full', 'opacity-0', 'invisible');
-              icon.classList.remove('fa-xmark');
-              icon.classList.add('fa-bars');
-          }
-      }
-  </script>
-
-  <!-- Firebase Auth Logic + site-auth.js Sync -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, 
-      signInWithPopup, GoogleAuthProvider, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
-      authDomain: "habib-yt.firebaseapp.com",
-      projectId: "habib-yt",
-      storageBucket: "habib-yt.firebasestorage.app",
-      messagingSenderId: "656628491244",
-      appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
-      measurementId: "G-GNY1T88D34"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
-
-    // Already logged in check: Redirect to index.html if active user exists
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        localStorage.setItem('habib_logged_in', 'true');
-        if (user.photoURL) {
-          localStorage.setItem('habib_user_avatar', user.photoURL);
+        // Helper to show alerts
+        function showAlert(msg, isError = true) {
+            const alertBox = document.getElementById('authAlert');
+            alertBox.innerText = msg;
+            alertBox.className = `mb-6 p-3 rounded-xl text-xs text-center font-medium ${isError ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}`;
+            alertBox.classList.remove('hidden');
         }
-        window.location.href = 'index.html';
-      }
-    });
 
-    // Slider logic
-    var signUpBtn = document.getElementById('signUp');
-    var signInBtn = document.getElementById('signIn');
-    var container = document.getElementById('mainContainer');
-    var mobileToggles = document.querySelectorAll('.mobile-toggle');
+        // Get Return URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return') || 'index.html';
 
-    if(signUpBtn) signUpBtn.addEventListener('click', function(){ container.classList.add("right-panel-active"); });
-    if(signInBtn) signInBtn.addEventListener('click', function(){ container.classList.remove("right-panel-active"); });
+        // Sign In
+        window.handleSignIn = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('siEmail').value;
+            const password = document.getElementById('siPassword').value;
 
-    mobileToggles.forEach(btn => {
-      btn.addEventListener('click', function() {
-        if(container.classList.contains("right-panel-active")) {
-          container.classList.remove("right-panel-active");
-        } else {
-          container.classList.add("right-panel-active");
-        }
-      });
-    });
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                localStorage.setItem('habib_logged_in', 'true');
+                localStorage.setItem('habib_user_email', user.email);
+                localStorage.setItem('habib_user_name', user.displayName || user.email.split('@')[0]);
+                
+                showAlert("Login Successful! Redirecting...", false);
+                setTimeout(() => { window.location.href = returnUrl; }, 1000);
+            } catch (error) {
+                showAlert(error.message);
+            }
+        };
 
-    function showMessage(id, msg, type) {
-      var el = document.getElementById(id);
-      if(!el) return;
-      el.innerText = msg;
-      el.classList.remove('hidden');
-      if(type === 'success') {
-        el.className = "text-xs text-center font-medium mt-4 p-2 rounded-lg text-emerald-600 bg-emerald-50 border border-emerald-200";
-      } else {
-        el.className = "text-xs text-center font-medium mt-4 p-2 rounded-lg text-red-500 bg-red-50 border border-red-200";
-      }
-    }
+        // Sign Up
+        window.handleSignUp = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('suName').value;
+            const email = document.getElementById('suEmail').value;
+            const password = document.getElementById('suPassword').value;
+            const confirmPassword = document.getElementById('suConfirmPassword').value;
 
-    function handleLoginSuccess(user, msgId) {
-      localStorage.setItem('habib_logged_in', 'true');
-      if (user.photoURL) {
-        localStorage.setItem('habib_user_avatar', user.photoURL);
-      }
-      showMessage(msgId, "✅ Success! Redirecting...", "success");
-      setTimeout(function(){ window.location.href = 'index.html'; }, 1200);
-    }
+            if (password !== confirmPassword) {
+                showAlert("Passwords do not match!");
+                return;
+            }
 
-    // Password reset
-    var forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
-    if (forgotPasswordBtn) {
-      forgotPasswordBtn.addEventListener('click', async function() {
-        var email = document.getElementById('loginEmail').value.trim();
-        if (!email) {
-          showMessage('loginMessage', 'Enter your email first, then click Forgot password.');
-          document.getElementById('loginEmail').focus();
-          return;
-        }
-        try {
-          forgotPasswordBtn.disabled = true;
-          forgotPasswordBtn.innerText = 'Sending...';
-          await sendPasswordResetEmail(auth, email);
-          showMessage('loginMessage', '✅ Password reset email sent. Check your inbox.', 'success');
-        } catch (err) {
-          showMessage('loginMessage', '❌ ' + err.message);
-        } finally {
-          forgotPasswordBtn.disabled = false;
-          forgotPasswordBtn.innerText = 'Forgot password?';
-        }
-      });
-    }
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                await updateProfile(user, { displayName: name });
 
-    // Google Login
-    window.loginWithGoogle = function() {
-      signInWithPopup(auth, googleProvider).then(function(result) {
-        handleLoginSuccess(result.user, "loginMessage");
-      }).catch(function(err) {
-        showMessage("loginMessage", "❌ Error: " + err.message);
-      });
-    };
+                localStorage.setItem('habib_logged_in', 'true');
+                localStorage.setItem('habib_user_email', user.email);
+                localStorage.setItem('habib_user_name', name);
 
-    // Toggle Phone Auth
-    window.togglePhoneAuth = function() {
-      var loginForm = document.getElementById('loginForm');
-      var phoneForm = document.getElementById('phoneAuthForm');
+                showAlert("Account Created Successfully! Redirecting...", false);
+                setTimeout(() => { window.location.href = returnUrl; }, 1000);
+            } catch (error) {
+                showAlert(error.message);
+            }
+        };
 
-      if(loginForm.classList.contains('hidden')) {
-        loginForm.classList.remove('hidden');
-        phoneForm.classList.add('hidden');
-      } else {
-        loginForm.classList.add('hidden');
-        phoneForm.classList.remove('hidden');
+        // Google Login
+        window.handleGoogleLogin = async function() {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
 
-        if(!window.recaptchaVerifier) {
-          try {
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-              'size': 'normal',
-              'theme': 'light'
-            });
-            window.recaptchaVerifier.render();
-          } catch(e) { 
-            console.log("reCAPTCHA init error:", e); 
-          }
-        }
-      }
-    };
+                localStorage.setItem('habib_logged_in', 'true');
+                localStorage.setItem('habib_user_email', user.email);
+                localStorage.setItem('habib_user_name', user.displayName || user.email.split('@')[0]);
 
-    // Send OTP
-    document.getElementById('sendOtpBtn').addEventListener('click', function() {
-      var fullNumber = document.getElementById('countryCode').value + document.getElementById('phoneNumber').value;
-      if(fullNumber.length < 10) return showMessage('phoneMessage', "❌ Invalid phone number.");
+                showAlert("Google Login Successful! Redirecting...", false);
+                setTimeout(() => { window.location.href = returnUrl; }, 1000);
+            } catch (error) {
+                showAlert(error.message);
+            }
+        };
 
-      var btn = document.getElementById('sendOtpBtn');
-      btn.innerText = 'Sending...';
-      btn.disabled = true;
+        // Forgot Password
+        window.handleForgotPassword = async function() {
+            const email = document.getElementById('siEmail').value;
+            if (!email) {
+                showAlert("Please enter your email address first in the email field.");
+                return;
+            }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showAlert("Password reset email sent! Check your inbox.", false);
+            } catch (error) {
+                showAlert(error.message);
+            }
+        };
 
-      signInWithPhoneNumber(auth, fullNumber, window.recaptchaVerifier)
-        .then(function(conf) {
-          window.confirmationResult = conf;
-          document.getElementById('phoneInputSection').classList.add('hidden');
-          document.getElementById('otpInputSection').classList.remove('hidden');
-          showMessage('phoneMessage', "✅ OTP Sent! Check your phone.", "success");
-          btn.innerText = 'Send OTP';
-          btn.disabled = false;
-        }).catch(function(err) {
-          showMessage('phoneMessage', "❌ SMS Failed: " + err.message);
-          btn.innerText = 'Send OTP';
-          btn.disabled = false;
-          try { if(window.recaptchaVerifier) window.recaptchaVerifier.reset(); } catch(e){}
-        });
-    });
+        // Toggle UI Mode (Sign In <-> Sign Up)
+        let isSignUp = false;
+        window.toggleAuthMode = function() {
+            isSignUp = !isSignUp;
+            document.getElementById('signInForm').classList.toggle('hidden', isSignUp);
+            document.getElementById('signUpForm').classList.toggle('hidden', !isSignUp);
+            document.getElementById('formTitle').innerText = isSignUp ? "Create Account" : "Welcome Back";
+            document.getElementById('formSubTitle').innerText = isSignUp ? "Fill your details to get started" : "Sign in to your Habib iFix account";
+            document.getElementById('switchText').innerText = isSignUp ? "Already have an account?" : "Don't have an account?";
+            document.getElementById('switchBtn').innerText = isSignUp ? "Sign in" : "Sign up";
+            document.getElementById('authAlert').classList.add('hidden');
+        };
 
-    // Verify OTP
-    document.getElementById('verifyOtpBtn').addEventListener('click', function() {
-      var code = document.getElementById('otpCode').value.trim();
-      if(!code || code.length < 6) return showMessage('phoneMessage', "❌ Please enter full 6-digit OTP.");
-
-      var btn = document.getElementById('verifyOtpBtn');
-      btn.innerText = 'Verifying...';
-      btn.disabled = true;
-
-      window.confirmationResult.confirm(code)
-        .then(function(res) {
-          handleLoginSuccess(res.user, 'phoneMessage');
-        })
-        .catch(function(err) {
-          showMessage('phoneMessage', "❌ Invalid OTP! Try again.");
-          btn.innerText = 'Verify & Login';
-          btn.disabled = false;
-        });
-    });
-
-    // Email Login
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      var btn = this.querySelector('button[type="submit"]');
-      var originalText = btn.innerText;
-      btn.innerText = 'Signing in...';
-      btn.disabled = true;
-
-      var email = document.getElementById('loginEmail').value;
-      var pass = document.getElementById('loginPassword').value;
-
-      signInWithEmailAndPassword(auth, email, pass)
-        .then(function(res){ handleLoginSuccess(res.user, 'loginMessage'); })
-        .catch(function(err){ 
-          showMessage('loginMessage', "❌ " + err.message);
-          btn.innerText = originalText;
-          btn.disabled = false;
-        });
-    });
-
-    // Registration
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      var btn = this.querySelector('button[type="submit"]');
-      var originalText = btn.innerText;
-      btn.innerText = 'Creating account...';
-      btn.disabled = true;
-
-      var name = document.getElementById('regName').value;
-      var email = document.getElementById('regEmail').value;
-      var pass = document.getElementById('regPassword').value;
-      var confirmPass = document.getElementById('regConfirmPassword').value;
-
-      if(pass !== confirmPass) {
-        showMessage('regMessage', "❌ Passwords do not match.");
-        btn.innerText = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      if(pass.length < 6) {
-        showMessage('regMessage', "❌ Password must be at least 6 characters.");
-        btn.innerText = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      createUserWithEmailAndPassword(auth, email, pass)
-        .then(function(res) {
-          updateProfile(res.user, { displayName: name }).then(function() {
-            handleLoginSuccess(res.user, 'regMessage');
-          });
-        })
-        .catch(function(err){ 
-          showMessage('regMessage', "❌ " + err.message);
-          btn.innerText = originalText;
-          btn.disabled = false;
-        });
-    });
-  </script>
-
-  <!-- Universal Auth Sync Script -->
-  <script type="module" src="js/site-auth.js"></script>
+        // Show/Hide Password
+        window.togglePassword = function(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            } else {
+                input.type = "password";
+                btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            }
+        };
+    </script>
 </body>
 </html>

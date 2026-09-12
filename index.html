@@ -102,14 +102,15 @@
             </div>
         </a>
 
-        <!-- Desktop Nav -->
-        <nav class="hidden lg:flex glass-3d rounded-full px-6 py-2.5 items-center gap-6 text-sm font-medium text-slate-300">
-            <a href="index.html" class="text-white bg-white/10 px-4 py-1.5 rounded-full shadow-inner" data-en="Home" data-bn="হোম">Home</a>
-            <a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
-            <a href="blog.html" class="hover:text-white transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
-            <a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
-            <a href="frp.html" class="text-indigo-400 font-bold hover:underline" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</a>
-        </nav>
+<!-- Desktop Nav -->
+<nav class="hidden lg:flex glass-3d rounded-full px-6 py-2.5 items-center gap-6 text-sm font-medium text-slate-300">
+    <a href="index.html" class="hover:text-white transition-colors" data-en="Home" data-bn="হোম">Home</a>
+    <a href="about.html" class="hover:text-white transition-colors" data-en="About" data-bn="আমাদের সম্পর্কে">About</a> <!-- নতুন যুক্ত করা হলো -->
+    <a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
+    <a href="courses.html" class="hover:text-white transition-colors" data-en="Courses" data-bn="কোর্সসমূহ">Courses</a>
+    <a href="blog.html" class="hover:text-white transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
+    <a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
+</nav>
 
         <!-- CTA & Language Switch & Profile -->
         <div class="flex items-center gap-2 sm:gap-3">
@@ -143,6 +144,7 @@
     <!-- Mobile Dropdown Menu -->
     <div id="mobileMenu" class="fixed inset-x-0 top-0 pt-20 bg-slate-950/95 backdrop-blur-2xl border-b border-slate-800 shadow-2xl px-6 pb-6 flex flex-col gap-3 transform -translate-y-full opacity-0 invisible transition-all duration-300 z-40 lg:hidden">
         <a href="index.html" onclick="toggleMobileMenu()" class="text-white font-semibold text-sm py-2.5 px-4 rounded-xl bg-white/10" data-en="Home" data-bn="হোম">Home</a>
+        <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">About</a>
         <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5" data-en="Services" data-bn="সেবাসমূহ">Services</a>
         <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5" data-en="Blog" data-bn="ব্লগ">Blog</a>
         <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
@@ -169,6 +171,9 @@
                     </a>
                     <a href="frp.html" class="bg-gradient-to-r from-cyan-600 to-indigo-600 text-white px-6 py-3.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-transform shadow-xl text-xs sm:text-sm">
                         <i class="fa-solid fa-unlock-keyhole text-xs"></i> <span data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</span>
+                    </a>
+                    <a href="about.html" class="glass-3d px-6 py-3.5 rounded-full font-medium flex items-center gap-2 hover:bg-white/10 transition-colors text-slate-200 text-xs sm:text-sm">
+                        <span data-en="About Me" data-bn="আমার সম্পর্কে">Contact Me</span> <i class="fa-regular fa-envelope text-xs"></i>
                     </a>
                 </div>
             </div>
@@ -209,17 +214,18 @@
             <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-6" data-en="Trusted by top e-commerce brands and global partners" data-bn="বিশ্বের শীর্ষস্থানীয় ব্র্যান্ড ও পার্টনারদের দ্বারা বিশ্বস্ত">Trusted by e-commerce brands and global partners</p>
             <div class="overflow-hidden w-full relative">
                 <div class="animate-scroll flex items-center gap-16 px-8">
-                    <div class="flex items-center gap-2 text-xl font-black text-slate-300 tracking-tighter"><i class="fa-brands fa-amazon text-2xl text-amber-400"></i> amazon</div>
-                    <div class="flex items-center gap-2 text-lg font-bold text-slate-300"><i class="fa-solid fa-bolt text-indigo-400"></i> Helium 10</div>
-                    <div class="flex items-center gap-2 text-lg font-bold text-slate-300"><i class="fa-solid fa-chart-line text-emerald-400"></i> JungleScout</div>
                     <div class="flex items-center gap-2 text-xl font-bold text-slate-300">📱 APPLE</div>
                     <div class="flex items-center gap-2 text-xl font-bold text-slate-300">🔷 SAMSUNG</div>
                     <div class="flex items-center gap-2 text-xl font-bold text-slate-300">⚡ VIVO</div>
-                    <div class="flex items-center gap-2 text-lg font-bold text-slate-300"><i class="fa-solid fa-shield text-cyan-400"></i> Keepa</div>
-                    <div class="flex items-center gap-2 text-lg font-bold text-slate-300"><i class="fa-solid fa-rocket text-purple-400"></i> viral launch</div>
-                    <div class="flex items-center gap-2 text-xl font-black text-slate-300 tracking-tighter"><i class="fa-brands fa-amazon text-2xl text-amber-400"></i> amazon</div>
-                    <div class="flex items-center gap-2 text-lg font-bold text-slate-300"><i class="fa-solid fa-bolt text-indigo-400"></i> Helium 10</div>
-                    <div class="flex items-center gap-2 text-lg font-bold text-slate-300"><i class="fa-solid fa-chart-line text-emerald-400"></i> JungleScout</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">📱 APPLE</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">🔷 SAMSUNG</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">⚡ VIVO</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">📱 APPLE</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">🔷 SAMSUNG</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">⚡ VIVO</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">📱 APPLE</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">🔷 SAMSUNG</div>
+                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">⚡ VIVO</div>
                     <div class="flex items-center gap-2 text-xl font-bold text-slate-300">📱 APPLE</div>
                     <div class="flex items-center gap-2 text-xl font-bold text-slate-300">🔷 SAMSUNG</div>
                     <div class="flex items-center gap-2 text-xl font-bold text-slate-300">⚡ VIVO</div>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-en="Online Courses & Subscriptions - Habib iFix" data-bn="অনলাইন কোর্স ও সাবস্ক্রিপশন - হাবিব আইফিক্স">Online Courses & Subscriptions - Habib iFix</title>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; }
+        html, body { 
+            width: 100%; 
+            max-width: 100%; 
+            overflow-x: hidden !important; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311045 100%);
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .glass-3d {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: perspective(1000px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .glass-3d:hover {
+            transform: perspective(1000px) translateY(-5px) rotateX(2deg) rotateY(-2deg);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .blob { 
+            position: absolute; 
+            border-radius: 50%; 
+            filter: blur(100px); 
+            z-index: -1; 
+            opacity: 0.5; 
+            pointer-events: none; 
+        }
+        .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #4f46e5; }
+        .blob-2 { top: 30%; right: -10%; width: 500px; height: 500px; background: #9333ea; }
+        .blob-3 { bottom: 10%; left: 20%; width: 450px; height: 450px; background: #06b6d4; }
+    </style>
+</head>
+<body class="antialiased relative selection:bg-indigo-500 selection:text-white">
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- HEADER / NAVBAR (EXACTLY LIKE HOME PAGE) -->
+    <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass-3d border-b border-white/10">
+        <a href="index.html" class="flex items-center gap-2.5">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg shadow-indigo-500/30">H</div>
+            <div class="leading-tight">
+                <h1 class="font-bold text-white text-xs sm:text-sm">Habib <span class="text-indigo-400">iFix</span></h1>
+                <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium tracking-wide" data-en="Trusted Mobile Technician" data-bn="বিশ্বস্ত মোবাইল টেকনিশিয়ান">Trusted Mobile Technician</p>
+            </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden lg:flex glass-3d rounded-full px-6 py-2.5 items-center gap-6 text-sm font-medium text-slate-300">
+            <a href="index.html" class="hover:text-white transition-colors" data-en="Home" data-bn="হোম">Home</a>
+            <a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
+            <a href="courses.html" class="text-white bg-white/10 px-4 py-1.5 rounded-full shadow-inner" data-en="Courses" data-bn="কোর্সসমূহ">Courses</a>
+            <a href="blog.html" class="hover:text-white transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
+            <a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
+            <a href="frp.html" class="text-indigo-400 font-bold hover:underline" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি ২০২৬">Android FRP Remove 2026</a>
+        </nav>
+
+        <!-- CTA & Language Switch & Profile -->
+        <div class="flex items-center gap-2 sm:gap-3">
+            <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass-3d bg-indigo-500/20 px-3 py-2 rounded-full font-bold text-xs text-indigo-300 hover:bg-indigo-500/30 transition-colors">
+                বাংলা (BAN)
+            </button>
+
+            <a href="login.html?return=courses.html" id="loginNavBtn" class="glass-3d bg-white/10 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white/20 transition-colors flex items-center gap-2 text-white">
+                <span data-en="Sign In / Sign Up" data-bn="সাইন ইন / সাইন আপ">Sign In / Sign Up</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+            
+            <div id="profileBtn" class="hidden relative cursor-pointer group">
+                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-indigo-400 shadow-md object-cover">
+                <div class="absolute top-full right-0 mt-3 w-48 glass-3d bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
+                    <label class="px-3 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white rounded-xl cursor-pointer flex items-center gap-2 transition-colors mb-1">
+                        <i class="fa-solid fa-camera text-xs"></i> <span data-en="Change Pic" data-bn="ছবি বদলান">Change Pic</span>
+                        <input type="file" id="profilePicInput" accept="image/*" class="hidden">
+                    </label>
+                    <button onclick="doLogout()" class="w-full px-3 py-2 text-sm text-red-400 hover:bg-red-500/20 rounded-xl text-left flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-sign-out-alt text-xs"></i> <span data-en="Logout" data-bn="লগআউট">Logout</span>
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 glass-3d rounded-xl flex items-center justify-center text-white shadow-md focus:outline-none z-50">
+                <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="fixed inset-x-0 top-0 pt-20 bg-slate-950/95 backdrop-blur-2xl border-b border-slate-800 shadow-2xl px-6 pb-6 flex flex-col gap-3 transform -translate-y-full opacity-0 invisible transition-all duration-300 z-40 lg:hidden">
+        <a href="index.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">Home</a>
+        <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">Services</a>
+        <a href="courses.html" onclick="toggleMobileMenu()" class="text-white font-semibold text-sm py-2.5 px-4 rounded-xl bg-white/10">Courses</a>
+        <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">Blog</a>
+        <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">Contact</a>
+    </div>
+
+    <main class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-32 pb-20">
+        
+        <!-- PAGE TITLE -->
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block">PREMIUM LEARNING & TOOLS</span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4">Courses & Digital Subscriptions</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Upgrade your skills with our professional courses or get instant access to premium digital tools.</p>
+        </div>
+
+        <!-- ADMIN ADD COURSE PANEL (ONLY FOR tec.habiburrahman@gmail.com) -->
+        <div id="adminPanel" class="hidden mb-12 glass-3d p-6 rounded-3xl border border-indigo-500/40 bg-indigo-950/30">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-white text-base flex items-center gap-2"><i class="fa-solid fa-user-shield text-indigo-400"></i> Admin Panel: Add / Edit Course</h3>
+                <span class="text-[10px] bg-indigo-500 text-white px-2.5 py-1 rounded-full font-bold">Admin Active</span>
+            </div>
+            <form id="addCourseForm" onsubmit="handleSaveCourse(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <input type="hidden" id="editIndex" value="-1">
+                <input type="text" id="cTitle" placeholder="Item Title" required class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
+                <input type="text" id="cPrice" placeholder="Price (e.g. ৳১,০০০)" required class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
+                <input type="text" id="cIcon" placeholder="Icon (fa-solid fa-code)" required class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
+                <input type="text" id="cDesc" placeholder="Description..." required class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
+                <button type="submit" class="sm:col-span-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-xs transition-colors shadow-lg">Save Course / Tool</button>
+            </form>
+        </div>
+
+        <!-- COURSES GRID -->
+        <div id="coursesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Rendered via JS -->
+        </div>
+
+    </main>
+
+    <!-- BEAUTIFUL LOGIN WARNING MODAL -->
+    <div id="loginWarningModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+        <div class="glass-3d bg-slate-900/95 w-full max-w-sm p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20 text-center">
+            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-amber-500/30">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-white mb-2">User Login Please!</h3>
+            <p class="text-xs text-slate-300 mb-6 leading-relaxed">কোর্স বা সাবস্ক্রিপশন নিতে হলে অনুগ্রহ করে আগে সাইন ইন বা লগইন করুন।</p>
+            
+            <div class="space-y-2.5">
+                <a href="login.html?return=courses.html" class="block w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-lg">
+                    Sign In Now
+                </a>
+                <button onclick="closeLoginWarning()" class="block w-full bg-white/10 hover:bg-white/20 text-slate-300 py-2.5 rounded-xl font-medium text-xs transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOKING / GET MODAL -->
+    <div id="enrollModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[99] hidden flex items-center justify-center p-4">
+        <div class="glass-3d bg-slate-900/95 w-full max-w-md p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
+            <button onclick="closeEnrollModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-extrabold text-white mb-1" id="modalTitle">Get Item</h3>
+            <p class="text-xs text-indigo-400 mb-6" id="modalPrice">Price: ৳০</p>
+            
+            <form onsubmit="submitEnrollment(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Your Name</label>
+                    <input type="text" id="eName" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Mobile / WhatsApp Number</label>
+                    <input type="tel" id="ePhone" required placeholder="01XXXXXXXXX" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
+                    <input type="email" id="eEmail" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold text-xs transition-colors shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Send Request to WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER (EXACTLY LIKE HOME PAGE) -->
+    <footer class="glass-3d border-t border-white/10 pt-10 sm:pt-12 pb-6 mt-10 relative z-10">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
+                        <span class="font-bold text-white text-base">Habib <span class="text-indigo-400">iFix</span></span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">Your trusted partner for all mobile repair and online technical solutions.</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider">Explore</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="frp.html" class="hover:text-white transition-colors">Android FRP Remove 2026</a></li>
+                        <li><a href="services.html" class="hover:text-white transition-colors">Services</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider">Contact Info</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><i class="fa-solid fa-phone text-indigo-400 mr-2"></i> +880 1868 461577</li>
+                        <li><i class="fa-solid fa-location-dot text-indigo-400 mr-2"></i> Gachbaria, Chattogram</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider">Newsletter</h4>
+                    <p class="text-slate-400 text-xs mb-3">Subscribe for updates.</p>
+                    <form class="flex items-center glass-3d rounded-xl p-1" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+                        <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-white placeholder-slate-500">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors">Join</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-400 gap-4 text-center sm:text-left">
+                <p>&copy; 2026 Habib iFix. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms</a>
+                    <a href="#" class="hover:text-white transition-colors">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT & LOGIC -->
+    <script>
+        const defaultItems = [
+            { title: "Google 5TB 1 Year Storage", price: "৳১,২০০", icon: "fa-brands fa-google-drive", desc: "Secure cloud storage for 1 full year with high-speed access." },
+            { title: "ChatGPT Pro (3 Months)", price: "৳৮০০", icon: "fa-solid fa-robot", desc: "Advanced AI models, fast response, and custom GPTs access." },
+            { title: "Canva Pro Graphic Tool", price: "৳৫০০", icon: "fa-solid fa-palette", desc: "Unlock premium templates, background remover, and brand kits." },
+            { title: "Mobile Unlocking & FRP Course", price: "৳১,৫০০", icon: "fa-solid fa-mobile-screen", desc: "Learn professional software flashing and FRP bypass techniques." },
+            { title: "Digital Marketing & Ads Mastery", price: "৳২,০০০", icon: "fa-solid fa-bullhorn", desc: "Master Facebook & Google ads setup to boost any online business." },
+            { title: "Web Design & Development Masterclass", price: "৳২,৫০০", icon: "fa-solid fa-code", desc: "HTML, CSS, Tailwind, JavaScript & modern responsive design." },
+            { title: "Advanced Graphics Design Course", price: "৳১,৮০০", icon: "fa-solid fa-pen-nib", desc: "Photoshop, Illustrator & professional brand identity creation." },
+            { title: "YouTube Automation & SEO Course", price: "৳১,২০০", icon: "fa-brands fa-youtube", desc: "Grow channels fast, rank videos, and monetize successfully." },
+            { title: "Video Editing with Premiere & CapCut", price: "৳১,৫০০", icon: "fa-solid fa-video", desc: "Professional color grading, cinematic transitions & reels editing." },
+            { title: "Freelancing & Outsourcing Guide", price: "৳১,০০০", icon: "fa-solid fa-laptop-code", desc: "How to get clients on Fiverr, Upwork and build a career." },
+            { title: "Affiliate Marketing Blueprint", price: "৳১,২০০", icon: "fa-solid fa-chart-line", desc: "Earn passive income through global affiliate networks." },
+            { title: "Cyber Security & Ethical Hacking", price: "৳৩,০০০", icon: "fa-solid fa-shield-halved", desc: "Learn network security, penetration testing and defense." },
+            { title: "Python Programming for Beginners", price: "৳১,৫০০", icon: "fa-brands fa-python", desc: "From basic syntax to building real-world automation scripts." },
+            { title: "UI/UX Design with Figma", price: "৳২,০০০", icon: "fa-brands fa-figma", desc: "Design stunning mobile apps and modern web interfaces." },
+            { title: "Microsoft Office & Excel Pro", price: "৳৮০০", icon: "fa-solid fa-file-excel", desc: "Master spreadsheets, formulas, VBA and professional reports." },
+            { title: "Android App Development", price: "৳২,৮০০", icon: "fa-brands fa-android", desc: "Build native mobile applications using modern frameworks." },
+            { title: "E-Commerce Website Setup Course", price: "৳১,৮০০", icon: "fa-solid fa-cart-shopping", desc: "Create fully functional online stores with Shopify & WooCommerce." },
+            { title: "Spoken English & Communication", price: "৳৭০০", icon: "fa-solid fa-comments", desc: "Build fluent conversation skills for professional workplaces." },
+            { title: "Content Writing & Copywriting", price: "৳১,০০০", icon: "fa-solid fa-feather", desc: "Write high-converting sales copies and engaging blog posts." },
+            { title: "Facebook Page Monetization Guide", price: "৳৮০০", icon: "fa-brands fa-facebook", desc: "Turn your social media pages into profitable income sources." },
+            { title: "CapCut Pro 1 Year Subscription", price: "৳৬০০", icon: "fa-solid fa-wand-magic-sparkles", desc: "Unlock premium video effects, transitions and cloud storage." },
+            { title: "Netflix Premium Account (1 Month)", price: "৳৩০০", icon: "fa-solid fa-tv", desc: "Ultra HD streaming on all your devices without interruption." },
+            { title: "Spotify Premium (1 Year)", price: "৳৯০০", icon: "fa-brands fa-spotify", desc: "Ad-free music streaming with offline downloads." },
+            { title: "GitHub Copilot Pro (1 Month)", price: "৳৭০০", icon: "fa-solid fa-code-merge", desc: "AI pair programmer to write code faster and smarter." }
+        ];
+
+        let courses = JSON.parse(localStorage.getItem('habib_courses')) || defaultItems;
+        const adminEmail = "tec.habiburrahman@gmail.com";
+
+        function checkAdminAndAuth() {
+            const userEmail = localStorage.getItem('habib_user_email');
+            const adminPanel = document.getElementById('adminPanel');
+            
+            if (userEmail === adminEmail) {
+                adminPanel.classList.remove('hidden');
+            } else {
+                adminPanel.classList.add('hidden');
+            }
+        }
+
+        function renderCourses() {
+            const grid = document.getElementById('coursesGrid');
+            grid.innerHTML = '';
+            const userEmail = localStorage.getItem('habib_user_email');
+            const isAdmin = userEmail === adminEmail;
+
+            courses.forEach((item, index) => {
+                grid.innerHTML += `
+                    <div class="glass-3d p-6 rounded-3xl flex flex-col justify-between group border border-white/10 relative">
+                        <div>
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl mb-4">
+                                <i class="${item.icon}"></i>
+                            </div>
+                            <h3 class="font-bold text-base text-white mb-2">${item.title}</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-6">${item.desc}</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between pt-4 border-t border-white/10 mb-3">
+                                <span class="text-base font-extrabold text-emerald-400">${item.price}</span>
+                                <button onclick="openGetModal('${item.title}', '${item.price}')" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl font-bold transition-colors shadow-lg">Get</button>
+                            </div>
+                            ${isAdmin ? `
+                                <div class="flex gap-2 pt-2 border-t border-white/5">
+                                    <button onclick="editCourse(${index})" class="flex-1 bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white py-1.5 rounded-lg text-[10px] font-bold transition-colors">Edit</button>
+                                    <button onclick="deleteCourse(${index})" class="flex-1 bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white py-1.5 rounded-lg text-[10px] font-bold transition-colors">Delete</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function handleSaveCourse(e) {
+            e.preventDefault();
+            const index = document.getElementById('editIndex').value;
+            const newItem = {
+                title: document.getElementById('cTitle').value,
+                price: document.getElementById('cPrice').value,
+                icon: document.getElementById('cIcon').value,
+                desc: document.getElementById('cDesc').value
+            };
+
+            if (index == -1) {
+                courses.unshift(newItem);
+            } else {
+                courses[index] = newItem;
+                document.getElementById('editIndex').value = -1;
+            }
+
+            localStorage.setItem('habib_courses', JSON.stringify(courses));
+            document.getElementById('addCourseForm').reset();
+            renderCourses();
+            alert('Saved successfully!');
+        }
+
+        function editCourse(index) {
+            const item = courses[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('cTitle').value = item.title;
+            document.getElementById('cPrice').value = item.price;
+            document.getElementById('cIcon').value = item.icon;
+            document.getElementById('cDesc').value = item.desc;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function deleteCourse(index) {
+            if (confirm('Are you sure you want to delete this course/tool?')) {
+                courses.splice(index, 1);
+                localStorage.setItem('habib_courses', JSON.stringify(courses));
+                renderCourses();
+            }
+        }
+
+        let selectedItemName = "";
+        let selectedItemPrice = "";
+
+        function openGetModal(title, price) {
+            const isLoggedIn = localStorage.getItem('habib_logged_in') === 'true';
+            if (!isLoggedIn) {
+                document.getElementById('loginWarningModal').classList.remove('hidden');
+                document.getElementById('loginWarningModal').classList.add('flex');
+                return;
+            }
+
+            selectedItemName = title;
+            selectedItemPrice = price;
+            document.getElementById('modalTitle').innerText = "Get: " + title;
+            document.getElementById('modalPrice').innerText = "Price: " + price;
+            document.getElementById('enrollModal').classList.remove('hidden');
+            document.getElementById('enrollModal').classList.add('flex');
+        }
+
+        function closeLoginWarning() {
+            document.getElementById('loginWarningModal').classList.add('hidden');
+            document.getElementById('loginWarningModal').classList.remove('flex');
+        }
+
+        function closeEnrollModal() {
+            document.getElementById('enrollModal').classList.add('hidden');
+            document.getElementById('enrollModal').classList.remove('flex');
+        }
+
+        function submitEnrollment(e) {
+            e.preventDefault();
+            const name = document.getElementById('eName').value;
+            const phone = document.getElementById('ePhone').value;
+            const email = document.getElementById('eEmail').value;
+
+            const msg = `Hello Habib! I want to get this item.%0A%0A*Item:* ${selectedItemName}%0A*Price:* ${selectedItemPrice}%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Email:* ${email}`;
+            window.open(`https://wa.me/8801868461577?text=${msg}`, '_blank');
+            closeEnrollModal();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            if (menu.classList.contains('-translate-y-full')) {
+                menu.classList.remove('-translate-y-full', 'opacity-0', 'invisible');
+                menu.classList.add('translate-y-0', 'opacity-100', 'visible');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                menu.classList.remove('translate-y-0', 'opacity-100', 'visible');
+                menu.classList.add('-translate-y-full', 'opacity-0', 'invisible');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAdminAndAuth();
+            renderCourses();
+        });
+    </script>
+    <script type="module" src="js/site-auth.js"></script>
+</body>
+</html>

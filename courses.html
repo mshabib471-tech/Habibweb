@@ -67,7 +67,7 @@
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
 
-    <!-- HEADER / NAVBAR (EXACTLY LIKE HOME PAGE) -->
+    <!-- HEADER / NAVBAR -->
     <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass-3d border-b border-white/10">
         <a href="index.html" class="flex items-center gap-2.5">
             <div class="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg shadow-indigo-500/30">H</div>
@@ -127,44 +127,17 @@
 
     <main class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-32 pb-20">
         
-        <!-- PAGE TITLE -->
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block">PREMIUM LEARNING & TOOLS</span>
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-4">Courses & Digital Subscriptions</h1>
-            <p class="text-xs sm:text-sm text-slate-400">Upgrade your skills with our professional courses or get instant access to premium digital tools.</p>
-        </div>
-
-        <!-- ADMIN ADD/EDIT COURSE PANEL (VISIBLE ONLY TO tec.habiburrahman@gmail.com) -->
-        <div id="adminPanel" class="hidden mb-12 glass-3d p-6 sm:p-8 rounded-3xl border border-indigo-500/50 bg-indigo-950/40 shadow-2xl">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-user-shield text-indigo-400"></i> Admin Control Panel: Add / Edit Course
-                </h3>
-                <span class="text-[10px] bg-indigo-600 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider">Admin Authorized</span>
+        <!-- PAGE TITLE & ADMIN ADD BUTTON -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-12">
+            <div class="text-center sm:text-left">
+                <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block">PREMIUM LEARNING & TOOLS</span>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-2">Courses & Digital Subscriptions</h1>
+                <p class="text-xs sm:text-sm text-slate-400">Upgrade your skills with our professional courses or get instant access to premium digital tools.</p>
             </div>
-            
-            <form id="addCourseForm" onsubmit="handleSaveCourse(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <input type="hidden" id="editIndex" value="-1">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Course / Item Title</label>
-                    <input type="text" id="cTitle" placeholder="e.g. Python Masterclass" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Price</label>
-                    <input type="text" id="cPrice" placeholder="e.g. ৳১,০০০" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">FontAwesome Icon Class</label>
-                    <input type="text" id="cIcon" placeholder="fa-solid fa-code" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Short Description</label>
-                    <input type="text" id="cDesc" placeholder="Brief info about course..." required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                </div>
-                <button type="submit" class="sm:col-span-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-xl text-xs transition-colors shadow-lg flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-plus-circle"></i> Save Course / Tool
-                </button>
-            </form>
+            <!-- ONLY ADMIN CAN SEE THIS BUTTON -->
+            <button id="addCourseBtn" onclick="openCourseModal()" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-2xl font-bold text-xs shadow-lg transition-all flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-plus"></i> Add New Course
+            </button>
         </div>
 
         <!-- COURSES GRID -->
@@ -174,7 +147,40 @@
 
     </main>
 
-    <!-- BEAUTIFUL LOGIN WARNING MODAL -->
+    <!-- ADMIN ADD/EDIT COURSE MODAL (POPUP) -->
+    <div id="courseModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[105] hidden flex items-center justify-center p-4">
+        <div class="glass-3d bg-slate-900/95 w-full max-w-lg p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
+            <button onclick="closeCourseModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-extrabold text-white mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-user-shield text-indigo-400"></i> <span id="modalActionTitle">Add New Course</span>
+            </h3>
+            
+            <form id="addCourseForm" onsubmit="handleSaveCourse(event)" class="space-y-4">
+                <input type="hidden" id="editIndex" value="-1">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Title</label>
+                    <input type="text" id="cTitle" placeholder="e.g. Python Masterclass" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Price</label>
+                        <input type="text" id="cPrice" placeholder="e.g. ৳১,০০০" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Icon Class</label>
+                        <input type="text" id="cIcon" placeholder="fa-solid fa-code" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Description</label>
+                    <textarea id="cDesc" rows="3" placeholder="Brief info..." required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 resize-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-xl text-xs transition-colors shadow-lg">Save Course</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LOGIN WARNING MODAL -->
     <div id="loginWarningModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
         <div class="glass-3d bg-slate-900/95 w-full max-w-sm p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20 text-center">
             <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-amber-500/30">
@@ -221,7 +227,7 @@
         </div>
     </div>
 
-    <!-- FOOTER (EXACTLY LIKE HOME PAGE) -->
+    <!-- FOOTER -->
     <footer class="glass-3d border-t border-white/10 pt-10 sm:pt-12 pb-6 mt-10 relative z-10">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
@@ -304,14 +310,13 @@
         let courses = JSON.parse(localStorage.getItem('habib_courses')) || defaultItems;
         const adminEmail = "tec.habiburrahman@gmail.com";
 
-        function checkAdminAndAuth() {
+        function checkAdminAuth() {
             const userEmail = localStorage.getItem('habib_user_email');
-            const adminPanel = document.getElementById('adminPanel');
-            
+            const addBtn = document.getElementById('addCourseBtn');
             if (userEmail === adminEmail) {
-                adminPanel.classList.remove('hidden');
+                addBtn.classList.remove('hidden');
             } else {
-                adminPanel.classList.add('hidden');
+                addBtn.classList.add('hidden');
             }
         }
 
@@ -323,7 +328,7 @@
 
             courses.forEach((item, index) => {
                 grid.innerHTML += `
-                    <div class="glass-3d p-6 rounded-3xl flex flex-col justify-between group border border-white/10 relative">
+                    <div class="glass-3d p-6 rounded-3xl flex flex-col justify-between group border border-white/15 relative">
                         <div>
                             <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl mb-4">
                                 <i class="${item.icon}"></i>
@@ -332,7 +337,7 @@
                             <p class="text-xs text-slate-400 leading-relaxed mb-6">${item.desc}</p>
                         </div>
                         <div>
-                            <div class="flex items-center justify-between pt-4 border-t border-white/10 mb-3">
+                            <div class="flex items-center justify-between pt-4 border-t border-white/10 mb-2">
                                 <span class="text-base font-extrabold text-emerald-400">${item.price}</span>
                                 <button onclick="openGetModal('${item.title}', '${item.price}')" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl font-bold transition-colors shadow-lg">Get</button>
                             </div>
@@ -346,6 +351,29 @@
                     </div>
                 `;
             });
+        }
+
+        function openCourseModal(index = -1) {
+            document.getElementById('courseModal').classList.remove('hidden');
+            document.getElementById('courseModal').classList.add('flex');
+            if (index === -1) {
+                document.getElementById('modalActionTitle').innerText = "Add New Course";
+                document.getElementById('addCourseForm').reset();
+                document.getElementById('editIndex').value = -1;
+            } else {
+                document.getElementById('modalActionTitle').innerText = "Edit Course";
+                const item = courses[index];
+                document.getElementById('editIndex').value = index;
+                document.getElementById('cTitle').value = item.title;
+                document.getElementById('cPrice').value = item.price;
+                document.getElementById('cIcon').value = item.icon;
+                document.getElementById('cDesc').value = item.desc;
+            }
+        }
+
+        function closeCourseModal() {
+            document.getElementById('courseModal').classList.add('hidden');
+            document.getElementById('courseModal').classList.remove('flex');
         }
 
         function handleSaveCourse(e) {
@@ -362,23 +390,16 @@
                 courses.unshift(newItem);
             } else {
                 courses[index] = newItem;
-                document.getElementById('editIndex').value = -1;
             }
 
             localStorage.setItem('habib_courses', JSON.stringify(courses));
-            document.getElementById('addCourseForm').reset();
+            closeCourseModal();
             renderCourses();
             alert('Saved successfully!');
         }
 
         function editCourse(index) {
-            const item = courses[index];
-            document.getElementById('editIndex').value = index;
-            document.getElementById('cTitle').value = item.title;
-            document.getElementById('cPrice').value = item.price;
-            document.getElementById('cIcon').value = item.icon;
-            document.getElementById('cDesc').value = item.desc;
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            openCourseModal(index);
         }
 
         function deleteCourse(index) {
@@ -465,7 +486,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             applyLanguage(currentLang);
-            checkAdminAndAuth();
+            checkAdminAuth();
             renderCourses();
         });
     </script>

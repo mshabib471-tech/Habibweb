@@ -134,25 +134,42 @@
             <p class="text-xs sm:text-sm text-slate-400">Upgrade your skills with our professional courses or get instant access to premium digital tools.</p>
         </div>
 
-        <!-- ADMIN ADD COURSE PANEL (ONLY FOR tec.habiburrahman@gmail.com) -->
-        <div id="adminPanel" class="hidden mb-12 glass-3d p-6 rounded-3xl border border-indigo-500/40 bg-indigo-950/30">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-white text-base flex items-center gap-2"><i class="fa-solid fa-user-shield text-indigo-400"></i> Admin Panel: Add / Edit Course</h3>
-                <span class="text-[10px] bg-indigo-500 text-white px-2.5 py-1 rounded-full font-bold">Admin Active</span>
+        <!-- ADMIN ADD/EDIT COURSE PANEL (VISIBLE ONLY TO tec.habiburrahman@gmail.com) -->
+        <div id="adminPanel" class="hidden mb-12 glass-3d p-6 sm:p-8 rounded-3xl border border-indigo-500/50 bg-indigo-950/40 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bold text-white text-base sm:text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-indigo-400"></i> Admin Control Panel: Add / Edit Course
+                </h3>
+                <span class="text-[10px] bg-indigo-600 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider">Admin Authorized</span>
             </div>
+            
             <form id="addCourseForm" onsubmit="handleSaveCourse(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <input type="hidden" id="editIndex" value="-1">
-                <input type="text" id="cTitle" placeholder="Item Title" required class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
-                <input type="text" id="cPrice" placeholder="Price (e.g. ৳১,০০০)" required class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
-                <input type="text" id="cIcon" placeholder="Icon (fa-solid fa-code)" required class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
-                <input type="text" id="cDesc" placeholder="Description..." required class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
-                <button type="submit" class="sm:col-span-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl text-xs transition-colors shadow-lg">Save Course / Tool</button>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Course / Item Title</label>
+                    <input type="text" id="cTitle" placeholder="e.g. Python Masterclass" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Price</label>
+                    <input type="text" id="cPrice" placeholder="e.g. ৳১,০০০" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">FontAwesome Icon Class</label>
+                    <input type="text" id="cIcon" placeholder="fa-solid fa-code" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Short Description</label>
+                    <input type="text" id="cDesc" placeholder="Brief info about course..." required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                </div>
+                <button type="submit" class="sm:col-span-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-xl text-xs transition-colors shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-plus-circle"></i> Save Course / Tool
+                </button>
             </form>
         </div>
 
         <!-- COURSES GRID -->
         <div id="coursesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Rendered via JS -->
+            <!-- Dynamically rendered via JavaScript -->
         </div>
 
     </main>
@@ -177,7 +194,7 @@
         </div>
     </div>
 
-    <!-- BOOKING / GET MODAL -->
+    <!-- GET / ENROLL MODAL -->
     <div id="enrollModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[99] hidden flex items-center justify-center p-4">
         <div class="glass-3d bg-slate-900/95 w-full max-w-md p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
             <button onclick="closeEnrollModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
@@ -213,21 +230,21 @@
                         <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
                         <span class="font-bold text-white text-base">Habib <span class="text-indigo-400">iFix</span></span>
                     </div>
-                    <p class="text-slate-400 text-xs leading-relaxed">Your trusted partner for all mobile repair and online technical solutions.</p>
+                    <p class="text-slate-400 text-xs leading-relaxed" data-en="Your trusted partner for all mobile repair and online technical solutions." data-bn="আপনার সকল মোবাইল রিপেয়ার ও অনলাইন টেকনিক্যাল সেবার বিশ্বস্ত প্রতিষ্ঠান।">Your trusted partner for all mobile repair and online technical solutions.</p>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider">Explore</h4>
+                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Explore" data-bn="এক্সপ্লোর">Explore</h4>
                     <ul class="space-y-2 text-xs text-slate-400">
-                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
-                        <li><a href="frp.html" class="hover:text-white transition-colors">Android FRP Remove 2026</a></li>
-                        <li><a href="services.html" class="hover:text-white transition-colors">Services</a></li>
-                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="index.html" class="hover:text-white transition-colors" data-en="Home" data-bn="হোম">Home</a></li>
+                        <li><a href="frp.html" class="hover:text-white transition-colors" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি ২০২৬">Android FRP Remove 2026</a></li>
+                        <li><a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider">Contact Info</h4>
+                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Contact Info" data-bn="যোগাযোগের তথ্য">Contact Info</h4>
                     <ul class="space-y-2 text-xs text-slate-400">
                         <li><i class="fa-solid fa-phone text-indigo-400 mr-2"></i> +880 1868 461577</li>
                         <li><i class="fa-solid fa-location-dot text-indigo-400 mr-2"></i> Gachbaria, Chattogram</li>
@@ -235,11 +252,11 @@
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider">Newsletter</h4>
-                    <p class="text-slate-400 text-xs mb-3">Subscribe for updates.</p>
+                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Newsletter" data-bn="নিউজলেটার">Newsletter</h4>
+                    <p class="text-slate-400 text-xs mb-3" data-en="Subscribe for updates." data-bn="নতুন আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for monthly updates.</p>
                     <form class="flex items-center glass-3d rounded-xl p-1" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
                         <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-white placeholder-slate-500">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors">Join</button>
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors" data-en="Join" data-bn="জয়েন">Join</button>
                     </form>
                 </div>
             </div>
@@ -247,9 +264,9 @@
             <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-400 gap-4 text-center sm:text-left">
                 <p>&copy; 2026 Habib iFix. All rights reserved.</p>
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms</a>
-                    <a href="#" class="hover:text-white transition-colors">Support</a>
+                    <a href="#" class="hover:text-white transition-colors" data-en="Privacy" data-bn="প্রাইভেসি">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors" data-en="Terms" data-bn="টার্মস">Terms</a>
+                    <a href="#" class="hover:text-white transition-colors" data-en="Support" data-bn="সাপোর্ট">Support</a>
                 </div>
             </div>
         </div>
@@ -428,7 +445,26 @@
             }
         }
 
+        let currentLang = localStorage.getItem('habib_lang') || 'en';
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('habib_lang', lang);
+            const btn = document.getElementById('langSwitchBtn');
+            if(btn) btn.innerText = lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)';
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if (text) {
+                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = text;
+                    else el.innerText = text;
+                }
+            });
+        }
+        function toggleLanguage() {
+            applyLanguage(currentLang === 'en' ? 'bn' : 'en');
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            applyLanguage(currentLang);
             checkAdminAndAuth();
             renderCourses();
         });

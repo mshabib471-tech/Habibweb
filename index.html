@@ -108,7 +108,7 @@
             <a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
             <a href="blog.html" class="hover:text-white transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
             <a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
-            <a href="frp.html" class="text-indigo-400 font-bold hover:underline" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি ২০২৬">Android FRP Remove 2026</a>
+            <a href="frp.html" class="text-indigo-400 font-bold hover:underline" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</a>
         </nav>
 
         <!-- CTA & Language Switch & Profile -->
@@ -117,7 +117,7 @@
                 বাংলা (BAN)
             </button>
 
-            <a href="login.html" id="loginNavBtn" class="glass-3d bg-white/10 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white/20 transition-colors flex items-center gap-2 text-white">
+            <a href="login.html?return=index.html" id="loginNavBtn" class="glass-3d bg-white/10 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white/20 transition-colors flex items-center gap-2 text-white">
                 <span data-en="Sign In / Sign Up" data-bn="সাইন ইন / সাইন আপ">Sign In / Sign Up</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </a>
             
@@ -227,6 +227,96 @@
             </div>
         </section>
 
+        <!-- FEATURED COURSES SECTION (Inspired by Image 1: Google 5TB, ChatGPT Pro, Canva Pro, Web Dev etc.) -->
+        <section class="mb-20" id="featuredCourses">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-1 block" data-en="FEATURED COURSES & PACKAGES" data-bn="ফিচারড কোর্স ও প্যাকেজসমূহ">FEATURED COURSES & PACKAGES</span>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white" data-en="Most Popular Courses & Tools" data-bn="সবচেয়ে জনপ্রিয় কোর্স ও ডিজিটাল সার্ভিস">Most Popular Courses & Tools</h2>
+                </div>
+                <a href="services.html" class="glass-3d bg-white/10 px-4 py-2 rounded-full font-semibold text-xs inline-flex items-center gap-1 text-white hover:bg-white/20 transition-colors">
+                    <span data-en="View All Courses" data-bn="সব কোর্স দেখুন">View All Courses</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Course 1 -->
+                <div class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="openPlanModal('Google 5TB 1 Year Package', '৳১,২০০')">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-blue-600 to-indigo-600 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
+                            <i class="fa-brands fa-google-drive"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Google 5TB 1 Year Storage</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Secure cloud storage for 1 full year with high-speed access.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                        <span class="text-sm font-extrabold text-indigo-400">৳১,২০০</span>
+                        <span class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-indigo-500 transition-colors">Enroll</span>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="openPlanModal('ChatGPT Pro 3 Months Free', '৳৮০০')">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-emerald-600 to-teal-600 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">ChatGPT Pro (3 Months)</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Advanced AI models, fast response, and custom GPTs access.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                        <span class="text-sm font-extrabold text-emerald-400">৳৮০০</span>
+                        <span class="text-xs bg-emerald-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-emerald-500 transition-colors">Enroll</span>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="openPlanModal('Canva Pro Lifetime/1 Year', '৳৫০০')">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-purple-600 to-pink-600 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Canva Pro Graphic Tool</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Unlock premium templates, background remover, and brand kits.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                        <span class="text-sm font-extrabold text-purple-400">৳৫০০</span>
+                        <span class="text-xs bg-purple-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-purple-500 transition-colors">Enroll</span>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="openPlanModal('Complete Mobile Unlocking & FRP Mastery', '৳১,৫০০')">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-cyan-600 to-blue-700 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Mobile Unlocking & FRP Course</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Learn professional software flashing and FRP bypass techniques.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                        <span class="text-sm font-extrabold text-cyan-400">৳১,৫০০</span>
+                        <span class="text-xs bg-cyan-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-cyan-500 transition-colors">Enroll</span>
+                    </div>
+                </div>
+
+                <!-- Course 5 -->
+                <div class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="openPlanModal('Digital Marketing & FB/Google Ads Course', '৳২,০০০')">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-amber-600 to-orange-600 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Digital Marketing & Ads Mastery</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Master Facebook & Google ads setup to boost any online business.</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
+                        <span class="text-sm font-extrabold text-amber-400">৳২,০০০</span>
+                        <span class="text-xs bg-amber-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-amber-500 transition-colors">Enroll</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- FREE, BASIC, STANDARD, PREMIUM PLANS SECTION -->
         <section class="mb-20" id="pricingPlans">
             <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block text-center" data-en="PRICING & PACKAGES" data-bn="প্রাইসিং ও প্যাকেজসমূহ">PRICING & PACKAGES</span>
@@ -293,63 +383,20 @@
             </div>
         </section>
 
-        <!-- COURSE REPLAY VAULT SECTION -->
-        <section class="mb-20 glass-3d p-6 sm:p-10 rounded-[35px] relative overflow-hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                <div class="lg:col-span-5">
-                    <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block" data-en="REPLAY VAULT" data-bn="রিপ্লে ভল্ট">REPLAY VAULT</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3" data-en="Inside the Replay Vault" data-bn="রিপ্লে ভল্টের ভেতরে যা রয়েছে">Inside the Replay Vault</h2>
-                    <p class="text-slate-300 text-sm mb-6" data-en="One vault. Unlimited growth. Access all masterclasses, repair guides, and online business tutorials instantly." data-bn="একটি ভল্ট। আনলিমিটেড গ্রোথ। সকল মাস্টারক্লাস, রিপেয়ার গাইড এবং অনলাইন বিজনেস টিউটোরিয়াল এক সাথে।">One vault. Unlimited growth. Access all masterclasses, repair guides, and online business tutorials instantly.</p>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="glass-3d p-3 rounded-2xl flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></div>
-                            <div>
-                                <h4 class="text-xs font-bold text-white" data-en="AI-Powered Search" data-bn="এআই সার্চ">AI-Powered Search</h4>
-                                <p class="text-[9px] text-slate-400" data-en="Find answers instantly" data-bn="দ্রুত উত্তর খুঁজুন">Find answers instantly</p>
-                            </div>
-                        </div>
-                        <div class="glass-3d p-3 rounded-2xl flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400"><i class="fa-solid fa-folder-open text-xs"></i></div>
-                            <div>
-                                <h4 class="text-xs font-bold text-white" data-en="Organized by Topics" data-bn="টপিক অনুযায়ী সাজানো">Organized by Topics</h4>
-                                <p class="text-[9px] text-slate-400" data-en="Easy to browse" data-bn="সহজে ব্রাউজ করুন">Easy to browse</p>
-                            </div>
-                        </div>
-                    </div>
+        <!-- OUR BLOG BOX (Auto loads posts from blog.html / Firebase storage) -->
+        <section class="mb-20" id="blogFolder">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-1 block" data-en="OUR BLOG" data-bn="আমাদের ব্লগ">OUR BLOG</span>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white" data-en="Latest Blog Posts & Updates" data-bn="সর্বশেষ ব্লগ পোস্ট ও আপডেটসমূহ">Latest Blog Posts & Updates</h2>
                 </div>
+                <a href="blog.html" class="glass-3d bg-white/10 px-4 py-2 rounded-full font-semibold text-xs inline-flex items-center gap-1 text-white hover:bg-white/20 transition-colors">
+                    <span data-en="View All Blog" data-bn="সব ব্লগ দেখুন">View All Blog</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </a>
+            </div>
 
-                <div class="lg:col-span-7 glass-3d p-4 sm:p-6 rounded-3xl bg-slate-900/60 border border-white/10 shadow-2xl">
-                    <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
-                        <div class="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10 text-xs text-slate-300 w-1/2">
-                            <i class="fa-solid fa-magnifying-glass text-slate-400"></i> Search topics, speakers...
-                        </div>
-                        <span class="text-xs text-indigo-400 font-bold">All Topics</span>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <div class="glass-3d p-3 rounded-2xl flex items-center justify-between bg-white/5">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center text-indigo-300 font-bold text-xs">45:32</div>
-                                <div>
-                                    <h4 class="text-xs font-bold text-white">AI Strategies for E-commerce Growth</h4>
-                                    <p class="text-[10px] text-slate-400">Habib Rahman • Masterclass</p>
-                                </div>
-                            </div>
-                            <span class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] px-3 py-1.5 rounded-lg font-bold cursor-pointer">Watch</span>
-                        </div>
-                        <div class="glass-3d p-3 rounded-2xl flex items-center justify-between bg-white/5">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-10 rounded-xl bg-purple-600/30 flex items-center justify-center text-purple-300 font-bold text-xs">38:17</div>
-                                <div>
-                                    <h4 class="text-xs font-bold text-white">Advanced Mobile Unlocking & FRP Mastery</h4>
-                                    <p class="text-[10px] text-slate-400">Habib iFix • Technical Guide</p>
-                                </div>
-                            </div>
-                            <span class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] px-3 py-1.5 rounded-lg font-bold cursor-pointer">Watch</span>
-                        </div>
-                    </div>
-                </div>
+            <div id="dynamicBlogGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Dynamically loaded from Firebase / blog.html -->
             </div>
         </section>
 
@@ -400,7 +447,27 @@
             </div>
         </section>
 
-        <!-- REAL BOOKING MODAL (LOGIN REQUIRED + WHATSAPP AUTO SEND) -->
+        <!-- BEAUTIFUL LOGIN REQUIRED / WARNING POPUP MODAL -->
+        <div id="loginWarningModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+            <div class="glass-3d bg-slate-900/95 w-full max-w-sm p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20 text-center animate-fade-in-up">
+                <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-amber-500/30">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-white mb-2">User Login Please!</h3>
+                <p class="text-xs text-slate-300 mb-6 leading-relaxed">সেবা বুক করার জন্য বা কোর্স নিতে হলে অনুগ্রহ করে আগে সাইন ইন বা লগইন করুন।</p>
+                
+                <div class="space-y-2.5">
+                    <a href="login.html?return=index.html" class="block w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-lg">
+                        Sign In Now
+                    </a>
+                    <button onclick="closeLoginWarning()" class="block w-full bg-white/10 hover:bg-white/20 text-slate-300 py-2.5 rounded-xl font-medium text-xs transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- REAL BOOKING MODAL (WHATSAPP AUTO SEND) -->
         <div id="bookingModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[99] hidden flex items-center justify-center p-4">
             <div class="glass-3d bg-slate-900/95 w-full max-w-md p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
                 <button onclick="closePlanModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
@@ -529,15 +596,16 @@
             applyLanguage(currentLang === 'en' ? 'bn' : 'en');
         }
 
-        // LOGIN CHECK & BOOKING MODAL LOGIC
+        // LOGIN CHECK & POPUP MODAL LOGIC
         let selectedPlanName = "";
         let selectedPlanPrice = "";
 
         function openPlanModal(planName, planPrice) {
             const isLoggedIn = localStorage.getItem('habib_logged_in') === 'true';
             if (!isLoggedIn) {
-                alert("⚠️ User login please! সেবা বুক করার জন্য দয়া করে আগে সাইন ইন বা লগইন করুন।");
-                window.location.href = 'login.html';
+                // Show gorgeous warning popup
+                document.getElementById('loginWarningModal').classList.remove('hidden');
+                document.getElementById('loginWarningModal').classList.add('flex');
                 return;
             }
 
@@ -547,6 +615,11 @@
             document.getElementById('modalPlanTitle').innerText = "Booking: " + planName;
             document.getElementById('modalPlanPrice').innerText = "Price: " + planPrice;
             document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function closeLoginWarning() {
+            document.getElementById('loginWarningModal').classList.add('hidden');
+            document.getElementById('loginWarningModal').classList.remove('flex');
         }
 
         function closePlanModal() {
@@ -567,8 +640,69 @@
             closePlanModal();
         }
 
+        // Auto load latest blog posts from Firebase / blog.html sync
+        function loadStoredBlogs() {
+            const blogs = JSON.parse(localStorage.getItem('habib_custom_blogs') || '[]');
+            const grid = document.getElementById('dynamicBlogGrid');
+            if(!grid) return;
+
+            let html = '';
+            // Render custom blogs first (up to 3 posts)
+            blogs.slice(0, 3).forEach(b => {
+                html += `
+                <div class="glass-3d p-4 rounded-3xl group cursor-pointer flex flex-col border border-indigo-500/30" onclick="window.location.href='blog.html'">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 flex items-center justify-center relative">
+                        <img src="${b.image || b.mediaLink || 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75'}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="px-1">
+                        <p class="text-[9px] font-bold text-indigo-400 mb-1 uppercase tracking-wider">${b.cat || b.category || 'BLOG'}</p>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">${b.title || b.description || 'Habib iFix Update'}</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2">${b.desc || b.content || ''}</p>
+                    </div>
+                </div>`;
+            });
+
+            // Default demo blog posts if empty
+            if(blogs.length === 0) {
+                html += `
+                <div class="glass-3d p-4 rounded-3xl group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75" class="w-full h-full object-cover">
+                    </div>
+                    <div class="px-1">
+                        <p class="text-[9px] font-bold text-indigo-400 mb-1 uppercase tracking-wider">REPAIR TIP</p>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">How to check display original quality</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2">Learn professional tips to identify genuine display and touch panels for Android & iPhones.</p>
+                    </div>
+                </div>
+                <div class="glass-3d p-4 rounded-3xl group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=75" class="w-full h-full object-cover">
+                    </div>
+                    <div class="px-1">
+                        <p class="text-[9px] font-bold text-indigo-400 mb-1 uppercase tracking-wider">TECH NEWS</p>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Android FRP Remove 2026 Guide</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2">Exploring the newest security bypass methods for modern Android devices safely.</p>
+                    </div>
+                </div>
+                <div class="glass-3d p-4 rounded-3xl group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
+                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 flex items-center justify-center relative">
+                        <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover">
+                    </div>
+                    <div class="px-1">
+                        <p class="text-[9px] font-bold text-indigo-400 mb-1 uppercase tracking-wider">ONLINE WORK</p>
+                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Importance of a professional CV & Job Apply</h3>
+                        <p class="text-[11px] text-slate-400 line-clamp-2">Why a clean CV increases your chances of getting hired quickly in government and private jobs.</p>
+                    </div>
+                </div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             applyLanguage(currentLang);
+            loadStoredBlogs();
         });
     </script>
     

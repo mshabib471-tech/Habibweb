@@ -69,24 +69,43 @@
         </a>
     </header>
 
-    <!-- MAIN CONTAINER (MATCHING DESIGN REFERENCE) -->
+    <!-- MAIN CONTAINER -->
     <main class="flex-grow flex items-center justify-center px-4 pt-28 pb-16">
-        <div class="glass-3d w-full max-w-md p-8 sm:p-10 rounded-[35px] shadow-2xl border border-white/20 relative overflow-hidden">
+        <div class="glass-3d w-full max-w-md p-8 sm:p-10 rounded-[35px] shadow-2xl border border-white/20 relative overflow-hidden text-center">
             
-            <!-- LOGO / BRAND ICON -->
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-indigo-600/30 text-indigo-400 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-4 border border-indigo-500/30 shadow-inner">
-                    <i class="fa-solid fa-shield-halved"></i>
+            <!-- VIEW 1: WELCOME / SPLASH SCREEN (MATCHING REFERENCE IMAGE) -->
+            <div id="splashScreen" class="py-8 flex flex-col items-center justify-between min-h-[380px]">
+                <div class="my-auto">
+                    <!-- H LOGO -->
+                    <div class="w-24 h-24 bg-gradient-to-tr from-indigo-600 to-purple-600 text-white rounded-[32px] flex items-center justify-center text-5xl font-extrabold mx-auto mb-6 shadow-2xl shadow-indigo-600/50 border border-white/20">
+                        H
+                    </div>
+                    <!-- Habib iFix -->
+                    <h2 class="text-3xl font-extrabold text-white tracking-wide mb-2">Habib <span class="text-indigo-400">iFix</span></h2>
+                    <p class="text-xs text-slate-400 max-w-xs mx-auto">Your trusted partner for all mobile repair and online technical solutions.</p>
                 </div>
-                <h2 id="formTitle" class="text-2xl font-extrabold text-white mb-1">Welcome Back</h2>
-                <p id="formSubTitle" class="text-xs text-slate-400">Sign in to your Habib iFix account</p>
+
+                <!-- SIGN IN & CREATE ACCOUNT BUTTONS AT BOTTOM -->
+                <div class="w-full space-y-3 mt-8">
+                    <button onclick="showAuthForm('signin')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
+                        Sign In
+                    </button>
+                    <button onclick="showAuthForm('signup')" class="w-full glass-3d bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 rounded-2xl text-xs transition-all border border-white/20">
+                        Create Account
+                    </button>
+                </div>
             </div>
 
             <!-- ERROR OR SUCCESS ALERT MESSAGE -->
             <div id="authAlert" class="hidden mb-6 p-3 rounded-xl text-xs text-center font-medium"></div>
 
-            <!-- SIGN IN FORM -->
-            <form id="signInForm" onsubmit="handleSignIn(event)" class="space-y-4">
+            <!-- VIEW 2: SIGN IN FORM -->
+            <form id="signInForm" onsubmit="handleSignIn(event)" class="space-y-4 text-left hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <button type="button" onclick="backToSplash()" class="text-xs text-indigo-400 hover:text-white flex items-center gap-1.5"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                    <h3 class="text-lg font-bold text-white">Sign In</h3>
+                    <div class="w-8"></div>
+                </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
                     <input type="email" id="siEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
@@ -106,64 +125,59 @@
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
                     Sign In
                 </button>
+                <div class="relative my-4 text-center">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+                    <span class="relative px-3 bg-slate-900/40 text-[10px] uppercase text-slate-400 font-semibold">Or</span>
+                </div>
+                <button type="button" onclick="handleGoogleLogin()" class="w-full glass-3d bg-white/5 hover:bg-white/10 text-white font-semibold py-3.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-3 border border-white/10">
+                    <i class="fa-brands fa-google text-red-400"></i> Continue with Google
+                </button>
             </form>
 
-            <!-- SIGN UP FORM (HIDDEN BY DEFAULT) -->
-            <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-4 hidden">
+            <!-- VIEW 3: CREATE ACCOUNT FORM -->
+            <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-4 text-left hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <button type="button" onclick="backToSplash()" class="text-xs text-indigo-400 hover:text-white flex items-center gap-1.5"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                    <h3 class="text-lg font-bold text-white">Create Account</h3>
+                    <div class="w-8"></div>
+                </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Full Name</label>
-                    <input type="text" id="suName" required placeholder="Md Habibur Rahman" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                    <input type="text" id="suName" required placeholder="Md Habibur Rahman" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
-                    <input type="email" id="suEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                    <input type="email" id="suEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Password</label>
                     <div class="relative">
-                        <input type="password" id="suPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
-                        <button type="button" onclick="togglePassword('suPassword', this)" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-white text-xs">
+                        <input type="password" id="suPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
+                        <button type="button" onclick="togglePassword('suPassword', this)" class="absolute right-3.5 top-3 text-slate-400 hover:text-white text-xs">
                             <i class="fa-solid fa-eye"></i>
                         </button>
                     </div>
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Confirm Password</label>
-                    <input type="password" id="suConfirmPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+                    <input type="password" id="suConfirmPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
                 </div>
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
                     Create Account
                 </button>
             </form>
 
-            <!-- DIVIDER -->
-            <div class="relative my-6 text-center">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
-                <span class="relative px-3 bg-slate-900/40 text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Or</span>
-            </div>
-
-            <!-- SOCIAL LOGIN BUTTONS -->
-            <button onclick="handleGoogleLogin()" class="w-full glass-3d bg-white/5 hover:bg-white/10 text-white font-semibold py-3.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-3 mb-3 border border-white/10">
-                <i class="fa-brands fa-google text-red-400"></i> Continue with Google
-            </button>
-
-            <!-- SWITCH BETWEEN SIGN IN & SIGN UP -->
-            <p class="text-center text-xs text-slate-400 mt-6">
-                <span id="switchText">Don't have an account?</span> 
-                <button onclick="toggleAuthMode()" id="switchBtn" class="text-indigo-400 font-bold hover:underline ml-1">Sign up</button>
-            </p>
-
             <p class="text-center text-[10px] text-slate-500 mt-6">&copy; 2026 Habib iFix. All rights reserved.</p>
 
         </div>
     </main>
 
-    <!-- FIREBASE AUTH LOGIC -->
+    <!-- FIREBASE AUTH & UI LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
             getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, 
-            signInWithPopup, GoogleAuthProvider, onAuthStateChanged 
+            signInWithPopup, GoogleAuthProvider 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -182,7 +196,6 @@
 
         const adminEmail = "tec.habiburrahman@gmail.com";
 
-        // Helper to show alerts
         function showAlert(msg, isError = true) {
             const alertBox = document.getElementById('authAlert');
             alertBox.innerText = msg;
@@ -190,11 +203,28 @@
             alertBox.classList.remove('hidden');
         }
 
-        // Get Return URL
         const urlParams = new URLSearchParams(window.location.search);
         const returnUrl = urlParams.get('return') || 'index.html';
 
-        // Sign In
+        window.showAuthForm = function(mode) {
+            document.getElementById('splashScreen').classList.add('hidden');
+            document.getElementById('authAlert').classList.add('hidden');
+            if (mode === 'signin') {
+                document.getElementById('signInForm').classList.remove('hidden');
+                document.getElementById('signUpForm').classList.add('hidden');
+            } else {
+                document.getElementById('signUpForm').classList.remove('hidden');
+                document.getElementById('signInForm').classList.add('hidden');
+            }
+        };
+
+        window.backToSplash = function() {
+            document.getElementById('splashScreen').classList.remove('hidden');
+            document.getElementById('signInForm').classList.add('hidden');
+            document.getElementById('signUpForm').classList.add('hidden');
+            document.getElementById('authAlert').classList.add('hidden');
+        };
+
         window.handleSignIn = async function(e) {
             e.preventDefault();
             const email = document.getElementById('siEmail').value;
@@ -215,7 +245,6 @@
             }
         };
 
-        // Sign Up
         window.handleSignUp = async function(e) {
             e.preventDefault();
             const name = document.getElementById('suName').value;
@@ -244,7 +273,6 @@
             }
         };
 
-        // Google Login
         window.handleGoogleLogin = async function() {
             try {
                 const result = await signInWithPopup(auth, googleProvider);
@@ -261,7 +289,6 @@
             }
         };
 
-        // Forgot Password
         window.handleForgotPassword = async function() {
             const email = document.getElementById('siEmail').value;
             if (!email) {
@@ -276,20 +303,6 @@
             }
         };
 
-        // Toggle UI Mode (Sign In <-> Sign Up)
-        let isSignUp = false;
-        window.toggleAuthMode = function() {
-            isSignUp = !isSignUp;
-            document.getElementById('signInForm').classList.toggle('hidden', isSignUp);
-            document.getElementById('signUpForm').classList.toggle('hidden', !isSignUp);
-            document.getElementById('formTitle').innerText = isSignUp ? "Create Account" : "Welcome Back";
-            document.getElementById('formSubTitle').innerText = isSignUp ? "Fill your details to get started" : "Sign in to your Habib iFix account";
-            document.getElementById('switchText').innerText = isSignUp ? "Already have an account?" : "Don't have an account?";
-            document.getElementById('switchBtn').innerText = isSignUp ? "Sign in" : "Sign up";
-            document.getElementById('authAlert').classList.add('hidden');
-        };
-
-        // Show/Hide Password
         window.togglePassword = function(fieldId, btn) {
             const input = document.getElementById(fieldId);
             if (input.type === "password") {

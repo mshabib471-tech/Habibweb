@@ -18,15 +18,21 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 const DEFAULT_AVATAR = "https://www.svgrepo.com/show/5125/avatar.svg";
 
+// Admin Emails List (আপনার অ্যাডমিন ইমেলগুলো এখানে যুক্ত করুন)
+const ADMIN_EMAILS = ["tec.habiburrahman@gmail.com", "habib@gmail.com"]; 
+
 function byId(id){ return document.getElementById(id); }
 
-// instant check with localStorage fallback to prevent UI flickering on load
+// UI State Updater with strict Admin & Role Checking
 function updateUIState(user) {
   const loginButtons = document.querySelectorAll('#loginBtn, #loginNavBtn, a[href*="login.html"]');
   const profileButtons = document.querySelectorAll('#profileBtn, #userProfileMenu');
   const avatars = document.querySelectorAll('#headerAvatar, #userAvatarImg');
 
   if (user) {
+    // Check if user is admin based on email
+    const isAdmin = ADMIN_EMAILS.includes(user.email);
+    
     loginButtons.forEach(el => {
       if (el) {
         el.style.display = 'none';
@@ -46,9 +52,18 @@ function updateUIState(user) {
       if (el) el.src = avatarUrl;
     });
 
+    // Save session state securely
     localStorage.setItem('habib_logged_in', 'true');
+    localStorage.setItem('habib_user_email', user.email || '');
+    localStorage.setItem('habib_user_role', isAdmin ? 'admin' : 'user');
     if (user.photoURL) localStorage.setItem('habib_user_avatar', user.photoURL);
   } else {
+    // Completely clear all session and admin permissions on logout
+    localStorage.removeItem('habib_logged_in');
+    localStorage.removeItem('habib_user_avatar');
+    localStorage.removeItem('habib_user_role');
+    localStorage.removeItem('habib_user_email');
+
     loginButtons.forEach(el => {
       if (el) {
         el.style.display = 'flex';
@@ -62,17 +77,9 @@ function updateUIState(user) {
         el.classList.add('hidden');
       }
     });
-
-    localStorage.removeItem('habib_logged_in');
   }
 
   window.currentHabibUser = user || null;
-}
-
-// Run quick UI check immediately using localStorage before Firebase fully boots up
-if (localStorage.getItem('habib_logged_in') === 'true') {
-  const savedAvatar = localStorage.getItem('habib_user_avatar') || DEFAULT_AVATAR;
-  updateUIState({ photoURL: savedAvatar });
 }
 
 async function uploadAvatar(file, user, avatarEl){
@@ -93,12 +100,13 @@ onAuthStateChanged(auth, user => {
   updateUIState(user);
 });
 
+// Strict Secure Logout (Removes all tokens, roles and permissions instantly)
 window.doLogout = async function(){
   try {
-    localStorage.removeItem('habib_logged_in');
-    localStorage.removeItem('habib_user_avatar');
+    localStorage.clear(); // Clears all local storage data instantly
+    sessionStorage.clear();
     await signOut(auth);
-    window.location.reload();
+    window.location.href = window.location.pathname; // Reloads current page cleanly
   } catch(err) {
     console.error("Logout failed:", err);
     alert("Logout failed. Please try again.");

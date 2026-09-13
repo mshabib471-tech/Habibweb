@@ -27,29 +27,21 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-    /* Glassmorphism from Home */
-    .glass {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.5) 100%);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
-    }
-    
-    .glass-card {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+    /* 3D Glass UI Menu & Cards */
+    .glass-3d {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
         border: 1px solid rgba(255, 255, 255, 0.9);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-        border-radius: 24px;
-        transition: all 0.3s ease;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        transform: perspective(1000px);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
     
-    .glass-card:hover {
-        transform: translateY(-5px);
+    .glass-3d:hover {
+        transform: perspective(1000px) translateY(-3px);
         background: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 25px 50px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
     }
 
     .text-gradient {
@@ -93,8 +85,8 @@
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
 
-  <!-- HEADER / NAVBAR -->
-  <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass border-b border-white/50">
+  <!-- HEADER / 3D GLASS NAVBAR -->
+  <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass-3d border-b border-white/50">
       <!-- Logo -->
       <a href="index.html" class="flex items-center gap-2.5">
           <div class="w-9 h-9 sm:w-10 sm:h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-md">H</div>
@@ -105,25 +97,26 @@
       </a>
 
       <!-- Desktop Nav -->
-      <nav class="hidden lg:flex glass rounded-full px-6 py-2.5 items-center gap-8 text-sm font-medium text-slate-600 shadow-sm">
+      <nav class="hidden lg:flex glass-3d rounded-full px-6 py-2.5 items-center gap-6 text-sm font-medium text-slate-600 shadow-sm">
           <a href="index.html" class="hover:text-black transition-colors">Home</a>
           <a href="about.html" class="hover:text-black transition-colors">About</a>
           <a href="services.html" class="hover:text-black transition-colors">Services</a>
+          <a href="courses.html" class="hover:text-black transition-colors">Courses</a>
           <a href="blog.html" class="hover:text-black transition-colors">Blog</a>
-          <a href="contact.html" class="text-black bg-white px-4 py-1.5 rounded-full shadow-sm">Contact</a>
+          <a href="contact.html" class="text-black bg-white px-4 py-1.5 rounded-full shadow-sm font-semibold">Contact</a>
       </nav>
 
       <!-- CTA & Profile & Mobile Menu Toggle -->
       <div class="flex items-center gap-2 sm:gap-3">
           <!-- Sign In / Sign Up (Dynamic visibility) -->
-          <a href="login.html?return=contact.html" id="loginNavBtn" class="hidden sm:flex glass bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors items-center gap-2 shadow-sm">
+          <a href="login.html?return=contact.html" id="loginNavBtn" class="hidden sm:flex glass-3d bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors items-center gap-2 shadow-sm">
               Sign In <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </a>
           
           <!-- Profile Avatar & Dropdown (Secured / Logout Removes Access) -->
           <div id="profileBtn" class="hidden relative cursor-pointer group">
               <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-white shadow-sm object-cover">
-              <div class="absolute top-full right-0 mt-3 w-48 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
+              <div class="absolute top-full right-0 mt-3 w-48 glass-3d bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
                   <div id="adminBadgeText" class="px-3 py-1.5 text-[10px] text-indigo-600 font-bold uppercase tracking-wider border-b border-slate-100 mb-1">User Account</div>
                   <button onclick="doLogout()" class="w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-xl text-left flex items-center gap-2 transition-colors">
                       <i class="fa-solid fa-sign-out-alt text-xs"></i> Logout
@@ -132,7 +125,7 @@
           </div>
 
           <!-- Mobile Menu Button -->
-          <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 glass bg-white/90 rounded-xl flex items-center justify-center text-slate-800 shadow-md focus:outline-none z-50">
+          <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 glass-3d bg-white/90 rounded-xl flex items-center justify-center text-slate-800 shadow-md focus:outline-none z-50">
               <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
           </button>
       </div>
@@ -143,6 +136,7 @@
       <a href="index.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Home</a>
       <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">About</a>
       <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Services</a>
+      <a href="courses.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Courses</a>
       <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Blog</a>
       <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-800 font-semibold text-sm py-2.5 px-4 rounded-xl bg-slate-100">Contact</a>
       <a href="login.html" id="mobileLoginBtn" onclick="toggleMobileMenu()" class="w-full bg-black text-white text-center py-3 rounded-xl font-semibold text-xs mt-2 shadow-md">Sign In</a>
@@ -163,26 +157,26 @@
 
       <!-- Quick Contact Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 reveal">
-        <a href="tel:+8801868461577" class="glass-card p-6 rounded-2xl flex items-center gap-4 group">
+        <a href="tel:+8801868461577" class="glass-3d p-6 rounded-2xl flex items-center gap-4 group">
           <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-all text-xl font-bold">📞</div>
           <div><p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Call Us</p><p class="text-slate-900 font-bold text-sm">+880 1868 461577</p></div>
         </a>
-        <a href="mailto:tec.habiburrahman@gmail.com" class="glass-card p-6 rounded-2xl flex items-center gap-4 group">
+        <a href="mailto:tec.habiburrahman@gmail.com" class="glass-3d p-6 rounded-2xl flex items-center gap-4 group">
           <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-all text-xl font-bold">✉️</div>
           <div><p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Email</p><p class="text-slate-900 font-bold text-xs sm:text-sm">tec.habiburrahman@gmail.com</p></div>
         </a>
-        <a href="https://wa.me/8801868461577" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group">
+        <a href="https://wa.me/8801868461577" target="_blank" class="glass-3d p-6 rounded-2xl flex items-center gap-4 group">
           <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-all text-xl"><i class="fab fa-whatsapp"></i></div>
           <div><p class="text-xs text-slate-400 font-medium uppercase tracking-wider">WhatsApp</p><p class="text-slate-900 font-bold text-sm">Chat Now</p></div>
         </a>
-        <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="glass-card p-6 rounded-2xl flex items-center gap-4 group">
+        <a href="https://t.me/Ur_H_A_B_I_B" target="_blank" class="glass-3d p-6 rounded-2xl flex items-center gap-4 group">
           <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:scale-110 transition-all text-xl"><i class="fab fa-telegram-plane"></i></div>
           <div><p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Telegram</p><p class="text-slate-900 font-bold text-sm">Message Us</p></div>
         </a>
       </div>
 
       <!-- Adsterra Native Banner Ad -->
-      <div class="mb-12 glass-card p-3 text-center overflow-hidden">
+      <div class="mb-12 glass-3d p-3 text-center overflow-hidden rounded-2xl">
         <div class="text-[10px] text-slate-400 mb-2 uppercase tracking-widest font-semibold">Advertisement</div>
         <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
         <div id="container-8e9094986a453471eab78291c50b779f" class="flex justify-center"></div>
@@ -190,7 +184,7 @@
 
       <!-- Smartlink Banner Ad -->
       <div class="mb-12">
-        <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="block w-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-5 sm:p-6 text-center text-white font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-indigo-500/20 glass border-none text-xs sm:text-sm">
+        <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="block w-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-5 sm:p-6 text-center text-white font-bold hover:scale-[1.02] transition-transform shadow-xl shadow-indigo-500/25 glass-3d border-none text-xs sm:text-sm">
           🚀 Exclusive Offers & Deals - Click Here!
         </a>
       </div>
@@ -199,7 +193,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
 
         <!-- Left: Contact Info -->
-        <div class="glass-card p-8 md:p-10 shadow-2xl flex flex-col h-full relative overflow-hidden group reveal-left bg-white/75">
+        <div class="glass-3d p-8 md:p-10 shadow-2xl flex flex-col h-full relative overflow-hidden group reveal-left rounded-3xl bg-white/75">
           <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
           <h3 class="text-2xl font-bold text-slate-900 mb-8 relative z-10">📍 Contact Information</h3>
@@ -249,7 +243,7 @@
         </div>
 
         <!-- Right: Contact Form -->
-        <div class="glass-card p-8 md:p-10 shadow-2xl h-full relative overflow-hidden reveal-right bg-white/75">
+        <div class="glass-3d p-8 md:p-10 shadow-2xl h-full relative overflow-hidden reveal-right rounded-3xl bg-white/75">
           <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
           <h3 class="text-2xl font-bold text-slate-900 mb-2 relative z-10">✉️ Send us a Message</h3>
@@ -307,39 +301,37 @@
   </main>
 
   <!-- CODECRAFT API AI CHATBOT WIDGET -->
-  <div class="fixed bottom-5 right-5 z-[60] flex flex-col items-end">
-    <div id="chatWin" class="hidden w-[290px] sm:w-[350px] h-[420px] mb-4 glass bg-white/95 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
-        <div class="bg-black/90 backdrop-blur-md p-4 flex justify-between items-center rounded-t-[28px]">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-lg">AI</div>
-                <div>
-                    <h3 class="text-white font-bold text-sm tracking-wide">Habib iFix AI</h3>
-                    <p class="text-white/60 text-[9px] flex items-center gap-1 uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p>
-                </div>
+  <div id="habibAiChatWidget" class="fixed bottom-6 right-6 z-[999]">
+    <button onclick="toggleChat()" id="chatBtn" class="w-14 h-14 bg-gradient-to-tr from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-all transform hover:scale-110 border-2 border-white/20">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+
+    <div id="chatWin" class="hidden absolute bottom-20 right-0 w-[320px] sm:w-[360px] h-[480px] glass-3d bg-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 flex flex-col overflow-hidden text-slate-200">
+        <div class="bg-indigo-600/30 p-4 border-b border-white/10 flex justify-between items-center">
+            <div class="flex items-center gap-2.5">
+                <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
+                <span class="font-bold text-white text-sm">Habib iFix AI Assistant</span>
             </div>
-            <button onclick="toggleChat()" class="text-white/50 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            <button onclick="toggleChat()" class="text-slate-400 hover:text-white w-7 h-7 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark text-xs"></i></button>
         </div>
-        <div id="chatBody" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3 text-xs text-slate-600">
-            <div class="flex gap-2 max-w-[85%]">
-                <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
-                <div class="bg-white border border-slate-200 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
-                    আসসালামু আলাইকুম! হাবিব আইফিক্স সাপোর্টে আপনাকে স্বাগতম। কীভাবে সাহায্য করতে পারি?
-                </div>
+
+        <div id="chatBody" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs text-slate-200">
+            <div class="bg-indigo-600/20 p-3 rounded-2xl max-w-[85%] border border-indigo-500/30">
+                আসসালামু আলাইকুম! আমি হাবিব আইফিক্স এআই অ্যাসিস্ট্যান্ট। মোবাইল রিপেয়ার, এফআরপি আনলক বা আমাদের সার্ভিস সম্পর্কে যেকোনো কিছু আমাকে জিজ্ঞেস করতে পারেন।
             </div>
         </div>
-        <div class="p-3 border-t border-slate-100 bg-white/50 backdrop-blur-md flex gap-2">
-            <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs outline-none focus:border-indigo-300 transition-colors" onkeypress="if(event.key==='Enter')sendChatMessage()">
-            <button onclick="sendChatMessage()" class="bg-black text-white w-10 h-10 rounded-xl flex items-center justify-center text-xs hover:scale-105 transition-transform shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
+
+        <div class="p-3 bg-slate-950/50 border-t border-white/10 flex items-center gap-2">
+            <input type="text" id="chatInput" placeholder="আপনার প্রশ্ন এখানে লিখুন..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs outline-none focus:border-indigo-500 text-white" onkeypress="if(event.key==='Enter')sendChatMessage()">
+            <button onclick="sendChatMessage()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-xl flex items-center justify-center text-sm transition-colors shadow-md">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
         </div>
     </div>
-
-    <button onclick="toggleChat()" id="chatBtn" class="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform text-white border-2 border-white/20">
-        <i class="fa-solid fa-message text-base sm:text-lg"></i>
-    </button>
   </div>
 
   <!-- FOOTER -->
-  <footer class="bg-white/90 backdrop-blur-md border-t border-slate-100 pt-12 sm:pt-16 pb-8 mt-12 relative z-10">
+  <footer class="glass-3d border-t border-slate-100 pt-12 sm:pt-16 pb-8 mt-12 relative z-10 bg-white/90">
       <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 mb-10">
               <div class="space-y-4">
@@ -347,26 +339,24 @@
                       <div class="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
                       <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
                   </div>
-                  <p class="text-slate-500 text-xs leading-relaxed">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
+                  <p class="text-slate-500 text-xs leading-relaxed">আপনার সকল মোবাইল রিপেয়ার ও অনলাইন টেকনিক্যাল সেবার বিশ্বস্ত প্রতিষ্ঠান।</p>
               </div>
 
               <div>
                   <h4 class="font-bold text-slate-900 mb-3 sm:mb-4 text-xs uppercase tracking-wider">Explore</h4>
                   <ul class="space-y-2 text-xs text-slate-500">
                       <li><a href="index.html" class="hover:text-indigo-600 transition-colors">Home</a></li>
-                      <li><a href="services.html" class="hover:text-indigo-600 transition-colors">Components</a></li>
-                      <li><a href="about.html" class="hover:text-indigo-600 transition-colors">Templates</a></li>
-                      <li><a href="contact.html" class="hover:text-indigo-600 transition-colors">Pricing</a></li>
+                      <li><a href="services.html" class="hover:text-indigo-600 transition-colors">Services</a></li>
+                      <li><a href="courses.html" class="hover:text-indigo-600 transition-colors">Courses</a></li>
+                      <li><a href="contact.html" class="hover:text-indigo-600 transition-colors">Contact</a></li>
                   </ul>
               </div>
 
               <div>
-                  <h4 class="font-bold text-slate-900 mb-3 sm:mb-4 text-xs uppercase tracking-wider">Resources</h4>
+                  <h4 class="font-bold text-slate-900 mb-3 sm:mb-4 text-xs uppercase tracking-wider">Contact Info</h4>
                   <ul class="space-y-2 text-xs text-slate-500">
-                      <li><a href="#" class="hover:text-indigo-600 transition-colors">Documentation</a></li>
-                      <li><a href="#" class="hover:text-indigo-600 transition-colors">License Agreement</a></li>
-                      <li><a href="#" class="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
-                      <li><a href="#" class="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
+                      <li><i class="fa-solid fa-phone text-indigo-500 mr-2"></i> +880 1868 461577</li>
+                      <li><i class="fa-solid fa-location-dot text-indigo-500 mr-2"></i> Gachbaria, Chattogram</li>
                   </ul>
               </div>
 
@@ -385,7 +375,6 @@
               <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
                   <a href="#" class="hover:text-slate-700 transition-colors">Privacy</a>
                   <a href="#" class="hover:text-slate-700 transition-colors">Terms</a>
-                  <a href="#" class="hover:text-slate-700 transition-colors">Refund Policy</a>
                   <a href="#" class="hover:text-slate-700 transition-colors">Support</a>
               </div>
           </div>
@@ -461,15 +450,12 @@
           const txt = input.value.trim();
           if(!txt) return;
           
-          body.innerHTML += `
-              <div class="flex gap-2 max-w-[85%] self-end">
-                  <div class="bg-indigo-600 text-white text-xs p-3 rounded-2xl rounded-br-none shadow-md font-medium leading-relaxed">${txt}</div>
-              </div>`;
+          body.innerHTML += `<div class="bg-indigo-600 p-3 rounded-2xl max-w-[85%] ml-auto text-white">${txt}</div>`;
           input.value = '';
           body.scrollTop = body.scrollHeight;
 
           const loadId = 'load_' + Date.now();
-          body.innerHTML += `<div id="${loadId}" class="bg-slate-100 text-slate-400 p-3 rounded-2xl text-xs italic">Thinking...</div>`;
+          body.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Thinking...</div>`;
           body.scrollTop = body.scrollHeight;
 
           try {
@@ -492,15 +478,11 @@
               document.getElementById(loadId).remove();
 
               const reply = data.choices && data.choices[0] ? data.choices[0].message.content : "দুঃখিত, এই মুহূর্তে উত্তর দিতে পারছি না। সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন।";
-              body.innerHTML += `
-                  <div class="flex gap-2 max-w-[85%]">
-                      <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
-                      <div class="bg-white border border-slate-200 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">${reply}</div>
-                  </div>`;
+              body.innerHTML += `<div class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-200 border border-white/10">${reply}</div>`;
               body.scrollTop = body.scrollHeight;
           } catch(err) {
               document.getElementById(loadId).remove();
-              body.innerHTML += `<div class="bg-red-50 text-red-500 p-3 rounded-2xl text-xs">সংযোগ স্থাপন করতে সমস্যা হচ্ছে।</div>`;
+              body.innerHTML += `<div class="bg-red-900/50 p-3 rounded-2xl max-w-[85%] text-red-200">সংযোগ স্থাপন করতে সমস্যা হচ্ছে।</div>`;
               body.scrollTop = body.scrollHeight;
           }
       }

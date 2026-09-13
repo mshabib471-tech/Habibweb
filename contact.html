@@ -52,6 +52,12 @@
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
     }
 
+    .text-gradient {
+        background: linear-gradient(90deg, #4f46e5, #9333ea, #db2777);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
     /* Abstract Background Blobs */
     .blob { 
         position: absolute; 
@@ -78,14 +84,6 @@
 
     .form-input { transition: all 0.3s ease; }
     .form-input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
-
-    /* AI Chat Animation */
-    .chat-reveal { opacity: 0; transform: scale(0.95) translateY(20px); transition: all 0.3s ease; pointer-events: none; }
-    .chat-reveal.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
-
-    /* Ad Containers */
-    .ad-container{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:8px;text-align:center;margin:20px 0;min-height:60px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .ad-label{font-size:10px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
   </style>
 </head>
 <body class="antialiased relative selection:bg-indigo-200 selection:text-indigo-900">
@@ -117,18 +115,16 @@
 
       <!-- CTA & Profile & Mobile Menu Toggle -->
       <div class="flex items-center gap-2 sm:gap-3">
-          <a href="login.html" class="hidden sm:flex glass bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors items-center gap-2 shadow-sm">
-              Let's Talk <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          <!-- Sign In / Sign Up (Dynamic visibility) -->
+          <a href="login.html?return=contact.html" id="loginNavBtn" class="hidden sm:flex glass bg-white/80 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white transition-colors items-center gap-2 shadow-sm">
+              Sign In <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </a>
           
-          <!-- Profile Avatar (Hidden by default) -->
+          <!-- Profile Avatar & Dropdown (Secured / Logout Removes Access) -->
           <div id="profileBtn" class="hidden relative cursor-pointer group">
               <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-white shadow-sm object-cover">
               <div class="absolute top-full right-0 mt-3 w-48 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
-                  <label class="px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-xl cursor-pointer flex items-center gap-2 transition-colors mb-1">
-                      <i class="fa-solid fa-camera text-xs"></i> Change Pic
-                      <input type="file" id="profilePicInput" accept="image/*" class="hidden">
-                  </label>
+                  <div id="adminBadgeText" class="px-3 py-1.5 text-[10px] text-indigo-600 font-bold uppercase tracking-wider border-b border-slate-100 mb-1">User Account</div>
                   <button onclick="doLogout()" class="w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-xl text-left flex items-center gap-2 transition-colors">
                       <i class="fa-solid fa-sign-out-alt text-xs"></i> Logout
                   </button>
@@ -149,7 +145,7 @@
       <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Services</a>
       <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-600 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors">Blog</a>
       <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-800 font-semibold text-sm py-2.5 px-4 rounded-xl bg-slate-100">Contact</a>
-      <a href="login.html" onclick="toggleMobileMenu()" class="w-full bg-black text-white text-center py-3 rounded-xl font-semibold text-xs mt-2 shadow-md">Let's Talk</a>
+      <a href="login.html" id="mobileLoginBtn" onclick="toggleMobileMenu()" class="w-full bg-black text-white text-center py-3 rounded-xl font-semibold text-xs mt-2 shadow-md">Sign In</a>
   </div>
 
   <!-- ================= CONTACT SECTION ================= -->
@@ -310,36 +306,36 @@
     </div>
   </main>
 
-  <!-- AI CHAT WIDGET -->
+  <!-- CODECRAFT API AI CHATBOT WIDGET -->
   <div class="fixed bottom-5 right-5 z-[60] flex flex-col items-end">
-      <div id="chatWin" class="chat-reveal hidden w-[290px] sm:w-[350px] h-[400px] sm:h-[420px] mb-4 glass bg-white/95 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
-          <div class="bg-black/90 backdrop-blur-md p-4 flex justify-between items-center rounded-t-[28px]">
-              <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-lg">AI</div>
-                  <div>
-                      <h3 class="text-white font-bold text-sm tracking-wide">Habib AI</h3>
-                      <p class="text-white/60 text-[9px] flex items-center gap-1 uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p>
-                  </div>
-              </div>
-              <button onclick="toggleChat()" class="text-white/50 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"><i class="fa-solid fa-xmark"></i></button>
-          </div>
-          <div id="chatBody" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3">
-              <div class="flex gap-2 max-w-[85%]">
-                  <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
-                  <div class="bg-white border border-white/50 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
-                      Hello! Welcome to Habib iFix. How can I help you today?
-                  </div>
-              </div>
-          </div>
-          <div class="p-3 border-t border-white/50 bg-white/50 backdrop-blur-md flex gap-2">
-              <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-white border border-slate-100 rounded-xl px-4 py-2 text-xs outline-none focus:border-indigo-300 transition-colors" onkeypress="if(event.key==='Enter')sendMsg()">
-              <button onclick="sendMsg()" class="bg-black text-white w-10 h-10 rounded-xl flex items-center justify-center text-xs hover:scale-105 transition-transform shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
-          </div>
-      </div>
+    <div id="chatWin" class="hidden w-[290px] sm:w-[350px] h-[420px] mb-4 glass bg-white/95 rounded-[28px] shadow-2xl flex flex-col overflow-hidden border border-white">
+        <div class="bg-black/90 backdrop-blur-md p-4 flex justify-between items-center rounded-t-[28px]">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-lg">AI</div>
+                <div>
+                    <h3 class="text-white font-bold text-sm tracking-wide">Habib iFix AI</h3>
+                    <p class="text-white/60 text-[9px] flex items-center gap-1 uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="text-white/50 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="chatBody" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3 text-xs text-slate-600">
+            <div class="flex gap-2 max-w-[85%]">
+                <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
+                <div class="bg-white border border-slate-200 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
+                    আসসালামু আলাইকুম! হাবিব আইফিক্স সাপোর্টে আপনাকে স্বাগতম। কীভাবে সাহায্য করতে পারি?
+                </div>
+            </div>
+        </div>
+        <div class="p-3 border-t border-slate-100 bg-white/50 backdrop-blur-md flex gap-2">
+            <input type="text" id="chatInput" placeholder="Type a message..." class="flex-grow bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs outline-none focus:border-indigo-300 transition-colors" onkeypress="if(event.key==='Enter')sendChatMessage()">
+            <button onclick="sendChatMessage()" class="bg-black text-white w-10 h-10 rounded-xl flex items-center justify-center text-xs hover:scale-105 transition-transform shadow-md"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
 
-      <button onclick="toggleChat()" id="chatBtn" class="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform text-white border-2 border-white/20">
-          <i class="fa-solid fa-message text-base sm:text-lg"></i>
-      </button>
+    <button onclick="toggleChat()" id="chatBtn" class="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform text-white border-2 border-white/20">
+        <i class="fa-solid fa-message text-base sm:text-lg"></i>
+    </button>
   </div>
 
   <!-- FOOTER -->
@@ -352,11 +348,6 @@
                       <span class="font-bold text-slate-800 text-base">Habib<span class="text-slate-400 font-normal">iFix</span></span>
                   </div>
                   <p class="text-slate-500 text-xs leading-relaxed">Beautifully crafted repair services, designed for builders creating next-generation tech experiences.</p>
-                  <div class="flex gap-3 text-slate-400">
-                      <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-github text-xs"></i></a>
-                      <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-x-twitter text-xs"></i></a>
-                      <a href="#" class="w-8 h-8 rounded-full glass flex items-center justify-center hover:text-black transition-colors"><i class="fa-brands fa-discord text-xs"></i></a>
-                  </div>
               </div>
 
               <div>
@@ -382,7 +373,7 @@
               <div>
                   <h4 class="font-bold text-slate-900 mb-3 sm:mb-4 text-xs uppercase tracking-wider">Newsletter</h4>
                   <p class="text-slate-500 text-xs mb-3">Subscribe for monthly updates.</p>
-                  <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm">
+                  <form class="flex items-center bg-white/60 border border-white rounded-xl p-1 shadow-sm" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
                       <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-700 placeholder-slate-400">
                       <button type="submit" class="bg-black hover:bg-slate-800 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors">Join</button>
                   </form>
@@ -401,15 +392,50 @@
       </div>
   </footer>
 
-  <!-- JAVASCRIPT -->
+  <!-- JAVASCRIPT & AUTHENTICATION LOGIC -->
   <script>
+      // Authentication check for navbar UI (Sign In vs Profile & Secure Logout)
+      function checkUserAuthStatus() {
+          const isLogged = localStorage.getItem('habib_logged_in') === 'true';
+          const userRole = localStorage.getItem('habib_user_role') || 'user';
+          
+          const loginBtn = document.getElementById('loginNavBtn');
+          const mobileLogin = document.getElementById('mobileLoginBtn');
+          const profileBtn = document.getElementById('profileBtn');
+          const badgeText = document.getElementById('adminBadgeText');
+
+          if (isLogged) {
+              if(loginBtn) loginBtn.classList.add('hidden');
+              if(mobileLogin) mobileLogin.classList.add('hidden');
+              if(profileBtn) profileBtn.classList.remove('hidden');
+              if(badgeText) {
+                  badgeText.innerText = userRole === 'admin' ? '👑 Admin Active' : '👤 Member Account';
+              }
+          } else {
+              if(loginBtn) loginBtn.classList.remove('hidden');
+              if(mobileLogin) mobileLogin.classList.remove('hidden');
+              if(profileBtn) profileBtn.classList.add('hidden');
+          }
+      }
+
+      // Secure Logout Function (Clears session and access instantly)
+      function doLogout() {
+          localStorage.removeItem('habib_logged_in');
+          localStorage.removeItem('habib_user_role');
+          localStorage.removeItem('habib_user_email');
+          localStorage.removeItem('habib_auth_token');
+          sessionStorage.clear();
+          
+          alert('Logged out successfully! Access removed.');
+          window.location.href = 'contact.html';
+      }
+
       function revealOnScroll(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-80)el.classList.add('active');});}
       window.addEventListener('scroll',revealOnScroll);window.addEventListener('load',revealOnScroll);revealOnScroll();
 
       function toggleMobileMenu() {
           const menu = document.getElementById('mobileMenu');
           const icon = document.getElementById('mobileMenuIcon');
-          
           if (menu.classList.contains('-translate-y-full')) {
               menu.classList.remove('-translate-y-full', 'opacity-0', 'invisible');
               menu.classList.add('translate-y-0', 'opacity-100', 'visible');
@@ -425,51 +451,61 @@
 
       function toggleChat(){
           const w = document.getElementById('chatWin');
-          const b = document.getElementById('chatBtn');
-          const icon = b.querySelector('i');
-
-          if(w.classList.contains('hidden')){
-              w.classList.remove('hidden');
-              void w.offsetWidth;
-              w.classList.add('active');
-              icon.classList.remove('fa-message');
-              icon.classList.add('fa-xmark');
-          } else {
-              w.classList.remove('active');
-              icon.classList.remove('fa-xmark');
-              icon.classList.add('fa-message');
-              setTimeout(() => {
-                  w.classList.add('hidden');
-              }, 300);
-          }
+          w.classList.toggle('hidden');
       }
 
-      window.sendMsg = function() {
+      // CodeCraft API Chatbot Logic
+      async function sendChatMessage() {
           const input = document.getElementById('chatInput');
+          const body = document.getElementById('chatBody');
           const txt = input.value.trim();
           if(!txt) return;
           
-          const body = document.getElementById('chatBody');
           body.innerHTML += `
               <div class="flex gap-2 max-w-[85%] self-end">
-                  <div class="bg-indigo-500 text-white text-xs p-3 rounded-2xl rounded-br-none shadow-md font-medium leading-relaxed">${txt}</div>
+                  <div class="bg-indigo-600 text-white text-xs p-3 rounded-2xl rounded-br-none shadow-md font-medium leading-relaxed">${txt}</div>
               </div>`;
           input.value = '';
           body.scrollTop = body.scrollHeight;
 
-          setTimeout(() => {
+          const loadId = 'load_' + Date.now();
+          body.innerHTML += `<div id="${loadId}" class="bg-slate-100 text-slate-400 p-3 rounded-2xl text-xs italic">Thinking...</div>`;
+          body.scrollTop = body.scrollHeight;
+
+          try {
+              const response = await fetch("https://api.codecraftapi.com/v1/chat/completions", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": "Bearer cc_Jsv8GuKNIUk69LaG0nNNWvc7iSgu5pHNOo8xb1Ht5Bcm6ppf"
+                  },
+                  body: JSON.stringify({
+                      model: "gpt-4o",
+                      messages: [
+                          { role: "system", content: "You are an AI assistant for Habib iFix website, a professional mobile repair and online technical service provider in Bangladesh." },
+                          { role: "user", content: txt }
+                      ]
+                  })
+              });
+
+              const data = await response.json();
+              document.getElementById(loadId).remove();
+
+              const reply = data.choices && data.choices[0] ? data.choices[0].message.content : "দুঃখিত, এই মুহূর্তে উত্তর দিতে পারছি না। সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন।";
               body.innerHTML += `
                   <div class="flex gap-2 max-w-[85%]">
                       <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
-                      <div class="bg-white border border-white/50 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
-                          I am a demo AI designed for Habib iFix. I will be connected to the Gemini API in the final version!
-                      </div>
+                      <div class="bg-white border border-slate-200 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">${reply}</div>
                   </div>`;
               body.scrollTop = body.scrollHeight;
-          }, 1000);
+          } catch(err) {
+              document.getElementById(loadId).remove();
+              body.innerHTML += `<div class="bg-red-50 text-red-500 p-3 rounded-2xl text-xs">সংযোগ স্থাপন করতে সমস্যা হচ্ছে।</div>`;
+              body.scrollTop = body.scrollHeight;
+          }
       }
 
-      // Form Submission
+      // Contact Form Submission
       var form=document.getElementById('contactForm'),submitBtn=document.getElementById('submitBtn'),formStatus=document.getElementById('formStatus');
       var scriptURL='https://script.google.com/macros/s/AKfycbzMmCqUECBRKOc8eGMwvlIoDNJnoJ8sTBsuouHtycJxZr6giWjmdvYhbf_z8EUUzd3rzw/exec';
 
@@ -500,6 +536,10 @@
                   });
           });
       }
+
+      window.addEventListener('DOMContentLoaded', () => {
+          checkUserAuthStatus();
+      });
   </script>
   <script type="module" src="js/site-auth.js"></script>
 </body>

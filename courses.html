@@ -262,7 +262,7 @@
                     <p class="text-slate-400 text-xs mb-3" data-en="Subscribe for updates." data-bn="নতুন আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for monthly updates.</p>
                     <form class="flex items-center glass-3d rounded-xl p-1" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
                         <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-white placeholder-slate-500">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors" data-en="Join" data-bn="জয়েন">Join</button>
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors" data-en="Join" data-bn="জয়েন">Join</button>
                     </form>
                 </div>
             </div>
@@ -281,7 +281,7 @@
     <!-- JAVASCRIPT & LOGIC -->
     <script>
         const defaultItems = [
-            { title: "Google 5TB 1 Year Storage", price: "৳১,২০০", icon: "fa-brands fa-google-drive", desc: "Secure cloud storage for 1 full year with high-speed access." },
+            { title: "Google Gemini Pro 5TB Storage, 18 month.", price: "৳১০০ / ২৫০", icon: "fa-brands fa-google-drive", desc: "Secure cloud storage for 1 full year with high-speed access." },
             { title: "ChatGPT Pro (3 Months)", price: "৳৮০০", icon: "fa-solid fa-robot", desc: "Advanced AI models, fast response, and custom GPTs access." },
             { title: "Canva Pro Graphic Tool", price: "৳৫০০", icon: "fa-solid fa-palette", desc: "Unlock premium templates, background remover, and brand kits." },
             { title: "Mobile Unlocking & FRP Course", price: "৳১,৫০০", icon: "fa-solid fa-mobile-screen", desc: "Learn professional software flashing and FRP bypass techniques." },
@@ -307,31 +307,41 @@
             { title: "GitHub Copilot Pro (1 Month)", price: "৳৭০০", icon: "fa-solid fa-code-merge", desc: "AI pair programmer to write code faster and smarter." }
         ];
 
-        let courses = JSON.parse(localStorage.getItem('habib_courses')) || defaultItems;
+        // Ensure fresh sync from localStorage every time
+        function getCoursesList() {
+            const data = localStorage.getItem('habib_courses');
+            return data ? JSON.parse(data) : defaultItems;
+        }
+
         const adminEmail = "tec.habiburrahman@gmail.com";
 
         function checkAdminAuth() {
             const userEmail = localStorage.getItem('habib_user_email');
             const addBtn = document.getElementById('addCourseBtn');
-            if (userEmail === adminEmail) {
-                addBtn.classList.remove('hidden');
-            } else {
-                addBtn.classList.add('hidden');
+            if (addBtn) {
+                if (userEmail === adminEmail) {
+                    addBtn.classList.remove('hidden');
+                } else {
+                    addBtn.classList.add('hidden');
+                }
             }
         }
 
         function renderCourses() {
             const grid = document.getElementById('coursesGrid');
+            if (!grid) return;
             grid.innerHTML = '';
+            
+            const currentCourses = getCoursesList();
             const userEmail = localStorage.getItem('habib_user_email');
             const isAdmin = userEmail === adminEmail;
 
-            courses.forEach((item, index) => {
+            currentCourses.forEach((item, index) => {
                 grid.innerHTML += `
                     <div class="glass-3d p-6 rounded-3xl flex flex-col justify-between group border border-white/15 relative">
                         <div>
                             <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl mb-4">
-                                <i class="${item.icon}"></i>
+                                <i class="${item.icon || 'fa-solid fa-graduation-cap'}"></i>
                             </div>
                             <h3 class="font-bold text-base text-white mb-2">${item.title}</h3>
                             <p class="text-xs text-slate-400 leading-relaxed mb-6">${item.desc}</p>
@@ -339,7 +349,7 @@
                         <div>
                             <div class="flex items-center justify-between pt-4 border-t border-white/10 mb-2">
                                 <span class="text-base font-extrabold text-emerald-400">${item.price}</span>
-                                <button onclick="openGetModal('${item.title}', '${item.price}')" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl font-bold transition-colors shadow-lg">Get</button>
+                                <button onclick="openGetModal('${item.title.replace(/'/g, "\\'")}', '${item.price}')" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl font-bold transition-colors shadow-lg">Get</button>
                             </div>
                             ${isAdmin ? `
                                 <div class="flex gap-2 pt-2 border-t border-white/5">
@@ -362,7 +372,8 @@
                 document.getElementById('editIndex').value = -1;
             } else {
                 document.getElementById('modalActionTitle').innerText = "Edit Course";
-                const item = courses[index];
+                const currentCourses = getCoursesList();
+                const item = currentCourses[index];
                 document.getElementById('editIndex').value = index;
                 document.getElementById('cTitle').value = item.title;
                 document.getElementById('cPrice').value = item.price;
@@ -378,7 +389,9 @@
 
         function handleSaveCourse(e) {
             e.preventDefault();
-            const index = document.getElementById('editIndex').value;
+            const index = parseInt(document.getElementById('editIndex').value);
+            let currentCourses = getCoursesList();
+
             const newItem = {
                 title: document.getElementById('cTitle').value,
                 price: document.getElementById('cPrice').value,
@@ -386,16 +399,17 @@
                 desc: document.getElementById('cDesc').value
             };
 
-            if (index == -1) {
-                courses.unshift(newItem);
+            if (index === -1) {
+                currentCourses.unshift(newItem);
             } else {
-                courses[index] = newItem;
+                currentCourses[index] = newItem;
             }
 
-            localStorage.setItem('habib_courses', JSON.stringify(courses));
+            // Immediately save to localStorage so regular users and page reloads get it
+            localStorage.setItem('habib_courses', JSON.stringify(currentCourses));
             closeCourseModal();
             renderCourses();
-            alert('Saved successfully!');
+            alert('Saved successfully! Publicly updated.');
         }
 
         function editCourse(index) {
@@ -404,8 +418,9 @@
 
         function deleteCourse(index) {
             if (confirm('Are you sure you want to delete this course/tool?')) {
-                courses.splice(index, 1);
-                localStorage.setItem('habib_courses', JSON.stringify(courses));
+                let currentCourses = getCoursesList();
+                currentCourses.splice(index, 1);
+                localStorage.setItem('habib_courses', JSON.stringify(currentCourses));
                 renderCourses();
             }
         }
@@ -486,6 +501,12 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             applyLanguage(currentLang);
+            checkAdminAuth();
+            renderCourses();
+        });
+
+        // Periodic check to ensure state sync if login/logout happens across tabs
+        window.addEventListener('storage', () => {
             checkAdminAuth();
             renderCourses();
         });

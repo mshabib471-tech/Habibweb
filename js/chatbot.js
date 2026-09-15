@@ -1,4 +1,4 @@
-// Global Habib iFix AI Chatbot Widget Script (Fixed Floating Icon & Glass Image)
+// Global Habib iFix AI Chatbot Widget Script with Google Sheets Integration
 (function() {
     if (!document.getElementById('habibChatStyle')) {
         const style = document.createElement('style');
@@ -83,6 +83,26 @@ function toggleHabibChatWindow() {
     }
 }
 
+// Function to log messages to Google Sheet
+async function saveMessageToGoogleSheet(sender, messageText) {
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyN7mNvq1mUplw-AXHLUw5qhqjAKs1iQtcAADicCXRelZVchvVNMoY8C-ZHWNfYG-TcSQ/exec";
+    try {
+        await fetch(scriptURL, {
+            method: "POST",
+            mode: "no-cors", // Required for Google Apps Script Web App endpoints
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                sender: sender,
+                message: messageText
+            })
+        });
+    } catch (err) {
+        console.error("Google Sheet Sync Error:", err);
+    }
+}
+
 async function sendHabibChatMessage() {
     const input = document.getElementById('habibChatInputBox');
     const msgBox = document.getElementById('habibChatMessages');
@@ -91,10 +111,15 @@ async function sendHabibChatMessage() {
     const text = input.value.trim();
     if (!text) return;
 
+    // Show User Message in Chat Box
     msgBox.innerHTML += `<div class="bg-indigo-600 p-3 rounded-2xl max-w-[85%] ml-auto text-white leading-relaxed">${text}</div>`;
     input.value = '';
     msgBox.scrollTop = msgBox.scrollHeight;
 
+    // Save User Message to Google Sheet
+    saveMessageToGoogleSheet("User", text);
+
+    // Loading indicator
     const loadId = 'load_' + Date.now();
     msgBox.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Thinking...</div>`;
     msgBox.scrollTop = msgBox.scrollHeight;
@@ -121,13 +146,21 @@ async function sendHabibChatMessage() {
 
         const reply = data.choices && data.choices[0] ? data.choices[0].message.content : "দুঃখিত, এই মুহূর্তে উত্তর দিতে পারছি না। সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন: +8801868461577";
         
+        // Show AI Reply in Chat Box
         msgBox.innerHTML += `<div class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-200 border border-white/10 leading-relaxed">${reply}</div>`;
         msgBox.scrollTop = msgBox.scrollHeight;
+
+        // Save AI Reply to Google Sheet as well (optional, so you can see full conversation)
+        saveMessageToGoogleSheet("AI Assistant", reply);
+
     } catch (err) {
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
         
-        msgBox.innerHTML += `<div class="bg-red-900/50 p-3 rounded-2xl max-w-[85%] text-red-200">সংযোগ স্থাপন করতে সমস্যা হচ্ছে। সরাসরি আমাদের WhatsApp এ যোগাযোগ করুন।</div>`;
+        const errorMsg = "সংযোগ স্থাপন করতে সমস্যা হচ্ছে। সরাসরি আমাদের WhatsApp এ যোগাযোগ করুন।";
+        msgBox.innerHTML += `<div class="bg-red-900/50 p-3 rounded-2xl max-w-[85%] text-red-200">${errorMsg}</div>`;
         msgBox.scrollTop = msgBox.scrollHeight;
+        
+        saveMessageToGoogleSheet("System", errorMsg);
     }
 }

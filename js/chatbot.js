@@ -1,4 +1,4 @@
-// Global Habib iFix AI Chatbot Widget Script with Google Sheets Integration
+// Global Habib iFix Live Support Chatbot (No AI, Manual Admin Reply via Google Sheets)
 (function() {
     if (!document.getElementById('habibChatStyle')) {
         const style = document.createElement('style');
@@ -26,7 +26,7 @@
     <div id="habibAiChatWidget" style="position: fixed; bottom: 24px; right: 24px; z-index: 999999; pointer-events: auto;">
         <!-- Toggle Button with Glass Image -->
         <button onclick="toggleHabibChatWindow()" id="chatToggleButton" class="habib-chat-icon-btn w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110 cursor-pointer overflow-hidden p-2.5">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSPaC38Uw4MVPIwoo_we5Ns0ZJkLjnx9C6u5uBttE0Q&s=10" alt="AI Chat" class="w-full h-full object-cover rounded-full">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSPaC38Uw4MVPIwoo_we5Ns0ZJkLjnx9C6u5uBttE0Q&s=10" alt="Live Chat" class="w-full h-full object-cover rounded-full">
         </button>
 
         <!-- Chat Window Box -->
@@ -35,7 +35,7 @@
             <div class="bg-indigo-600/30 p-4 border-b border-white/10 flex justify-between items-center">
                 <div class="flex items-center gap-2.5">
                     <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
-                    <span class="font-bold text-white text-sm">Habib iFix AI Assistant</span>
+                    <span class="font-bold text-white text-sm">Habib iFix Live Support</span>
                 </div>
                 <button onclick="toggleHabibChatWindow()" class="text-slate-400 hover:text-white w-7 h-7 rounded-full flex items-center justify-center bg-white/10">
                     <i class="fa-solid fa-xmark text-xs"></i>
@@ -45,14 +45,14 @@
             <!-- Messages Body -->
             <div id="habibChatMessages" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs text-slate-200">
                 <div class="bg-indigo-600/20 p-3 rounded-2xl max-w-[85%] border border-indigo-500/30 leading-relaxed">
-                    আসসালামু আলাইকুম! আমি হাবিব আইফিক্স এআই অ্যাসিস্ট্যান্ট। মোবাইল রিপেয়ার, এফআরপি আনলক বা আমাদের সার্ভিস সম্পর্কে যেকোনো কিছু আমাকে জিজ্ঞেস করতে পারেন।
+                    আসসালামু আলাইকুম! আপনার যেকোনো সমস্যা বা প্রশ্ন এখানে লিখুন। হাবিব সাহেব সরাসরি আপনার মেসেজ দেখে দ্রুত উত্তর দেবেন।
                 </div>
             </div>
 
             <!-- Input Footer -->
             <div class="p-3 bg-slate-950/80 border-t border-white/10 flex items-center gap-2">
-                <input type="text" id="habibChatInputBox" placeholder="আপনার প্রশ্ন এখানে লিখুন..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs outline-none focus:border-indigo-500 text-white">
-                <button onclick="sendHabibChatMessage()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-xl flex items-center justify-center text-sm transition-colors shadow-md shrink-0">
+                <input type="text" id="habibChatInputBox" placeholder="আপনার মেসেজ এখানে লিখুন..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs outline-none focus:border-indigo-500 text-white">
+                <button onclick="sendHabibManualMessage()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-xl flex items-center justify-center text-sm transition-colors shadow-md shrink-0">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </div>
@@ -69,7 +69,7 @@
         if (inputBox) {
             inputBox.addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
-                    sendHabibChatMessage();
+                    sendHabibManualMessage();
                 }
             });
         }
@@ -83,27 +83,8 @@ function toggleHabibChatWindow() {
     }
 }
 
-// Function to log messages to Google Sheet
-async function saveMessageToGoogleSheet(sender, messageText) {
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyN7mNvq1mUplw-AXHLUw5qhqjAKs1iQtcAADicCXRelZVchvVNMoY8C-ZHWNfYG-TcSQ/exec";
-    try {
-        await fetch(scriptURL, {
-            method: "POST",
-            mode: "no-cors", // Required for Google Apps Script Web App endpoints
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                sender: sender,
-                message: messageText
-            })
-        });
-    } catch (err) {
-        console.error("Google Sheet Sync Error:", err);
-    }
-}
-
-async function sendHabibChatMessage() {
+// Function to send user message to Google Sheet
+async function sendHabibManualMessage() {
     const input = document.getElementById('habibChatInputBox');
     const msgBox = document.getElementById('habibChatMessages');
     if (!input || !msgBox) return;
@@ -116,51 +97,38 @@ async function sendHabibChatMessage() {
     input.value = '';
     msgBox.scrollTop = msgBox.scrollHeight;
 
-    // Save User Message to Google Sheet
-    saveMessageToGoogleSheet("User", text);
-
-    // Loading indicator
+    // Loading/Success feedback
     const loadId = 'load_' + Date.now();
-    msgBox.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Thinking...</div>`;
+    msgBox.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Sending to Habib iFix...</div>`;
     msgBox.scrollTop = msgBox.scrollHeight;
 
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyN7mNvq1mUplw-AXHLUw5qhqjAKs1iQtcAADicCXRelZVchvVNMoY8C-ZHWNfYG-TcSQ/exec";
+    
     try {
-        const response = await fetch("https://api.codecraftapi.com/v1/chat/completions", {
+        await fetch(scriptURL, {
             method: "POST",
+            mode: "no-cors",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer cc_Jsv8GuKNIUk69LaG0nNNWvc7iSgu5pHNOo8xb1Ht5Bcm6ppf"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "gpt-4o",
-                messages: [
-                    { role: "system", content: "You are an AI assistant for Habib iFix website, a professional mobile repair and online technical service provider in Bangladesh. Reply nicely in Bengali or English based on user query." },
-                    { role: "user", content: text }
-                ]
+                sender: "User",
+                message: text
             })
         });
 
-        const data = await response.json();
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
 
-        const reply = data.choices && data.choices[0] ? data.choices[0].message.content : "দুঃখিত, এই মুহূর্তে উত্তর দিতে পারছি না। সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন: +8801868461577";
-        
-        // Show AI Reply in Chat Box
-        msgBox.innerHTML += `<div class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-200 border border-white/10 leading-relaxed">${reply}</div>`;
+        // Confirmation message to user
+        msgBox.innerHTML += `<div class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-200 border border-white/10 leading-relaxed">ধন্যবাদ! আপনার মেসেজটি সফলভাবে পৌঁছেছে। শীঘ্রই আপনাকে রিপ্লাই দেওয়া হবে।</div>`;
         msgBox.scrollTop = msgBox.scrollHeight;
-
-        // Save AI Reply to Google Sheet as well (optional, so you can see full conversation)
-        saveMessageToGoogleSheet("AI Assistant", reply);
 
     } catch (err) {
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
         
-        const errorMsg = "সংযোগ স্থাপন করতে সমস্যা হচ্ছে। সরাসরি আমাদের WhatsApp এ যোগাযোগ করুন।";
-        msgBox.innerHTML += `<div class="bg-red-900/50 p-3 rounded-2xl max-w-[85%] text-red-200">${errorMsg}</div>`;
+        msgBox.innerHTML += `<div class="bg-red-900/50 p-3 rounded-2xl max-w-[85%] text-red-200">মেসেজ পাঠাতে সমস্যা হয়েছে। দয়া করে WhatsApp এ যোগাযোগ করুন।</div>`;
         msgBox.scrollTop = msgBox.scrollHeight;
-        
-        saveMessageToGoogleSheet("System", errorMsg);
     }
 }

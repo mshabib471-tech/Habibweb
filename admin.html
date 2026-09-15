@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Admin Dashboard - Habib iFix</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -31,7 +28,6 @@
 </head>
 <body class="antialiased p-4 sm:p-8">
 
-    <!-- ACCESS DENIED SCREEN (IF NOT ADMIN) -->
     <div id="accessDenied" class="hidden max-w-md mx-auto mt-20 text-center glass-3d p-8 rounded-3xl">
         <div class="w-16 h-16 bg-red-500/20 text-red-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-red-500/30">
             <i class="fa-solid fa-ban"></i>
@@ -41,10 +37,8 @@
         <a href="login.html?return=admin.html" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold text-xs shadow-lg hover:bg-indigo-500 transition-colors">Sign In as Admin</a>
     </div>
 
-    <!-- MAIN ADMIN DASHBOARD -->
     <div id="adminDashboard" class="hidden max-w-[1400px] mx-auto space-y-8">
         
-        <!-- Top Bar -->
         <div class="glass-3d p-6 rounded-3xl flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-lg">👑</div>
@@ -59,7 +53,6 @@
             </div>
         </div>
 
-        <!-- Quick Stats -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div class="glass-3d p-6 rounded-3xl flex items-center gap-4">
                 <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl font-bold">📦</div>
@@ -99,7 +92,6 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[450px]">
-                <!-- Left: User IDs List -->
                 <div class="glass-3d p-4 rounded-2xl flex flex-col h-full overflow-hidden border border-white/10">
                     <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Active Users / Senders</h3>
                     <div id="usersListContainer" class="flex-grow overflow-y-auto space-y-2 pr-1">
@@ -107,18 +99,15 @@
                     </div>
                 </div>
 
-                <!-- Right: Chat Conversation & Reply Box -->
                 <div class="lg:col-span-2 glass-3d p-4 rounded-2xl flex flex-col h-full overflow-hidden border border-white/10">
                     <div id="activeChatHeader" class="pb-3 border-b border-white/10 text-xs font-bold text-indigo-400">
                         Select a user from the left to view conversation and reply.
                     </div>
                     
-                    <!-- Messages Box -->
                     <div id="adminChatMessages" class="flex-grow p-3 overflow-y-auto space-y-3 text-xs my-2">
                         <div class="text-center text-slate-500 italic mt-20">কোনো ইউজার সিলেক্ট করা হয়নি।</div>
                     </div>
 
-                    <!-- Admin Reply Footer -->
                     <div class="pt-3 border-t border-white/10 flex items-center gap-2">
                         <input type="text" id="adminReplyInput" placeholder="Type reply to selected user..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs outline-none focus:border-indigo-500 text-white" disabled>
                         <button onclick="sendAdminReply()" id="adminSendBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-colors shadow-md disabled:opacity-50" disabled>
@@ -129,7 +118,6 @@
             </div>
         </div>
 
-        <!-- Course Management Section -->
         <div class="glass-3d p-6 sm:p-8 rounded-3xl space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div>
@@ -141,7 +129,6 @@
                 </button>
             </div>
 
-            <!-- Table of Courses -->
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs text-slate-300">
                     <thead class="bg-white/5 border-b border-white/10 uppercase text-[10px] text-slate-400">
@@ -154,7 +141,6 @@
                         </tr>
                     </thead>
                     <tbody id="adminCoursesTableBody" class="divide-y divide-white/5">
-                        <!-- Rendered via JS -->
                     </tbody>
                 </table>
             </div>
@@ -162,7 +148,6 @@
 
     </div>
 
-    <!-- EDIT / ADD MODAL -->
     <div id="adminCourseModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[105] hidden flex items-center justify-center p-4">
         <div class="glass-3d bg-slate-900/95 w-full max-w-lg p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
             <button onclick="closeAdminCourseModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
@@ -193,10 +178,9 @@
         </div>
     </div>
 
-    <!-- SCRIPT LOGIC -->
     <script>
         const adminEmail = "tec.habiburrahman@gmail.com";
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyN7mNvq1mUplw-AXHLUw5qhqjAKs1iQtcAADicCXRelZVchvVNMoY8C-ZHWNfYG-TcSQ/exec ";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwfuDR9Tiopev24MWY964k4ZTF6vIaVyzus0_-ueH-6/exec";
         let allChats = [];
         let activeUserId = null;
 
@@ -217,7 +201,7 @@
                 document.getElementById('accessDenied').classList.add('hidden');
                 loadAdminTable();
                 loadLiveChats();
-                setInterval(loadLiveChats, 10000); // Auto refresh chats every 10s
+                setInterval(loadLiveChats, 10000);
             } else {
                 document.getElementById('adminDashboard').classList.add('hidden');
                 document.getElementById('accessDenied').classList.remove('hidden');
@@ -251,7 +235,6 @@
             });
         }
 
-        // Live Chat Functions
         async function loadLiveChats() {
             try {
                 const res = await fetch(SCRIPT_URL);

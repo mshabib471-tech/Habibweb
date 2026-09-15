@@ -1,4 +1,4 @@
-// Global Habib iFix Live Support Chatbot Script with Unique User ID & Google Sheets Sync
+// Global Habib iFix Live Support Chatbot Script
 (function() {
     if (!document.getElementById('habibChatStyle')) {
         const style = document.createElement('style');
@@ -22,7 +22,6 @@
         document.head.appendChild(style);
     }
 
-    // Assign or retrieve a unique User ID for this visitor
     let habibUserId = localStorage.getItem('habib_visitor_id');
     if (!habibUserId) {
         habibUserId = 'User_' + Math.floor(1000 + Math.random() * 9000);
@@ -31,14 +30,11 @@
 
     const chatWidgetHTML = `
     <div id="habibAiChatWidget" style="position: fixed; bottom: 24px; right: 24px; z-index: 999999; pointer-events: auto;">
-        <!-- Toggle Button with Glass Image -->
         <button onclick="toggleHabibChatWindow()" id="chatToggleButton" class="habib-chat-icon-btn w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110 cursor-pointer overflow-hidden p-2.5">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSPaC38Uw4MVPIwoo_we5Ns0ZJkLjnx9C6u5uBttE0Q&s=10" alt="Live Chat" class="w-full h-full object-cover rounded-full">
         </button>
 
-        <!-- Chat Window Box -->
         <div id="habibChatWindow" class="hidden absolute bottom-20 right-0 w-[320px] sm:w-[360px] h-[480px] habib-glass-box rounded-3xl flex flex-col overflow-hidden text-slate-200 shadow-2xl">
-            <!-- Header -->
             <div class="bg-indigo-600/30 p-4 border-b border-white/10 flex justify-between items-center">
                 <div class="flex items-center gap-2.5">
                     <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
@@ -52,14 +48,12 @@
                 </button>
             </div>
 
-            <!-- Messages Body -->
             <div id="habibChatMessages" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs text-slate-200">
                 <div class="bg-indigo-600/20 p-3 rounded-2xl max-w-[85%] border border-indigo-500/30 leading-relaxed">
                     আসসালামু আলাইকুম! আপনার যেকোনো সমস্যা বা প্রশ্ন এখানে লিখুন। হাবিব সাহেব খুব শীঘ্রই আপনাকে রিপ্লাই দেবেন।
                 </div>
             </div>
 
-            <!-- Input Footer -->
             <div class="p-3 bg-slate-950/80 border-t border-white/10 flex items-center gap-2">
                 <input type="text" id="habibChatInputBox" placeholder="আপনার মেসেজ এখানে লিখুন..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs outline-none focus:border-indigo-500 text-white">
                 <button onclick="sendHabibManualMessage()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-xl flex items-center justify-center text-sm transition-colors shadow-md shrink-0">
@@ -85,7 +79,6 @@
         }
     }, 500);
 
-    // Expose User ID globally for fetch script
     window.habibCurrentUserId = habibUserId;
 })();
 
@@ -96,7 +89,6 @@ function toggleHabibChatWindow() {
     }
 }
 
-// Function to send user message to Google Sheet with Action & UserId
 async function sendHabibManualMessage() {
     const input = document.getElementById('habibChatInputBox');
     const msgBox = document.getElementById('habibChatMessages');
@@ -105,7 +97,6 @@ async function sendHabibManualMessage() {
     const text = input.value.trim();
     if (!text) return;
 
-    // Show User Message in Chat Box
     msgBox.innerHTML += `<div class="bg-indigo-600 p-3 rounded-2xl max-w-[85%] ml-auto text-white leading-relaxed">${text}</div>`;
     input.value = '';
     msgBox.scrollTop = msgBox.scrollHeight;
@@ -114,7 +105,7 @@ async function sendHabibManualMessage() {
     msgBox.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Sending...</div>`;
     msgBox.scrollTop = msgBox.scrollHeight;
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyN7mNvq1mUplw-AXHLUw5qhqjAKs1iQtcAADicCXRelZVchvVNMoY8C-ZHWNfYG-TcSQ/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwfuDR9Tiopev24MWY964k4ZTF6vIaVyzus0_-ueH-6/exec";
     
     try {
         await fetch(scriptURL, {

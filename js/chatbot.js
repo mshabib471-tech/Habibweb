@@ -105,7 +105,7 @@ async function sendHabibManualMessage() {
     msgBox.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Sending...</div>`;
     msgBox.scrollTop = msgBox.scrollHeight;
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbym-OMBAUd5MJVj-S3p0W6CwoDbLsT5PObpkD4YEbeQeeLagv3QHFEsinI2HUt-XlhBOg/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwS-hEc7WH1oMFPZCWTNtd9tniW2-nMMuQeGrb1_9HtcfnARpIUbhLpDikHpIXRHSM8QQ/exec";
     
     try {
         await fetch(scriptURL, {

@@ -1,4 +1,4 @@
-// Global Habib iFix Live Support Chatbot (No AI, Manual Admin Reply via Google Sheets)
+// Global Habib iFix Live Support Chatbot Script with Unique User ID & Google Sheets Sync
 (function() {
     if (!document.getElementById('habibChatStyle')) {
         const style = document.createElement('style');
@@ -22,6 +22,13 @@
         document.head.appendChild(style);
     }
 
+    // Assign or retrieve a unique User ID for this visitor
+    let habibUserId = localStorage.getItem('habib_visitor_id');
+    if (!habibUserId) {
+        habibUserId = 'User_' + Math.floor(1000 + Math.random() * 9000);
+        localStorage.setItem('habib_visitor_id', habibUserId);
+    }
+
     const chatWidgetHTML = `
     <div id="habibAiChatWidget" style="position: fixed; bottom: 24px; right: 24px; z-index: 999999; pointer-events: auto;">
         <!-- Toggle Button with Glass Image -->
@@ -35,7 +42,10 @@
             <div class="bg-indigo-600/30 p-4 border-b border-white/10 flex justify-between items-center">
                 <div class="flex items-center gap-2.5">
                     <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
-                    <span class="font-bold text-white text-sm">Habib iFix Live Support</span>
+                    <div>
+                        <span class="font-bold text-white text-sm block">Habib iFix Support</span>
+                        <span class="text-[9px] text-indigo-300">ID: ${habibUserId}</span>
+                    </div>
                 </div>
                 <button onclick="toggleHabibChatWindow()" class="text-slate-400 hover:text-white w-7 h-7 rounded-full flex items-center justify-center bg-white/10">
                     <i class="fa-solid fa-xmark text-xs"></i>
@@ -45,7 +55,7 @@
             <!-- Messages Body -->
             <div id="habibChatMessages" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs text-slate-200">
                 <div class="bg-indigo-600/20 p-3 rounded-2xl max-w-[85%] border border-indigo-500/30 leading-relaxed">
-                    আসসালামু আলাইকুম! আপনার যেকোনো সমস্যা বা প্রশ্ন এখানে লিখুন। হাবিব সাহেব সরাসরি আপনার মেসেজ দেখে দ্রুত উত্তর দেবেন।
+                    আসসালামু আলাইকুম! আপনার যেকোনো সমস্যা বা প্রশ্ন এখানে লিখুন। হাবিব সাহেব খুব শীঘ্রই আপনাকে রিপ্লাই দেবেন।
                 </div>
             </div>
 
@@ -74,6 +84,9 @@
             });
         }
     }, 500);
+
+    // Expose User ID globally for fetch script
+    window.habibCurrentUserId = habibUserId;
 })();
 
 function toggleHabibChatWindow() {
@@ -83,7 +96,7 @@ function toggleHabibChatWindow() {
     }
 }
 
-// Function to send user message to Google Sheet
+// Function to send user message to Google Sheet with Action & UserId
 async function sendHabibManualMessage() {
     const input = document.getElementById('habibChatInputBox');
     const msgBox = document.getElementById('habibChatMessages');
@@ -97,9 +110,8 @@ async function sendHabibManualMessage() {
     input.value = '';
     msgBox.scrollTop = msgBox.scrollHeight;
 
-    // Loading/Success feedback
     const loadId = 'load_' + Date.now();
-    msgBox.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Sending to Habib iFix...</div>`;
+    msgBox.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Sending...</div>`;
     msgBox.scrollTop = msgBox.scrollHeight;
 
     const scriptURL = "https://script.google.com/macros/s/AKfycbyN7mNvq1mUplw-AXHLUw5qhqjAKs1iQtcAADicCXRelZVchvVNMoY8C-ZHWNfYG-TcSQ/exec";
@@ -112,7 +124,8 @@ async function sendHabibManualMessage() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                sender: "User",
+                action: "user_message",
+                userId: window.habibCurrentUserId || "User_1234",
                 message: text
             })
         });
@@ -120,15 +133,14 @@ async function sendHabibManualMessage() {
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
 
-        // Confirmation message to user
-        msgBox.innerHTML += `<div class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-200 border border-white/10 leading-relaxed">ধন্যবাদ! আপনার মেসেজটি সফলভাবে পৌঁছেছে। শীঘ্রই আপনাকে রিপ্লাই দেওয়া হবে।</div>`;
+        msgBox.innerHTML += `<div class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-200 border border-white/10 leading-relaxed">মেসেজ পাঠানো হয়েছে! অ্যাডমিন শিট চেক করে দ্রুত উত্তর দেবেন।</div>`;
         msgBox.scrollTop = msgBox.scrollHeight;
 
     } catch (err) {
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
         
-        msgBox.innerHTML += `<div class="bg-red-900/50 p-3 rounded-2xl max-w-[85%] text-red-200">মেসেজ পাঠাতে সমস্যা হয়েছে। দয়া করে WhatsApp এ যোগাযোগ করুন।</div>`;
+        msgBox.innerHTML += `<div class="bg-red-900/50 p-3 rounded-2xl max-w-[85%] text-red-200">মেসেজ পাঠাতে সমস্যা হয়েছে।</div>`;
         msgBox.scrollTop = msgBox.scrollHeight;
     }
 }

@@ -1,62 +1,77 @@
-// Global Habib iFix Live Support Chatbot Script
+// Habib iFix Live AI Chatbot Script for n8n Webhook
 (function() {
+    // Inject Custom Styles for Chat Widget
     if (!document.getElementById('habibChatStyle')) {
         const style = document.createElement('style');
         style.id = 'habibChatStyle';
         style.innerHTML = `
             .habib-glass-box {
-                background: rgba(15, 23, 42, 0.95);
-                backdrop-filter: blur(25px);
-                -webkit-backdrop-filter: blur(25px);
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.8);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             }
             .habib-chat-icon-btn {
-                background: rgba(255, 255, 255, 0.08);
-                backdrop-filter: blur(15px);
-                -webkit-backdrop-filter: blur(15px);
-                border: 1px solid rgba(255, 255, 255, 0.25);
-                box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+                background: #000000;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            }
+            @keyframes chatReveal {
+                from { opacity: 0; transform: scale(0.95) translateY(20px); }
+                to { opacity: 1; transform: scale(1) translateY(0); }
+            }
+            .habib-chat-reveal {
+                animation: chatReveal 0.3s ease forwards;
             }
         `;
         document.head.appendChild(style);
     }
 
+    // Generate Unique Visitor ID
     let habibUserId = localStorage.getItem('habib_visitor_id');
     if (!habibUserId) {
         habibUserId = 'User_' + Math.floor(1000 + Math.random() * 9000);
         localStorage.setItem('habib_visitor_id', habibUserId);
     }
 
+    // Chat Widget HTML Structure
     const chatWidgetHTML = `
-    <div id="habibAiChatWidget" style="position: fixed; bottom: 24px; right: 24px; z-index: 999999; pointer-events: auto;">
-        <button onclick="toggleHabibChatWindow()" id="chatToggleButton" class="habib-chat-icon-btn w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110 cursor-pointer overflow-hidden p-2.5">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSPaC38Uw4MVPIwoo_we5Ns0ZJkLjnx9C6u5uBttE0Q&s=10" alt="Live Chat" class="w-full h-full object-cover rounded-full">
+    <div id="habibAiChatWidget" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; pointer-events: auto;">
+        <!-- Toggle Button -->
+        <button onclick="toggleHabibChatWindow()" id="chatToggleButton" class="habib-chat-icon-btn w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110 cursor-pointer text-white text-base sm:text-lg">
+            <i class="fa-solid fa-message" id="chatButtonIcon"></i>
         </button>
 
-        <div id="habibChatWindow" class="hidden absolute bottom-20 right-0 w-[320px] sm:w-[360px] h-[480px] habib-glass-box rounded-3xl flex flex-col overflow-hidden text-slate-200 shadow-2xl">
-            <div class="bg-indigo-600/30 p-4 border-b border-white/10 flex justify-between items-center">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
+        <!-- Chat Window -->
+        <div id="habibChatWindow" class="hidden absolute bottom-16 right-0 w-[300px] sm:w-[350px] h-[420px] habib-glass-box rounded-[28px] flex flex-col overflow-hidden border border-white habib-chat-reveal">
+            <!-- Header -->
+            <div class="bg-black p-4 flex justify-between items-center rounded-t-[28px]">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-lg">AI</div>
                     <div>
-                        <span class="font-bold text-white text-sm block">Habib iFix Support</span>
-                        <span class="text-[9px] text-indigo-300">ID: ${habibUserId}</span>
+                        <h3 class="text-white font-bold text-sm tracking-wide">Habib AI</h3>
+                        <p class="text-white/60 text-[9px] flex items-center gap-1 uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p>
                     </div>
                 </div>
-                <button onclick="toggleHabibChatWindow()" class="text-slate-400 hover:text-white w-7 h-7 rounded-full flex items-center justify-center bg-white/10">
-                    <i class="fa-solid fa-xmark text-xs"></i>
+                <button onclick="toggleHabibChatWindow()" class="text-white/50 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div id="habibChatMessages" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs text-slate-200">
-                <div class="bg-indigo-600/20 p-3 rounded-2xl max-w-[85%] border border-indigo-500/30 leading-relaxed">
-                    আসসালামু আলাইকুম! আপনার যেকোনো সমস্যা বা প্রশ্ন এখানে লিখুন। হাবিব সাহেব খুব শীঘ্রই আপনাকে রিপ্লাই দেবেন।
+            <!-- Chat Messages Body -->
+            <div id="habibChatMessages" class="flex-grow p-4 overflow-y-auto flex flex-col gap-3 bg-slate-50/50">
+                <div class="flex gap-2 max-w-[85%]">
+                    <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
+                    <div class="bg-white border border-slate-100 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">
+                        আসসালামু আলাইকুম! হাবিব iFix এ আপনাকে স্বাগতম। আপনার যেকোনো প্রশ্ন বা সার্ভিস সম্পর্কে জানতে এখানে মেসেজ করুন।
+                    </div>
                 </div>
             </div>
 
-            <div class="p-3 bg-slate-950/80 border-t border-white/10 flex items-center gap-2">
-                <input type="text" id="habibChatInputBox" placeholder="আপনার মেসেজ এখানে লিখুন..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs outline-none focus:border-indigo-500 text-white">
-                <button onclick="sendHabibManualMessage()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-xl flex items-center justify-center text-sm transition-colors shadow-md shrink-0">
+            <!-- Input Box -->
+            <div class="p-3 border-t border-slate-100 bg-white/80 backdrop-blur-md flex gap-2">
+                <input type="text" id="habibChatInputBox" placeholder="Type a message..." class="flex-grow bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs outline-none focus:border-indigo-400 transition-colors text-slate-700">
+                <button onclick="sendHabibMessageToN8N()" class="bg-black text-white w-10 h-10 rounded-xl flex items-center justify-center text-xs hover:scale-105 transition-transform shadow-md shrink-0">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </div>
@@ -64,16 +79,18 @@
     </div>
     `;
 
+    // Append Widget to Body
     const div = document.createElement('div');
     div.innerHTML = chatWidgetHTML;
     document.body.appendChild(div);
 
+    // Bind Enter key event
     setTimeout(() => {
         const inputBox = document.getElementById('habibChatInputBox');
         if (inputBox) {
             inputBox.addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
-                    sendHabibManualMessage();
+                    sendHabibMessageToN8N();
                 }
             });
         }
@@ -82,14 +99,25 @@
     window.habibCurrentUserId = habibUserId;
 })();
 
+// Toggle Chat Window Function
 function toggleHabibChatWindow() {
     const win = document.getElementById('habibChatWindow');
-    if (win) {
-        win.classList.toggle('hidden');
+    const icon = document.getElementById('chatButtonIcon');
+    if (!win || !icon) return;
+
+    if (win.classList.contains('hidden')) {
+        win.classList.remove('hidden');
+        icon.classList.remove('fa-message');
+        icon.classList.add('fa-xmark');
+    } else {
+        win.classList.add('hidden');
+        icon.classList.remove('fa-xmark');
+        icon.classList.add('fa-message');
     }
 }
 
-async function sendHabibManualMessage() {
+// Send Message to n8n Webhook
+async function sendHabibMessageToN8N() {
     const input = document.getElementById('habibChatInputBox');
     const msgBox = document.getElementById('habibChatMessages');
     if (!input || !msgBox) return;
@@ -97,20 +125,28 @@ async function sendHabibManualMessage() {
     const text = input.value.trim();
     if (!text) return;
 
-    msgBox.innerHTML += `<div class="bg-indigo-600 p-3 rounded-2xl max-w-[85%] ml-auto text-white leading-relaxed">${text}</div>`;
+    // Append User Message
+    msgBox.innerHTML += `
+        <div class="flex gap-2 max-w-[85%] self-end">
+            <div class="bg-indigo-600 text-white text-xs p-3 rounded-2xl rounded-br-none shadow-md font-medium leading-relaxed">${escapeHtml(text)}</div>
+        </div>`;
     input.value = '';
     msgBox.scrollTop = msgBox.scrollHeight;
 
+    // Loading Animation ID
     const loadId = 'load_' + Date.now();
-    msgBox.innerHTML += `<div id="${loadId}" class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-400 italic">Sending...</div>`;
+    msgBox.innerHTML += `
+        <div id="${loadId}" class="flex gap-2 max-w-[85%]">
+            <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
+            <div class="bg-white border border-slate-100 text-xs text-slate-400 p-3 rounded-2xl rounded-bl-none shadow-sm italic">Typing...</div>
+        </div>`;
     msgBox.scrollTop = msgBox.scrollHeight;
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwS-hEc7WH1oMFPZCWTNtd9tniW2-nMMuQeGrb1_9HtcfnARpIUbhLpDikHpIXRHSM8QQ/exec";
-    
+    const n8nWebhookURL = "https://habibifix.app.n8n.cloud/webhook/bfe53675-dcc8-4117-914e-b5f814c2b120/chat";
+
     try {
-        await fetch(scriptURL, {
+        const response = await fetch(n8nWebhookURL, {
             method: "POST",
-            mode: "no-cors",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -121,17 +157,46 @@ async function sendHabibManualMessage() {
             })
         });
 
+        // Remove Loading Element
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
 
-        msgBox.innerHTML += `<div class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-slate-200 border border-white/10 leading-relaxed">মেসেজ পাঠানো হয়েছে! অ্যাডমিন শিট চেক করে দ্রুত উত্তর দেবেন।</div>`;
+        let botReply = "দুঃখিত, এই মুহূর্তে উত্তর দিতে পারছি না। একটু পরে আবার চেষ্টা করুন।";
+        
+        if (response.ok) {
+            const data = await response.json();
+            // n8n থেকে রিসিভ হওয়া আউটপুট ফরম্যাট অনুযায়ী ফিল্ড সেট করা (যেমন data.output বা data.reply বা সরাসরি টেক্সট)
+            botReply = data.output || data.reply || data.message || JSON.stringify(data);
+        }
+
+        // Append Bot Reply
+        msgBox.innerHTML += `
+            <div class="flex gap-2 max-w-[85%]">
+                <div class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-[8px] font-bold text-indigo-600 shrink-0 mt-auto shadow-sm">AI</div>
+                <div class="bg-white border border-slate-100 text-xs text-slate-600 p-3 rounded-2xl rounded-bl-none shadow-sm font-medium leading-relaxed">${formatBotReply(botReply)}</div>
+            </div>`;
         msgBox.scrollTop = msgBox.scrollHeight;
 
     } catch (err) {
+        console.error("n8n Chat Error:", err);
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
-        
-        msgBox.innerHTML += `<div class="bg-red-900/50 p-3 rounded-2xl max-w-[85%] text-red-200">মেসেজ পাঠাতে সমস্যা হয়েছে।</div>`;
+
+        msgBox.innerHTML += `
+            <div class="flex gap-2 max-w-[85%]">
+                <div class="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center text-[8px] font-bold text-red-600 shrink-0 mt-auto shadow-sm">AI</div>
+                <div class="bg-white border border-red-100 text-xs text-red-500 p-3 rounded-2xl rounded-bl-none shadow-sm">সার্ভার কানেকশন ত্রুটি! অনুগ্রহ করে সরাসরি কল করুন: +880 1868 461577</div>
+            </div>`;
         msgBox.scrollTop = msgBox.scrollHeight;
     }
+}
+
+function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function(ch) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+}
+
+function formatBotReply(text) {
+    return String(text).replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
 }

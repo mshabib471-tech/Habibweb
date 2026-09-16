@@ -1,4 +1,4 @@
-// Habib iFix Live AI Chatbot Script (Direct Client-Side Fallback & n8n Handler)
+// Habib iFix Live AI Chatbot Script for n8n Webhook Test
 (function() {
     // Remove duplicate old widgets if any exist
     const oldWidget = document.getElementById('habibAiChatWidget');
@@ -34,7 +34,7 @@
         localStorage.setItem('habib_visitor_id', habibUserId);
     }
 
-    // Widget HTML Structure
+    // Widget HTML Structure (Matching site style)
     const chatWidgetHTML = `
     <div id="habibAiChatWidget" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; font-family: 'Inter', sans-serif;">
         <!-- Toggle Button -->
@@ -137,7 +137,8 @@ async function sendHabibMessageToN8N() {
         </div>`;
     msgBox.scrollTop = msgBox.scrollHeight;
 
-    const webhookURL = "https://habibifix.app.n8n.cloud/webhook/bfe53675-dcc8-4117-914e-b5f814c2b120/chat";
+    // Your n8n Test Webhook URL
+    const webhookURL = "https://habibifix.app.n8n.cloud/webhook-test/012c30d9-8307-466e-b7f5-422759173a64";
 
     try {
         const response = await fetch(webhookURL, {
@@ -153,11 +154,10 @@ async function sendHabibMessageToN8N() {
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
 
-        let replyText = "আপনার মেসেজটি সফলভাবে পাওয়া গেছে! আমাদের প্রতিনিধি বা এআই খুব শীঘ্রই আপনাকে সাহায্য করবে। জরুরি প্রয়োজনে কল করুন: +880 1868 461577";
+        let replyText = "আপনার মেসেজটি সফলভাবে পাওয়া গেছে! জরুরি প্রয়োজনে কল করুন: +880 1868 461577";
 
         if (response.ok) {
             const data = await response.json();
-            // n8n থেকে আসা রেসপন্স হ্যান্ডেল করা
             replyText = data.output || data.reply || data.message || (typeof data === 'string' ? data : replyText);
         }
 
@@ -173,16 +173,14 @@ async function sendHabibMessageToN8N() {
         const loaderEl = document.getElementById(loadId);
         if (loaderEl) loaderEl.remove();
 
-        // যদি n8n এ CORS বা নেটওয়ার্ক সমস্যা হয়, তবুও কাস্টমার যেন প্রফেশনাল উত্তর পায়
+        // Smart Fallback if connection fails
         let smartReply = "ধন্যবাদ! আপনার প্রশ্নটি আমাদের কাছে পৌঁছেছে। বিস্তারিত জানতে কল করুন: +880 1868 461577";
         const lowerTxt = text.toLowerCase();
         
         if(lowerTxt.includes('price') || lowerTxt.includes('দাম') || lowerTxt.includes('খরচ')) {
-            smartReply = "আমাদের সাধারণ রিপেয়ার খরচ ৳৪০০ থেকে ৳৫০০০ এর মধ্যে হয়ে থাকে। নির্দিষ্ট মডেল জানাতে কল করুন: +880 1868 461577";
+            smartReply = "আমাদের সাধারণ রিপেয়ার খরচ ৳৪০০ থেকে ৳৫০০০ এর মধ্যে হয়ে থাকে। কল করুন: +880 1868 461577";
         } else if(lowerTxt.includes('location') || lowerTxt.includes('কোথায়') || lowerTxt.includes('ঠিকানা')) {
             smartReply = "আমাদের শপটি গাছবাড়িয়া, চট্টগ্রামে অবস্থিত।";
-        } else if(lowerTxt.includes('owner') || lowerTxt.includes('কে')) {
-            smartReply = "হাবিব iFix এর প্রতিষ্ঠাতা ও মূল টেকনিশিয়ান হলেন Habibur Rahman (হাবিবুর রহমান)।";
         }
 
         msgBox.innerHTML += `

@@ -138,7 +138,7 @@ async function sendHabibMessageToN8N() {
     msgBox.scrollTop = msgBox.scrollHeight;
 
     // Your n8n Test Webhook URL
-    const webhookURL = "https://habibifix.app.n8n.cloud/webhook-test/012c30d9-8307-466e-b7f5-422759173a64";
+    const webhookURL = "https://habibifix.app.n8n.cloud/webhook/012c30d9-8307-466e-b7f5-422759173a64";
 
     try {
         const response = await fetch(webhookURL, {

@@ -13,26 +13,55 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
-// DB Helper
+// DB Helper with Serverless Fallback
+let inMemoryDB = null;
+
+function getDbPath() {
+  const tmpPath = path.join('/tmp', 'database.json');
+  if (fs.existsSync(tmpPath)) {
+    return tmpPath;
+  }
+  return DB_FILE;
+}
+
 function readDB() {
-  if (!fs.existsSync(DB_FILE)) {
-    return { posts: [], bookings: [], users: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1 };
+  if (inMemoryDB) {
+    return inMemoryDB;
+  }
+  const targetFile = getDbPath();
+  if (!fs.existsSync(targetFile)) {
+    inMemoryDB = { posts: [], bookings: [], users: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1 };
+    return inMemoryDB;
   }
   try {
-    const data = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    const data = JSON.parse(fs.readFileSync(targetFile, 'utf8'));
     data.posts = data.posts || [];
     data.bookings = data.bookings || [];
     data.users = data.users || [];
     data.nextPostId = data.nextPostId || 1;
     data.nextBookingId = data.nextBookingId || 1;
     data.nextUserId = data.nextUserId || 1;
-    return data;
+    inMemoryDB = data;
+    return inMemoryDB;
   } catch (e) {
-    return { posts: [], bookings: [], users: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1 };
+    inMemoryDB = { posts: [], bookings: [], users: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1 };
+    return inMemoryDB;
   }
 }
+
 function writeDB(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  inMemoryDB = data;
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch (err) {
+    // Read-only filesystem in Vercel serverless environment
+    try {
+      const tmpPath = path.join('/tmp', 'database.json');
+      fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2));
+    } catch (tmpErr) {
+      // Retained in inMemoryDB
+    }
+  }
 }
 
 // Auth middleware
@@ -784,6 +813,10 @@ app.delete('/api/posts/:id', checkAdmin, (req, res) => {
   res.json({ success: true });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Habib iFix server running on port ${PORT}`);
-});
+if (require.main === module && !process.env.VERCEL) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Habib iFix server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;

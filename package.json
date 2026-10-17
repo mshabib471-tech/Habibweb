@@ -1,11 +1,11 @@
 {
   "name": "habibweb",
   "version": "1.0.0",
-  "description": "Imported from mshabib471-tech/Habibweb",
+  "main": "server.js",
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "build": "echo 'No build step'"
+    "build": "echo 'Build complete'"
   },
   "dependencies": {
     "@google/genai": "^2.29.1",

@@ -1,11 +1,29 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "Welcome to Habib iFix Tech & Diagnostic Hub",
-      "category": "HARDWARE LAB",
-      "description": "Welcome to Bangladesh's premier mobile motherboard micro-soldering, OCA display refurbishment, and online diagnostic center.",
-      "mediaLink": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=75",
+      "id": 5,
+      "title": "iPhone 15 & 16 Pro Max Screen TrueTone Transfer & OCA Lamination",
+      "category": "DISPLAY LAB",
+      "description": "Complete breakdown of preserving Apple original 120Hz ProMotion display panels, rewriting EEPROM TrueTone calibration chips, and removing cracked front glass with vacuum OCA machines.",
+      "mediaLink": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&q=75",
+      "mediaType": "image",
+      "date": "16/10/2026"
+    },
+    {
+      "id": 4,
+      "title": "Fixing Qualcomm & MediaTek Dead Boot with Dual-Decker CPU Reballing",
+      "category": "CPU REBALLING",
+      "description": "How to desolder and reball layered RAM over CPU on Redmi Note 10 Pro, Poco X3 Pro, and Samsung A52 to recover phones stuck in 9008 EDL mode or continuous reboot loops.",
+      "mediaLink": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=75",
+      "mediaType": "image",
+      "date": "15/10/2026"
+    },
+    {
+      "id": 3,
+      "title": "How to Diagnose Dead Boot & PMIC Short Circuits with Thermal Cameras",
+      "category": "MICRO-SOLDERING",
+      "description": "Step-by-step masterclass on tracing DC current draw and identifying shorted ceramic capacitors using thermal imaging and BGA stations.",
+      "mediaLink": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=75",
       "mediaType": "image",
       "date": "14/10/2026"
     },
@@ -19,18 +37,52 @@
       "date": "14/10/2026"
     },
     {
-      "id": 3,
-      "title": "How to Diagnose Dead Boot & PMIC Short Circuits with Thermal Cameras",
-      "category": "MICRO-SOLDERING",
-      "description": "Step-by-step masterclass on tracing DC current draw and identifying shorted ceramic capacitors using thermal imaging and BGA stations.",
-      "mediaLink": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=75",
+      "id": 1,
+      "title": "Welcome to Habib iFix Tech & Diagnostic Hub",
+      "category": "HARDWARE LAB",
+      "description": "Welcome to Bangladesh's premier mobile motherboard micro-soldering, OCA display refurbishment, and online diagnostic center.",
+      "mediaLink": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=75",
       "mediaType": "image",
       "date": "14/10/2026"
     }
   ],
   "bookings": [],
-  "nextPostId": 4,
+  "contacts": [
+    {
+      "id": 2,
+      "name": "Rahim Uddin",
+      "contact": "01711223344",
+      "message": "iPhone 13 display price koto?",
+      "subject": "Screen Replacement",
+      "date": "17/10/2026 02:16 PM"
+    },
+    {
+      "id": 1,
+      "name": "Rahim Uddin",
+      "contact": "01711223344",
+      "message": "iPhone 13 display price koto?",
+      "subject": "Screen Replacement",
+      "date": "17/10/2026 02:16 PM"
+    }
+  ],
+  "aiMessages": [
+    {
+      "id": 1,
+      "message": "Samsung s22 ultra green line problem solution ki?",
+      "reply": "### 📱 Samsung S22-এর ডিসপ্লে ও টাচস্ক্রিন টেকনিক্যাল সল্যুশন:\n\n১. **শুধুমাত্র বাইরের গ্লাস ফেটে গেলে (টাচ ও ডিসপ্লে একদম ঠিক থাকলে):**\n• পুরো ডিসপ্লে পরিবর্তনের প্রয়োজন নেই!\n• আমাদের অটোমেটিক ভ্যাকুয়াম OCA ল্যামিনেটিং মেশিনের সাহায্যে অরিজিনাল প্যানেল অক্ষত রেখে মাত্র নতুন গ্লাস প্রতিস্থাপন করা হয়।\n• 💰 **খরচ:** মাত্র ৳৮০০ - ৳১,৮০০ (৬০% খরচ বেঁচে যাবে)।\n\n২. **ভেতরে কালো দাগ, কালার নষ্ট, গ্রিন লাইন বা টাচ কাজ না করলে:**\n• ১০০% অরিজিনাল প্যানেল (AMOLED / Super AMOLED / Retina / IPS) ইন্সটল করা হবে।\n• আইফোনের জন্য TrueTone ডেটা রি-রাইট এবং স্যামসাং ও শাওমির জন্য ইন-ডিসপ্লে ফিঙ্গারপ্রিন্ট সেন্সর ক্যালিব্রেশন নিশ্চিত।\n• 💰 **খরচ:** ৳১,৫০০ - ৳৮,৫০০ (ব্র্যান্ড ও মডেল অনুযায়ী)।\n• ⏱️ **সময়:** মাত্র ৩০ থেকে ৪৫ মিনিটেই কমপ্লিট ডেলিভারি ও ৩০ দিনের রিপ্লেসমেন্ট ওয়ারেন্টি!",
+      "category": "Hardware / Screen Replacement",
+      "title": "📱 Samsung S22 ডিসপ্লে ও ওকা (OCA) গ্লাস সল্যুশন",
+      "estimatedCost": "৳৮০০ - ৳৮,৫০০ (মডেল অনুযায়ী)",
+      "repairTime": "৩০ - ৪৫ মিনিট",
+      "date": "17/10/2026 02:16 PM"
+    }
+  ],
+  "orders": [],
+  "nextPostId": 6,
   "nextBookingId": 1,
+  "nextContactId": 3,
+  "nextAiMsgId": 2,
+  "nextOrderId": 1,
   "users": [
     {
       "id": 1,

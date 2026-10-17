@@ -223,22 +223,52 @@
     </main>
     
     <script>
-        var form=document.getElementById('contactForm'),submitBtn=document.getElementById('submitBtn'),formStatus=document.getElementById('formStatus');
-        if(form && submitBtn && formStatus){
-            form.addEventListener('submit',function(e){
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formStatus = document.getElementById('formStatus');
+
+        if (form && submitBtn && formStatus) {
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                submitBtn.innerHTML='<span class="animate-pulse">⏳ Sending...</span>';
-                setTimeout(() => {
-                    formStatus.className="mt-2 text-green-400 bg-green-500/10 border-green-500/30 p-3 rounded-xl border font-semibold text-center";
-                    formStatus.innerHTML='✅ Message sent successfully! We will contact you soon.';
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="animate-pulse">⏳ Sending to Habib iFix...</span>';
+                formStatus.classList.add('hidden');
+
+                const payload = {
+                    name: form.querySelector('input[name="name"]').value.trim(),
+                    contact: form.querySelector('input[name="contact"]').value.trim(),
+                    message: form.querySelector('textarea[name="message"]').value.trim(),
+                    subject: 'Website Contact Form'
+                };
+
+                try {
+                    const res = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        formStatus.className = "mt-3 text-emerald-400 bg-emerald-500/10 border-emerald-500/30 p-4 rounded-xl border text-xs font-bold text-center";
+                        formStatus.innerHTML = '✅ ধন্যবাদ! আপনার মেসেজটি হাবিব ভাইয়ের ড্যাশবোর্ডে জমা হয়েছে। অতি শীঘ্রই আপনার সাথে যোগাযোগ করা হবে।';
+                        formStatus.classList.remove('hidden');
+                        form.reset();
+                    } else {
+                        throw new Error(data.error || 'Failed to submit');
+                    }
+                } catch (err) {
+                    formStatus.className = "mt-3 text-red-400 bg-red-500/10 border-red-500/30 p-4 rounded-xl border text-xs font-bold text-center";
+                    formStatus.innerHTML = '❌ মেসেজ পাঠাতে সমস্যা হয়েছে। সরাসরি কল করুন: 01868-461577';
                     formStatus.classList.remove('hidden');
-                    form.reset();
-                    submitBtn.innerHTML='Send Message <i class="fa-solid fa-paper-plane ml-2"></i>';
-                }, 1000);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Message <i class="fa-solid fa-paper-plane ml-2"></i>';
+                }
             });
         }
     </script>
 <script src="js/ai-agent.js"></script>
-<script type="module" src="js/site-auth.js"></script>
+<script src="js/site-auth.js"></script>
 </body>
 </html>

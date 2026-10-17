@@ -2,8 +2,8 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Admin Dashboard - Habib iFix .Tech</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Admin Control Panel - Habib iFix .Tech</title>
     
     <script>
         tailwind = { darkMode: "class" };
@@ -12,34 +12,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/theme.js"></script>
-    <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            min-height: 100vh;
-            display: none; /* Shown after auth check */
-        }
-    </style>
 </head>
-<body class="flex flex-col h-screen overflow-hidden dark-mode">
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100" style="display: none;">
 
-    <!-- Top Admin Navbar -->
-    <header class="h-16 glass-nav border-b flex items-center justify-between px-6 shrink-0 z-30">
+    <!-- Admin Top Header -->
+    <header class="h-16 glass-nav border-b flex items-center justify-between px-6 shrink-0 z-20">
         <div class="flex items-center gap-3">
-            <div class="brand-logo-box w-9 h-9 shrink-0 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1px] flex items-center justify-center">
-                <div class="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
+            <div class="brand-logo-box w-9 h-9 shrink-0 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1.5px] shadow flex items-center justify-center">
+                <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
                     <svg class="h-logo-svg w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="url(#hLogoGradAdm)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="url(#hLogoAdmin)" stroke-width="3.5" stroke-linecap="round"/>
                         <circle cx="5.5" cy="4.5" r="1.5" fill="#38bdf8"/>
                         <circle cx="18.5" cy="4.5" r="1.5" fill="#818cf8"/>
                         <circle cx="5.5" cy="19.5" r="1.5" fill="#38bdf8"/>
                         <circle cx="18.5" cy="19.5" r="1.5" fill="#818cf8"/>
                         <circle cx="12" cy="12" r="1.8" fill="#ffffff"/>
                         <defs>
-                            <linearGradient id="hLogoGradAdm" x1="5.5" y1="4.5" x2="18.5" y2="19.5" gradientUnits="userSpaceOnUse">
+                            <linearGradient id="hLogoAdmin" x1="5.5" y1="4.5" x2="18.5" y2="19.5" gradientUnits="userSpaceOnUse">
                                 <stop stop-color="#38bdf8"/>
                                 <stop offset="0.5" stop-color="#ffffff"/>
                                 <stop offset="1" stop-color="#818cf8"/>
@@ -49,27 +41,22 @@
                 </div>
             </div>
             <div>
-                <h1 class="font-bold text-white tracking-wide text-sm sm:text-base">
-                    Habib <span class="text-cyan-400">iFix</span> <span class="text-cyan-400 font-mono font-bold">.Tech</span> <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full ml-1.5 font-mono">ADMIN</span>
-                </h1>
+                <div class="flex items-center gap-2">
+                    <h1 class="font-extrabold text-sm sm:text-base text-white tracking-tight">Habib iFix <span class="text-cyan-400">Master Control</span></h1>
+                    <span class="bg-indigo-500/20 text-indigo-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border border-indigo-500/40">ADMIN 2026</span>
+                </div>
+                <p class="text-[10px] text-slate-400">Mobile Engineering Lab & IT Services Hub</p>
             </div>
         </div>
 
-        <div class="flex items-center gap-2.5">
-            <!-- Google Authenticated User Badge -->
-            <div id="adminUserBadge" class="hidden md:flex items-center gap-2 bg-indigo-500/15 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span id="adminUserName" class="font-mono text-cyan-300 text-[11px]">tec.habiburrahman@gmail.com</span>
+        <div class="flex items-center gap-3">
+            <div class="hidden sm:flex items-center gap-2 text-xs">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="text-slate-300 font-bold" id="adminUserName">Admin</span>
             </div>
 
-            <!-- View Live Site -->
-            <a href="index.html" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-all">
-                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-cyan-400"></i>
-                <span class="hidden sm:inline">View Live Site</span>
-            </a>
-
             <!-- Logout Button -->
-            <button id="logoutBtn" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer">
+            <button id="logoutBtn" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer">
                 <i class="fa-solid fa-power-off text-xs"></i>
                 <span>Logout</span>
             </button>
@@ -78,42 +65,87 @@
 
     <div class="flex flex-1 overflow-hidden">
         <!-- Sidebar -->
-        <aside class="w-60 glass-nav border-r flex flex-col p-4 shrink-0 overflow-y-auto">
+        <aside class="w-64 glass-nav border-r flex flex-col p-4 shrink-0 overflow-y-auto">
             <div class="space-y-1.5 text-xs font-bold">
-                <button onclick="switchTab('bookings')" id="tabBtnBookings" class="w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center gap-2.5 transition-colors shadow">
-                    <i class="fa-solid fa-calendar-check text-xs"></i>
-                    <span>Manage Bookings</span>
+                <button onclick="switchTab('bookings')" id="tabBtnBookings" class="w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center justify-between transition-colors shadow">
+                    <span class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-calendar-check text-xs"></i>
+                        <span>Repair Bookings</span>
+                    </span>
+                    <span id="badgeBookings" class="bg-white/20 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
                 </button>
-                <button onclick="switchTab('blogs')" id="tabBtnBlogs" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
-                    <i class="fa-solid fa-blog text-xs text-indigo-400"></i>
-                    <span>Blog Posts</span>
+
+                <button onclick="switchTab('aiMessages')" id="tabBtnAiMessages" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-robot text-xs text-cyan-400"></i>
+                        <span>AI Customer Chats</span>
+                    </span>
+                    <span id="badgeAi" class="bg-cyan-500/20 text-cyan-300 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
                 </button>
-                <a href="index.html" class="w-full block text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
-                    <i class="fa-solid fa-house text-xs text-cyan-400"></i>
-                    <span>Home Page</span>
-                </a>
-                <a href="cv.html" class="w-full block text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
-                    <i class="fa-solid fa-file-lines text-xs text-purple-400"></i>
-                    <span>CV Maker Tool</span>
-                </a>
-                <a href="frp.html" class="w-full block text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
-                    <i class="fa-solid fa-unlock-keyhole text-xs text-amber-400"></i>
-                    <span>FRP 2026 Page</span>
-                </a>
+
+                <button onclick="switchTab('contacts')" id="tabBtnContacts" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-envelope text-xs text-amber-400"></i>
+                        <span>Contact Messages</span>
+                    </span>
+                    <span id="badgeContacts" class="bg-amber-500/20 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
+                </button>
+
+                <button onclick="switchTab('orders')" id="tabBtnOrders" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-bag-shopping text-xs text-emerald-400"></i>
+                        <span>Shop Orders</span>
+                    </span>
+                    <span id="badgeOrders" class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
+                </button>
+
+                <button onclick="switchTab('blogs')" id="tabBtnBlogs" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-blog text-xs text-indigo-400"></i>
+                        <span>Blog Posts</span>
+                    </span>
+                    <span id="badgeBlogs" class="bg-indigo-500/20 text-indigo-300 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
+                </button>
+
+                <div class="pt-4 border-t border-white/10 space-y-1 text-slate-400 text-xs">
+                    <a href="index.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                        <i class="fa-solid fa-house text-xs text-cyan-400"></i>
+                        <span>Home Page</span>
+                    </a>
+                    <a href="shop.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                        <i class="fa-solid fa-store text-xs text-emerald-400"></i>
+                        <span>Shop Page</span>
+                    </a>
+                    <a href="courses.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                        <i class="fa-solid fa-graduation-cap text-xs text-indigo-400"></i>
+                        <span>Courses</span>
+                    </a>
+                    <a href="https://cvhabib.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-file-lines text-xs text-purple-400"></i>
+                            <span>CV Maker App</span>
+                        </span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-500"></i>
+                    </a>
+                    <a href="frp.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                        <i class="fa-solid fa-unlock-keyhole text-xs text-cyan-400"></i>
+                        <span>FRP 2026 Page</span>
+                    </a>
+                </div>
             </div>
         </aside>
 
         <!-- Main Content Body -->
         <main class="flex-1 p-6 overflow-y-auto max-w-7xl">
             
-            <!-- Bookings Section -->
+            <!-- 1. Bookings Section -->
             <div id="sectionBookings">
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-extrabold text-white">Customer Repair Bookings</h2>
                         <p class="text-xs text-slate-400">Real-time incoming repair service and diagnostic reservations.</p>
                     </div>
-                    <button onclick="loadAdminBookings()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all">
+                    <button onclick="loadAdminBookings()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
                         <i class="fa-solid fa-rotate text-cyan-400"></i> Refresh
                     </button>
                 </div>
@@ -122,14 +154,65 @@
                 </div>
             </div>
 
-            <!-- Blogs Section -->
+            <!-- 2. AI Customer Chats Section (NEW) -->
+            <div id="sectionAiMessages" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
+                            <span>AI Customer Chat Inquiries</span>
+                            <span class="bg-cyan-500/20 text-cyan-300 text-xs px-2.5 py-0.5 rounded-full border border-cyan-500/40">Real-time Leads</span>
+                        </h2>
+                        <p class="text-xs text-slate-400">What visitors and customers are asking Habib AI Assistant (Auto Saved).</p>
+                    </div>
+                    <button onclick="loadAdminAiMessages()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate text-cyan-400"></i> Refresh
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5" id="adminAiGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- 3. Contact Form Submissions Section (NEW) -->
+            <div id="sectionContacts" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Contact Form Inquiries</h2>
+                        <p class="text-xs text-slate-400">Direct inquiries sent via the website contact form.</p>
+                    </div>
+                    <button onclick="loadAdminContacts()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate text-amber-400"></i> Refresh
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminContactsGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- 4. Shop Orders Section (NEW) -->
+            <div id="sectionOrders" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Tech Shop & Parts Orders</h2>
+                        <p class="text-xs text-slate-400">Incoming e-commerce orders for original displays, batteries, ICs & lab tools.</p>
+                    </div>
+                    <button onclick="loadAdminOrders()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate text-emerald-400"></i> Refresh
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminOrdersGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- 5. Blogs Section -->
             <div id="sectionBlogs" class="hidden">
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-extrabold text-white">Technical Blog Posts</h2>
                         <p class="text-xs text-slate-400">Manage technical repair guides and posts displayed on home and blog pages.</p>
                     </div>
-                    <button onclick="openPostModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-lg transition-colors flex items-center gap-2">
+                    <button onclick="openPostModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-lg transition-colors flex items-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-plus"></i> Create Post
                     </button>
                 </div>
@@ -143,19 +226,19 @@
 
     <!-- Create Post Modal -->
     <div id="postModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="glass-card w-full max-w-lg rounded-3xl p-6 sm:p-8 bg-slate-900 border border-indigo-500/30 shadow-2xl">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-white">Create New Tech Post</h3>
-                <button onclick="closePostModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        <div class="glass-3d w-full max-w-lg p-6 sm:p-8 rounded-3xl border border-white/20">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="font-extrabold text-lg text-white">Add New Technical Blog Post</h3>
+                <button onclick="closePostModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="postForm" class="flex flex-col gap-3.5">
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Post Title</label>
-                    <input type="text" id="postTitle" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none" placeholder="e.g. How to Bypass FRP on Android 15">
+                    <input type="text" id="postTitle" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none" placeholder="e.g. How to Repair Dead Boot on Qualcomm CPU">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Category</label>
-                    <input type="text" id="postCategory" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none" placeholder="e.g. FRP UNLOCK or HARDWARE">
+                    <input type="text" id="postCategory" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none" placeholder="e.g. MICRO-SOLDERING, FRP UNLOCK, or DISPLAY LAB">
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Image URL</label>
@@ -163,46 +246,58 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Description / Summary</label>
-                    <textarea id="postDesc" required rows="3" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none resize-none" placeholder="Detailed guide content..."></textarea>
+                    <textarea id="postDesc" required rows="3" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none resize-none" placeholder="Detailed technical guide breakdown..."></textarea>
                 </div>
                 <div class="flex justify-end gap-2.5 mt-2">
-                    <button type="button" onclick="closePostModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2.5 rounded-xl text-xs text-white font-bold transition-colors shadow">Publish Now</button>
+                    <button type="button" onclick="closePostModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">Cancel</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2.5 rounded-xl text-xs text-white font-bold transition-colors shadow cursor-pointer">Publish Now</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // Tab Switcher
-        function switchTab(tab) {
-            const secBookings = document.getElementById('sectionBookings');
-            const secBlogs = document.getElementById('sectionBlogs');
-            const btnBookings = document.getElementById('tabBtnBookings');
-            const btnBlogs = document.getElementById('tabBtnBlogs');
+        const tabList = ['bookings', 'aiMessages', 'contacts', 'orders', 'blogs'];
 
-            if (tab === 'bookings') {
-                secBookings.classList.remove('hidden');
-                secBlogs.classList.add('hidden');
-                btnBookings.className = "w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center gap-2.5 transition-colors shadow";
-                btnBlogs.className = "w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors";
-            } else {
-                secBookings.classList.add('hidden');
-                secBlogs.classList.remove('hidden');
-                btnBlogs.className = "w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center gap-2.5 transition-colors shadow";
-                btnBookings.className = "w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors";
+        function switchTab(activeTab) {
+            tabList.forEach(t => {
+                const sec = document.getElementById('section' + capitalize(t));
+                const btn = document.getElementById('tabBtn' + capitalize(t));
+                if (sec) sec.classList.add('hidden');
+                if (btn) {
+                    btn.className = "w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors";
+                }
+            });
+
+            const activeSec = document.getElementById('section' + capitalize(activeTab));
+            const activeBtn = document.getElementById('tabBtn' + capitalize(activeTab));
+            if (activeSec) activeSec.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.className = "w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center justify-between transition-colors shadow";
             }
+
+            if (activeTab === 'bookings') loadAdminBookings();
+            if (activeTab === 'aiMessages') loadAdminAiMessages();
+            if (activeTab === 'contacts') loadAdminContacts();
+            if (activeTab === 'orders') loadAdminOrders();
+            if (activeTab === 'blogs') loadAdminPosts();
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
         // Check Auth immediately
         fetch('/api/check-admin').then(res => res.json()).then(data => {
-            if(data.isAdmin) {
+            if (data.isAdmin) {
                 document.body.style.display = 'flex';
                 const email = localStorage.getItem('habib_user_email') || 'tec.habiburrahman@gmail.com';
-                const name = localStorage.getItem('habib_user_name') || 'Habibur Rahman';
                 const userEl = document.getElementById('adminUserName');
                 if (userEl) userEl.innerText = email;
                 loadAdminBookings();
+                loadAdminAiMessages();
+                loadAdminContacts();
+                loadAdminOrders();
                 loadAdminPosts();
             } else {
                 window.location.href = 'login.html';
@@ -214,32 +309,181 @@
             window.location.href = 'login.html';
         });
 
+        // 1. Load Bookings
         async function loadAdminBookings() {
             try {
                 const res = await fetch('/api/bookings');
                 const bookings = await res.json();
+                document.getElementById('badgeBookings').innerText = bookings.length;
                 const grid = document.getElementById('adminBookingsGrid');
                 if (bookings.length === 0) {
-                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3">No customer bookings yet.</p>';
+                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No customer bookings yet.</p>';
                     return;
                 }
                 grid.innerHTML = bookings.map(b => `
                     <div class="glass-card p-5 rounded-2xl border-l-4 border-l-cyan-400 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-bold text-white">${b.planName}</span>
-                                <span class="text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 px-2 py-0.5 rounded-full font-mono font-bold">${b.planPrice}</span>
+                                <span class="text-xs font-bold text-white">${escapeHtml(b.planName)}</span>
+                                <span class="text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 px-2 py-0.5 rounded-full font-mono font-bold">${escapeHtml(b.planPrice)}</span>
                             </div>
-                            <div class="space-y-1 text-xs text-slate-300">
-                                <p><strong class="text-white">Customer:</strong> ${b.customerName}</p>
-                                <p><strong class="text-white">Phone:</strong> <a href="tel:${b.phone}" class="text-cyan-400 hover:underline">${b.phone}</a></p>
-                                ${b.email ? `<p><strong class="text-white">Email:</strong> ${b.email}</p>` : ''}
-                                <p><strong class="text-white">Details:</strong> ${b.address}</p>
+                            <div class="space-y-1.5 text-xs text-slate-300">
+                                <p><strong class="text-white">Customer:</strong> ${escapeHtml(b.customerName)}</p>
+                                <p><strong class="text-white">Phone:</strong> <a href="tel:${b.phone}" class="text-cyan-400 hover:underline font-mono">${escapeHtml(b.phone)}</a></p>
+                                ${b.email ? `<p><strong class="text-white">Email:</strong> ${escapeHtml(b.email)}</p>` : ''}
+                                <p><strong class="text-white">Address / Issue:</strong> ${escapeHtml(b.address)}</p>
                             </div>
                         </div>
                         <div class="pt-3 border-t border-white/10 mt-3 flex items-center justify-between">
-                            <span class="text-[10px] text-slate-500">${b.date || 'Recent'}</span>
-                            <a href="https://wa.me/88${b.phone.replace(/[^0-9]/g, '')}" target="_blank" class="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+                            <span class="text-[10px] text-slate-500">${escapeHtml(b.date || 'Recent')}</span>
+                            <a href="https://wa.me/88${(b.phone || '').replace(/[^0-9]/g, '')}" target="_blank" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/30">
+                                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // 2. Load AI Messages
+        async function loadAdminAiMessages() {
+            try {
+                const res = await fetch('/api/ai-messages');
+                const messages = await res.json();
+                document.getElementById('badgeAi').innerText = messages.length;
+                const grid = document.getElementById('adminAiGrid');
+                if (messages.length === 0) {
+                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-2 py-8 text-center">No AI chat queries recorded yet.</p>';
+                    return;
+                }
+                grid.innerHTML = messages.map(m => `
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-indigo-400 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-microchip"></i> ${escapeHtml(m.category || 'Diagnostic')}
+                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 px-2 py-0.5 rounded-full font-mono font-bold">${escapeHtml(m.estimatedCost || 'N/A')}</span>
+                                    <button onclick="deleteAiMsg(${m.id})" class="text-slate-400 hover:text-red-400 transition-colors p-1" title="Delete"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-slate-900/80 rounded-xl border border-white/10 mb-3">
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Customer Asked:</p>
+                                <p class="text-xs font-semibold text-white">"${escapeHtml(m.message)}"</p>
+                            </div>
+                            <div class="text-xs text-slate-300 line-clamp-3 bg-white/5 p-3 rounded-xl border border-white/5">
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">AI Solution Given:</p>
+                                <div class="text-[11px] text-slate-300 leading-relaxed">${escapeHtml(m.reply).substring(0, 220)}...</div>
+                            </div>
+                        </div>
+                        <div class="pt-3 border-t border-white/10 mt-3 flex items-center justify-between">
+                            <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(m.date || '')}</span>
+                            <a href="https://wa.me/8801868461577?text=${encodeURIComponent('Customer query follow-up: ' + m.message)}" target="_blank" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                <i class="fa-brands fa-whatsapp"></i> Follow-up
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function deleteAiMsg(id) {
+            if (confirm('Delete this AI chat record?')) {
+                await fetch(`/api/ai-messages/${id}`, { method: 'DELETE' });
+                loadAdminAiMessages();
+            }
+        }
+
+        // 3. Load Contact Messages
+        async function loadAdminContacts() {
+            try {
+                const res = await fetch('/api/contacts');
+                const contacts = await res.json();
+                document.getElementById('badgeContacts').innerText = contacts.length;
+                const grid = document.getElementById('adminContactsGrid');
+                if (contacts.length === 0) {
+                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No contact messages received yet.</p>';
+                    return;
+                }
+                grid.innerHTML = contacts.map(c => `
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-amber-400 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-white">${escapeHtml(c.name)}</span>
+                                <button onclick="deleteContactMsg(${c.id})" class="text-slate-400 hover:text-red-400 transition-colors p-1" title="Delete"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                            </div>
+                            <div class="space-y-1.5 text-xs text-slate-300 mb-3">
+                                <p><strong class="text-white">Phone/Email:</strong> <span class="font-mono text-cyan-400">${escapeHtml(c.contact)}</span></p>
+                                <p><strong class="text-white">Subject:</strong> ${escapeHtml(c.subject || 'Website Inquiry')}</p>
+                            </div>
+                            <div class="p-3 bg-slate-900/80 rounded-xl border border-white/10 text-xs text-slate-200 leading-relaxed">
+                                "${escapeHtml(c.message)}"
+                            </div>
+                        </div>
+                        <div class="pt-3 border-t border-white/10 mt-3 flex items-center justify-between">
+                            <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(c.date || '')}</span>
+                            <div class="flex items-center gap-2">
+                                <a href="tel:${c.contact}" class="text-xs font-bold text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 px-2.5 py-1 rounded-lg border border-cyan-500/30">
+                                    <i class="fa-solid fa-phone"></i> Call
+                                </a>
+                                <a href="https://wa.me/88${(c.contact || '').replace(/[^0-9]/g, '')}" target="_blank" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+                                    <i class="fa-brands fa-whatsapp"></i> Chat
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function deleteContactMsg(id) {
+            if (confirm('Delete this contact message?')) {
+                await fetch(`/api/contacts/${id}`, { method: 'DELETE' });
+                loadAdminContacts();
+            }
+        }
+
+        // 4. Load Store Orders
+        async function loadAdminOrders() {
+            try {
+                const res = await fetch('/api/orders');
+                const orders = await res.json();
+                document.getElementById('badgeOrders').innerText = orders.length;
+                const grid = document.getElementById('adminOrdersGrid');
+                if (orders.length === 0) {
+                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No shop orders placed yet.</p>';
+                    return;
+                }
+                grid.innerHTML = orders.map(o => `
+                    <div class="glass-card p-5 rounded-2xl border-l-4 ${o.status === 'Delivered' ? 'border-l-emerald-400' : (o.status === 'Shipped' ? 'border-l-indigo-400' : 'border-l-amber-400')} flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-white line-clamp-1">${escapeHtml(o.productName)}</span>
+                                <span class="text-xs font-mono font-bold text-emerald-400">${escapeHtml(o.price)}</span>
+                            </div>
+                            <div class="space-y-1 text-xs text-slate-300">
+                                <p><strong class="text-white">Customer:</strong> ${escapeHtml(o.customerName)} (Qty: ${o.quantity})</p>
+                                <p><strong class="text-white">Phone:</strong> <a href="tel:${o.phone}" class="text-cyan-400 hover:underline font-mono">${escapeHtml(o.phone)}</a></p>
+                                <p><strong class="text-white">Delivery Address:</strong> ${escapeHtml(o.address)}</p>
+                                <p><strong class="text-white">Payment:</strong> <span class="font-mono text-amber-300">${escapeHtml(o.paymentMethod || 'COD')}</span></p>
+                            </div>
+                        </div>
+                        <div class="pt-3 border-t border-white/10 mt-3 flex items-center justify-between">
+                            <select onchange="updateOrderStatus(${o.id}, this.value)" class="bg-slate-900 border border-white/20 text-white rounded-lg text-xs px-2 py-1 outline-none">
+                                <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                            <a href="https://wa.me/88${(o.phone || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hello ' + o.customerName + ', regarding your order for ' + o.productName)}" target="_blank" class="text-xs font-bold text-emerald-400 hover:text-emerald-300">
                                 <i class="fa-brands fa-whatsapp"></i> Chat
                             </a>
                         </div>
@@ -250,26 +494,37 @@
             }
         }
 
+        async function updateOrderStatus(id, status) {
+            await fetch(`/api/orders/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            loadAdminOrders();
+        }
+
+        // 5. Load Posts
         async function loadAdminPosts() {
             try {
                 const res = await fetch('/api/posts');
                 const posts = await res.json();
+                document.getElementById('badgeBlogs').innerText = posts.length;
                 const grid = document.getElementById('adminBlogGrid');
                 if (posts.length === 0) {
-                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3">No blog posts yet.</p>';
+                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No blog posts yet.</p>';
                     return;
                 }
                 grid.innerHTML = posts.map(p => `
                     <div class="glass-card p-4 rounded-2xl flex flex-col justify-between">
                         <div>
                             <img src="${p.mediaLink}" class="w-full h-36 object-cover rounded-xl mb-3">
-                            <span class="text-[9px] text-indigo-400 font-mono font-bold uppercase tracking-wider">${p.category}</span>
-                            <h4 class="font-bold text-white text-sm mt-1 mb-1.5 line-clamp-2">${p.title}</h4>
-                            <p class="text-xs text-slate-400 line-clamp-2 mb-3">${p.description}</p>
+                            <span class="text-[9px] text-indigo-400 font-mono font-bold uppercase tracking-wider">${escapeHtml(p.category)}</span>
+                            <h4 class="font-bold text-white text-sm mt-1 mb-1.5 line-clamp-2">${escapeHtml(p.title)}</h4>
+                            <p class="text-xs text-slate-400 line-clamp-2 mb-3">${escapeHtml(p.description)}</p>
                         </div>
                         <div class="pt-3 border-t border-white/10 flex justify-between items-center">
-                            <span class="text-[10px] text-slate-500">${p.date || '2026'}</span>
-                            <button onclick="deletePost(${p.id})" class="text-xs text-red-400 hover:text-red-300 font-bold bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg transition-colors">
+                            <span class="text-[10px] text-slate-500">${escapeHtml(p.date || '2026')}</span>
+                            <button onclick="deletePost(${p.id})" class="text-xs text-red-400 hover:text-red-300 font-bold bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
                                 Delete
                             </button>
                         </div>
@@ -308,10 +563,17 @@
         });
 
         async function deletePost(id) {
-            if(confirm('Are you sure you want to delete this post?')) {
+            if (confirm('Are you sure you want to delete this post?')) {
                 await fetch(`/api/posts/${id}`, { method: 'DELETE' });
                 loadAdminPosts();
             }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
         }
     </script>
 </body>

@@ -30,7 +30,7 @@ function readDB() {
   }
   const targetFile = getDbPath();
   if (!fs.existsSync(targetFile)) {
-    inMemoryDB = { posts: [], bookings: [], users: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1 };
+    inMemoryDB = { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1 };
     return inMemoryDB;
   }
   try {
@@ -38,13 +38,19 @@ function readDB() {
     data.posts = data.posts || [];
     data.bookings = data.bookings || [];
     data.users = data.users || [];
+    data.contacts = data.contacts || [];
+    data.aiMessages = data.aiMessages || [];
+    data.orders = data.orders || [];
     data.nextPostId = data.nextPostId || 1;
     data.nextBookingId = data.nextBookingId || 1;
     data.nextUserId = data.nextUserId || 1;
+    data.nextContactId = data.nextContactId || 1;
+    data.nextAiMsgId = data.nextAiMsgId || 1;
+    data.nextOrderId = data.nextOrderId || 1;
     inMemoryDB = data;
     return inMemoryDB;
   } catch (e) {
-    inMemoryDB = { posts: [], bookings: [], users: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1 };
+    inMemoryDB = { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1 };
     return inMemoryDB;
   }
 }
@@ -363,18 +369,41 @@ Samsung, Xiaomi, Vivo, Oppo, Realme, Infinix সহ যেকোনো ডিভ
       severity: "Normal",
       estimatedCost: "১০০% ফ্রি (অনলাইন)",
       repairTime: "৫ মিনিট",
-      summary: "আমাদের ওয়েবসাইটে বিল্ট-ইন আন্তর্জাতিক মানের সিভি মেকার রয়েছে।",
-      text: `### 📄 Habib iFix প্রফেশনাল CV Maker ও রেজুমে সার্ভিস:
+      summary: "আমাদের আন্তর্জাতিক মানের লাইভ রেজুমে ও সিভি মেকার বিল্ডার।",
+      text: `### 📄 Habib iFix প্রফেশনাল CV Maker ও রেজুমে বিল্ডার:
 
-আপনি খুব সহজেই আমাদের ওয়েবসাইটের **[CV Maker পেজে (cv.html)](cv.html)** গিয়ে প্রফেশনাল সিভি তৈরি করতে পারবেন!
+আপনি খুব সহজেই আমাদের অফিশিয়াল প্ল্যাটফর্ম **[Habib CV Maker (cvhabib.vercel.app)](https://cvhabib.vercel.app/)** এ গিয়ে প্রফেশনাল চাকরির সিভি তৈরি করতে পারবেন!
 
 ✨ **সুবিধাসমূহ:**
-• লাইভ প্রিভিউ সহ রিয়েল-টাইম এডিটর
+• লাইভ প্রিভিউ সহ রিয়েল-টাইম এডিটর ও এ৪ (A4) প্রিন্ট
 • আন্তর্জাতিক জব স্ট্যান্ডার্ড এবং এটিএস (ATS) অপ্টিমাইজড
-• ১-ক্লিকেই স্ট্যান্ডার্ড এ৪ (A4) সাইজের হাই-কোয়ালিটি পিডিএফ প্রিন্ট ও ডাউনলোড
-• সরকারি ও বেসরকারি চাকরির জন্য রেডিমেড ফরম্যাট
+• ১-ক্লিকেই স্ট্যান্ডার্ড এ৪ সাইজের হাই-কোয়ালিটি পিডিএফ প্রিন্ট ও ডাউনলোড
+• সরকারি, ব্যাংক ও বেসরকারি চাকরির জন্য আন্তর্জাতিক ফরম্যাট
 
-👉 এখনই আপনার সিভি তৈরি করতে উপরে ন্যাভবারের **CV Maker** মেনুতে অথবা [এখানে ক্লিক করুন](cv.html)!`
+👉 এখনই আপনার প্রফেশনাল সিভি তৈরি করতে [https://cvhabib.vercel.app/](https://cvhabib.vercel.app/) লিঙ্কে ক্লিক করুন!`
+    };
+  }
+
+  // 13. ECOMMERCE SHOP, PARTS & REPAIR TOOLS
+  if (q.includes('shop') || q.includes('শপ') || q.includes('দোকান') || q.includes('parts') || q.includes('পার্টস') || q.includes('tools') || q.includes('টুলস') || q.includes('কিনব') || q.includes('কিনতে') || q.includes('buy') || q.includes('order') || q.includes('অর্ডার') || q.includes('মেশিন')) {
+    return {
+      title: "🛍️ Habib iFix টেক ও স্পেয়ার পার্টস শপ",
+      category: "Online Store & Tools",
+      severity: "Normal",
+      estimatedCost: "সাশ্রয়ী হোলসেল প্রাইস",
+      repairTime: "সারাদেশে কুরিয়ারে ডেলিভারি",
+      summary: "অরিজিনাল মোবাইল ডিসপ্লে, ব্যাটারি, আইসি ও মাইক্রো-সোল্ডারিং টুলস স্টোর।",
+      text: `### 🛍️ Habib iFix অফিসিয়াল ইকমার্স টেক শপ:
+
+আমাদের **[Shop স্টোর (shop.html)](shop.html)** থেকে আপনি ১০০% জেনুইন মোবাইল রিপেয়ার পার্টস ও ল্যাব টুলস অর্ডার করতে পারবেন!
+
+📦 **আমাদের স্টোরে যা যা পাবেন:**
+• 📱 **১০০% অরিজিনাল ডিসপ্লে:** iPhone, Samsung, Xiaomi AMOLED ও IPS প্যানেল
+• 🔋 **হাই-ক্যাপাসিটি ব্যাটারি:** ৬ মাসের রিপ্লেসমেন্ট ওয়ারেন্টি সহ
+• 🔬 **ল্যাব ও মাইক্রো-সোল্ডারিং টুলস:** ডিজিটাল মাইক্রোস্কোপ, হট এয়ার গান, থার্মাল ক্যামেরা, শোল্ডারিং পেস্ট
+• ⚡ **আইসি ও স্পেয়ার্স:** পাওয়ার আইসি, ওকা গ্লাস, টেস্ট পয়েন্ট ক্যাবল
+
+👉 পণ্য দেখতে ও ঘরে বসে অর্ডার করতে উপরে ন্যাভবারের **Shop** অথবা [এখানে ক্লিক করুন (shop.html)](shop.html)!`
     };
   }
 
@@ -539,6 +568,31 @@ Tone & Style:
     }
   }
 
+  const diagnosisData = generateConversationalAIResponse(queryText, language);
+  const replyContent = geminiOutput || (diagnosisData && diagnosisData.text) || '';
+
+  // Save to database for Admin Panel tracking
+  try {
+    const db = readDB();
+    db.aiMessages = db.aiMessages || [];
+    db.nextAiMsgId = db.nextAiMsgId || 1;
+    const aiLog = {
+      id: db.nextAiMsgId++,
+      message: queryText,
+      reply: replyContent,
+      category: (diagnosisData && diagnosisData.category) || 'General Diagnostic',
+      title: (diagnosisData && diagnosisData.title) || 'Customer AI Query',
+      estimatedCost: (diagnosisData && diagnosisData.estimatedCost) || 'N/A',
+      repairTime: (diagnosisData && diagnosisData.repairTime) || 'N/A',
+      date: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+    };
+    db.aiMessages.unshift(aiLog);
+    if (db.aiMessages.length > 300) db.aiMessages.pop();
+    writeDB(db);
+  } catch (logErr) {
+    console.error("AI message logging error:", logErr);
+  }
+
   // If Gemini succeeded, return response
   if (geminiOutput) {
     return res.json({
@@ -546,18 +600,17 @@ Tone & Style:
       source: "habib-ai-pro",
       text: geminiOutput,
       reply: geminiOutput,
-      diagnosis: generateConversationalAIResponse(queryText, language)
+      diagnosis: diagnosisData
     });
   }
 
   // Conversational AI Engine
-  const aiResult = generateConversationalAIResponse(queryText, language);
   return res.json({
     success: true,
     source: "habib-ifix-ai-engine",
-    text: aiResult.text,
-    reply: aiResult.text,
-    diagnosis: aiResult
+    text: diagnosisData.text,
+    reply: diagnosisData.text,
+    diagnosis: diagnosisData
   });
 });
 
@@ -798,17 +851,112 @@ app.get('/api/bookings', checkAdmin, (req, res) => {
 
 app.post('/api/posts', checkAdmin, (req, res) => {
   const { title, category, description, mediaLink, mediaType } = req.body;
-  const date = new Date().toLocaleDateString();
+  const date = new Date().toLocaleDateString('en-GB');
   const db = readDB();
   const id = db.nextPostId++;
-  db.posts.push({ id, title: title || 'New Post', category, description, mediaLink, mediaType, date });
+  db.posts.unshift({ id, title: title || 'New Post', category: category || 'TECH NEWS', description, mediaLink, mediaType: mediaType || 'image', date });
   writeDB(db);
-  res.json({ id });
+  res.json({ success: true, id });
 });
 
 app.delete('/api/posts/:id', checkAdmin, (req, res) => {
   const db = readDB();
-  db.posts = db.posts.filter(p => p.id !== parseInt(req.params.id));
+  db.posts = (db.posts || []).filter(p => p.id !== parseInt(req.params.id));
+  writeDB(db);
+  res.json({ success: true });
+});
+
+// Contact Form API
+app.post('/api/contact', (req, res) => {
+  const { name, contact, message, subject } = req.body;
+  if (!name || !contact || !message) {
+    return res.status(400).json({ error: 'Name, contact info, and message are required.' });
+  }
+  const db = readDB();
+  db.contacts = db.contacts || [];
+  db.nextContactId = db.nextContactId || 1;
+  const newMsg = {
+    id: db.nextContactId++,
+    name,
+    contact,
+    message,
+    subject: subject || 'General Inquiry',
+    date: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  };
+  db.contacts.unshift(newMsg);
+  writeDB(db);
+  res.json({ success: true, message: 'Message received successfully!', id: newMsg.id });
+});
+
+app.get('/api/contacts', checkAdmin, (req, res) => {
+  const db = readDB();
+  res.json(db.contacts || []);
+});
+
+app.delete('/api/contacts/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  db.contacts = (db.contacts || []).filter(c => c.id !== parseInt(req.params.id));
+  writeDB(db);
+  res.json({ success: true });
+});
+
+// AI Chat Logs (Admin View)
+app.get('/api/ai-messages', checkAdmin, (req, res) => {
+  const db = readDB();
+  res.json(db.aiMessages || []);
+});
+
+app.delete('/api/ai-messages/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  db.aiMessages = (db.aiMessages || []).filter(m => m.id !== parseInt(req.params.id));
+  writeDB(db);
+  res.json({ success: true });
+});
+
+// Ecommerce Shop Orders API
+app.post('/api/orders', (req, res) => {
+  const { productId, productName, price, customerName, phone, address, paymentMethod, quantity = 1 } = req.body;
+  if (!customerName || !phone || !address) {
+    return res.status(400).json({ error: 'Customer name, phone, and delivery address are required.' });
+  }
+  const db = readDB();
+  db.orders = db.orders || [];
+  db.nextOrderId = db.nextOrderId || 1;
+  const newOrder = {
+    id: db.nextOrderId++,
+    productId: productId || 0,
+    productName: productName || 'Repair Part / Tool',
+    price: price || '৳০',
+    quantity: parseInt(quantity) || 1,
+    customerName,
+    phone,
+    address,
+    paymentMethod: paymentMethod || 'Cash on Delivery',
+    status: 'Pending',
+    date: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  };
+  db.orders.unshift(newOrder);
+  writeDB(db);
+  res.json({ success: true, orderId: newOrder.id });
+});
+
+app.get('/api/orders', checkAdmin, (req, res) => {
+  const db = readDB();
+  res.json(db.orders || []);
+});
+
+app.patch('/api/orders/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  const order = (db.orders || []).find(o => o.id === parseInt(req.params.id));
+  if (!order) return res.status(404).json({ error: 'Order not found' });
+  if (req.body.status) order.status = req.body.status;
+  writeDB(db);
+  res.json({ success: true, order });
+});
+
+app.delete('/api/orders/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  db.orders = (db.orders || []).filter(o => o.id !== parseInt(req.params.id));
   writeDB(db);
   res.json({ success: true });
 });

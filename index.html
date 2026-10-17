@@ -1,517 +1,1066 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title data-en="Habib - Expert Mobile Technician & Online Services" data-bn="হাবিব - এক্সপার্ট মোবাইল টেকনিশিয়ান ও অনলাইন সার্ভিস">Habib - Expert Mobile Technician & Online Services</title>
+    <title data-en="Habib iFix .Tech - Professional Mobile Engineering & Online IT Services Lab" data-bn="হাবিব আইফিক্স .Tech - প্রফেশনাল মোবাইল টেকনিশিয়ান ও অনলাইন সার্ভিস">Habib iFix .Tech - Professional Mobile Engineering & Online IT Services Lab</title>
+    <meta name="description" content="Professional Mobile Engineering & Online IT Services Lab">
+    <meta property="og:title" content="Habib iFix .Tech">
+    <meta property="og:description" content="Professional Mobile Engineering & Online IT Services Lab">
     
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="google5d6137a4799f9a04">
-
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
     
-    <!-- Adsterra Popunder & Banner Scripts -->
-    <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
-    <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
-
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS with class-based Dark Mode -->
+    <script>
+        tailwind = {
+            darkMode: 'class'
+        };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Style with Frosted Glass & Light/Dark Support -->
+    <link rel="stylesheet" href="css/style.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <style>
-        * { box-sizing: border-box; }
-        html, body { 
-            width: 100px; /* fixed layout auto width fix */
-            width: 100%; 
-            max-width: 100%; 
-            overflow-x: hidden !important; 
-            margin: 0; 
-            padding: 0; 
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311045 100%);
-            color: #f1f5f9;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
-        
-        .glass-3d {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            transform: perspective(1000px);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        
-        .glass-3d:hover {
-            transform: perspective(1000px) translateY(-5px) rotateX(2deg) rotateY(-2deg);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 30px 60px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-        }
+    <!-- Theme Manager -->
+    <script src="js/theme.js"></script>
 
-        .text-gradient {
-            background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+    <style>
+        .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+
+        .cyber-gradient {
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 50%, #9333ea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .blob { 
-            position: absolute; 
-            border-radius: 50%; 
-            filter: blur(100px); 
-            z-index: -1; 
-            opacity: 0.5; 
-            pointer-events: none; 
+        html.dark .cyber-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #4f46e5; }
-        .blob-2 { top: 30%; right: -10%; width: 500px; height: 500px; background: #9333ea; }
-        .blob-3 { bottom: 10%; left: 20%; width: 450px; height: 450px; background: #06b6d4; }
-
-        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
-        .animate-float { animation: float 5s ease-in-out infinite; }
-        .animate-float-delayed { animation: float 6s ease-in-out infinite 2s; }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-scroll {
-            display: flex;
-            width: max-content;
-            animation: scroll 25s linear infinite;
-        }
-        .animate-scroll:hover { animation-play-state: paused; }
     </style>
 </head>
-<body class="antialiased relative selection:bg-indigo-500 selection:text-white">
+<body class="antialiased selection:bg-indigo-500 selection:text-white dark-mode">
 
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-
-    <!-- HEADER / NAVBAR -->
-    <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass-3d border-b border-white/10">
-        <a href="index.html" class="flex items-center gap-2.5">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg shadow-indigo-500/30">H</div>
-            <div class="leading-tight">
-                <h1 class="font-bold text-white text-xs sm:text-sm">Habib <span class="text-indigo-400">iFix</span></h1>
-                <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium tracking-wide" data-en="Trusted Mobile Technician" data-bn="বিশ্বস্ত মোবাইল টেকনিশিয়ান">Trusted Mobile Technician</p>
-            </div>
-        </a>
-
-        <!-- Desktop Nav -->
-        <nav class="hidden lg:flex glass-3d rounded-full px-6 py-2.5 items-center gap-6 text-sm font-medium text-slate-300">
-            <a href="index.html" class="hover:text-white transition-colors" data-en="Home" data-bn="হোম">Home</a>
-            <a href="about.html" class="hover:text-white transition-colors" data-en="About" data-bn="আমাদের সম্পর্কে">About</a>
-            <a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
-            <a href="courses.html" class="hover:text-white transition-colors" data-en="Courses" data-bn="কোর্সসমূহ">Courses</a>
-            <a href="blog.html" class="hover:text-white transition-colors" data-en="Blog" data-bn="ব্লগ">Blog</a>
-            <a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
-        </nav>
-
-        <!-- CTA & Language Switch & Profile -->
-        <div class="flex items-center gap-2 sm:gap-3">
-            <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass-3d bg-indigo-500/20 px-3 py-2 rounded-full font-bold text-xs text-indigo-300 hover:bg-indigo-500/30 transition-colors">
-                বাংলা (BAN)
+    <!-- TOP PROMO BANNER WITH CLOSE BUTTON -->
+    <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all">
+        <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
+            <span class="inline-flex items-center gap-1.5 bg-indigo-500/15 text-indigo-600 dark:text-cyan-300 border border-indigo-500/30 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-cyan-400 animate-ping"></span>
+                LIVE
+            </span>
+            <span class="font-medium" data-en="Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds." data-bn="হাবিব আইফিক্স এআই টেকনিক্যাল অ্যাসিস্ট্যান্ট অ্যাক্টিভ! সেকেন্ডেই মোবাইল ডায়াগনসিস করুন।">
+                Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds.
+            </span>
+            <button onclick="window.openHabibAI()" class="font-bold underline underline-offset-2 ml-1 cursor-pointer text-indigo-600 hover:text-indigo-800 dark:text-cyan-400 dark:hover:text-cyan-300">
+                <span data-en="Try AI Now &rarr;" data-bn="এখনই এআই ট্রাই করুন &rarr;">Try AI Now &rarr;</span>
             </button>
+        </div>
+        <button onclick="closePromoBanner()" class="text-slate-400 hover:text-slate-800 dark:hover:text-white p-1 rounded-full transition-colors ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
+            <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+    </div>
 
-            <a href="login.html?return=index.html" id="loginNavBtn" class="glass-3d bg-white/10 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white/20 transition-colors flex items-center gap-2 text-white">
-                <span data-en="Sign In / Sign Up" data-bn="সাইন ইন / সাইন আপ">Sign In / Sign Up</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
-            </a>
+    <!-- MAIN NAVBAR (UNIFIED ACROSS ALL PAGES) -->
+    <header class="sticky top-0 left-0 w-full z-40 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             
-            <div id="profileBtn" class="hidden relative cursor-pointer group">
-                <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-indigo-400 shadow-md object-cover">
-                <div class="absolute top-full right-0 mt-3 w-48 glass-3d bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
-                    <label class="px-3 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white rounded-xl cursor-pointer flex items-center gap-2 transition-colors mb-1">
-                        <i class="fa-solid fa-camera text-xs"></i> <span data-en="Change Pic" data-bn="ছবি বদলান">Change Pic</span>
-                        <input type="file" id="profilePicInput" accept="image/*" class="hidden">
+            <!-- Brand Logo -->
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="brand-logo-box w-10 h-10 shrink-0 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1.5px] shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.7)] transition-all flex items-center justify-center">
+                    <div class="w-full h-full bg-slate-950 rounded-[13px] flex items-center justify-center">
+                        <svg class="h-logo-svg w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="url(#hLogoGradIdx)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="5.5" cy="4.5" r="1.5" fill="#38bdf8"/>
+                            <circle cx="18.5" cy="4.5" r="1.5" fill="#818cf8"/>
+                            <circle cx="5.5" cy="19.5" r="1.5" fill="#38bdf8"/>
+                            <circle cx="18.5" cy="19.5" r="1.5" fill="#818cf8"/>
+                            <circle cx="12" cy="12" r="1.8" fill="#ffffff"/>
+                            <defs>
+                                <linearGradient id="hLogoGradIdx" x1="5.5" y1="4.5" x2="18.5" y2="19.5" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#38bdf8"/>
+                                    <stop offset="0.5" stop-color="#ffffff"/>
+                                    <stop offset="1" stop-color="#818cf8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center gap-1.5 leading-none">
+                        <span class="brand-name-habib font-black text-xl tracking-tight text-white">Habib</span>
+                        <span class="brand-name-ifix font-black text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">iFix</span>
+                        <span class="brand-name-tech text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-md font-mono-code font-bold ml-1 shadow-sm">.Tech</span>
+                    </div>
+                    <p class="text-[10px] text-slate-300 font-bold mt-1" data-en="Mobile Engineering & Digital Lab" data-bn="মোবাইল ইঞ্জিনিয়ারিং ও ডিজিটাল ল্যাব">Mobile Engineering & Digital Lab</p>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-full border border-white/15 shadow-inner">
+                <a href="index.html" class="px-4 py-2 rounded-full text-xs font-black text-white bg-indigo-600 shadow-md shadow-indigo-600/30 transition-all" data-en="Home" data-bn="হোম">Home</a>
+                <a href="about.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="About" data-bn="পরিচিতি">About</a>
+                <a href="services.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Services" data-bn="সেবাসমূহ">Services</a>
+                <a href="courses.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Courses" data-bn="কোর্স">Courses</a>
+                <a href="cv.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1.5" data-en="CV Maker" data-bn="সিভি মেকার">
+                    <i class="fa-solid fa-file-lines text-xs text-cyan-300"></i> CV Maker
+                </a>
+                <a href="frp.html" class="px-3.5 py-2 rounded-full text-xs font-extrabold text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-unlock-keyhole text-[10px]"></i> FRP 2026
+                </a>
+                <a href="blog.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Blog" data-bn="ব্লগ">Blog</a>
+                <a href="contact.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
+                <a href="admin.html" class="px-3 py-2 rounded-full text-xs font-semibold text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-lock text-[10px]"></i> Admin
+                </a>
+            </nav>
+
+            <!-- Actions: AI Button + Theme Toggle + Lang + Auth -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                
+                <!-- Quick AI Assist Button in Nav -->
+                <button onclick="window.openHabibAI()" class="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 border border-cyan-400/30 text-cyan-300 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+                    <span>AI Assistant</span>
+                </button>
+
+                
+
+                <!-- Language Switcher -->
+                <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass-card hover:border-white/30 text-slate-200 px-2.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-globe text-indigo-400 text-xs"></i>
+                    <span>English</span>
+                </button>
+
+                <!-- Auth State Components -->
+                <div id="loginNavBtn">
+                    <a href="login.html" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors shadow-lg shadow-indigo-600/30 flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-to-bracket text-xs"></i>
+                        <span data-en="Login" data-bn="লগইন">Login</span>
+                    </a>
+                </div>
+
+                <!-- User Profile Dropdown (when logged in) -->
+                <div id="profileBtn" class="hidden items-center gap-2">
+                    <label for="profilePicInput" class="relative cursor-pointer group">
+                        <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-xl object-cover border-2 border-indigo-400">
+                        <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                     </label>
-                    <button onclick="doLogout()" class="w-full px-3 py-2 text-sm text-red-400 hover:bg-red-500/20 rounded-xl text-left flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-sign-out-alt text-xs"></i> <span data-en="Logout" data-bn="লগআউট">Logout</span>
+                    <input type="file" id="profilePicInput" accept="image/*" class="hidden">
+                    <button onclick="logoutCurrentUser()" title="Logout" class="w-8 h-8 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-power-off text-xs"></i>
                     </button>
                 </div>
-            </div>
 
-            <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 glass-3d rounded-xl flex items-center justify-center text-white shadow-md focus:outline-none z-50">
-                <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
+                <!-- Mobile Hamburger Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden w-9 h-9 rounded-xl glass-card flex items-center justify-center text-slate-200 hover:text-white">
+                    <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="lg:hidden hidden border-t border-white/10 bg-slate-950/95 backdrop-blur-2xl px-6 py-6 space-y-3">
+            <a href="index.html" class="block py-2 text-sm font-bold text-indigo-400">Home</a>
+            <a href="about.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">About Habib</a>
+            <a href="services.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Services</a>
+            <a href="courses.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Courses</a>
+            <a href="cv.html" class="block py-2 text-sm font-black text-indigo-400 flex items-center gap-2">
+                <i class="fa-solid fa-file-lines text-cyan-300"></i> CV Maker & Builder
+            </a>
+            <a href="frp.html" class="block py-2 text-sm font-bold text-cyan-400 flex items-center gap-2">
+                <i class="fa-solid fa-unlock-keyhole"></i> Remove FRP 2026
+            </a>
+            <a href="blog.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Blog</a>
+            <a href="contact.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Contact</a>
+            <a href="admin.html" class="block py-2 text-sm font-semibold text-indigo-400">Admin Panel</a>
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                <span class="text-xs text-slate-400">Theme Mode:</span>
+                
+            </div>
+            <button onclick="window.openHabibAI()" class="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-bold text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-robot"></i> Open Habib AI Assistant
             </button>
         </div>
     </header>
 
-    <!-- Mobile Dropdown Menu -->
-    <div id="mobileMenu" class="fixed inset-x-0 top-0 pt-20 bg-slate-950/95 backdrop-blur-2xl border-b border-slate-800 shadow-2xl px-6 pb-6 flex flex-col gap-3 transform -translate-y-full opacity-0 invisible transition-all duration-300 z-40 lg:hidden">
-        <a href="index.html" onclick="toggleMobileMenu()" class="text-white font-semibold text-sm py-2.5 px-4 rounded-xl bg-white/10" data-en="Home" data-bn="হোম">Home</a>
-        <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">About</a>
-        <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5" data-en="Services" data-bn="সেবাসমূহ">Services</a>
-        <a href="blog.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5" data-en="Blog" data-bn="ব্লগ">Blog</a>
-        <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
-        <a href="frp.html" onclick="toggleMobileMenu()" class="text-indigo-400 font-bold text-sm py-2.5 px-4 rounded-xl bg-indigo-500/20" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</a>
-    </div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24">
 
-    <main class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-28 overflow-x-hidden">
-        
-        <!-- HERO SECTION WITH 3D GLASS ANIMATION BOXES -->
-        <section class="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 mt-6 mb-20 relative">
-            <div class="lg:w-1/2 z-10 text-center lg:text-left w-full">
-                <span class="text-indigo-400 font-semibold tracking-widest text-[10px] sm:text-xs uppercase mb-3 block" data-en="AS-SALAMU ALAIKUM, I'M HABIB" data-bn="আসসালামু আলাইকুম, আমি মো: হাবিবুর রহমান">AS-SALAMU ALAIKUM, I'M HABIB</span>
-                <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white tracking-tight leading-tight mb-2">Habib <span class="text-gradient">iFix</span></h1>
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-300 mb-4 sm:mb-6" data-en="Professional Mobile Technician & Online Services" data-bn="প্রফেশনাল মোবাইল টেকনিশিয়ান ও অনলাইন সার্ভিস এক্সপার্ট">Professional Mobile Technician</h2>
-                <p class="text-slate-300 text-sm sm:text-base md:text-lg max-w-lg mx-auto lg:mx-0 leading-relaxed mb-8" data-en="Your trusted partner for all model mobile hardware & software solutions, FRP unlock, online services (Job applications, CV design, Graphics, Facebook-Google Ads), and original accessories." data-bn="আপনার যেকোনো মডেলের ফোনের বিশ্বস্ত রিপেয়ার, সফটওয়্যার ফিক্স, এফআরপি আনলক, অনলাইনে চাকরির আবেদন, সিভি মেক এবং অরিজিনাল মোবাইল এক্সেসরিজের নির্ভরযোগ্য ঠিকানা।">
-                    আপনার যেকোনো মডেলের ফোনের বিশ্বস্ত রিপেয়ার, সফটওয়্যার ফিক্স, এফআরপি আনলক, অনলাইনে চাকরির আবেদন, সিভি মেক এবং অরিজিনাল মোবাইল এক্সেসরিজের বিশ্বস্ত ঠিকানা। শতভাগ সততা ও দক্ষতার সাথে কাজ করা হয়।
-                </p>
-                <div class="flex flex-wrap justify-center lg:justify-start items-center gap-3 sm:gap-4 mb-10">
-                    <a href="services.html" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3.5 rounded-full font-medium flex items-center gap-2 transition-all shadow-lg shadow-indigo-600/30 text-xs sm:text-sm">
-                        <span data-en="View My Services" data-bn="আমার সেবাসমূহ দেখুন">View My Services</span> <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                    </a>
-                    <a href="contact.html" class="glass-3d px-6 py-3.5 rounded-full font-medium flex items-center gap-2 hover:bg-white/10 transition-colors text-slate-200 text-xs sm:text-sm">
-                        <span data-en="Contact Me" data-bn="সরাসরি যোগাযোগ">Contact Me</span> <i class="fa-regular fa-envelope text-xs"></i>
-                    </a>
-                    <a href="frp.html" class="bg-gradient-to-r from-cyan-600 to-indigo-600 text-white px-6 py-3.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-transform shadow-xl text-xs sm:text-sm">
-                        <i class="fa-solid fa-unlock-keyhole text-xs"></i> <span data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি রিমুভ ২০২৬">Android FRP Remove 2026</span>
-                    </a>
-                    <a href="about.html" class="glass-3d px-6 py-3.5 rounded-full font-medium flex items-center gap-2 hover:bg-white/10 transition-colors text-slate-200 text-xs sm:text-sm">
-                        <span data-en="About Me" data-bn="আমার সম্পর্কে">About Me</span> <i class="fa-regular fa-envelope text-xs"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Right Image with Floating 3D Glass Animation Boxes -->
-            <div class="lg:w-1/2 relative flex justify-center w-full">
-                <div class="absolute top-6 -left-4 sm:left-4 glass-3d p-4 rounded-2xl animate-float shadow-2xl z-20 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-500/30 flex items-center justify-center text-indigo-300 text-lg"><i class="fa-solid fa-shield-halved"></i></div>
-                    <div>
-                        <h4 class="text-xs font-bold text-white">Trusted Service</h4>
-                        <p class="text-[10px] text-slate-300">100% Secure & Reliable</p>
-                    </div>
-                </div>
-
-                <div class="absolute top-1/3 -right-4 sm:-right-8 glass-3d p-4 rounded-2xl animate-float-delayed shadow-2xl z-20 w-52">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[10px] text-slate-400">Success Rate</span>
-                        <span class="text-[10px] text-emerald-400 font-bold">+99%</span>
-                    </div>
-                    <div class="text-base font-extrabold text-white mb-2">Expert Level</div>
-                    <div class="h-6 flex items-end gap-1">
-                        <div class="w-3 bg-indigo-500/50 h-3 rounded-t"></div>
-                        <div class="w-3 bg-indigo-500/70 h-5 rounded-t"></div>
-                        <div class="w-3 bg-indigo-500 h-4 rounded-t"></div>
-                        <div class="w-3 bg-purple-500 h-6 rounded-t"></div>
-                        <div class="w-3 bg-pink-500 h-8 rounded-t"></div>
-                    </div>
-                </div>
-
-                <div class="relative w-[280px] h-[360px] sm:w-[380px] sm:h-[480px] md:w-[420px] md:h-[500px] rounded-[40px] overflow-hidden glass-3d border-2 border-white/20 shadow-2xl z-10">
-                    <img src="https://i.ibb.co.com/qYHv8LZc/Chat-GPT-Image-Sep-11-2026-08-20-13-PM.png" alt="Habib Mobile Technician" class="w-full h-full object-cover">
-                </div>
-            </div>
-        </section>
-
-        <!-- TRUST PARTNERS INFINITE SLIDER -->
-        <section class="mb-20 py-8 glass-3d rounded-3xl overflow-hidden relative">
-            <p class="text-center text-xs font-semibold uppercase tracking-widest text-slate-400 mb-6" data-en="Trusted by top e-commerce brands and global partners" data-bn="বিশ্বের শীর্ষস্থানীয় ব্র্যান্ড ও পার্টনারদের দ্বারা বিশ্বস্ত">Trusted by e-commerce brands and global partners</p>
-            <div class="overflow-hidden w-full relative">
-                <div class="animate-scroll flex items-center gap-16 px-8">
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">📱 APPLE</div>
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">🔷 SAMSUNG</div>
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">⚡ VIVO</div>
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">📱 APPLE</div>
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">🔷 SAMSUNG</div>
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">⚡ VIVO</div>
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">📱 APPLE</div>
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">🔷 SAMSUNG</div>
-                    <div class="flex items-center gap-2 text-xl font-bold text-slate-300">⚡ VIVO</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FEATURED COURSES SECTION -->
-        <section class="mb-20" id="featuredCourses">
-            <div class="flex justify-between items-end mb-8">
-                <div>
-                    <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-1 block" data-en="FEATURED COURSES & PACKAGES" data-bn="ফিচারড কোর্স ও প্যাকেজসমূহ">FEATURED COURSES & PACKAGES</span>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white" data-en="Most Popular Courses & Tools" data-bn="সবচেয়ে জনপ্রিয় কোর্স ও ডিজিটাল সার্ভিস">Most Popular Courses & Tools</h2>
-                </div>
-                <a href="courses.html" class="glass-3d bg-white/10 px-4 py-2 rounded-full font-semibold text-xs inline-flex items-center gap-1 text-white hover:bg-white/20 transition-colors">
-                    <span data-en="View All Courses" data-bn="সব কোর্স দেখুন">View All Courses</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                <!-- Course 1 -->
-                <a href="courses.html" class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer hover:border-indigo-500/50 transition-all">
-                    <div>
-                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-blue-600 to-indigo-600 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
-                            <i class="fa-brands fa-google-drive"></i>
-                        </div>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Google 5TB 1 Year Storage</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Secure cloud storage for 1 full year with high-speed access.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
-                        <span class="text-sm font-extrabold text-indigo-400">৳১,২০০</span>
-                        <span class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-indigo-500 transition-colors">Get</span>
-                    </div>
-                </a>
-
-                <!-- Course 2 -->
-                <a href="courses.html" class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer hover:border-emerald-500/50 transition-all">
-                    <div>
-                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-emerald-600 to-teal-600 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
-                            <i class="fa-solid fa-robot"></i>
-                        </div>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">ChatGPT Pro (3 Months)</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Advanced AI models, fast response, and custom GPTs access.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
-                        <span class="text-sm font-extrabold text-emerald-400">৳৮০০</span>
-                        <span class="text-xs bg-emerald-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-emerald-500 transition-colors">Get</span>
-                    </div>
-                </a>
-
-                <!-- Course 3 -->
-                <a href="courses.html" class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer hover:border-purple-500/50 transition-all">
-                    <div>
-                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-purple-600 to-pink-600 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
-                            <i class="fa-solid fa-palette"></i>
-                        </div>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Canva Pro Graphic Tool</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Unlock premium templates, background remover, and brand kits.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
-                        <span class="text-sm font-extrabold text-purple-400">৳৫০০</span>
-                        <span class="text-xs bg-purple-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-purple-500 transition-colors">Get</span>
-                    </div>
-                </a>
-
-                <!-- Course 4 -->
-                <a href="courses.html" class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer hover:border-cyan-500/50 transition-all">
-                    <div>
-                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-cyan-600 to-blue-700 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
-                            <i class="fa-solid fa-mobile-screen-button"></i>
-                        </div>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Mobile Unlocking & FRP Course</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Learn professional software flashing and FRP bypass techniques.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
-                        <span class="text-sm font-extrabold text-cyan-400">৳১,৫০০</span>
-                        <span class="text-xs bg-cyan-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-cyan-500 transition-colors">Get</span>
-                    </div>
-                </a>
-
-                <!-- Course 5 -->
-                <a href="courses.html" class="glass-3d p-4 rounded-3xl flex flex-col justify-between group cursor-pointer hover:border-amber-500/50 transition-all">
-                    <div>
-                        <div class="rounded-2xl overflow-hidden mb-4 bg-gradient-to-tr from-amber-600 to-orange-600 h-36 flex items-center justify-center text-white text-3xl shadow-lg">
-                            <i class="fa-solid fa-bullhorn"></i>
-                        </div>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Digital Marketing & Ads Mastery</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2 mb-4">Master Facebook & Google ads setup to boost any online business.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-3 border-t border-white/10">
-                        <span class="text-sm font-extrabold text-amber-400">৳২,০০০</span>
-                        <span class="text-xs bg-amber-600 text-white px-3 py-1.5 rounded-xl font-bold group-hover:bg-amber-500 transition-colors">Get</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-        
-        <!-- SMART LINK BOX (Get full access for free) -->
-        <section class="mb-12">
-            <div class="glass-3d p-6 sm:p-8 rounded-3xl text-center relative overflow-hidden bg-gradient-to-r from-indigo-900/60 via-purple-900/60 to-pink-900/60 border border-indigo-500/40 shadow-2xl">
-                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
-                <span class="text-xs font-bold uppercase tracking-[0.2em] text-indigo-300 mb-2 block" data-en="SPECIAL OFFER" data-bn="বিশেষ অফার">SPECIAL OFFER</span>
-                <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-3" data-en="Get Full Access For Free" data-bn="সম্পূর্ণ এক্সেস সম্পূর্ণ ফ্রি নিন">Get Full Access For Free</h3>
-                <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mb-6" data-en="Unlock all premium files, secret guides, and VIP tools instantly without any charges." data-bn="যেকোনো চার্জ ছাড়াই তাৎক্ষণিকভাবে সমস্ত প্রিমিয়াম ফাইল, সিক্রেট গাইড এবং ভিআইপি টুলস আনলক করুন।">
-                    Unlock all premium files, secret guides, and VIP tools instantly without any charges.
-                </p>
-                <a href="https://www.profitableratecpmnetwork.com/ggjmk8i2j?key=a251b31cdefa0940555facd387b4e6c1" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold px-8 py-3.5 rounded-full shadow-lg shadow-indigo-500/30 text-xs sm:text-sm transition-all transform hover:scale-105">
-                    <i class="fa-solid fa-lock-open text-xs"></i> <span data-en="Claim Free Access Now" data-bn="ফ্রি এক্সেস নিন">Claim Free Access Now</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- FREE, BASIC, STANDARD, PREMIUM PLANS SECTION -->
-        <section class="mb-20" id="pricingPlans">
-            <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block text-center" data-en="PRICING & PACKAGES" data-bn="প্রাইসিং ও প্যাকেজসমূহ">PRICING & PACKAGES</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3 text-center" data-en="Choose Your Service Plan" data-bn="আপনার প্রয়োজনীয় প্ল্যানটি বেছে নিন">Choose Your Service Plan</h2>
-            <p class="text-xs sm:text-sm text-slate-400 text-center max-w-xl mx-auto mb-10" data-en="Select any plan below. You must be signed in to book directly via WhatsApp." data-bn="নিচের যেকোনো প্ল্যান সিলেক্ট করুন। হোয়াটসঅ্যাপে অর্ডার পাঠানোর জন্য অবশ্যই লগইন থাকতে হবে।">Select any plan below. You must be signed in to book directly via WhatsApp.</p>
+        <!-- ================= HERO SECTION ================= -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mt-4 mb-20 relative">
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Free Plan -->
-                <div class="glass-3d p-6 rounded-3xl flex flex-col justify-between border-t-4 border-slate-400">
+            <!-- Left Hero Content -->
+            <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                
+                <!-- BADGES: Tier Online IT Services & Master Lab -->
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold tracking-wide">
+                        <i class="fa-solid fa-layer-group text-cyan-400"></i>
+                        <span>Tier Online IT Services</span>
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border-indigo-500/30">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-xs font-semibold text-slate-300" data-en="Master Technician Lab • Certified Micro-soldering" data-bn="মাস্টার টেকনিশিয়ান ল্যাব • সার্টিফাইড মাইক্রো-সোল্ডারিং">
+                            Master Technician Lab • Certified Micro-soldering
+                        </span>
+                    </div>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.15]">
+                    Fast, Precision <br>
+                    <span class="cyber-gradient">Mobile Engineering</span> <br>
+                    & AI Diagnostics
+                </h1>
+
+                <p class="text-slate-300 text-sm sm:text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal" data-en="Your trusted partner for all model mobile hardware & software solutions, FRP unlock, online services (Job applications, CV design, Graphics, Facebook-Google Ads), and original accessories." data-bn="আপনার যেকোনো মডেলের ফোনের বিশ্বস্ত রিপেয়ার, সফটওয়্যার ফিক্স, এফআরপি আনলক, অনলাইনে চাকরির আবেদন, সিভি মেক এবং অরিজিনাল মোবাইল এক্সেসরিজের বিশ্বস্ত ঠিকানা।">
+                    আপনার যেকোনো মডেলের ফোনের বিশ্বস্ত রিপেয়ার, সফটওয়্যার ফিক্স, এফআরপি আনলক, অনলাইনে চাকরির আবেদন, সিভি মেক এবং অরিজিনাল মোবাইল এক্সেসরিজের বিশ্বস্ত ঠিকানা।
+                </p>
+
+                <!-- REQUESTED HERO ACTION BUTTONS -->
+                <div class="flex flex-wrap justify-center lg:justify-start items-center gap-3 pt-2">
+                    
+                    <!-- 1. Run AI Diagnosis -->
+                    <a href="#aiTerminalSection" class="bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:opacity-95 text-white px-6 py-3.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow-[0_10px_30px_rgba(99,102,241,0.4)] transition-transform hover:scale-105 active:scale-95">
+                        <i class="fa-solid fa-microchip text-cyan-300"></i>
+                        <span data-en="Run AI Diagnosis" data-bn="এআই ডায়াগনস্টিক চালান">Run AI Diagnosis</span>
+                    </a>
+
+                    <!-- 2. Book Repair Plan -->
+                    <a href="#pricingPlans" class="glass-card hover:bg-white/10 text-white px-6 py-3.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-calendar-check text-indigo-400"></i>
+                        <span data-en="Book Repair Plan" data-bn="রিপেয়ার বুকিং দিন">Book Repair Plan</span>
+                    </a>
+
+                    <!-- 3. 01868-461577 Phone & WhatsApp -->
+                    <a href="https://wa.me/8801868461577" target="_blank" class="bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 px-5 py-3.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all">
+                        <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i>
+                        <span>01868-461577</span>
+                    </a>
+                </div>
+
+                <!-- 4. REQUESTED DEDICATED PROMINENT BOX: Remove FRP 2026 (Goes to frp.html) -->
+                <a href="frp.html" class="block group mt-5 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-indigo-950/70 border-2 border-cyan-400/50 hover:border-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.3)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] transition-all transform hover:-translate-y-1 frp-highlight-box cursor-pointer max-w-xl">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xl shadow-lg shadow-cyan-500/30 group-hover:scale-110 transition-transform shrink-0">
+                                <i class="fa-solid fa-unlock-keyhole text-amber-300"></i>
+                            </div>
+                            <div class="text-left">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h3 class="text-base sm:text-lg font-black text-white group-hover:text-cyan-300 transition-colors">
+                                        Remove FRP 2026
+                                    </h3>
+                                    <span class="bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
+                                        1-Click Bypass
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-300 mt-1" data-en="Instant Google Account & Knox Bypass for Samsung, Xiaomi, Vivo, Oppo & All Android 11-15." data-bn="স্যামসাং, শাওমি, ভিভো, অপো ও সকল অ্যান্ড্রয়েড গুগল অ্যাকাউন্ট এফআরপি বাইপাস ২০২৬ মেথড।">
+                                    স্যামসাং, শাওমি, ভিভো, অপো ও সকল অ্যান্ড্রয়েড গুগল অ্যাকাউন্ট এফআরপি বাইপাস ২০২৬ মেথড।
+                                </p>
+                            </div>
+                        </div>
+                        <div class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-cyan-400 group-hover:text-cyan-300 group-hover:translate-x-1.5 transition-all">
+                            <span class="hidden sm:inline">Open Guide</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- KPI Badges -->
+                <div class="grid grid-cols-3 gap-3 pt-4 max-w-lg mx-auto lg:mx-0">
+                    <div class="glass-card p-3 rounded-2xl text-center">
+                        <div class="text-xl sm:text-2xl font-black text-cyan-400 font-mono-code">5,000+</div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Devices Fixed</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-2xl text-center">
+                        <div class="text-xl sm:text-2xl font-black text-emerald-400 font-mono-code">99.4%</div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Success Rate</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-2xl text-center">
+                        <div class="text-xl sm:text-2xl font-black text-indigo-400 font-mono-code">30 Min</div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Express Care</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Hero Card / Technician Visual -->
+            <div class="lg:col-span-5 relative flex justify-center">
+                
+                <div class="relative w-full max-w-[420px] aspect-[4/5] rounded-[36px] overflow-hidden glass-card border-2 border-indigo-500/30 shadow-[0_20px_70px_rgba(0,0,0,0.8)] group">
+                    <img src="https://i.ibb.co.com/qYHv8LZc/Chat-GPT-Image-Sep-11-2026-08-20-13-PM.png" alt="Habib Master Mobile Technician" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    
+                    <!-- Gradient Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+
+                    <!-- Floating Chip 1 -->
+                    <div class="absolute top-5 left-5 glass-card px-3.5 py-2 rounded-xl flex items-center gap-2.5 border border-white/20 shadow-xl backdrop-blur-md">
+                        <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold text-white">100% Genuine Parts</p>
+                            <p class="text-[9px] text-slate-400">OLED & Original IC</p>
+                        </div>
+                    </div>
+
+                    <!-- Floating Chip 2 -->
+                    <div class="absolute bottom-6 left-6 right-6 glass-card p-4 rounded-2xl border border-indigo-500/40 backdrop-blur-md">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-bold text-white flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                                Habib iFix Lab Status
+                            </span>
+                            <span class="text-[10px] font-mono-code font-bold text-emerald-400">ACTIVE</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 leading-snug">
+                            Microscope Lab, Thermal Camera, BGA Rework Station & Software Unlock Ready.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= LIVE BRAND PARTNERS TICKER ================= -->
+        <section class="mb-20 py-4 glass-card rounded-2xl overflow-hidden relative border border-white/5">
+            <div class="ticker-track flex items-center gap-16 px-8 text-xs font-mono-code tracking-widest text-slate-400 font-bold uppercase">
+                <span class="flex items-center gap-2 text-white"><i class="fa-brands fa-apple text-base"></i> APPLE IPHONE</span>
+                <span class="flex items-center gap-2 text-white"><i class="fa-solid fa-mobile-screen text-base text-cyan-400"></i> SAMSUNG GALAXY</span>
+                <span class="flex items-center gap-2 text-white"><i class="fa-solid fa-microchip text-base text-indigo-400"></i> XIAOMI & REDMI</span>
+                <span class="flex items-center gap-2 text-white"><i class="fa-solid fa-bolt text-base text-amber-400"></i> VIVO & IQOO</span>
+                <span class="flex items-center gap-2 text-white"><i class="fa-solid fa-shield text-base text-emerald-400"></i> OPPO & REALME</span>
+                <span class="flex items-center gap-2 text-white"><i class="fa-solid fa-unlock-keyhole text-base text-purple-400"></i> 2026 FRP BYPASS</span>
+                <span class="flex items-center gap-2 text-white"><i class="fa-brands fa-apple text-base"></i> APPLE IPHONE</span>
+                <span class="flex items-center gap-2 text-white"><i class="fa-solid fa-mobile-screen text-base text-cyan-400"></i> SAMSUNG GALAXY</span>
+            </div>
+        </section>
+
+        <!-- ================= AI DIAGNOSTIC TERMINAL (CLEANED UP) ================= -->
+        <section id="aiTerminalSection" class="mb-24 relative scroll-mt-24">
+            
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold mb-3">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>INSTANT TECHNICAL DIAGNOSTICS</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-en="Instant AI Phone Diagnostic Terminal" data-bn="ইনস্ট্যান্ট এআই ফোন ডায়াগনস্টিক টার্মিনাল">
+                    Instant AI Phone Diagnostic Terminal
+                </h2>
+                <p class="text-sm text-slate-400 mt-2" data-en="Select your phone brand and symptom to generate an instant technical assessment, repair plan, and exact cost estimation." data-bn="আপনার ফোনের ব্র্যান্ড ও সমস্যাটি সিলেক্ট করুন এবং সাথে সাথে বিস্তারিত টেকনিক্যাল রিপোর্ট, সার্ভিস খরচ ও সমাধান জানুন।">
+                    আপনার ফোনের ব্র্যান্ড ও সমস্যাটি সিলেক্ট করুন এবং সাথে সাথে বিস্তারিত টেকনিক্যাল রিপোর্ট, সার্ভিস খরচ ও সমাধান জানুন।
+                </p>
+            </div>
+
+            <div class="glass-card rounded-[32px] p-6 sm:p-10 border border-indigo-500/30 shadow-[0_20px_70px_rgba(0,0,0,0.6)]">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <!-- Left: Diagnostic Inputs -->
+                    <div class="lg:col-span-5 space-y-5">
+                        
+                        <!-- Device Brand -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-mobile-screen-button text-indigo-400 mr-1.5"></i> Device Brand
+                            </label>
+                            <select id="diagBrand" class="w-full bg-slate-900 border border-white/10 rounded-2xl px-4 py-3 text-xs sm:text-sm text-white outline-none focus:border-indigo-500 transition-colors">
+                                <option value="Samsung">Samsung (Galaxy S, A, M, Note, Z)</option>
+                                <option value="Apple">Apple (iPhone 11 / 12 / 13 / 14 / 15 / 16)</option>
+                                <option value="Xiaomi">Xiaomi / Redmi / POCO</option>
+                                <option value="Vivo">Vivo / iQOO</option>
+                                <option value="Oppo">Oppo / Realme / OnePlus</option>
+                                <option value="Google Pixel">Google Pixel</option>
+                                <option value="Infinix">Infinix / Tecno / itel</option>
+                                <option value="Other">Other Android Device</option>
+                            </select>
+                        </div>
+
+                        <!-- Specific Model -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-tag text-indigo-400 mr-1.5"></i> Model Name / Number
+                            </label>
+                            <input type="text" id="diagModel" placeholder="e.g. Galaxy A54, iPhone 13, Redmi Note 12" class="w-full bg-slate-900 border border-white/10 rounded-2xl px-4 py-3 text-xs sm:text-sm text-white placeholder-slate-500 outline-none focus:border-indigo-500 transition-colors">
+                        </div>
+
+                        <!-- Symptom Chips -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1.5"></i> Issue / Symptom
+                            </label>
+                            <div class="grid grid-cols-2 gap-2 text-xs" id="symptomContainer">
+                                <button type="button" class="symptom-btn p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-indigo-400 text-slate-300 font-medium text-left flex items-center gap-2 transition-all active:scale-95" data-symptom="Cracked Screen / Display Line">
+                                    <i class="fa-solid fa-mobile text-cyan-400 text-xs"></i> <span>Broken Display</span>
+                                </button>
+                                <button type="button" class="symptom-btn p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-indigo-400 text-slate-300 font-medium text-left flex items-center gap-2 transition-all active:scale-95" data-symptom="Dead Boot / Not Turning On">
+                                    <i class="fa-solid fa-power-off text-red-400 text-xs"></i> <span>Dead / No Power</span>
+                                </button>
+                                <button type="button" class="symptom-btn p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-indigo-400 text-slate-300 font-medium text-left flex items-center gap-2 transition-all active:scale-95" data-symptom="FRP / Google Account Lock">
+                                    <i class="fa-solid fa-lock text-purple-400 text-xs"></i> <span>FRP Lock</span>
+                                </button>
+                                <button type="button" class="symptom-btn p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-indigo-400 text-slate-300 font-medium text-left flex items-center gap-2 transition-all active:scale-95" data-symptom="Water Dropped / Liquid Ingress">
+                                    <i class="fa-solid fa-droplet text-blue-400 text-xs"></i> <span>Water Damage</span>
+                                </button>
+                                <button type="button" class="symptom-btn p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-indigo-400 text-slate-300 font-medium text-left flex items-center gap-2 transition-all active:scale-95" data-symptom="Battery Drain / Charging Issue">
+                                    <i class="fa-solid fa-battery-half text-emerald-400 text-xs"></i> <span>Battery Issue</span>
+                                </button>
+                                <button type="button" class="symptom-btn p-2.5 rounded-xl border border-white/10 bg-white/5 hover:border-indigo-400 text-slate-300 font-medium text-left flex items-center gap-2 transition-all active:scale-95" data-symptom="Audio / Microphone Failure">
+                                    <i class="fa-solid fa-volume-xmark text-amber-400 text-xs"></i> <span>Audio / Mic</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Custom Note -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-pen text-indigo-400 mr-1.5"></i> Custom Description (Optional)
+                            </label>
+                            <input type="text" id="diagNote" placeholder="e.g. Screen flickering after drop" class="w-full bg-slate-900 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white placeholder-slate-500 outline-none focus:border-indigo-500 transition-colors">
+                        </div>
+
+                        <!-- Run Button -->
+                        <button id="runDiagBtn" onclick="executeDiagnosis()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:opacity-90 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(99,102,241,0.4)] transition-all cursor-pointer">
+                            <i class="fa-solid fa-wand-magic-sparkles text-cyan-300"></i>
+                            <span>Generate AI Diagnostic Report</span>
+                        </button>
+
+                    </div>
+
+                    <!-- Right: Diagnostic Output Screen -->
+                    <div class="lg:col-span-7 bg-slate-950/90 rounded-2xl border border-indigo-500/20 p-5 sm:p-7 flex flex-col justify-between font-mono-code text-xs relative overflow-hidden">
+                        
+                        <!-- Terminal Bar -->
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4 shrink-0 font-sans">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                                <span class="text-xs font-mono-code text-slate-400 ml-2">habib-ai://diagnostics</span>
+                            </div>
+                            <span id="diagEngineBadge" class="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded font-mono-code">READY</span>
+                        </div>
+
+                        <!-- Terminal Dynamic Body -->
+                        <div id="diagTerminalBody" class="flex-1 space-y-4 overflow-y-auto max-h-[380px] pr-2">
+                            <div class="text-slate-400">
+                                <p class="text-emerald-400 font-bold mb-2"># Habib iFix Diagnostic Terminal Initialized.</p>
+                                <p>Select your device and symptom on the left, then click "Generate AI Diagnostic Report".</p>
+                                <p class="mt-4 text-slate-500 text-[11px]">
+                                    // Real-time hardware fault detection, component pricing & micro-soldering estimates.<br>
+                                    // Direct connection with Habib iFix Master Technician Lab.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Terminal Bottom Action -->
+                        <div id="diagBottomAction" class="hidden pt-4 border-t border-white/10 mt-4 flex flex-wrap items-center justify-between gap-3 font-sans shrink-0">
+                            <div>
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Estimated Service</span>
+                                <span id="diagCostDisplay" class="text-base font-extrabold text-cyan-400">৳১,৫০০</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="bookDiagResult()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-colors shadow flex items-center gap-1.5">
+                                    <i class="fa-solid fa-calendar-check"></i> Book This Fix
+                                </button>
+                                <a id="diagWhatsAppLink" href="https://wa.me/8801868461577" target="_blank" class="bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1.5">
+                                    <i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= COMPLETE SERVICES SHOWCASE (FROM SERVICES PAGE) ================= -->
+        <section class="mb-24" id="servicesGrid">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+                <div>
+                    <span class="text-indigo-400 font-mono-code font-bold text-xs uppercase tracking-widest block mb-2" data-en="ALL POPULAR SERVICES" data-bn="আমাদের জনপ্রিয় সকল সেবাসমূহ">
+                        ALL POPULAR SERVICES
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-en="Explore Our Complete Services" data-bn="আমাদের সম্পূর্ণ সার্ভিস ক্যাটালগ">
+                        Explore Our Complete Services
+                    </h2>
+                </div>
+                <a href="services.html" class="glass-card hover:bg-black/5 dark:hover:bg-white/10 text-slate-900 dark:text-white text-xs font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all">
+                    <span data-en="Open Full Services Page" data-bn="ফুল সার্ভিস পেজ দেখুন">Open Full Services Page</span>
+                    <i class="fa-solid fa-arrow-right text-indigo-400"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Service 1: Online Job Apply & CV -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
                     <div>
-                        <h3 class="font-bold text-lg text-white mb-1" data-en="Free Plan" data-bn="ফ্রি প্ল্যান">Free Plan</h3>
-                        <p class="text-[11px] text-slate-400 mb-4" data-en="Basic consultation & YouTube guides." data-bn="প্রাথমিক কনসাল্টেশন ও ইউটিউব গাইড।">Basic consultation & YouTube guides.</p>
-                        <div class="text-2xl font-extrabold text-white mb-4">৳০ <span class="text-xs font-normal text-slate-400">/ lifetime</span></div>
-                        <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
-                            <li><i class="fa-solid fa-check text-green-400 mr-2"></i> <span data-en="Basic Advice" data-bn="বেসিক পরামর্শ">Basic Advice</span></li>
-                            <li><i class="fa-solid fa-check text-green-400 mr-2"></i> <span data-en="Community Access" data-bn="কমিউনিটি এক্সেস">Community Access</span></li>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400">Free / Cheap</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white mb-2">Online Job Apply & Professional CV</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Government & private job applications, modern CV/Resume design, passport forms, and online portal submissions.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-[11px] text-indigo-400 font-medium">Est. 15-30 min</span>
+                        <a href="cv.html" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl font-bold transition-colors shadow">Get</a>
+                    </div>
+                </div>
+
+                <!-- Service 2: Android FRP & Software Unlock -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group border-cyan-500/30">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-unlock-keyhole"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-400">2026 Ready</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white mb-2">Android FRP & Software Unlock</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Google account bypass (FRP), Samsung Knox, network unlock, flashing, dead boot repair, and system error fixes.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-[11px] text-cyan-400 font-medium">Est. 20-50 min</span>
+                        <a href="frp.html" class="text-xs bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-xl font-bold transition-colors shadow">Open FRP</a>
+                    </div>
+                </div>
+
+                <!-- Service 3: Mobile Hardware & Display Fix -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-mobile-screen-button"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-purple-500/20 text-purple-400">DM NOW</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white mb-2">Mobile Hardware & Display Fix</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Original AMOLED/OLED display replacement, touch fix, charging port repair, and battery swap for iPhone & Android.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-[11px] text-purple-400 font-medium">Est. 30-60 min</span>
+                        <button onclick="openPlanModal('Mobile Hardware & Display Fix', '৳১,৫০০')" class="text-xs bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl font-bold transition-colors shadow">Book</button>
+                    </div>
+                </div>
+
+                <!-- Service 4: Graphics Design & Branding -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-palette"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-400">Custom</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white mb-2">Graphics Design & Branding</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Professional logo design, social media post banners, video thumbnails, and YouTube channel branding.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-[11px] text-amber-400 font-medium">Est. 1-2 hours</span>
+                        <a href="contact.html" class="text-xs bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-xl font-bold transition-colors shadow">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Service 5: Motherboard IC & CPU Reballing -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-red-500/20 text-red-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-red-500/20 text-red-400">Microscope Lab</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white mb-2">Motherboard IC & CPU Reballing</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Dead boot recovery, PMIC, Charging IC, Audio Codec, and CPU/RAM double-decker reballing with stereo microscope.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-[11px] text-red-400 font-medium">Est. 2-4 hours</span>
+                        <button onclick="openPlanModal('Motherboard IC Repair', '৳২,০০০')" class="text-xs bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl font-bold transition-colors shadow">Book</button>
+                    </div>
+                </div>
+
+                <!-- Service 6: Ultrasonic Liquid Damage Recovery -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-faucet-drip"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-blue-500/20 text-blue-400">Urgent Care</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white mb-2">Ultrasonic Liquid Damage Recovery</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Ultrasonic chemical cleaning, thermal camera short tracing, and corrosion removal for water-dropped phones.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-[11px] text-blue-400 font-medium">Est. 1-3 hours</span>
+                        <button onclick="openPlanModal('Water Damage Recovery', '৳১,৫০০')" class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl font-bold transition-colors shadow">Book</button>
+                    </div>
+                </div>
+
+                <!-- Service 7: 100% Original Battery Replacement -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-battery-three-quarters"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400">6M Warranty</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white mb-2">Original Battery & Charging Port</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            High-capacity certified replacement batteries with 6-month replacement warranty and fast-charging Sub-board repair.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-[11px] text-emerald-400 font-medium">Est. 20-30 min</span>
+                        <button onclick="openPlanModal('Battery Replacement', '৳১,২০০')" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl font-bold transition-colors shadow">Book</button>
+                    </div>
+                </div>
+
+                <!-- Service 8: Digital Marketing & FB/Google Ads -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-400">Business Boost</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white mb-2">FB & Google Ads Campaign Setup</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Facebook page boosting, Google Search ads, pixel tracking setup, and dual-currency virtual card management.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-[11px] text-cyan-400 font-medium">Same Day Setup</span>
+                        <button onclick="openPlanModal('Digital Ads Campaign', '৳১,০০০')" class="text-xs bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-xl font-bold transition-colors shadow">Boost Now</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= POPULAR COURSES & DIGITAL SKILLS (IMAGE SYSTEM BOX) ================= -->
+        <section class="mb-24 scroll-mt-24" id="homeCourses">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+                <div>
+                    <span class="text-indigo-600 dark:text-indigo-400 font-mono-code font-bold text-xs uppercase tracking-widest block mb-2" data-en="CAREER ACCELERATOR" data-bn="দক্ষতা উন্নয়ন কোর্স">
+                        CAREER ACCELERATOR
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-en="Featured Professional Courses" data-bn="আমাদের জনপ্রিয় প্রফেশনাল কোর্সসমূহ">
+                        Featured Professional Courses
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1.5" data-en="Master Website Creation, Logo Design, Graphic Design, Mobile Hardware & FRP 2026." data-bn="শিখুন ওয়েবসাইট মেকিং, লোগো ডিজাইন, গ্রাফিক্স ডিজাইন, মোবাইল হার্ডওয়্যার ও এফআরপি ২০২৬।">
+                        শিখুন ওয়েবসাইট মেকিং, লোগো ডিজাইন, গ্রাফিক্স ডিজাইন, মোবাইল হার্ডওয়্যার ও এফআরপি ২০২৬।
+                    </p>
+                </div>
+                <a href="courses.html" class="glass-card hover:bg-black/5 dark:hover:bg-white/10 text-slate-900 dark:text-white text-xs font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all">
+                    <span data-en="View All 12+ Courses" data-bn="সকল ১২+ কোর্স দেখুন">View All 12+ Courses</span>
+                    <i class="fa-solid fa-arrow-right text-indigo-500"></i>
+                </a>
+            </div>
+
+            <!-- Image System Box Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Course 1: Website Make -->
+                <div class="glass-card rounded-[28px] overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/80 dark:border-white/10 relative">
+                    <div>
+                        <div class="h-44 w-full overflow-hidden relative bg-slate-800">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&q=80" alt="Website Make" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                            <span class="absolute top-3 left-3 bg-indigo-600/90 text-white text-[9px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                WEB DEV
+                            </span>
+                            <span class="absolute top-3 right-3 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-0.5 rounded-full shadow">
+                                ৳২,৫০০
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center gap-1.5 text-[11px] text-amber-500 mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold">4.9</span>
+                                <span class="text-slate-500 dark:text-slate-400">(640+ students)</span>
+                            </div>
+                            <h3 class="font-bold text-base text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-cyan-400 transition-colors mb-2 line-clamp-2">
+                                Website Make & Web Development
+                            </h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed mb-4">
+                                Responsive design, HTML, CSS, Tailwind, JavaScript, WordPress, Shopify, and real domain hosting server deployment.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5 pt-0">
+                        <div class="pt-3 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+                            <span class="text-base font-black text-indigo-600 dark:text-cyan-400 font-mono">৳২,৫০০</span>
+                            <button onclick="openPlanModal('Website Make & Dev Course', '৳২,৫০০')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow cursor-pointer">
+                                Enroll Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 2: Logo Design -->
+                <div class="glass-card rounded-[28px] overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/80 dark:border-white/10 relative">
+                    <div>
+                        <div class="h-44 w-full overflow-hidden relative bg-slate-800">
+                            <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=700&q=80" alt="Logo Design" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                            <span class="absolute top-3 left-3 bg-purple-600/90 text-white text-[9px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                BRANDING
+                            </span>
+                            <span class="absolute top-3 right-3 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-0.5 rounded-full shadow">
+                                ৳১,৫০০
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center gap-1.5 text-[11px] text-amber-500 mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold">5.0</span>
+                                <span class="text-slate-500 dark:text-slate-400">(820+ students)</span>
+                            </div>
+                            <h3 class="font-bold text-base text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-cyan-400 transition-colors mb-2 line-clamp-2">
+                                Professional Logo Design Mastery
+                            </h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed mb-4">
+                                Corporate identity, golden ratio marks, minimalist & mascot logos in Illustrator, vector exporting, and portfolio presentation.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5 pt-0">
+                        <div class="pt-3 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+                            <span class="text-base font-black text-indigo-600 dark:text-cyan-400 font-mono">৳১,৫০০</span>
+                            <button onclick="openPlanModal('Logo Design Course', '৳১,৫০০')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow cursor-pointer">
+                                Enroll Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 3: Graphic Design -->
+                <div class="glass-card rounded-[28px] overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/80 dark:border-white/10 relative">
+                    <div>
+                        <div class="h-44 w-full overflow-hidden relative bg-slate-800">
+                            <img src="https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=700&q=80" alt="Graphic Design" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                            <span class="absolute top-3 left-3 bg-cyan-600/90 text-white text-[9px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                GRAPHICS
+                            </span>
+                            <span class="absolute top-3 right-3 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-0.5 rounded-full shadow">
+                                ৳১,৮০০
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center gap-1.5 text-[11px] text-amber-500 mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold">4.9</span>
+                                <span class="text-slate-500 dark:text-slate-400">(1,200+ students)</span>
+                            </div>
+                            <h3 class="font-bold text-base text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-cyan-400 transition-colors mb-2 line-clamp-2">
+                                Complete Graphic Design Masterclass
+                            </h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed mb-4">
+                                Photoshop & Illustrator: Social media creatives, banners, ad designs, posters, photo manipulation, and print materials.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5 pt-0">
+                        <div class="pt-3 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+                            <span class="text-base font-black text-indigo-600 dark:text-cyan-400 font-mono">৳১,৮০০</span>
+                            <button onclick="openPlanModal('Graphic Design Course', '৳১,৮০০')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow cursor-pointer">
+                                Enroll Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 4: Mobile Hardware & FRP 2026 -->
+                <div class="glass-card rounded-[28px] overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/80 dark:border-white/10 relative">
+                    <div>
+                        <div class="h-44 w-full overflow-hidden relative bg-slate-800">
+                            <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=700&q=80" alt="Mobile Hardware Lab" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                            <span class="absolute top-3 left-3 bg-red-600/90 text-white text-[9px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                HARDWARE LAB
+                            </span>
+                            <span class="absolute top-3 right-3 bg-emerald-500/90 text-white text-xs font-bold px-2.5 py-0.5 rounded-full shadow">
+                                ৳৩,০০০
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center gap-1.5 text-[11px] text-amber-500 mb-2">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold">5.0</span>
+                                <span class="text-slate-500 dark:text-slate-400">(950+ technicians)</span>
+                            </div>
+                            <h3 class="font-bold text-base text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-cyan-400 transition-colors mb-2 line-clamp-2">
+                                Master Mobile Hardware & FRP 2026
+                            </h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed mb-4">
+                                Chip-level microscope soldering, PMIC/CPU reballing, Samsung Knox bypass, testpoint EDL flashing, and thermal short tracing.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5 pt-0">
+                        <div class="pt-3 border-t border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+                            <span class="text-base font-black text-indigo-600 dark:text-cyan-400 font-mono">৳৩,০০০</span>
+                            <button onclick="openPlanModal('Hardware & FRP Course', '৳৩,০০০')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow cursor-pointer">
+                                Enroll Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PRICING & BOOKING PACKAGES ================= -->
+        <section class="mb-24 scroll-mt-24" id="pricingPlans">
+            
+            <div class="text-center max-w-xl mx-auto mb-12">
+                <span class="text-indigo-400 font-mono-code font-bold text-xs uppercase tracking-widest block mb-2" data-en="TRANSPARENT PRICING" data-bn="স্বচ্ছ মূল্য তালিকা">
+                    TRANSPARENT PRICING
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-en="Choose Your Service Plan" data-bn="আপনার প্রয়োজনীয় প্ল্যানটি বেছে নিন">
+                    Choose Your Service Plan
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-400 mt-2" data-en="Select any package below to reserve your slot directly. We store your booking and provide immediate WhatsApp follow-up." data-bn="নিচের যেকোনো প্যাকেজ সিলেক্ট করে সরাসরি বুকিং দিন। তাৎক্ষণিকভাবে কনফার্মেশন ও হোয়াটসঅ্যাপ সাপোর্ট পাবেন।">
+                    নিচের যেকোনো প্যাকেজ সিলেক্ট করে সরাসরি বুকিং দিন। তাৎক্ষণিকভাবে কনফার্মেশন ও হোয়াটসঅ্যাপ সাপোর্ট পাবেন।
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Free Plan -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between border-t-4 border-slate-500">
+                    <div>
+                        <h3 class="font-bold text-lg text-white mb-1" data-en="Free Consultation" data-bn="ফ্রি কনসাল্টেশন">Free Consultation</h3>
+                        <p class="text-[11px] text-slate-400 mb-4" data-en="AI & chat technical diagnosis." data-bn="এআই ও চ্যাট টেকনিক্যাল পরামর্শ।">AI & chat technical diagnosis.</p>
+                        <div class="text-3xl font-extrabold text-white mb-4">৳০ <span class="text-xs font-normal text-slate-400">/ lifetime</span></div>
+                        <ul class="space-y-2 text-xs text-slate-300 mb-6">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Free Phone Problem Diagnosis</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> AI Assistant Guidance</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Technical Advice & Tips</li>
                         </ul>
                     </div>
-                    <button onclick="openPlanModal('Free Plan', '৳০')" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-md" data-en="Get Free" data-bn="ফ্রি নিন">Get Free</button>
+                    <button onclick="openPlanModal('Free Plan', '৳০')" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow">
+                        Get Free Advice
+                    </button>
                 </div>
 
                 <!-- Basic Plan -->
-                <div class="glass-3d p-6 rounded-3xl flex flex-col justify-between border-t-4 border-indigo-500">
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between border-t-4 border-indigo-500">
                     <div>
-                        <h3 class="font-bold text-lg text-white mb-1" data-en="Basic Plan" data-bn="বেসিক প্ল্যান">Basic Plan</h3>
-                        <p class="text-[11px] text-slate-400 mb-4" data-en="Small repair & online job apply." data-bn="ছোটখাটো রিপেয়ার ও অনলাইন জব আবেদন।">Small repair & online job apply.</p>
-                        <div class="text-2xl font-extrabold text-indigo-400 mb-4">৳৫০০ <span class="text-xs font-normal text-slate-400">/ service</span></div>
-                        <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
-                            <li><i class="fa-solid fa-check text-green-400 mr-2"></i> <span data-en="Software Fix / CV Make" data-bn="সফটওয়্যার ফিক্স / সিভি মেক">Software Fix / CV Make</span></li>
-                            <li><i class="fa-solid fa-check text-green-400 mr-2"></i> <span data-en="Fast Support" data-bn="দ্রুত সাপোর্ট">Fast Support</span></li>
+                        <h3 class="font-bold text-lg text-white mb-1" data-en="Basic Service" data-bn="বেসিক সার্ভিস">Basic Service</h3>
+                        <p class="text-[11px] text-slate-400 mb-4" data-en="Small repair & online job forms." data-bn="ছোটখাটো রিপেয়ার ও অনলাইন জব আবেদন।">Small repair & online job forms.</p>
+                        <div class="text-3xl font-extrabold text-indigo-400 mb-4">৳৫০০ <span class="text-xs font-normal text-slate-400">/ fix</span></div>
+                        <ul class="space-y-2 text-xs text-slate-300 mb-6">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Software Fix / Pattern Unlock</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Online Job Form Application</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Same Day Fast Turnaround</li>
                         </ul>
                     </div>
-                    <button onclick="openPlanModal('Basic Plan', '৳৫০০')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-md" data-en="Choose Basic" data-bn="বেসিক সিলেক্ট করুন">Choose Basic</button>
+                    <button onclick="openPlanModal('Basic Service', '৳৫০০')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-lg shadow-indigo-600/30">
+                        Choose Basic
+                    </button>
                 </div>
 
-                <!-- Standard Plan -->
-                <div class="glass-3d p-6 rounded-3xl flex flex-col justify-between border-t-4 border-purple-500 relative scale-105 bg-white/[0.07]">
-                    <span class="absolute -top-3 right-4 bg-purple-600 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase">POPULAR</span>
+                <!-- Standard Plan (POPULAR) -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between border-t-4 border-purple-500 relative scale-105 bg-white/[0.08] shadow-[0_15px_40px_rgba(168,85,247,0.2)]">
+                    <span class="absolute -top-3 right-4 bg-purple-600 text-white text-[9px] font-mono-code font-bold px-2.5 py-0.5 rounded-full uppercase">
+                        MOST POPULAR
+                    </span>
                     <div>
-                        <h3 class="font-bold text-lg text-white mb-1" data-en="Standard Plan" data-bn="স্ট্যান্ডার্ড প্ল্যান">Standard Plan</h3>
-                        <p class="text-[11px] text-slate-400 mb-4" data-en="Advanced mobile repair & FRP unlock." data-bn="এডভান্সড মোবাইল রিপেয়ার ও এফআরপি আনলক।">Advanced mobile repair & FRP unlock.</p>
-                        <div class="text-2xl font-extrabold text-purple-400 mb-4">৳১,৫০০ <span class="text-xs font-normal text-slate-400">/ service</span></div>
-                        <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
-                            <li><i class="fa-solid fa-check text-green-400 mr-2"></i> <span data-en="All FRP Bypass" data-bn="সকল এফআরপি বাইপাস">All FRP Bypass</span></li>
-                            <li><i class="fa-solid fa-check text-green-400 mr-2"></i> <span data-en="Display & Hardware Fix" data-bn="ডিসপ্লে ও হার্ডওয়্যার ফিক্স">Display & Hardware Fix</span></li>
+                        <h3 class="font-bold text-lg text-white mb-1" data-en="Standard Repair" data-bn="স্ট্যান্ডার্ড রিপেয়ার">Standard Repair</h3>
+                        <p class="text-[11px] text-slate-400 mb-4" data-en="Hardware fix & FRP Unlock." data-bn="হার্ডওয়্যার ফিক্স ও এফআরপি আনলক।">Hardware fix & FRP Unlock.</p>
+                        <div class="text-3xl font-extrabold text-purple-400 mb-4">৳১,৫০০ <span class="text-xs font-normal text-slate-400">/ service</span></div>
+                        <ul class="space-y-2 text-xs text-slate-300 mb-6">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> 2026 Latest FRP Bypass</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Display & Sub-board Replacement</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> 30-Day Service Guarantee</li>
                         </ul>
                     </div>
-                    <button onclick="openPlanModal('Standard Plan', '৳১,৫০০')" class="w-full bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-md" data-en="Choose Standard" data-bn="স্ট্যান্ডার্ড নিন">Choose Standard</button>
+                    <button onclick="openPlanModal('Standard Plan', '৳১,৫০০')" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white py-3 rounded-xl font-bold text-xs transition-opacity shadow-lg">
+                        Select Standard
+                    </button>
                 </div>
 
                 <!-- Premium Plan -->
-                <div class="glass-3d p-6 rounded-3xl flex flex-col justify-between border-t-4 border-cyan-500">
+                <div class="glass-card p-6 rounded-3xl flex flex-col justify-between border-t-4 border-cyan-400">
                     <div>
-                        <h3 class="font-bold text-lg text-white mb-1" data-en="Premium Plan" data-bn="প্রিমিয়াম প্ল্যান">Premium Plan</h3>
-                        <p class="text-[11px] text-slate-400 mb-4" data-en="Complete business & ad setup package." data-bn="সম্পূর্ণ বিজনেস ও অ্যাডস সেটআপ প্যাকেজ।">Complete business & ad setup package.</p>
-                        <div class="text-2xl font-extrabold text-cyan-400 mb-4">৳৩,০০০ <span class="text-xs font-normal text-slate-400">/ package</span></div>
-                        <ul class="space-y-2.5 text-xs text-slate-300 mb-6">
-                            <li><i class="fa-solid fa-check text-green-400 mr-2"></i> <span data-en="FB & Google Ads Setup" data-bn="এফবি ও গুগল অ্যাডস সেটআপ">FB & Google Ads Setup</span></li>
-                            <li><i class="fa-solid fa-check text-green-400 mr-2"></i> <span data-en="Virtual Card & VIP Support" data-bn="ভার্চুয়াল কার্ড ও ভিআইপি সাপোর্ট">Virtual Card & VIP Support</span></li>
+                        <h3 class="font-bold text-lg text-white mb-1" data-en="Premium Master Lab" data-bn="প্রিমিয়াম মাস্টার ল্যাব">Premium Master Lab</h3>
+                        <p class="text-[11px] text-slate-400 mb-4" data-en="Motherboard CPU / Ads setup." data-bn="মাদারবোর্ড সিপিইউ ও ফুল অ্যাডস সেটআপ।">Motherboard CPU / Ads setup.</p>
+                        <div class="text-3xl font-extrabold text-cyan-400 mb-4">৳৩,০০০ <span class="text-xs font-normal text-slate-400">/ package</span></div>
+                        <ul class="space-y-2 text-xs text-slate-300 mb-6">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Dead Boot CPU/eMMC Reballing</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Facebook & Google Ads Setup</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> VIP Priority 1-on-1 Support</li>
                         </ul>
                     </div>
-                    <button onclick="openPlanModal('Premium Plan', '৳৩,০০০')" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-md" data-en="Go Premium" data-bn="প্রিমিয়াম নিন">Go Premium</button>
+                    <button onclick="openPlanModal('Premium Plan', '৳৩,০০০')" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-lg shadow-cyan-600/30">
+                        Go Premium
+                    </button>
                 </div>
+
             </div>
+
         </section>
 
-        <!-- OUR BLOG BOX (Auto loads posts from blog.html / Firebase storage) -->
-        <section class="mb-20" id="blogFolder">
+        <!-- ================= LIVE BLOG / UPDATES FEED ================= -->
+        <section class="mb-24" id="blogSection">
             <div class="flex justify-between items-end mb-8">
                 <div>
-                    <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-1 block" data-en="OUR BLOG" data-bn="আমাদের ব্লগ">OUR BLOG</span>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white" data-en="Latest Blog Posts & Updates" data-bn="সর্বশেষ ব্লগ পোস্ট ও আপডেটসমূহ">Latest Blog Posts & Updates</h2>
+                    <span class="text-indigo-400 font-mono-code font-bold text-xs uppercase tracking-widest block mb-2" data-en="LATEST TECH NEWS & GUIDES" data-bn="সর্বশেষ টেক নিউজ ও রিপেয়ার গাইড">
+                        LATEST TECH NEWS & GUIDES
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-en="Habib iFix .Tech Knowledge Hub & Blog" data-bn="হাবিব আইফিক্স নলেজ হাব ও ব্লগ">
+                        Habib iFix Knowledge Hub & Blog
+                    </h2>
                 </div>
-                <a href="blog.html" class="glass-3d bg-white/10 px-4 py-2 rounded-full font-semibold text-xs inline-flex items-center gap-1 text-white hover:bg-white/20 transition-colors">
-                    <span data-en="View All Blog" data-bn="সব ব্লগ দেখুন">View All Blog</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                <a href="blog.html" class="glass-card hover:bg-black/5 dark:hover:bg-white/10 text-slate-900 dark:text-white text-xs font-bold px-4 py-2 rounded-xl transition-all">
+                    View All Posts &rarr;
                 </a>
             </div>
 
-            <div id="dynamicBlogGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Dynamically loaded from Firebase / blog.html -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="dynamicBlogGrid">
+                <!-- Pre-rendered for instant speed & auto updated via /api/posts -->
+                <div class="glass-card p-5 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="window.location.href='blog.html'">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 relative shadow-inner">
+                            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=75" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <span class="text-[10px] font-mono-code font-bold text-indigo-400 uppercase tracking-widest">MICRO-SOLDERING</span>
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mt-1 mb-2 group-hover:text-cyan-300 transition-colors line-clamp-2">How to Diagnose Dead Boot & PMIC Short Circuits with Thermal Cameras</h3>
+                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Step-by-step masterclass on tracing DC current draw and identifying shorted ceramic capacitors using thermal imaging and BGA stations.</p>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Read Guide <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </span>
+                </div>
+
+                <div class="glass-card p-5 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="window.location.href='blog.html'">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 relative shadow-inner">
+                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=75" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <span class="text-[10px] font-mono-code font-bold text-cyan-400 uppercase tracking-widest">SECURITY & UNLOCK</span>
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mt-1 mb-2 group-hover:text-cyan-300 transition-colors line-clamp-2">Android 2026 Latest FRP Security Bypass & Knox Solutions</h3>
+                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Comprehensive technical breakdown on unlocking modern Android 12 to 16 devices after factory reset without damaging system integrity.</p>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Read Guide <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </span>
+                </div>
+
+                <div class="glass-card p-5 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="window.location.href='blog.html'">
+                    <div>
+                        <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 relative shadow-inner">
+                            <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=75" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <span class="text-[10px] font-mono-code font-bold text-emerald-400 uppercase tracking-widest">HARDWARE LAB</span>
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white mt-1 mb-2 group-hover:text-cyan-300 transition-colors line-clamp-2">Welcome to Habib iFix Tech & Diagnostic Hub</h3>
+                        <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">Welcome to Bangladesh's premier mobile motherboard micro-soldering, OCA display refurbishment, and online diagnostic center.</p>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Read Guide <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </span>
+                </div>
             </div>
         </section>
 
-        <!-- ABOUT INSTRUCTOR SECTION -->
-        <section class="mb-20 glass-3d p-8 sm:p-12 rounded-[35px] relative overflow-hidden bg-gradient-to-r from-indigo-950/80 via-purple-950/80 to-slate-900/80">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                <div class="lg:col-span-5 flex justify-center">
-                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-[30px] overflow-hidden glass-3d border-2 border-white/20 shadow-2xl">
-                        <img src="https://i.ibb.co.com/qYHv8LZc/Chat-GPT-Image-Sep-11-2026-08-20-13-PM.png" alt="Habib Instructor" class="w-full h-full object-cover">
-                    </div>
-                </div>
-                <div class="lg:col-span-7">
-                    <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block" data-en="MEET YOUR INSTRUCTOR" data-bn="আপনার ইন্সট্রাক্টর">MEET YOUR INSTRUCTOR</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4" data-en="Hi, I'm Habib!" data-bn="হাই, আমি হাবিব!">Hi, I'm Habib! 👋</h2>
-                    <p class="text-slate-300 text-sm leading-relaxed mb-6" data-en="I went from a local technician to a trusted professional in mobile repair and online digital services. Now I teach aspiring technicians and entrepreneurs how to build profitable, freedom-based skills of their own." data-bn="আমি একজন সাধারণ টেকনিশিয়ান থেকে মোবাইল রিপেয়ার ও অনলাইন ডিজিটাল সার্ভিসে বিশ্বস্ত প্রফেশনাল হয়েছি। এখন আমি অন্যদের এই লাভজনক ও আধুনিক স্কিলগুলো শিখাই।">
-                        আমি একজন সাধারণ টেকনিশিয়ান থেকে মোবাইল রিপেয়ার ও অনলাইন ডিজিটাল সার্ভিসে বিশ্বস্ত প্রফেশনাল হয়েছি। এখন আমি অন্যদের এই লাভজনক ও আধুনিক স্কিলগুলো শিখাই।
+        <!-- ================= MEET HABIB BANNER ================= -->
+        <section class="mb-20 glass-card p-8 sm:p-12 rounded-[36px] relative overflow-hidden bg-gradient-to-r from-indigo-950/70 via-purple-950/70 to-slate-900/80 border border-indigo-500/30">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-8 space-y-4">
+                    <span class="text-cyan-400 font-mono-code font-bold text-xs uppercase tracking-wider block">TRUSTED BY 5,000+ CUSTOMERS</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+                        Need Direct Hardware Help From Habib?
+                    </h2>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-xl">
+                        যেকোনো জটিল মাদারবোর্ড সমস্যা, ডেড ফোন রিকভারি, আইফোন ট্রুটোন বা ডিসপ্লে প্রবলেমে সরাসরি কথা বলুন। শতভাগ বিশ্বস্ততা ও সঠিক সমাধানের নিশ্চয়তা।
                     </p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-                        <div class="flex items-center gap-2 text-xs text-slate-300"><i class="fa-solid fa-award text-indigo-400"></i> Expert Mobile Technician</div>
-                        <div class="flex items-center gap-2 text-xs text-slate-300"><i class="fa-solid fa-users text-indigo-400"></i> Thousands of Students</div>
-                        <div class="flex items-center gap-2 text-xs text-slate-300"><i class="fa-solid fa-gears text-indigo-400"></i> Proven Systems & Strategies</div>
-                        <div class="flex items-center gap-2 text-xs text-slate-300"><i class="fa-solid fa-chart-pie text-indigo-400"></i> Real-World Experience</div>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <a href="https://wa.me/8801868461577" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold text-xs transition-colors flex items-center gap-2 shadow-lg">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp: 01868-461577
+                        </a>
+                        <a href="tel:01868461577" class="glass-card hover:bg-white/10 text-white px-5 py-3 rounded-xl font-bold text-xs transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-phone text-xs"></i> Direct Call
+                        </a>
                     </div>
-
-                    <a href="contact.html" class="inline-block bg-white text-slate-900 px-6 py-3 rounded-full font-bold text-xs hover:bg-slate-200 transition-colors shadow-lg">
-                        <span data-en="Learn More About Habib" data-bn="হাবিব সম্পর্কে আরও জানুন">Learn More About Habib</span>
-                    </a>
+                </div>
+                <div class="md:col-span-4 flex justify-center">
+                    <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[2px] shadow-[0_0_40px_rgba(99,102,241,0.5)]">
+                        <div class="w-full h-full bg-slate-950 rounded-[22px] flex flex-col items-center justify-center text-white">
+                            <i class="fa-solid fa-screwdriver-wrench text-3xl text-cyan-400 mb-1"></i>
+                            <span class="text-[10px] font-mono-code font-bold text-slate-300">EST. 2016</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- CUSTOMER REVIEWS & TRUST SECTION -->
-        <section class="mb-20 text-center">
-            <div class="glass-3d p-8 rounded-3xl max-w-2xl mx-auto">
-                <div class="flex justify-center items-center gap-1 mb-3">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" class="w-10 h-10 rounded-full border-2 border-indigo-400 object-cover -mr-3">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" class="w-10 h-10 rounded-full border-2 border-indigo-400 object-cover -mr-3">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" class="w-10 h-10 rounded-full border-2 border-indigo-400 object-cover -mr-3">
-                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80" class="w-10 h-10 rounded-full border-2 border-indigo-400 object-cover">
+        <!-- ================= BOOKING MODAL ================= -->
+        <div id="bookingModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[999] hidden flex items-center justify-center p-4">
+            <div class="glass-card bg-slate-900/95 w-full max-w-md p-6 sm:p-8 rounded-[32px] shadow-2xl relative border border-indigo-500/40">
+                <button onclick="closePlanModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center gap-2.5 mb-2">
+                    <div class="w-8 h-8 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white" id="modalPlanTitle">Book Service</h3>
                 </div>
-                <div class="flex justify-center text-amber-400 gap-1 text-sm mb-2">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                </div>
-                <p class="text-xs sm:text-sm text-slate-300 font-medium" data-en="Join 5,000+ customers growing their skills & fixing devices with Habib iFix" data-bn="হাবিব আইফিক্স এর সাথে ৫,০০০+ সন্তুষ্ট গ্রাহক ও শিক্ষার্থীর সাথে যুক্ত হোন">
-                    Join 5,000+ customers growing their skills & fixing devices with Habib iFix
-                </p>
-            </div>
-        </section>
+                <p class="text-xs text-cyan-400 font-mono-code mb-5" id="modalPlanPrice">Price: ৳০</p>
 
-        <!-- BEAUTIFUL LOGIN REQUIRED / WARNING POPUP MODAL -->
-        <div id="loginWarningModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
-            <div class="glass-3d bg-slate-900/95 w-full max-w-sm p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20 text-center animate-fade-in-up">
-                <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-amber-500/30">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <h3 class="text-xl font-extrabold text-white mb-2">User Login Please!</h3>
-                <p class="text-xs text-slate-300 mb-6 leading-relaxed">সেবা বুক করার জন্য বা কোর্স নিতে হলে অনুগ্রহ করে আগে সাইন ইন বা লগইন করুন।</p>
-                
-                <div class="space-y-2.5">
-                    <a href="login.html?return=index.html" class="block w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-lg">
-                        Sign In Now
-                    </a>
-                    <button onclick="closeLoginWarning()" class="block w-full bg-white/10 hover:bg-white/20 text-slate-300 py-2.5 rounded-xl font-medium text-xs transition-colors">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- REAL BOOKING MODAL (WHATSAPP AUTO SEND) -->
-        <div id="bookingModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[99] hidden flex items-center justify-center p-4">
-            <div class="glass-3d bg-slate-900/95 w-full max-w-md p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
-                <button onclick="closePlanModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
-                <h3 class="text-xl font-extrabold text-white mb-1" id="modalPlanTitle">Book Service</h3>
-                <p class="text-xs text-indigo-400 mb-6" id="modalPlanPrice">Price: ৳০</p>
-                
-                <form onsubmit="submitBooking(event)" class="space-y-4">
+                <form id="bookingForm" onsubmit="submitBooking(event)" class="space-y-3.5">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Your Name</label>
-                        <input type="text" id="bName" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
+                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Your Full Name</label>
+                        <input type="text" id="bName" required placeholder="আপনার নাম লিখুন" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Mobile Number</label>
-                        <input type="tel" id="bPhone" required placeholder="01XXXXXXXXX" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
+                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Phone Number</label>
+                        <input type="tel" id="bPhone" required placeholder="01XXXXXXXXX" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
-                        <input type="email" id="bEmail" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
+                        <input type="email" id="bEmail" placeholder="yourname@gmail.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Full Address / Details</label>
-                        <textarea id="bAddress" rows="2" required placeholder="আপনার ঠিকানা বা সমস্যার বিবরণ লিখুন..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium resize-none"></textarea>
+                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Address / Problem Details</label>
+                        <textarea id="bAddress" rows="2" required placeholder="মোবাইল মডেল ও সমস্যার বিবরণ লিখুন..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 resize-none"></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold text-xs transition-colors shadow-lg flex items-center justify-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-sm"></i> Send Booking to WhatsApp
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs transition-all shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Confirm Booking Now
                     </button>
                 </form>
             </div>
@@ -519,99 +1068,98 @@
 
     </main>
 
-    <!-- CODECRAFT API CHATBOT WIDGET -->
-    <div id="codecraft-chatbot-container"></div>
-    <script>
-        window.CodeCraftChatbotConfig = {
-            apiKey: "cc_Jsv8GuKNIUk69LaG0nNNWvc7iSgu5pHNOo8xb1Ht5Bcm6ppf"
-        };
-    </script>
-    <script src="https://cdn.codecraftapi.com/chatbot/widget.js" async></script>
-
-    <!-- FOOTER -->
-    <footer class="glass-3d border-t border-white/10 pt-10 sm:pt-12 pb-6 mt-10 relative z-10">
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+    <!-- ================= FOOTER ================= -->
+    <footer class="border-t border-white/10 bg-slate-950/80 backdrop-blur-xl py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
                 <div class="space-y-3">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
-                        <span class="font-bold text-white text-base">Habib <span class="text-indigo-400">iFix</span></span>
+                    <div class="flex items-center gap-2.5">
+                        <div class="brand-logo-box w-8 h-8 shrink-0 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1px] flex items-center justify-center">
+                            <div class="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                                    <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="font-black text-white text-base">Habib iFix <span class="text-cyan-400">.Tech</span></span>
                     </div>
-                    <p class="text-slate-400 text-xs leading-relaxed" data-en="Your trusted partner for all mobile repair and online technical solutions." data-bn="আপনার সকল মোবাইল রিপেয়ার ও অনলাইন টেকনিক্যাল সেবার বিশ্বস্ত প্রতিষ্ঠান।">Your trusted partner for all mobile repair and online technical solutions.</p>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Next-generation mobile hardware laboratory, display refurbishment, software security & digital IT services in Bangladesh.
+                    </p>
                 </div>
-
                 <div>
-                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Explore" data-bn="এক্সপ্লোর">Explore</h4>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Quick Navigation</h4>
                     <ul class="space-y-2 text-xs text-slate-400">
-                        <li><a href="index.html" class="hover:text-white transition-colors" data-en="Home" data-bn="হোম">Home</a></li>
-                        <li><a href="frp.html" class="hover:text-white transition-colors" data-en="Android FRP Remove 2026" data-bn="অ্যান্ড্রয়েড এফআরপি ২০২৬">Android FRP Remove 2026</a></li>
-                        <li><a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a></li>
-                        <li><a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a></li>
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="services.html" class="hover:text-white transition-colors">All Services</a></li>
+                        <li><a href="frp.html" class="hover:text-cyan-400 transition-colors">Remove FRP 2026</a></li>
+                        <li><a href="courses.html" class="hover:text-white transition-colors">Hardware Training</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition-colors">Tech Blog</a></li>
                     </ul>
                 </div>
-
                 <div>
-                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Contact Info" data-bn="যোগাযোগের তথ্য">Contact Info</h4>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Diagnostic Tools</h4>
                     <ul class="space-y-2 text-xs text-slate-400">
-                        <li><i class="fa-solid fa-phone text-indigo-400 mr-2"></i> +880 1868 461577</li>
-                        <li><i class="fa-solid fa-location-dot text-indigo-400 mr-2"></i> Gachbaria, Chattogram</li>
+                        <li><a href="#aiTerminalSection" class="hover:text-white transition-colors">AI Terminal</a></li>
+                        <li><button onclick="window.openHabibAI('Display change cost?')" class="hover:text-white transition-colors text-left">Screen Cost Estimator</button></li>
+                        <li><button onclick="window.openHabibAI('Dead boot repair?')" class="hover:text-white transition-colors text-left">Dead Boot Diagnostic</button></li>
+                        <li><a href="admin.html" class="hover:text-indigo-400 transition-colors">Admin Dashboard</a></li>
                     </ul>
                 </div>
-
                 <div>
-                    <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Newsletter" data-bn="নিউজলেটার">Newsletter</h4>
-                    <p class="text-slate-400 text-xs mb-3" data-en="Subscribe for updates." data-bn="নতুন আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for monthly updates.</p>
-                    <form class="flex items-center glass-3d rounded-xl p-1" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
-                        <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-white placeholder-slate-500">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors" data-en="Join" data-bn="জয়েন">Join</button>
-                    </form>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Contact Habib</h4>
+                    <p class="text-xs text-slate-400 mb-1">Phone: +880 1868-461577</p>
+                    <p class="text-xs text-slate-400 mb-3">WhatsApp Available 24/7</p>
+                    <div class="flex gap-3">
+                        <a href="https://wa.me/8801868461577" target="_blank" class="w-8 h-8 rounded-lg bg-emerald-600/20 text-emerald-400 flex items-center justify-center hover:bg-emerald-600/30 transition-colors">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                        </a>
+                        <a href="https://youtube.com/@habibifix" target="_blank" class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 flex items-center justify-center hover:bg-red-600/30 transition-colors">
+                            <i class="fa-brands fa-youtube text-sm"></i>
+                        </a>
+                        <a href="https://facebook.com" target="_blank" class="w-8 h-8 rounded-lg bg-indigo-600/20 text-indigo-400 flex items-center justify-center hover:bg-indigo-600/30 transition-colors">
+                            <i class="fa-brands fa-facebook text-sm"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-
-            <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-400 gap-4 text-center sm:text-left">
-                <p>&copy; 2026 Habib iFix. All rights reserved.</p>
-                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                    <a href="#" class="hover:text-white transition-colors" data-en="Privacy" data-bn="প্রাইভেসি">Privacy</a>
-                    <a href="#" class="hover:text-white transition-colors" data-en="Terms" data-bn="টার্মস">Terms</a>
-                    <a href="#" class="hover:text-white transition-colors" data-en="Support" data-bn="সাপোর্ট">Support</a>
-                </div>
+            <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-500 gap-2">
+                <p>&copy; 2026 Habib iFix .Tech. All rights reserved.</p>
+                <p>Habib iFix .Tech Precision Mobile Engineering & IT Lab</p>
             </div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT & LOGIC -->
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
+        // Mobile Menu Drawer Toggle
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             const icon = document.getElementById('mobileMenuIcon');
-            if (menu.classList.contains('-translate-y-full')) {
-                menu.classList.remove('-translate-y-full', 'opacity-0', 'invisible');
-                menu.classList.add('translate-y-0', 'opacity-100', 'visible');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-xmark');
             } else {
-                menu.classList.remove('translate-y-0', 'opacity-100', 'visible');
-                menu.classList.add('-translate-y-full', 'opacity-0', 'invisible');
+                menu.classList.add('hidden');
                 icon.classList.remove('fa-xmark');
                 icon.classList.add('fa-bars');
             }
         }
 
-        // LANGUAGE SWITCHER (ENG <-> BAN)
+        // Language Switcher
         let currentLang = localStorage.getItem('habib_lang') || 'en';
-        
         function applyLanguage(lang) {
             currentLang = lang;
             localStorage.setItem('habib_lang', lang);
             const btn = document.getElementById('langSwitchBtn');
             if(btn) {
-                btn.innerText = lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)';
+                btn.innerHTML = `<i class="fa-solid fa-globe text-indigo-400 text-xs"></i> <span>${lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)'}</span>`;
             }
-            
             document.querySelectorAll('[data-en]').forEach(el => {
                 const text = el.getAttribute(`data-${lang}`);
                 if (text) {
-                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                         el.placeholder = text;
                     } else {
                         el.innerText = text;
@@ -619,110 +1167,228 @@
                 }
             });
         }
-
         function toggleLanguage() {
             applyLanguage(currentLang === 'en' ? 'bn' : 'en');
         }
 
-        // LOGIN CHECK & POPUP MODAL LOGIC
-        let selectedPlanName = "";
-        let selectedPlanPrice = "";
+        // Booking Modal Management
+        let selectedPlanName = "Standard Plan";
+        let selectedPlanPrice = "৳১,৫০০";
 
         function openPlanModal(planName, planPrice) {
-            const isLoggedIn = localStorage.getItem('habib_logged_in') === 'true';
-            if (!isLoggedIn) {
-                document.getElementById('loginWarningModal').classList.remove('hidden');
-                document.getElementById('loginWarningModal').classList.add('flex');
-                return;
-            }
-
             selectedPlanName = planName;
             selectedPlanPrice = planPrice;
-            
             document.getElementById('modalPlanTitle').innerText = "Booking: " + planName;
             document.getElementById('modalPlanPrice').innerText = "Price: " + planPrice;
             document.getElementById('bookingModal').classList.remove('hidden');
-        }
-
-        function closeLoginWarning() {
-            document.getElementById('loginWarningModal').classList.add('hidden');
-            document.getElementById('loginWarningModal').classList.remove('flex');
         }
 
         function closePlanModal() {
             document.getElementById('bookingModal').classList.add('hidden');
         }
 
-        function submitBooking(e) {
+        async function submitBooking(e) {
             e.preventDefault();
-            const name = document.getElementById('bName').value;
+            const customerName = document.getElementById('bName').value;
             const phone = document.getElementById('bPhone').value;
             const email = document.getElementById('bEmail').value;
             const address = document.getElementById('bAddress').value;
 
-            const whatsappMessage = `Hello Habib! I want to book a service.%0A%0A*Plan:* ${selectedPlanName}%0A*Price:* ${selectedPlanPrice}%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Email:* ${email}%0A*Details/Address:* ${address}`;
-            
-            const whatsappUrl = `https://wa.me/8801868461577?text=${whatsappMessage}`;
-            window.open(whatsappUrl, '_blank');
-            closePlanModal();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="animate-pulse">⏳ Submitting Booking...</span>';
+
+            try {
+                await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        planName: selectedPlanName,
+                        planPrice: selectedPlanPrice,
+                        customerName, phone, email, address
+                    })
+                });
+
+                submitBtn.innerHTML = '✅ Booked Successfully!';
+
+                const whatsappMessage = encodeURIComponent(`Hello Habib! I booked a service on Habib iFix:\n\n*Plan:* ${selectedPlanName} (${selectedPlanPrice})\n*Name:* ${customerName}\n*Phone:* ${phone}\n*Details:* ${address}`);
+                
+                setTimeout(() => {
+                    closePlanModal();
+                    submitBtn.innerHTML = originalText;
+                    document.getElementById('bookingForm').reset();
+                    window.open(`https://wa.me/8801868461577?text=${whatsappMessage}`, '_blank');
+                }, 1200);
+
+            } catch (err) {
+                console.error(err);
+                submitBtn.innerHTML = '❌ Failed to Book';
+                setTimeout(() => { submitBtn.innerHTML = originalText; }, 2000);
+            }
         }
 
-        // Auto load latest blog posts from Firebase / blog.html sync
-        function loadStoredBlogs() {
-            const blogs = JSON.parse(localStorage.getItem('habib_custom_blogs') || '[]');
-            const grid = document.getElementById('dynamicBlogGrid');
-            if(!grid) return;
-
-            let html = '';
-            blogs.slice(0, 3).forEach(b => {
-                html += `
-                <div class="glass-3d p-4 rounded-3xl group cursor-pointer flex flex-col border border-indigo-500/30" onclick="window.location.href='blog.html'">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 flex items-center justify-center relative">
-                        <img src="${b.image || b.mediaLink || 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75'}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="px-1">
-                        <p class="text-[9px] font-bold text-indigo-400 mb-1 uppercase tracking-wider">${b.cat || b.category || 'BLOG'}</p>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">${b.title || b.description || 'Habib iFix Update'}</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2">${b.desc || b.content || ''}</p>
-                    </div>
-                </div>`;
+        // Symptom Selector State
+        let activeSymptom = "Cracked Screen / Display Line";
+        document.querySelectorAll('.symptom-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.symptom-btn').forEach(b => {
+                    b.classList.remove('border-indigo-400', 'bg-indigo-500/20');
+                    b.classList.add('border-white/10', 'bg-white/5');
+                });
+                btn.classList.add('border-indigo-400', 'bg-indigo-500/20');
+                btn.classList.remove('border-white/10', 'bg-white/5');
+                activeSymptom = btn.getAttribute('data-symptom');
             });
+        });
 
-            if(blogs.length === 0) {
-                html += `
-                <div class="glass-3d p-4 rounded-3xl group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=500&q=75" class="w-full h-full object-cover">
-                    </div>
-                    <div class="px-1">
-                        <p class="text-[9px] font-bold text-indigo-400 mb-1 uppercase tracking-wider">REPAIR TIP</p>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">How to check display original quality</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2">Learn professional tips to identify genuine display and touch panels for Android & iPhones.</p>
-                    </div>
+        const firstSymptomBtn = document.querySelector('.symptom-btn');
+        if (firstSymptomBtn) {
+            firstSymptomBtn.classList.add('border-indigo-400', 'bg-indigo-500/20');
+        }
+
+        // In-Page AI Diagnostic Execution
+        let currentDiagData = null;
+
+        async function executeDiagnosis() {
+            const brand = document.getElementById('diagBrand').value;
+            const model = document.getElementById('diagModel').value || brand;
+            const note = document.getElementById('diagNote').value;
+            const terminal = document.getElementById('diagTerminalBody');
+            const badge = document.getElementById('diagEngineBadge');
+            const bottomAction = document.getElementById('diagBottomAction');
+            const runBtn = document.getElementById('runDiagBtn');
+
+            badge.innerText = "PROCESSING...";
+            badge.className = "text-[10px] bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 px-2 py-0.5 rounded font-mono-code animate-pulse";
+            runBtn.disabled = true;
+            runBtn.classList.add('opacity-70');
+
+            terminal.innerHTML = `
+                <div class="space-y-2 text-cyan-300 font-mono-code text-xs">
+                    <p class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        Connecting to Habib iFix AI Engine...
+                    </p>
+                    <p class="text-slate-400">> Device Profile: ${brand} ${model}</p>
+                    <p class="text-slate-400">> Detected Anomaly: ${activeSymptom}</p>
+                    <p class="text-slate-500">> Querying schematic database and IC tolerances...</p>
                 </div>
-                <div class="glass-3d p-4 rounded-3xl group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=75" class="w-full h-full object-cover">
-                    </div>
-                    <div class="px-1">
-                        <p class="text-[9px] font-bold text-indigo-400 mb-1 uppercase tracking-wider">TECH NEWS</p>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Android FRP Remove 2026 Guide</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2">Exploring the newest security bypass methods for modern Android devices safely.</p>
-                    </div>
-                </div>
-                <div class="glass-3d p-4 rounded-3xl group cursor-pointer flex flex-col" onclick="window.location.href='blog.html'">
-                    <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 flex items-center justify-center relative">
-                        <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=500&q=75" class="w-full h-full object-cover">
-                    </div>
-                    <div class="px-1">
-                        <p class="text-[9px] font-bold text-indigo-400 mb-1 uppercase tracking-wider">ONLINE WORK</p>
-                        <h3 class="font-bold text-sm text-white leading-tight mb-2">Importance of a professional CV & Job Apply</h3>
-                        <p class="text-[11px] text-slate-400 line-clamp-2">Why a clean CV increases your chances of getting hired quickly in government and private jobs.</p>
-                    </div>
-                </div>`;
+            `;
+
+            try {
+                const res = await fetch('/api/ai-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        device: `${brand} ${model}`,
+                        symptom: `${activeSymptom} ${note ? `(${note})` : ''}`,
+                        message: `Device: ${brand} ${model}. Problem: ${activeSymptom}. ${note || ''}`
+                    })
+                });
+
+                const data = await res.json();
+                runBtn.disabled = false;
+                runBtn.classList.remove('opacity-70');
+
+                if (data.success) {
+                    badge.innerText = "ONLINE";
+                    badge.className = "text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded font-mono-code";
+
+                    const diag = data.diagnosis;
+                    currentDiagData = diag;
+
+                    let stepsHtml = '';
+                    if (diag && diag.steps) {
+                        stepsHtml = diag.steps.map((s, i) => `<div class="flex items-start gap-2 text-slate-300 text-xs"><span class="text-cyan-400 font-bold">[${i+1}]</span> <span>${s}</span></div>`).join('');
+                    }
+
+                    terminal.innerHTML = `
+                        <div class="space-y-4 animate-fade-in-up font-sans">
+                            <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10">
+                                <div>
+                                    <h4 class="text-white font-bold text-sm">${diag.title}</h4>
+                                    <p class="text-xs text-indigo-400">${diag.category}</p>
+                                </div>
+                                <span class="bg-red-500/20 text-red-300 border border-red-500/40 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
+                                    Severity: ${diag.severity}
+                                </span>
+                            </div>
+
+                            <p class="text-xs text-slate-300 leading-relaxed">${diag.summary}</p>
+
+                            <div>
+                                <h5 class="text-xs font-bold text-white uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-list-check text-cyan-400"></i> Technical Repair Protocol:
+                                </h5>
+                                <div class="space-y-1.5 bg-black/40 p-3 rounded-xl border border-white/5">
+                                    ${stepsHtml}
+                                </div>
+                            </div>
+
+                            <div class="bg-indigo-950/40 border border-indigo-500/30 p-3 rounded-xl text-xs text-slate-300">
+                                <span class="text-cyan-300 font-bold">💡 Habib's Recommendation:</span> ${diag.recommendation}
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('diagCostDisplay').innerText = diag.estimatedCost;
+                    const waText = encodeURIComponent(`Hello Habib! I ran an AI Diagnostic for my ${brand} ${model}.\nProblem: ${activeSymptom}\nEstimated Cost: ${diag.estimatedCost}\nI would like to book a repair appointment.`);
+                    document.getElementById('diagWhatsAppLink').href = `https://wa.me/8801868461577?text=${waText}`;
+                    bottomAction.classList.remove('hidden');
+
+                } else {
+                    terminal.innerHTML = `<p class="text-red-400">Diagnostic error. Please call Habib directly: 01868461577</p>`;
+                    badge.innerText = "OFFLINE";
+                }
+
+            } catch (err) {
+                console.error(err);
+                runBtn.disabled = false;
+                runBtn.classList.remove('opacity-70');
+                terminal.innerHTML = `<p class="text-red-400">Connection error. Please try again or call 01868461577.</p>`;
             }
+        }
 
-            grid.innerHTML = html;
+        function bookDiagResult() {
+            if (currentDiagData) {
+                openPlanModal(currentDiagData.title, currentDiagData.estimatedCost);
+            } else {
+                openPlanModal('Diagnostic Fix', '৳১,৫০০');
+            }
+        }
+
+        // Auto load latest blog posts from API
+        async function loadStoredBlogs() {
+            try {
+                const response = await fetch('/api/posts');
+                const blogs = await response.json();
+                const grid = document.getElementById('dynamicBlogGrid');
+                if(!grid) return;
+                
+                if (blogs.length === 0) {
+                    grid.innerHTML = '<p class="text-slate-400 text-sm col-span-3 text-center">No blog posts available yet.</p>';
+                    return;
+                }
+
+                grid.innerHTML = blogs.slice(0, 3).map(b => `
+                    <div class="glass-card p-5 rounded-3xl flex flex-col justify-between group cursor-pointer" onclick="window.location.href='blog.html'">
+                        <div>
+                            <div class="rounded-2xl overflow-hidden mb-4 bg-indigo-950 h-44 relative shadow-inner">
+                                <img src="${b.mediaLink || 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600&q=75'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <span class="text-[10px] font-mono-code font-bold text-indigo-400 uppercase tracking-widest">${b.category || 'TECH NEWS'}</span>
+                            <h3 class="font-bold text-base text-slate-900 dark:text-white mt-1 mb-2 group-hover:text-cyan-300 transition-colors line-clamp-2">${b.title}</h3>
+                            <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">${b.description || ''}</p>
+                        </div>
+                        <span class="text-xs font-bold text-indigo-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Read Guide <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </span>
+                    </div>
+                `).join('');
+
+            } catch(e) {
+                console.error("Failed to load blogs", e);
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -730,9 +1396,10 @@
             loadStoredBlogs();
         });
     </script>
-    
+
+    <!-- Global AI Agent Widget Script -->
+    <script src="js/ai-agent.js"></script>
     <!-- Firebase Auth Integration Script -->
     <script type="module" src="js/site-auth.js"></script>
-    <script src="js/chatbot.js"></script>
 </body>
 </html>

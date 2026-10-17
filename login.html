@@ -1,326 +1,511 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title data-en="Sign In / Sign Up - Habib iFix" data-bn="সাইন ইন / সাইন আপ - হাবিব আইফিক্স">Sign In / Sign Up - Habib iFix</title>
+    <title data-en="User & Admin Login - Habib iFix .Tech" data-bn="ইউজার ও অ্যাডমিন লগইন - হাবিব আইফিক্স .Tech">User & Admin Login - Habib iFix .Tech</title>
     
-    <!-- Tailwind CSS -->
+    <script>
+        tailwind = { darkMode: "class" };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <style>
-        * { box-sizing: border-box; }
-        html, body { 
-            width: 100%; 
-            max-width: 100%; 
-            overflow-x: hidden !important; 
-            margin: 0; 
-            padding: 0; 
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311045 100%);
-            color: #f1f5f9;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
-        
-        .glass-3d {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-
-        .blob { 
-            position: absolute; 
-            border-radius: 50%; 
-            filter: blur(100px); 
-            z-index: -1; 
-            opacity: 0.5; 
-            pointer-events: none; 
-        }
-        .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #4f46e5; }
-        .blob-2 { top: 30%; right: -10%; width: 500px; height: 500px; background: #9333ea; }
-        .blob-3 { bottom: 10%; left: 20%; width: 450px; height: 450px; background: #06b6d4; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+    <script type="module" src="js/site-auth.js"></script>
 </head>
-<body class="antialiased relative selection:bg-indigo-500 selection:text-white flex flex-col min-h-screen">
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white dark-mode">
 
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+    <!-- TOP PROMO BANNER WITH CLOSE BUTTON -->
+    <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all">
+        <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
+            <span class="inline-flex items-center gap-1.5 bg-indigo-500/20 text-cyan-300 border border-indigo-500/40 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                ACTIVE
+            </span>
+            <span class="font-bold text-white" data-en="Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds." data-bn="হাবিব আইফিক্স এআই টেকনিক্যাল অ্যাসিস্ট্যান্ট অ্যাক্টিভ! সেকেন্ডেই মোবাইল ডায়াগনসিস করুন।">
+                Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds.
+            </span>
+            <button onclick="window.openHabibAI()" class="font-extrabold underline underline-offset-2 ml-1 cursor-pointer text-cyan-400 hover:text-cyan-300">
+                <span data-en="Try AI Now &rarr;" data-bn="এখনই এআই ট্রাই করুন &rarr;">Try AI Now &rarr;</span>
+            </button>
+        </div>
+        <button onclick="closePromoBanner()" class="close-promo-btn p-1 rounded-full ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
+            <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+    </div>
 
-    <!-- HEADER / NAVBAR -->
-    <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass-3d border-b border-white/10">
-        <a href="index.html" class="flex items-center gap-2.5">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg shadow-indigo-500/30">H</div>
-            <div class="leading-tight">
-                <h1 class="font-bold text-white text-xs sm:text-sm">Habib <span class="text-indigo-400">iFix</span></h1>
-                <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium tracking-wide">Trusted Mobile Technician</p>
+    <!-- MAIN NAVBAR (UNIFIED ACROSS ALL PAGES) -->
+    <header class="sticky top-0 left-0 w-full z-40 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="brand-logo-box w-10 h-10 shrink-0 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1.5px] shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.7)] transition-all flex items-center justify-center">
+                    <div class="w-full h-full bg-slate-950 rounded-[13px] flex items-center justify-center">
+                        <svg class="h-logo-svg w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="url(#hLogoGradLgn)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="5.5" cy="4.5" r="1.5" fill="#38bdf8"/>
+                            <circle cx="18.5" cy="4.5" r="1.5" fill="#818cf8"/>
+                            <circle cx="5.5" cy="19.5" r="1.5" fill="#38bdf8"/>
+                            <circle cx="18.5" cy="19.5" r="1.5" fill="#818cf8"/>
+                            <circle cx="12" cy="12" r="1.8" fill="#ffffff"/>
+                            <defs>
+                                <linearGradient id="hLogoGradLgn" x1="5.5" y1="4.5" x2="18.5" y2="19.5" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#38bdf8"/>
+                                    <stop offset="0.5" stop-color="#ffffff"/>
+                                    <stop offset="1" stop-color="#818cf8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center gap-1.5 leading-none">
+                        <span class="brand-name-habib font-black text-xl tracking-tight text-white">Habib</span>
+                        <span class="brand-name-ifix font-black text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">iFix</span>
+                        <span class="brand-name-tech text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-md font-mono-code font-bold ml-1 shadow-sm">.Tech</span>
+                    </div>
+                    <p class="text-[10px] text-slate-300 font-bold mt-1" data-en="Mobile Engineering & Digital Lab" data-bn="মোবাইল ইঞ্জিনিয়ারিং ও ডিজিটাল ল্যাব">Mobile Engineering & Digital Lab</p>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-full border border-white/15 shadow-inner">
+                <a href="index.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Home" data-bn="হোম">Home</a>
+                <a href="about.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="About" data-bn="পরিচিতি">About</a>
+                <a href="services.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Services" data-bn="সেবাসমূহ">Services</a>
+                <a href="courses.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Courses" data-bn="কোর্স">Courses</a>
+                <a href="cv.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1.5" data-en="CV Maker" data-bn="সিভি মেকার">
+                    <i class="fa-solid fa-file-lines text-xs text-cyan-300"></i> CV Maker
+                </a>
+                <a href="frp.html" class="px-3.5 py-2 rounded-full text-xs font-extrabold text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-unlock-keyhole text-[10px]"></i> FRP 2026
+                </a>
+                <a href="blog.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Blog" data-bn="ব্লগ">Blog</a>
+                <a href="contact.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
+                <a href="login.html" class="px-4 py-2 rounded-full text-xs font-black text-white bg-indigo-600 shadow-md shadow-indigo-600/30 transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-circle-user text-xs"></i> Login
+                </a>
+            </nav>
+
+            <!-- Actions: AI Button + Lang + Mobile Trigger -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                <button onclick="window.openHabibAI()" class="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/25 to-indigo-500/25 hover:from-cyan-500/40 hover:to-indigo-500/40 border border-cyan-400/40 text-cyan-300 px-3 py-2 rounded-xl text-xs font-extrabold transition-all shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+                    <span>AI Assistant</span>
+                </button>
+
+                <!-- Language Switcher -->
+                <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass-card hover:border-white/30 text-slate-100 px-2.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-globe text-indigo-400 text-xs"></i>
+                    <span>English</span>
+                </button>
+
+                <!-- Profile Dropdown Container -->
+                <div id="profileBtn" class="hidden items-center gap-2"></div>
+
+                <!-- Mobile Hamburger Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden w-9 h-9 rounded-xl glass-card flex items-center justify-center text-slate-100 hover:text-white">
+                    <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
+                </button>
             </div>
-        </a>
-        <a href="index.html" class="glass-3d bg-white/10 px-4 py-2 rounded-full font-semibold text-xs text-white hover:bg-white/20 transition-colors">
-            <i class="fa-solid fa-house mr-1"></i> Home
-        </a>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="lg:hidden hidden border-t border-white/15 px-6 py-6 space-y-3">
+            <a href="index.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Home</a>
+            <a href="about.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">About Habib</a>
+            <a href="services.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Services</a>
+            <a href="courses.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Courses</a>
+            <a href="cv.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white flex items-center gap-2">
+                <i class="fa-solid fa-file-lines text-cyan-300"></i> CV Maker & Resume Builder
+            </a>
+            <a href="frp.html" class="block py-2 text-sm font-extrabold text-cyan-400 flex items-center gap-2">
+                <i class="fa-solid fa-unlock-keyhole"></i> Remove FRP 2026
+            </a>
+            <a href="blog.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Blog</a>
+            <a href="contact.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Contact</a>
+            <a href="login.html" class="block py-2 text-sm font-extrabold text-indigo-400">User & Admin Login</a>
+            <button onclick="window.openHabibAI()" class="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow">
+                <i class="fa-solid fa-robot"></i> Open Habib AI Assistant
+            </button>
+        </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
-    <main class="flex-grow flex items-center justify-center px-4 pt-28 pb-16">
-        <div class="glass-3d w-full max-w-md p-8 sm:p-10 rounded-[35px] shadow-2xl border border-white/20 relative overflow-hidden text-center">
+    <!-- Main Content -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6 py-12">
+        <div class="glass-card p-6 sm:p-10 rounded-[32px] w-full max-w-lg border border-indigo-500/40 shadow-2xl relative">
             
-            <!-- VIEW 1: SPLASH SCREEN -->
-            <div id="splashScreen" class="py-8 flex flex-col items-center justify-between min-h-[380px]">
-                <div class="my-auto">
-                    <div class="w-24 h-24 bg-gradient-to-tr from-indigo-600 to-purple-600 text-white rounded-[32px] flex items-center justify-center text-5xl font-extrabold mx-auto mb-6 shadow-2xl shadow-indigo-600/50 border border-white/20">
-                        H
+            <!-- Dual Portal Selector Tabs (User vs Admin) -->
+            <div class="flex items-center justify-center bg-slate-900/90 p-1.5 rounded-2xl border border-white/15 mb-6">
+                <button type="button" id="tabUserBtn" onclick="switchPortalTab('user')" class="flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-lg">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Customer & Student Portal</span>
+                </button>
+                <button type="button" id="tabAdminBtn" onclick="switchPortalTab('admin')" class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-300 hover:text-white transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Admin Portal</span>
+                </button>
+            </div>
+
+            <!-- SECTION 1: USER / CUSTOMER / STUDENT PORTAL -->
+            <div id="userSection" class="block space-y-6">
+                <div class="text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg shadow-cyan-500/30">
+                        <i class="fa-solid fa-circle-user"></i>
                     </div>
-                    <h2 class="text-3xl font-extrabold text-white tracking-wide mb-2">Habib <span class="text-indigo-400">iFix</span></h2>
-                    <p class="text-xs text-slate-400 max-w-xs mx-auto">Your trusted partner for all mobile repair and online technical solutions.</p>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white mb-1.5 tracking-tight">Sign In to Your Account</h2>
+                    <p class="text-slate-300 text-xs sm:text-sm font-semibold max-w-sm mx-auto">
+                        Track your mobile repair orders, manage bookings, and access your enrolled courses.
+                    </p>
                 </div>
 
-                <div class="w-full space-y-3 mt-8">
-                    <button onclick="showAuthForm('signin')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
-                        Sign In
+                <!-- REAL GOOGLE AUTHENTICATION BUTTON -->
+                <div class="space-y-3">
+                    <button type="button" onclick="executeGoogleLogin('customer')" id="googleUserBtn" class="w-full bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-3.5 px-4 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3 cursor-pointer group text-xs sm:text-sm border border-slate-200">
+                        <!-- Official Google SVG Icon -->
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span id="googleBtnText">Continue with Google (Official)</span>
                     </button>
-                    <button onclick="showAuthForm('signup')" class="w-full glass-3d bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 rounded-2xl text-xs transition-all border border-white/20">
-                        Create Account
+                    <p class="text-[10px] text-center text-slate-400 font-medium">Opens Google OAuth account window to verify your Google identity securely.</p>
+                </div>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-3 my-4">
+                    <div class="h-px bg-white/15 flex-1"></div>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-300 font-mono font-bold">Or Email & Password</span>
+                    <div class="h-px bg-white/15 flex-1"></div>
+                </div>
+
+                <!-- Real User Email Login Form -->
+                <form id="userLoginForm" onsubmit="submitEmailLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-extrabold text-slate-200 mb-1.5 uppercase tracking-wider">Registered Email</label>
+                        <input type="email" id="userEmail" required class="w-full bg-slate-900/90 border border-white/20 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-cyan-400 font-medium placeholder-slate-400" placeholder="your.email@example.com">
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-extrabold text-slate-200 uppercase tracking-wider">Password</label>
+                            <span class="text-[10px] text-cyan-400 font-bold cursor-pointer hover:underline" onclick="alert('Please sign in with Google or create a new account below.')">Forgot Password?</span>
+                        </div>
+                        <input type="password" id="userPassword" required class="w-full bg-slate-900/90 border border-white/20 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-cyan-400 font-medium placeholder-slate-400" placeholder="••••••••">
+                    </div>
+                    
+                    <button type="submit" id="userSubmitBtn" class="w-full bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-indigo-600/30 text-xs flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Sign In</span>
+                    </button>
+                    
+                    <div id="userAuthAlert" class="hidden p-3 rounded-xl text-xs text-center font-bold"></div>
+                </form>
+
+                <!-- New User Registration Prompt -->
+                <div class="p-3.5 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 text-center">
+                    <p class="text-xs text-slate-200 font-semibold mb-2">Don't have an account yet? Create one in seconds:</p>
+                    <button type="button" onclick="openRegisterModal()" class="text-xs font-extrabold text-cyan-400 hover:text-cyan-300 underline underline-offset-2 cursor-pointer">
+                        + Register New Account
                     </button>
                 </div>
             </div>
 
-            <!-- ALERT MESSAGE -->
-            <div id="authAlert" class="hidden mb-6 p-3 rounded-xl text-xs text-center font-medium"></div>
+            <!-- SECTION 2: ADMIN PORTAL -->
+            <div id="adminSection" class="hidden space-y-6">
+                <div class="text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-600 to-red-600 flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg shadow-amber-500/30">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white mb-1.5 tracking-tight">Admin & Technician Portal</h2>
+                    <p class="text-slate-300 text-xs sm:text-sm font-semibold max-w-sm mx-auto">
+                        Restricted access for Habib iFix founder and authorized technicians.
+                    </p>
+                </div>
 
-            <!-- VIEW 2: SIGN IN FORM -->
-            <form id="signInForm" onsubmit="handleSignIn(event)" class="space-y-4 text-left hidden">
-                <div class="flex items-center justify-between mb-4">
-                    <button type="button" onclick="backToSplash()" class="text-xs text-indigo-400 hover:text-white flex items-center gap-1.5"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                    <h3 class="text-lg font-bold text-white">Sign In</h3>
-                    <div class="w-8"></div>
+                <!-- Google Auth for Admin -->
+                <div class="space-y-3">
+                    <button type="button" onclick="executeGoogleLogin('admin')" id="adminGoogleBtn" class="w-full bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-3.5 px-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3 cursor-pointer text-xs sm:text-sm border border-slate-200">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Sign In with Admin Google Account</span>
+                    </button>
+                    <p class="text-[10px] text-center text-slate-400 font-medium">Authorizes if Google email is verified as Administrator.</p>
                 </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
-                    <input type="email" id="siEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
+
+                <!-- Divider -->
+                <div class="flex items-center gap-3 my-4">
+                    <div class="h-px bg-white/15 flex-1"></div>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-300 font-mono font-bold">Or Master Credentials</span>
+                    <div class="h-px bg-white/15 flex-1"></div>
                 </div>
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-[11px] font-bold text-slate-300 uppercase">Password</label>
-                        <button type="button" onclick="handleForgotPassword()" class="text-[10px] text-indigo-400 hover:underline">Forgot Password?</button>
+
+                <form id="adminLoginForm" onsubmit="submitAdminLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-extrabold text-slate-200 mb-1.5 uppercase tracking-wider">Admin Username</label>
+                        <input type="text" id="adminUsername" value="admin" required class="w-full bg-slate-900/90 border border-white/20 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500 font-medium">
                     </div>
-                    <div class="relative">
-                        <input type="password" id="siPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
-                        <button type="button" onclick="togglePassword('siPassword', this)" class="absolute right-3.5 top-3 text-slate-400 hover:text-white text-xs">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
+                    <div>
+                        <label class="block text-xs font-extrabold text-slate-200 mb-1.5 uppercase tracking-wider">Admin Password</label>
+                        <input type="password" id="adminPassword" value="admin123" required class="w-full bg-slate-900/90 border border-white/20 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500 font-medium">
                     </div>
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
-                    Sign In
-                </button>
-                <div class="relative my-3 text-center">
-                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
-                    <span class="relative px-3 bg-slate-900/40 text-[10px] uppercase text-slate-400 font-semibold">Or</span>
-                </div>
-                <button type="button" onclick="handleGoogleLogin()" class="w-full glass-3d bg-white/5 hover:bg-white/10 text-white font-semibold py-3 rounded-2xl text-xs transition-all flex items-center justify-center gap-3 border border-white/10">
-                    <i class="fa-brands fa-google text-red-400"></i> Continue with Google
-                </button>
-                <p class="text-center text-xs text-slate-400 mt-4">
-                    Don't have an account? <button type="button" onclick="showAuthForm('signup')" class="text-indigo-400 font-bold hover:underline ml-1">Create Account</button>
+                    
+                    <button type="submit" id="adminSubmitBtn" class="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg text-xs flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Login to Admin Dashboard</span>
+                    </button>
+                    
+                    <div id="adminAuthAlert" class="hidden p-3 rounded-xl text-xs text-center font-bold"></div>
+                </form>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="mt-6 pt-4 border-t border-white/15 text-center">
+                <p class="text-[11px] text-slate-300 font-bold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    <span>256-bit SSL Protected • Habib iFix .Tech Official Authentication</span>
                 </p>
-            </form>
-
-            <!-- VIEW 3: CREATE ACCOUNT FORM -->
-            <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-3.5 text-left hidden">
-                <div class="flex items-center justify-between mb-3">
-                    <button type="button" onclick="backToSplash()" class="text-xs text-indigo-400 hover:text-white flex items-center gap-1.5"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                    <h3 class="text-lg font-bold text-white">Create Account</h3>
-                    <div class="w-8"></div>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Full Name</label>
-                    <input type="text" id="suName" required placeholder="Md Habibur Rahman" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
-                    <input type="email" id="suEmail" required placeholder="nathan.roberts@example.com" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Password</label>
-                    <div class="relative">
-                        <input type="password" id="suPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors pr-10">
-                        <button type="button" onclick="togglePassword('suPassword', this)" class="absolute right-3.5 top-2.5 text-slate-400 hover:text-white text-xs">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-300 uppercase mb-1">Confirm Password</label>
-                    <input type="password" id="suConfirmPassword" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white outline-none focus:border-indigo-500 transition-colors">
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-2xl text-xs transition-all shadow-lg shadow-indigo-600/30">
-                    Create Account
-                </button>
-                <div class="relative my-2 text-center">
-                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
-                    <span class="relative px-3 bg-slate-900/40 text-[10px] uppercase text-slate-400 font-semibold">Or</span>
-                </div>
-                <button type="button" onclick="handleGoogleLogin()" class="w-full glass-3d bg-white/5 hover:bg-white/10 text-white font-semibold py-3 rounded-2xl text-xs transition-all flex items-center justify-center gap-3 border border-white/10">
-                    <i class="fa-brands fa-google text-red-400"></i> Continue with Google
-                </button>
-                <p class="text-center text-xs text-slate-400 mt-3">
-                    Already sign in? <button type="button" onclick="showAuthForm('signin')" class="text-indigo-400 font-bold hover:underline ml-1">Sign In</button>
-                </p>
-            </form>
-
-            <p class="text-center text-[10px] text-slate-500 mt-4">&copy; 2026 Habib iFix. All rights reserved.</p>
-
+            </div>
         </div>
     </main>
 
-    <!-- FIREBASE & UI LOGIC -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { 
-            getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, 
-            signInWithPopup, GoogleAuthProvider 
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    <!-- REAL REGISTER USER MODAL -->
+    <div id="registerModal" class="fixed inset-0 z-[10001] hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="bg-slate-900 border border-indigo-500/40 rounded-3xl w-full max-w-md p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeRegisterModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 text-base">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xl mx-auto mb-2">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h3 class="text-xl font-black text-white">Create Real Account</h3>
+                <p class="text-xs text-slate-300 font-semibold">Join Habib iFix for verified repair tickets & course certifications</p>
+            </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
-            authDomain: "habib-yt.firebaseapp.com",
-            projectId: "habib-yt",
-            storageBucket: "habib-yt.firebasestorage.app",
-            messagingSenderId: "656628491244",
-            appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
-            measurementId: "G-GNY1T88D34"
-        };
+            <form onsubmit="submitRegister(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-200 uppercase mb-1">Your Full Name</label>
+                    <input type="text" id="regName" required placeholder="e.g. Habibur Rahman" class="w-full bg-slate-950 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-200 uppercase mb-1">Your Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="e.g. you@example.com" class="w-full bg-slate-950 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-200 uppercase mb-1">Phone Number</label>
+                    <input type="tel" id="regPhone" placeholder="018XXXXXXXX" class="w-full bg-slate-950 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-200 uppercase mb-1">Create Password</label>
+                    <input type="password" id="regPassword" required placeholder="••••••••" class="w-full bg-slate-950 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                </div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const googleProvider = new GoogleAuthProvider();
+                <button type="submit" id="regSubmitBtn" class="w-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-extrabold py-3 rounded-xl transition-all text-xs flex items-center justify-center gap-2 cursor-pointer mt-2 shadow-lg">
+                    <i class="fa-solid fa-check"></i> Complete Registration
+                </button>
+                <div id="regAlert" class="hidden p-2.5 rounded-xl text-xs text-center font-bold"></div>
+            </form>
+        </div>
+    </div>
 
-        function showAlert(msg, isError = true) {
-            const alertBox = document.getElementById('authAlert');
-            alertBox.innerText = msg;
-            alertBox.className = `mb-4 p-3 rounded-xl text-xs text-center font-medium ${isError ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}`;
-            alertBox.classList.remove('hidden');
+    <!-- Global AI Widget -->
+    <script src="js/ai-agent.js"></script>
+
+    <script>
+        function switchPortalTab(tab) {
+            const userSection = document.getElementById('userSection');
+            const adminSection = document.getElementById('adminSection');
+            const tabUserBtn = document.getElementById('tabUserBtn');
+            const tabAdminBtn = document.getElementById('tabAdminBtn');
+
+            if (tab === 'user') {
+                userSection.classList.remove('hidden');
+                adminSection.classList.add('hidden');
+                tabUserBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-lg';
+                tabAdminBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-300 hover:text-white transition-all flex items-center justify-center gap-2';
+            } else {
+                userSection.classList.add('hidden');
+                adminSection.classList.remove('hidden');
+                tabAdminBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg';
+                tabUserBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-300 hover:text-white transition-all flex items-center justify-center gap-2';
+            }
         }
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const returnUrl = urlParams.get('return') || 'index.html';
+        function openRegisterModal() {
+            document.getElementById('registerModal').classList.remove('hidden');
+        }
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.add('hidden');
+        }
 
-        window.showAuthForm = function(mode) {
-            document.getElementById('splashScreen').classList.add('hidden');
-            document.getElementById('authAlert').classList.add('hidden');
-            if (mode === 'signin') {
-                document.getElementById('signInForm').classList.remove('hidden');
-                document.getElementById('signUpForm').classList.add('hidden');
+        // REAL GOOGLE LOGIN TRIGGER
+        async function executeGoogleLogin(role) {
+            const btnText = document.getElementById('googleBtnText');
+            const alertBox = document.getElementById('userAuthAlert');
+            const adminAlert = document.getElementById('adminAuthAlert');
+            
+            if (role === 'admin') {
+                adminAlert.classList.add('hidden');
             } else {
-                document.getElementById('signUpForm').classList.remove('hidden');
-                document.getElementById('signInForm').classList.add('hidden');
+                alertBox.classList.add('hidden');
+                if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Connecting to Google...';
             }
-        };
-
-        window.backToSplash = function() {
-            document.getElementById('splashScreen').classList.remove('hidden');
-            document.getElementById('signInForm').classList.add('hidden');
-            document.getElementById('signUpForm').classList.add('hidden');
-            document.getElementById('authAlert').classList.add('hidden');
-        };
-
-        window.handleSignIn = async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('siEmail').value;
-            const password = document.getElementById('siPassword').value;
 
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
+                if (!window.HabibAuth || !window.HabibAuth.signInWithGoogleReal) {
+                    throw new Error("Authentication engine is initializing. Please try again in 1 second.");
+                }
+                const result = await window.HabibAuth.signInWithGoogleReal(role);
                 
-                localStorage.setItem('habib_logged_in', 'true');
-                localStorage.setItem('habib_user_email', user.email);
-                localStorage.setItem('habib_user_name', user.displayName || user.email.split('@')[0]);
-                
-                showAlert("Login Successful! Redirecting...", false);
-                setTimeout(() => { window.location.href = returnUrl; }, 1000);
-            } catch (error) {
-                showAlert(error.message);
-            }
-        };
+                const targetAlert = role === 'admin' ? adminAlert : alertBox;
+                targetAlert.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                targetAlert.innerHTML = `<i class="fa-solid fa-circle-check"></i> Google Verified: Welcome ${result.user.name}! Redirecting...`;
+                targetAlert.classList.remove('hidden');
 
-        window.handleSignUp = async function(e) {
+                setTimeout(() => {
+                    if (result.isAdmin || result.user.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                }, 800);
+            } catch (err) {
+                const targetAlert = role === 'admin' ? adminAlert : alertBox;
+                targetAlert.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
+                targetAlert.innerText = err.message || 'Google Sign-In failed.';
+                targetAlert.classList.remove('hidden');
+            } finally {
+                if (btnText) btnText.innerText = 'Continue with Google (Official)';
+            }
+        }
+
+        // REAL EMAIL LOGIN
+        async function submitEmailLogin(e) {
             e.preventDefault();
-            const name = document.getElementById('suName').value;
-            const email = document.getElementById('suEmail').value;
-            const password = document.getElementById('suPassword').value;
-            const confirmPassword = document.getElementById('suConfirmPassword').value;
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value;
+            const btn = document.getElementById('userSubmitBtn');
+            const alertBox = document.getElementById('userAuthAlert');
 
-            if (password !== confirmPassword) {
-                showAlert("Passwords do not match!");
-                return;
-            }
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Checking credentials...';
+            alertBox.classList.add('hidden');
 
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                await updateProfile(user, { displayName: name });
+                if (!window.HabibAuth || !window.HabibAuth.signInWithEmailReal) {
+                    throw new Error("Auth system loading. Please try again in a moment.");
+                }
+                const result = await window.HabibAuth.signInWithEmailReal(email, password);
 
-                localStorage.setItem('habib_logged_in', 'true');
-                localStorage.setItem('habib_user_email', user.email);
-                localStorage.setItem('habib_user_name', name);
+                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Welcome back, ${result.user.name}! Redirecting...`;
+                alertBox.classList.remove('hidden');
 
-                showAlert("Account Created Successfully! Redirecting...", false);
-                setTimeout(() => { window.location.href = returnUrl; }, 1000);
-            } catch (error) {
-                showAlert(error.message);
+                setTimeout(() => {
+                    window.location.href = result.user.role === 'admin' ? 'admin.html' : 'index.html';
+                }, 800);
+            } catch (err) {
+                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
+                alertBox.innerText = err.message || 'Invalid email or password.';
+                alertBox.classList.remove('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
             }
-        };
+        }
 
-        window.handleGoogleLogin = async function() {
+        // REAL REGISTRATION
+        async function submitRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const btn = document.getElementById('regSubmitBtn');
+            const alertBox = document.getElementById('regAlert');
+
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Registering...';
+            alertBox.classList.add('hidden');
+
             try {
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
+                if (!window.HabibAuth || !window.HabibAuth.registerWithEmailReal) {
+                    throw new Error("Auth system loading. Please try again in a moment.");
+                }
+                const result = await window.HabibAuth.registerWithEmailReal(name, email, phone, password);
 
-                localStorage.setItem('habib_logged_in', 'true');
-                localStorage.setItem('habib_user_email', user.email);
-                localStorage.setItem('habib_user_name', user.displayName || user.email.split('@')[0]);
+                alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Account created! Logging in...`;
+                alertBox.classList.remove('hidden');
 
-                showAlert("Google Login Successful! Redirecting...", false);
-                setTimeout(() => { window.location.href = returnUrl; }, 1000);
-            } catch (error) {
-                showAlert(error.message);
+                setTimeout(() => {
+                    closeRegisterModal();
+                    window.location.href = 'index.html';
+                }, 800);
+            } catch (err) {
+                alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
+                alertBox.innerText = err.message || 'Registration failed.';
+                alertBox.classList.remove('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Complete Registration';
             }
-        };
+        }
 
-        window.handleForgotPassword = async function() {
-            const email = document.getElementById('siEmail').value;
-            if (!email) {
-                showAlert("Please enter your email address first in the email field.");
-                return;
-            }
+        // REAL ADMIN CREDENTIALS LOGIN
+        async function submitAdminLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            const btn = document.getElementById('adminSubmitBtn');
+            const alertBox = document.getElementById('adminAuthAlert');
+
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Verifying...';
+            alertBox.classList.add('hidden');
+
             try {
-                await sendPasswordResetEmail(auth, email);
-                showAlert("Password reset email sent! Check your inbox.", false);
-            } catch (error) {
-                showAlert(error.message);
-            }
-        };
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
 
-        window.togglePassword = function(fieldId, btn) {
-            const input = document.getElementById(fieldId);
-            if (input.type === "password") {
-                input.type = "text";
-                btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
-            } else {
-                input.type = "password";
-                btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+                if (data.success) {
+                    alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                    alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Admin Verified! Opening Dashboard...`;
+                    alertBox.classList.remove('hidden');
+
+                    if (window.HabibAuth && window.HabibAuth.setCurrentUser) {
+                        window.HabibAuth.setCurrentUser({
+                            name: 'Habibur Rahman',
+                            email: 'tec.habiburrahman@gmail.com',
+                            role: 'admin',
+                            avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80'
+                        });
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = 'admin.html';
+                    }, 800);
+                } else {
+                    alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
+                    alertBox.innerText = data.error || 'Access Denied: Invalid admin credentials.';
+                    alertBox.classList.remove('hidden');
+                    btn.innerHTML = '<i class="fa-solid fa-lock"></i> Login to Admin Dashboard';
+                }
+            } catch (err) {
+                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
+                alertBox.innerText = 'Network connection error. Try again.';
+                alertBox.classList.remove('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-lock"></i> Login to Admin Dashboard';
             }
-        };
+        }
     </script>
 </body>
 </html>

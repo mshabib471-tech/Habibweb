@@ -1,0 +1,47 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Welcome to Habib iFix Tech & Diagnostic Hub",
+      "category": "HARDWARE LAB",
+      "description": "Welcome to Bangladesh's premier mobile motherboard micro-soldering, OCA display refurbishment, and online diagnostic center.",
+      "mediaLink": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=75",
+      "mediaType": "image",
+      "date": "14/10/2026"
+    },
+    {
+      "id": 2,
+      "title": "Android 2026 Latest FRP Security Bypass & Knox Solutions",
+      "category": "SECURITY & UNLOCK",
+      "description": "Comprehensive technical breakdown on unlocking modern Android 12 to 16 devices after factory reset without damaging system integrity.",
+      "mediaLink": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=75",
+      "mediaType": "image",
+      "date": "14/10/2026"
+    },
+    {
+      "id": 3,
+      "title": "How to Diagnose Dead Boot & PMIC Short Circuits with Thermal Cameras",
+      "category": "MICRO-SOLDERING",
+      "description": "Step-by-step masterclass on tracing DC current draw and identifying shorted ceramic capacitors using thermal imaging and BGA stations.",
+      "mediaLink": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=75",
+      "mediaType": "image",
+      "date": "14/10/2026"
+    }
+  ],
+  "bookings": [],
+  "nextPostId": 4,
+  "nextBookingId": 1,
+  "users": [
+    {
+      "id": 1,
+      "name": "Habibur Rahman",
+      "email": "tec.habiburrahman@gmail.com",
+      "phone": "+8801868461577",
+      "role": "admin",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80",
+      "authProvider": "google",
+      "createdAt": "14/10/2026"
+    }
+  ],
+  "nextUserId": 2
+}

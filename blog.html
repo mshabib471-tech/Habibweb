@@ -1,508 +1,258 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title data-en="Blog - Habib iFix Social Feed" data-bn="ব্লগ - হাবিব আইফিক্স সোশ্যাল ফিড">Blog - Habib iFix Social Feed</title>
-
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
-  
-  <!-- Adsterra Popunder Scripts -->
-  <script src="https://pl31008814.profitableratecpmnetwork.com/d0/4c/38/d04c388396c722ea1cfeddfbd05afc27.js"></script>
-  <script src="https://pl31008815.profitableratecpmnetwork.com/2d/3c/ef/2d3cef3a5c44c5e6a9c64bf5ce166f69.js"></script>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <style>
-    * { box-sizing: border-box; }
-    html, body { width: 100%; max-width: 100%; overflow-x: hidden !important; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311045 100%); color: #f1f5f9; min-height: 100vh; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Blog - Habib iFix .Tech</title>
     
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
 
-    @keyframes blob { 0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-50px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.9)}100%{transform:translate(0,0) scale(1)} }
-    .animate-blob { animation: blob 7s infinite; }
-    .animation-delay-2000 { animation-delay: 2s; }
-
-    @keyframes fade-in-up { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
-    .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
-
-    @keyframes heart-beat { 0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)} }
-    .animate-heart { animation: heart-beat 0.3s ease-in-out; }
-
-    @keyframes double-tap-heart { 0%{transform:scale(0);opacity:0}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:0} }
-    .animate-double-tap { animation: double-tap-heart 0.8s ease-out forwards; }
-
-    .glass-3d {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
+    <script>
+        tailwind = { darkMode: "class" };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    .glass-3d:hover {
-        border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .toast { position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);color:#f1f5f9;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:500;z-index:9999;transition:transform .3s ease;box-shadow:0 10px 40px rgba(0,0,0,.5); }
-    .toast.show { transform:translateX(-50%) translateY(0); }
-
-    .reel-container { position:relative;width:100%;max-width:400px;margin:0 auto;aspect-ratio:9/16;max-height:700px;background:#000;border-radius:12px;overflow:hidden; }
-    .reel-container iframe { width:100%;height:100%;border:none; }
-    .landscape-container { position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden; }
-    .landscape-container iframe { width:100%;height:100%;border:none; }
-
-    .story-ring { background:linear-gradient(135deg,#06b6d4,#8b5cf6,#ec4899);padding:2.5px;border-radius:50%; }
-    .story-ring-inner { border:2.5px solid #0f172a;border-radius:50%;overflow:hidden; }
-
-    .post-card { transition:all .3s ease; }
-    .post-card:hover { box-shadow:0 8px 30px rgba(6,182,212,.2); }
-
-    .comment-input:focus { box-shadow:0 0 0 2px rgba(6,182,212,.3); }
-
-    .ad-container { background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.15);border-radius:12px;padding:8px;text-align:center;margin:20px 0;min-height:60px;display:flex;align-items:center;justify-content:center;overflow:hidden; }
-    .ad-label { font-size:10px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px; }
-
-    .smartlink-banner { background:linear-gradient(135deg,#4f46e5 0%,#9333ea 100%);border-radius:16px;padding:20px;color:white;text-align:center;cursor:pointer;transition:all .3s ease;box-shadow:0 10px 30px rgba(79,70,229,0.3); }
-    .smartlink-banner:hover { transform:translateY(-5px);box-shadow:0 15px 40px rgba(79,70,229,0.5); }
-  </style>
-</head>
-<body class="selection:bg-indigo-500 selection:text-white relative flex flex-col">
-
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
-
-  <!-- BACKGROUND BLOBS -->
-  <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-600/30 blur-[120px] animate-blob mix-blend-screen"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/30 blur-[150px] animate-blob animation-delay-2000 mix-blend-screen"></div>
-  </div>
-
-  <!-- HEADER / NAVBAR -->
-  <header class="fixed top-0 left-0 w-full z-50 py-3 px-4 sm:px-8 md:px-12 flex justify-between items-center glass-3d border-b border-white/10">
-      <a href="index.html" class="flex items-center gap-2.5">
-          <div class="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg shadow-indigo-500/30">H</div>
-          <div class="leading-tight">
-              <h1 class="font-bold text-white text-xs sm:text-sm">Habib <span class="text-indigo-400">iFix</span></h1>
-              <p class="text-[9px] sm:text-[10px] text-slate-400 font-medium tracking-wide" data-en="Trusted Mobile Technician" data-bn="বিশ্বস্ত মোবাইল টেকনিশিয়ান">Trusted Mobile Technician</p>
-          </div>
-      </a>
-
-      <!-- Desktop Nav -->
-      <nav class="hidden lg:flex glass-3d rounded-full px-6 py-2.5 items-center gap-6 text-sm font-medium text-slate-300">
-          <a href="index.html" class="hover:text-white transition-colors" data-en="Home" data-bn="হোম">Home</a>
-          <a href="about.html" class="hover:text-white transition-colors" data-en="About" data-bn="আমাদের সম্পর্কে">About</a>
-          <a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a>
-          <a href="courses.html" class="hover:text-white transition-colors" data-en="Courses" data-bn="কোর্সসমূহ">Courses</a>
-          <a href="blog.html" class="text-white bg-white/10 px-4 py-1.5 rounded-full shadow-inner" data-en="Blog" data-bn="ব্লগ">Blog</a>
-          <a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
-      </nav>
-
-      <!-- CTA & Language Switch & Profile -->
-      <div class="flex items-center gap-2 sm:gap-3">
-          <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass-3d bg-indigo-500/20 px-3 py-2 rounded-full font-bold text-xs text-indigo-300 hover:bg-indigo-500/30 transition-colors">
-              বাংলা (BAN)
-          </button>
-
-          <a href="login.html?return=blog.html" id="loginNavBtn" class="glass-3d bg-white/10 px-5 py-2 rounded-full font-semibold text-xs sm:text-sm hover:bg-white/20 transition-colors flex items-center gap-2 text-white">
-              <span data-en="Sign In / Sign Up" data-bn="সাইন ইন / সাইন আপ">Sign In / Sign Up</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </a>
-          
-          <div id="userProfileMenu" class="hidden relative cursor-pointer group">
-              <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-indigo-400 shadow-md object-cover">
-              <div class="absolute top-full right-0 mt-3 w-48 glass-3d bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden z-50 p-2">
-                  <label class="px-3 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white rounded-xl cursor-pointer flex items-center gap-2 transition-colors mb-1">
-                      <i class="fa-solid fa-camera text-xs"></i> <span data-en="Change Pic" data-bn="ছবি বদলান">Change Pic</span>
-                      <input type="file" id="profilePicInput" accept="image/*" class="hidden">
-                  </label>
-                  <button onclick="logoutCurrentUser()" class="w-full px-3 py-2 text-sm text-red-400 hover:bg-red-500/20 rounded-xl text-left flex items-center gap-2 transition-colors">
-                      <i class="fa-solid fa-sign-out-alt text-xs"></i> <span data-en="Logout" data-bn="লগআউট">Logout</span>
-                  </button>
-              </div>
-          </div>
-
-          <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 glass-3d rounded-xl flex items-center justify-center text-white shadow-md focus:outline-none z-50">
-              <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
-          </button>
-      </div>
-  </header>
-
-  <!-- Mobile Dropdown Menu -->
-  <div id="mobileMenu" class="fixed inset-x-0 top-0 pt-20 bg-slate-950/95 backdrop-blur-2xl border-b border-slate-800 shadow-2xl px-6 pb-6 flex flex-col gap-3 transform -translate-y-full opacity-0 invisible transition-all duration-300 z-40 lg:hidden">
-      <a href="index.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">Home</a>
-      <a href="about.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">About</a>
-      <a href="services.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">Services</a>
-      <a href="courses.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">Courses</a>
-      <a href="blog.html" onclick="toggleMobileMenu()" class="text-white font-semibold text-sm py-2.5 px-4 rounded-xl bg-white/10">Blog</a>
-      <a href="contact.html" onclick="toggleMobileMenu()" class="text-slate-300 font-medium text-sm py-2.5 px-4 rounded-xl hover:bg-white/5">Contact</a>
-  </div>
-
-  <!-- ================= MAIN FEED ================= -->
-  <main class="flex-grow pt-28 pb-20 px-4 sm:px-6 md:px-12 relative z-10 flex justify-center">
-    <div class="w-full max-w-[550px]">
-
-      <!-- Admin Controls -->
-      <div id="adminControls" class="hidden mb-6 animate-fade-in-up px-2">
-        <div class="bg-indigo-600/20 border border-indigo-500/30 text-indigo-300 p-3 rounded-2xl text-center text-sm font-medium flex items-center justify-center gap-2 backdrop-blur-md mb-4">
-          🛡️ <span>Admin Mode Active — Full Control</span>
-        </div>
-        <button onclick="openCreatePostModal()" class="w-full glass-3d hover:bg-white/10 border border-white/20 p-4 rounded-2xl flex items-center gap-4 transition-all shadow-lg group">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform text-lg font-bold">＋</div>
-          <span class="text-white font-medium group-hover:text-indigo-300 transition-colors">Create New Post...</span>
-        </button>
-      </div>
-
-      <!-- Stories Bar -->
-      <div class="flex gap-4 overflow-x-auto no-scrollbar py-4 px-2 mb-4">
-        <div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer group">
-          <div class="story-ring group-hover:scale-105 transition-transform">
-            <div class="story-ring-inner w-[62px] h-[62px] bg-slate-900 flex items-center justify-center">
-              <span class="text-2xl text-indigo-400">＋</span>
-            </div>
-          </div>
-          <span class="text-[11px] text-slate-400 truncate w-[68px] text-center">Your Story</span>
-        </div>
-        <div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer group">
-          <div class="story-ring group-hover:scale-105 transition-transform">
-            <div class="story-ring-inner w-[62px] h-[62px]">
-              <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=75&w=150" class="w-full h-full object-cover" loading="lazy" width="62" height="62" alt="Repair Tips">
-            </div>
-          </div>
-          <span class="text-[11px] text-slate-400 truncate w-[68px] text-center">Repair Tips</span>
-        </div>
-        <div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer group">
-          <div class="story-ring group-hover:scale-105 transition-transform">
-            <div class="story-ring-inner w-[62px] h-[62px]">
-              <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&q=75&w=150" class="w-full h-full object-cover" loading="lazy" width="62" height="62" alt="Workshop">
-            </div>
-          </div>
-          <span class="text-[11px] text-slate-400 truncate w-[68px] text-center">Workshop</span>
-        </div>
-        <div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer group">
-          <div class="story-ring group-hover:scale-105 transition-transform">
-            <div class="story-ring-inner w-[62px] h-[62px]">
-              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=75&w=150" class="w-full h-full object-cover" loading="lazy" width="62" height="62" alt="Tech">
-            </div>
-          </div>
-          <span class="text-[11px] text-slate-400 truncate w-[68px] text-center">Tech News</span>
-        </div>
-        <div class="flex flex-col items-center gap-1.5 min-w-[68px] cursor-pointer group">
-          <div class="story-ring group-hover:scale-105 transition-transform">
-            <div class="story-ring-inner w-[62px] h-[62px]">
-              <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=75&w=150" class="w-full h-full object-cover" loading="lazy" width="62" height="62" alt="Offers">
-            </div>
-          </div>
-          <span class="text-[11px] text-slate-400 truncate w-[68px] text-center">Offers</span>
-        </div>
-      </div>
-
-      <!-- Adsterra Native Banner Ad -->
-      <div class="px-2 mb-4">
-        <div class="ad-container">
-          <div class="text-center">
-            <div class="ad-label">Advertisement</div>
-            <script async="async" data-cfasync="false" src="https://pl31008816.profitableratecpmnetwork.com/8e9094986a453471eab78291c50b779f/invoke.js"></script>
-            <div id="container-8e9094986a453471eab78291c50b779f"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Smartlink Banner Ad -->
-      <div class="px-2 mb-4">
-        <a href="https://www.profitableratecpmnetwork.com/hh3ntsst?key=f75560326eef0c5f8b5aacdcba1faa1e" target="_blank" class="smartlink-banner block">
-          <div class="flex items-center justify-center gap-4">
-            <div class="text-left">
-              <h3 class="text-xl font-bold mb-1">Exclusive Offers & Deals!</h3>
-              <p class="text-sm opacity-90">Click here to discover amazing deals and earn rewards</p>
-            </div>
-            <div class="text-3xl">→</div>
-          </div>
-        </a>
-      </div>
-
-      <!-- Feed Container -->
-      <div id="blog-container" class="space-y-5 px-1">
-        <div class="flex flex-col items-center justify-center py-20 space-y-4">
-          <div class="w-10 h-10 border-3 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin"></div>
-          <p class="text-slate-400 text-sm font-medium animate-pulse">Loading feed...</p>
-        </div>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- ================= CREATE POST MODAL ================= -->
-  <div id="createPostModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-    <div class="glass-3d bg-slate-900 border border-white/20 w-full max-w-lg rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[90vh]" id="modalContent">
-      <div class="flex items-center justify-between p-4 border-b border-white/10">
-        <h3 id="modalTitle" class="text-lg font-bold text-white">Create New Post</h3>
-        <button onclick="closeCreatePostModal()" class="text-slate-400 hover:text-white transition-colors text-xl">✕</button>
-      </div>
-      <div class="p-6 overflow-y-auto flex-grow">
-        <form id="createPostForm" class="space-y-5">
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Media Type</label>
-            <div class="grid grid-cols-3 gap-2">
-              <button type="button" onclick="setMediaType('image')" id="btn-type-image" class="py-2.5 rounded-lg border border-indigo-500 bg-indigo-500/25 text-white text-xs font-bold transition-all flex flex-col items-center gap-1">🖼️ Image</button>
-              <button type="button" onclick="setMediaType('video')" id="btn-type-video" class="py-2.5 rounded-lg border border-white/10 bg-white/5 text-slate-300 text-xs font-bold hover:bg-white/10 transition-all flex flex-col items-center gap-1">🎬 Video</button>
-              <button type="button" onclick="setMediaType('reel')" id="btn-type-reel" class="py-2.5 rounded-lg border border-white/10 bg-white/5 text-slate-300 text-xs font-bold hover:bg-white/10 transition-all flex flex-col items-center gap-1">🎞️ Reel</button>
-            </div>
-            <input type="hidden" id="selectedMediaType" value="image">
-          </div>
-          <div id="platformHint" class="hidden bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-3">
-            <p class="text-xs text-indigo-300 font-medium mb-2">ℹ️ Supported Platforms:</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="text-[10px] bg-red-500/25 text-red-300 px-2 py-0.5 rounded-full border border-red-500/30"><i class="fab fa-youtube mr-1"></i>YouTube</span>
-              <span class="text-[10px] bg-pink-500/25 text-pink-300 px-2 py-0.5 rounded-full border border-pink-500/30"><i class="fab fa-instagram mr-1"></i>Instagram</span>
-              <span class="text-[10px] bg-cyan-500/25 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/30"><i class="fab fa-tiktok mr-1"></i>TikTok</span>
-              <span class="text-[10px] bg-blue-500/25 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30"><i class="fab fa-facebook mr-1"></i>Facebook</span>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Media URL</label>
-            <input type="url" id="postMediaUrl" required placeholder="Paste image/video/reel link here..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-indigo-400 outline-none transition-all text-sm">
-            <p class="text-[10px] text-slate-400 mt-1 ml-1" id="mediaUrlHint">Supports ImgBB, YouTube, TikTok, Instagram, Facebook links.</p>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Category</label>
-            <select id="postCategory" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-indigo-400 outline-none transition-all text-sm appearance-none">
-              <option value="Update">General Update</option>
-              <option value="Repair Tip">Repair Tip</option>
-              <option value="Review">Product Review</option>
-              <option value="Offer">Special Offer</option>
-              <option value="Reel">Reel / Short Video</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Caption</label>
-            <textarea id="postDescription" rows="4" required placeholder="Write your caption here..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-indigo-400 outline-none resize-none transition-all text-sm"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="p-4 border-t border-white/10">
-        <button onclick="submitNewPost()" id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
-          <span>Publish Post</span> ➤
-        </button>
-        <div id="postStatus" class="hidden mt-3 text-center text-sm font-medium"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= SHARE MODAL ================= -->
-  <div id="shareModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-    <div class="glass-3d bg-slate-900 border border-white/20 w-full max-w-sm rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="shareModalContent">
-      <div class="flex items-center justify-between p-4 border-b border-white/10">
-        <h3 class="text-lg font-bold text-white">Share Post</h3>
-        <button onclick="closeShareModal()" class="text-slate-400 hover:text-white text-xl">✕</button>
-      </div>
-      <div class="p-4 space-y-2">
-        <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('whatsapp')"><div class="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center text-white text-lg"><i class="fab fa-whatsapp"></i></div><span class="text-white font-medium">WhatsApp</span></div>
-        <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('facebook')"><div class="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center text-white text-lg"><i class="fab fa-facebook-f"></i></div><span class="text-white font-medium">Facebook</span></div>
-        <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('telegram')"><div class="w-10 h-10 rounded-full bg-[#0088cc] flex items-center justify-center text-white text-lg"><i class="fab fa-telegram-plane"></i></div><span class="text-white font-medium">Telegram</span></div>
-        <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('twitter')"><div class="w-10 h-10 rounded-full bg-[#1DA1F2] flex items-center justify-center text-white text-lg"><i class="fab fa-twitter"></i></div><span class="text-white font-medium">Twitter / X</span></div>
-        <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors" onclick="shareVia('copy')"><div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white text-lg">📋</div><span class="text-white font-medium">Copy Link</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="glass-3d border-t border-white/10 pt-10 sm:pt-12 pb-6 mt-10 relative z-10">
-      <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-              <div class="space-y-3">
-                  <div class="flex items-center gap-3">
-                      <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-sm">H</div>
-                      <span class="font-bold text-white text-base">Habib <span class="text-indigo-400">iFix</span></span>
-                  </div>
-                  <p class="text-slate-400 text-xs leading-relaxed" data-en="Your trusted partner for all mobile repair and online technical solutions." data-bn="আপনার মোবাইল রিপেয়ার ও টেকনিক্যাল সেবার বিশ্বস্ত ঠিকানা।">Your trusted partner for all mobile repair and online technical solutions.</p>
-              </div>
-              <div>
-                  <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Explore" data-bn="এক্সপ্লোর">Explore</h4>
-                  <ul class="space-y-2 text-xs text-slate-400">
-                      <li><a href="index.html" class="hover:text-white transition-colors" data-en="Home" data-bn="হোম">Home</a></li>
-                      <li><a href="about.html" class="hover:text-white transition-colors" data-en="About" data-bn="আমাদের সম্পর্কে">About</a></li>
-                      <li><a href="services.html" class="hover:text-white transition-colors" data-en="Services" data-bn="সেবাসমূহ">Services</a></li>
-                      <li><a href="contact.html" class="hover:text-white transition-colors" data-en="Contact" data-bn="যোগাযোগ">Contact</a></li>
-                  </ul>
-              </div>
-              <div>
-                  <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Contact Info" data-bn="যোগাযোগের তথ্য">Contact Info</h4>
-                  <ul class="space-y-2 text-xs text-slate-400">
-                      <li><i class="fa-solid fa-phone text-indigo-400 mr-2"></i> +880 1868 461577</li>
-                      <li><i class="fa-solid fa-location-dot text-indigo-400 mr-2"></i> Gachbaria, Chattogram</li>
-                  </ul>
-              </div>
-              <div>
-                  <h4 class="font-bold text-white mb-3 text-xs uppercase tracking-wider" data-en="Newsletter" data-bn="নিউজলেটার">Newsletter</h4>
-                  <p class="text-slate-400 text-xs mb-3" data-en="Subscribe for updates." data-bn="আপডেটের জন্য সাবস্ক্রাইব করুন।">Subscribe for updates.</p>
-                  <form class="flex items-center glass-3d rounded-xl p-1" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
-                      <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-white placeholder-slate-500">
-                      <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors" data-en="Join" data-bn="যুক্ত হোন">Join</button>
-                  </form>
-              </div>
-          </div>
-          <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-400 gap-4 text-center sm:text-left">
-              <p>&copy; 2026 Habib iFix. All rights reserved.</p>
-              <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                  <a href="#" class="hover:text-white transition-colors" data-en="Privacy" data-bn="প্রাইভেসি">Privacy</a>
-                  <a href="#" class="hover:text-white transition-colors" data-en="Terms" data-bn="শর্তাবলী">Terms</a>
-                  <a href="#" class="hover:text-white transition-colors" data-en="Support" data-bn="সাপোর্ট">Support</a>
-              </div>
-          </div>
-      </div>
-  </footer>
-
-  <!-- ================= JAVASCRIPT ================= -->
-  <script>
-    function showToast(msg,type='success'){var t=document.getElementById('toast');t.innerText=msg;t.style.borderColor=type==='success'?'rgba(99,102,241,0.5)':type==='error'?'rgba(239,68,68,0.5)':'rgba(255,255,255,0.2)';t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
-
-    function toggleMobileMenu() {
-        const menu = document.getElementById('mobileMenu');
-        const icon = document.getElementById('mobileMenuIcon');
-        if (menu.classList.contains('-translate-y-full')) {
-            menu.classList.remove('-translate-y-full', 'opacity-0', 'invisible');
-            menu.classList.add('translate-y-0', 'opacity-100', 'visible');
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-xmark');
-        } else {
-            menu.classList.remove('translate-y-0', 'opacity-100', 'visible');
-            menu.classList.add('-translate-y-full', 'opacity-0', 'invisible');
-            icon.classList.remove('fa-xmark');
-            icon.classList.add('fa-bars');
+    <style>
+        * { box-sizing: border-box; }
+        html, body { 
+            width: 100%; 
+            max-width: 100%; 
+            overflow-x: hidden !important; 
+            margin: 0; 
+            padding: 0; 
+            
+            
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
         }
-    }
+        
+        .glass-3d {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
 
-    let currentLang = localStorage.getItem('habib_lang') || 'en';
-    function applyLanguage(lang) {
-        currentLang = lang;
-        localStorage.setItem('habib_lang', lang);
-        const btn = document.getElementById('langSwitchBtn');
-        if(btn) btn.innerText = lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)';
-        document.querySelectorAll('[data-en]').forEach(el => {
-            const text = el.getAttribute(`data-${lang}`);
-            if (text) {
-                if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = text;
-                else el.innerText = text;
+        .blob { 
+            position: absolute; 
+            border-radius: 50%; 
+            filter: blur(100px); 
+            z-index: -1; 
+            opacity: 0.5; 
+            pointer-events: none; 
+        }
+        .blob-1 { top: 0; left: 0; width: 400px; height: 400px; background: #4f46e5; }
+        .blob-2 { top: 40%; right: 0; width: 500px; height: 500px; background: #9333ea; }
+    </style>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+</head>
+<body class="antialiased selection:bg-indigo-500 selection:text-white pb-20 dark-mode">
+
+    <!-- TOP PROMO BANNER WITH CLOSE BUTTON -->
+    <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all">
+        <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
+            <span class="inline-flex items-center gap-1.5 bg-indigo-500/15 text-indigo-600 dark:text-cyan-300 border border-indigo-500/30 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-cyan-400 animate-ping"></span>
+                ACTIVE
+            </span>
+            <span class="font-medium" data-en="Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds." data-bn="হাবিব আইফিক্স এআই টেকনিক্যাল অ্যাসিস্ট্যান্ট অ্যাক্টিভ! সেকেন্ডেই মোবাইল ডায়াগনসিস করুন।">
+                Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds.
+            </span>
+            <button onclick="window.openHabibAI()" class="font-bold underline underline-offset-2 ml-1 cursor-pointer text-indigo-600 hover:text-indigo-800 dark:text-cyan-400 dark:hover:text-cyan-300">
+                <span data-en="Try AI Now &rarr;" data-bn="এখনই এআই ট্রাই করুন &rarr;">Try AI Now &rarr;</span>
+            </button>
+        </div>
+        <button onclick="closePromoBanner()" class="text-slate-400 hover:text-slate-800 dark:hover:text-white p-1 rounded-full transition-colors ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
+            <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+    </div>
+
+    <!-- MAIN NAVBAR (UNIFIED ACROSS ALL PAGES) -->
+    <header class="sticky top-0 left-0 w-full z-40 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="brand-logo-box w-10 h-10 shrink-0 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1.5px] shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.7)] transition-all flex items-center justify-center">
+                    <div class="w-full h-full bg-slate-950 rounded-[13px] flex items-center justify-center">
+                        <svg class="h-logo-svg w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="url(#hLogoGradBlg)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="5.5" cy="4.5" r="1.5" fill="#38bdf8"/>
+                            <circle cx="18.5" cy="4.5" r="1.5" fill="#818cf8"/>
+                            <circle cx="5.5" cy="19.5" r="1.5" fill="#38bdf8"/>
+                            <circle cx="18.5" cy="19.5" r="1.5" fill="#818cf8"/>
+                            <circle cx="12" cy="12" r="1.8" fill="#ffffff"/>
+                            <defs>
+                                <linearGradient id="hLogoGradBlg" x1="5.5" y1="4.5" x2="18.5" y2="19.5" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#38bdf8"/>
+                                    <stop offset="0.5" stop-color="#ffffff"/>
+                                    <stop offset="1" stop-color="#818cf8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center gap-1.5 leading-none">
+                        <span class="brand-name-habib font-black text-xl tracking-tight text-white">Habib</span>
+                        <span class="brand-name-ifix font-black text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">iFix</span>
+                        <span class="brand-name-tech text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-md font-mono-code font-bold ml-1 shadow-sm">.Tech</span>
+                    </div>
+                    <p class="text-[10px] text-slate-300 font-bold mt-1" data-en="Mobile Engineering & Digital Lab" data-bn="মোবাইল ইঞ্জিনিয়ারিং ও ডিজিটাল ল্যাব">Mobile Engineering & Digital Lab</p>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-full border border-white/15 shadow-inner">
+                <a href="index.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Home" data-bn="হোম">Home</a>
+                <a href="about.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="About" data-bn="পরিচিতি">About</a>
+                <a href="services.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Services" data-bn="সেবাসমূহ">Services</a>
+                <a href="courses.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Courses" data-bn="কোর্স">Courses</a>
+                <a href="cv.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1.5" data-en="CV Maker" data-bn="সিভি মেকার">
+                    <i class="fa-solid fa-file-lines text-xs text-cyan-300"></i> CV Maker
+                </a>
+                <a href="frp.html" class="px-3.5 py-2 rounded-full text-xs font-extrabold text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-unlock-keyhole text-[10px]"></i> FRP 2026
+                </a>
+                <a href="blog.html" class="px-4 py-2 rounded-full text-xs font-black text-white bg-indigo-600 shadow-md shadow-indigo-600/30 transition-all" data-en="Blog" data-bn="ব্লগ">Blog</a>
+                <a href="contact.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
+                <a href="admin.html" class="px-3 py-2 rounded-full text-xs font-semibold text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-lock text-[10px]"></i> Admin
+                </a>
+            </nav>
+
+            <!-- Actions: AI Button + Theme Toggle + Lang + Auth -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                <button onclick="window.openHabibAI()" class="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 border border-cyan-400/30 text-cyan-300 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+                    <span>AI Assistant</span>
+                </button>
+
+                
+
+                <!-- Language Switcher -->
+                <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass-card hover:border-white/30 text-slate-200 px-2.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-globe text-indigo-400 text-xs"></i>
+                    <span>English</span>
+                </button>
+
+                <!-- Auth State Components -->
+                <div id="loginNavBtn">
+                    <a href="login.html" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors shadow-lg shadow-indigo-600/30 flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-to-bracket text-xs"></i>
+                        <span data-en="Login" data-bn="লগইন">Login</span>
+                    </a>
+                </div>
+
+                <!-- User Profile Dropdown (when logged in) -->
+                <div id="profileBtn" class="hidden items-center gap-2">
+                    <label for="profilePicInput" class="relative cursor-pointer group">
+                        <img id="headerAvatar" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-9 h-9 rounded-xl object-cover border-2 border-indigo-400">
+                        <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+                    </label>
+                    <input type="file" id="profilePicInput" accept="image/*" class="hidden">
+                    <button onclick="logoutCurrentUser()" title="Logout" class="w-8 h-8 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-power-off text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden w-9 h-9 rounded-xl glass-card flex items-center justify-center text-slate-200 hover:text-white">
+                    <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="lg:hidden hidden border-t border-white/10 bg-slate-950/95 backdrop-blur-2xl px-6 py-6 space-y-3">
+            <a href="index.html" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Home</a>
+            <a href="about.html" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">About Habib</a>
+            <a href="services.html" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Services</a>
+            <a href="courses.html" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Courses</a>
+            <a href="cv.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white flex items-center gap-2">
+                <i class="fa-solid fa-file-lines text-cyan-300"></i> CV Maker & Resume Builder
+            </a>
+            <a href="frp.html" class="block py-2 text-sm font-bold text-cyan-400 flex items-center gap-2">
+                <i class="fa-solid fa-unlock-keyhole"></i> Remove FRP 2026
+            </a>
+            <a href="blog.html" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Blog</a>
+            <a href="contact.html" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Contact</a>
+            <a href="admin.html" class="block py-2 text-sm font-semibold text-amber-400">Admin Panel</a>
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                <span class="text-xs text-slate-400">Theme Mode:</span>
+                
+            </div>
+            <button onclick="window.openHabibAI()" class="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-bold text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-robot"></i> Open Habib AI Assistant
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-[1000px] mx-auto px-4 sm:px-6 md:px-8 pt-32">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Latest <span class="text-indigo-400">News & Guides</span></h1>
+            <p class="text-slate-300 max-w-xl mx-auto">Explore the newest repair tips, tech news, and professional guides.</p>
+        </div>
+
+        <div id="fullBlogFeed" class="flex flex-col gap-10">
+            <!-- Loading -->
+            <div class="text-center text-slate-400 py-10 animate-pulse font-medium">Loading posts...</div>
+        </div>
+    </main>
+
+    <script>
+        async function loadFullBlogFeed() {
+            try {
+                const response = await fetch('/api/posts');
+                const posts = await response.json();
+                const container = document.getElementById('fullBlogFeed');
+                
+                if (posts.length === 0) {
+                    container.innerHTML = '<p class="text-center text-slate-400">No blog posts found.</p>';
+                    return;
+                }
+
+                container.innerHTML = posts.map(p => `
+                    <article class="glass-3d p-6 sm:p-8 rounded-[2.5rem] flex flex-col gap-6 shadow-[0_10px_40px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_60px_rgba(99,102,241,0.15)] hover:-translate-y-2 group">
+                        <div class="flex items-center justify-between px-2">
+                            <span class="bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">\${p.category || 'Tech News'}</span>
+                            <span class="text-xs font-semibold text-slate-400">\${p.date || 'Recently'}</span>
+                        </div>
+                        
+                        <div class="rounded-3xl overflow-hidden w-full h-[300px] sm:h-[450px] relative shadow-inner">
+                            <img src="\${p.mediaLink}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        </div>
+
+                        <div class="px-2">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors">\${p.title}</h2>
+                            <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">\${p.description}</p>
+                            
+                            <div class="flex items-center justify-between border-t border-white/10 pt-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center font-bold text-white shadow-md">H</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-white">Habib iFix</p>
+                                        <p class="text-xs text-slate-400">Author</p>
+                                    </div>
+                                </div>
+                                <button class="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors">
+                                    Share <i class="fa-solid fa-share-nodes ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+            } catch (err) {
+                document.getElementById('fullBlogFeed').innerHTML = '<p class="text-center text-red-400">Failed to load blog posts.</p>';
             }
-        });
-    }
-    function toggleLanguage() {
-        applyLanguage(currentLang === 'en' ? 'bn' : 'en');
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        applyLanguage(currentLang);
-    });
-  </script>
-
-  <!-- Firebase + All Logic -->
-  <script type="module">
-    import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import{getFirestore,collection,getDocs,query,orderBy,doc,updateDoc,arrayUnion,arrayRemove,deleteDoc,addDoc,serverTimestamp,getDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import{getAuth,onAuthStateChanged,signOut,updateProfile}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-
-    const firebaseConfig={apiKey:"AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",authDomain:"habib-yt.firebaseapp.com",projectId:"habib-yt",storageBucket:"habib-yt.firebasestorage.app",messagingSenderId:"656628491244",appId:"1:656628491244:web:e01ccd42bd8a2b1b4c96c9",measurementId:"G-GNY1T88D34"};
-    const app=initializeApp(firebaseConfig),db=getFirestore(app),authInstance=getAuth(app),storageInstance=getStorage(app);
-
-    let globalUserEmail=null,globalUserAvatar='https://www.svgrepo.com/show/5125/avatar.svg',isAdmin=false,editingPostId=null;
-    const ALLOWED_ADMIN="tec.habiburrahman@gmail.com".toLowerCase();
-    window.postLikesState={};
-
-    function escapeHtml(value){return String(value ?? '').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
-    function safeMediaUrl(value){
-      try {
-        var u=new URL(String(value||''),window.location.href);
-        return ['http:','https:'].includes(u.protocol)?escapeHtml(u.href):'';
-      } catch(e){return '';}
-    }
-
-    // --- VIDEO PARSER ---
-    function parseVideoUrl(url){if(!url)return{type:'unknown',embedUrl:'',isVertical:false};url=url.trim();if(url.includes('youtube.com')||url.includes('youtu.be')){let v='';if(url.includes('/shorts/')){v=url.split('/shorts/')[1].split('?')[0].split('/')[0];return{type:'youtube',embedUrl:'https://www.youtube.com/embed/'+v+'?rel=0&modestbranding=1',isVertical:true};}if(url.includes('youtu.be/')){v=url.split('youtu.be/')[1].split('?')[0].substring(0,11);return{type:'youtube',embedUrl:'https://www.youtube.com/embed/'+v+'?rel=0&modestbranding=1',isVertical:false};}if(url.includes('v=')){v=url.split('v=')[1].split('&')[0].substring(0,11);return{type:'youtube',embedUrl:'https://www.youtube.com/embed/'+v+'?rel=0&modestbranding=1',isVertical:false};}if(url.includes('/embed/')){v=url.split('/embed/')[1].split('?')[0].substring(0,11);return{type:'youtube',embedUrl:'https://www.youtube.com/embed/'+v+'?rel=0&modestbranding=1',isVertical:false};}}if(url.includes('tiktok.com')){var m=url.match(/video\/(\d+)/);if(m)return{type:'tiktok',embedUrl:'https://www.tiktok.com/embed/v2/'+m[1],isVertical:true};}if(url.includes('instagram.com')){var r=url.match(/instagram\.com\/reel\/([^\/\?]+)/);if(r)return{type:'instagram',embedUrl:'https://www.instagram.com/reel/'+r[1]+'/embed/',isVertical:true};var p=url.match(/instagram\.com\/p\/([^\/\?]+)/);if(p)return{type:'instagram',embedUrl:'https://www.instagram.com/p/'+p[1]+'/embed/',isVertical:false};}if(url.includes('facebook.com')||url.includes('fb.watch')||url.includes('fb.com'))return{type:'facebook',embedUrl:'https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(url)+'&show_text=0',isVertical:url.includes('/reel/')};if(url.match(/\.(mp4|webm|ogg|mov)(\?|$)/i))return{type:'direct',embedUrl:url,isVertical:false};return{type:'unknown',embedUrl:url,isVertical:false};}
-
-    function generateMediaHTML(post){var link=post.mediaLink||'',safeLink=safeMediaUrl(link),parsed=parseVideoUrl(link);if(['youtube','tiktok','instagram','facebook'].includes(parsed.type)){return parsed.isVertical?'<div class="reel-container"><iframe src="'+parsed.embedUrl+'" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy" scrolling="no"></iframe></div>':'<div class="landscape-container"><iframe src="'+parsed.embedUrl+'" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy" scrolling="no"></iframe></div>';}if(parsed.type==='direct'||(post.mediaType&&post.mediaType.startsWith('video')))return'<video class="w-full max-h-[600px] object-cover bg-black rounded-xl" controls preload="metadata" playsinline><source src="'+safeLink+'" type="video/mp4"></video>';return'<img src="'+(safeLink||'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=75')+'" class="w-full max-h-[600px] object-cover bg-gray-900 rounded-xl" alt="Post" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=75\'">';}
-
-    function getPlatformBadge(url){if(!url)return'';if(url.includes('/shorts/'))return'<span class="text-[10px] bg-red-500/25 text-red-300 px-2 py-0.5 rounded-full border border-red-500/30 font-bold"><i class="fab fa-youtube mr-1"></i>Shorts</span>';if(url.includes('youtube.com')||url.includes('youtu.be'))return'<span class="text-[10px] bg-red-500/25 text-red-300 px-2 py-0.5 rounded-full border border-red-500/30 font-bold"><i class="fab fa-youtube mr-1"></i>YouTube</span>';if(url.includes('tiktok.com'))return'<span class="text-[10px] bg-slate-700/50 text-slate-300 px-2 py-0.5 rounded-full border border-slate-600/30 font-bold"><i class="fab fa-tiktok mr-1"></i>TikTok</span>';if(url.includes('/reel/'))return'<span class="text-[10px] bg-pink-500/25 text-pink-300 px-2 py-0.5 rounded-full border border-pink-500/30 font-bold"><i class="fab fa-instagram mr-1"></i>Reel</span>';if(url.includes('instagram.com'))return'<span class="text-[10px] bg-pink-500/25 text-pink-300 px-2 py-0.5 rounded-full border border-pink-500/30 font-bold"><i class="fab fa-instagram mr-1"></i>Instagram</span>';if(url.includes('/reel/')||url.includes('fb.watch'))return'<span class="text-[10px] bg-blue-500/25 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30 font-bold"><i class="fab fa-facebook mr-1"></i>Reel</span>';if(url.includes('facebook.com')||url.includes('fb.'))return'<span class="text-[10px] bg-blue-500/25 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30 font-bold"><i class="fab fa-facebook mr-1"></i>Facebook</span>';return'';}
-
-    // --- AUTH ---
-    onAuthStateChanged(authInstance,function(user){
-      var lb=document.getElementById('loginNavBtn'),pm=document.getElementById('userProfileMenu'),ac=document.getElementById('adminControls');
-      if(user){lb.classList.add('hidden');pm.classList.remove('hidden');globalUserAvatar=user.photoURL||'https://www.svgrepo.com/show/5125/avatar.svg';document.getElementById('headerAvatar').src=globalUserAvatar;globalUserEmail=user.email||user.phoneNumber;if(user.email&&user.email.toLowerCase()===ALLOWED_ADMIN){isAdmin=true;ac.classList.remove('hidden');}else{isAdmin=false;ac.classList.add('hidden');}}
-      else{lb.classList.remove('hidden');pm.classList.add('hidden');ac.classList.add('hidden');globalUserEmail=null;isAdmin=false;}
-      loadFullBlogPosts();
-    });
-
-    var picInput=document.getElementById('profilePicInput');
-    if(picInput)picInput.addEventListener('change',async function(e){var f=e.target.files[0];if(!f||!authInstance.currentUser)return;document.getElementById('headerAvatar').src="https://www.svgrepo.com/show/285573/loading-spinner.svg";try{var r=ref(storageInstance,'avatars/'+authInstance.currentUser.uid);await uploadBytes(r,f);var u=await getDownloadURL(r);await updateProfile(authInstance.currentUser,{photoURL:u});document.getElementById('headerAvatar').src=u;globalUserAvatar=u;showToast("Profile picture updated!");}catch(err){showToast("Upload failed: "+err.message,'error');document.getElementById('headerAvatar').src=globalUserAvatar;}});
-    window.logoutCurrentUser=function(){signOut(authInstance).then(function(){window.location.reload();});};
-
-    // --- CREATE POST MODAL ---
-    var modal=document.getElementById('createPostModal'),modalContent=document.getElementById('modalContent');
-    window.openCreatePostModal=function(){if(!isAdmin)return;editingPostId=null;document.getElementById('modalTitle').innerText='Create New Post';document.getElementById('publishBtn').querySelector('span').innerText='Publish Post';document.getElementById('createPostForm').reset();setMediaType('image');modal.classList.remove('hidden');modal.classList.add('flex');setTimeout(function(){modalContent.classList.remove('scale-95','opacity-0');modalContent.classList.add('scale-100','opacity-100');},10);};
-    window.openEditPostModal=function(postId){if(!isAdmin)return;editingPostId=postId;getDoc(doc(db,"blogPosts",postId)).then(function(snap){if(snap.exists()){var d=snap.data();document.getElementById('modalTitle').innerText='Edit Post';document.getElementById('publishBtn').querySelector('span').innerText='Save Changes';document.getElementById('postMediaUrl').value=d.mediaLink||'';document.getElementById('postCategory').value=d.category||'Update';document.getElementById('postDescription').value=d.description||'';var parsed=parseVideoUrl(d.mediaLink);setMediaType(['youtube','tiktok','instagram','facebook'].includes(parsed.type)?(parsed.isVertical?'reel':'video'):'image');modal.classList.remove('hidden');modal.classList.add('flex');setTimeout(function(){modalContent.classList.remove('scale-95','opacity-0');modalContent.classList.add('scale-100','opacity-100');},10);}});};
-    window.closeCreatePostModal=function(){modalContent.classList.remove('scale-100','opacity-100');modalContent.classList.add('scale-95','opacity-0');setTimeout(function(){modal.classList.add('hidden');modal.classList.remove('flex');document.getElementById('createPostForm').reset();document.getElementById('postStatus').classList.add('hidden');setMediaType('image');editingPostId=null;},300);};
-
-    window.setMediaType=function(type){document.getElementById('selectedMediaType').value=type;var bi=document.getElementById('btn-type-image'),bv=document.getElementById('btn-type-video'),br=document.getElementById('btn-type-reel'),inp=document.getElementById('postMediaUrl'),hint=document.getElementById('mediaUrlHint'),ph=document.getElementById('platformHint');var ac="py-2.5 rounded-lg border border-indigo-500 bg-indigo-500/25 text-white text-xs font-bold transition-all flex flex-col items-center gap-1",ic="py-2.5 rounded-lg border border-white/10 bg-white/5 text-slate-300 text-xs font-bold hover:bg-white/10 transition-all flex flex-col items-center gap-1";bi.className=ic;bv.className=ic;br.className=ic;ph.classList.add('hidden');if(type==='image'){bi.className=ac;inp.placeholder="Paste image link (ImgBB, direct URL)...";hint.innerText="Upload to ImgBB or any image host and paste the direct link.";}else if(type==='video'){bv.className=ac;inp.placeholder="Paste YouTube, FB Video, or .mp4 link...";hint.innerText="Supports YouTube, Facebook Videos, or direct video file URLs.";ph.classList.remove('hidden');}else{br.className=ac;inp.placeholder="Paste YT Shorts, IG Reel, TikTok, FB Reel link...";hint.innerText="Paste the full URL of any short/reel video.";ph.classList.remove('hidden');}};
-
-    window.submitNewPost=async function(){var mu=document.getElementById('postMediaUrl').value.trim(),cat=document.getElementById('postCategory').value,desc=document.getElementById('postDescription').value.trim(),mt=document.getElementById('selectedMediaType').value,sd=document.getElementById('postStatus'),btn=document.getElementById('publishBtn');if(!mu||!desc){sd.innerText="Please fill in all fields.";sd.className="mt-3 text-center text-sm font-medium text-red-400";sd.classList.remove('hidden');return;}btn.disabled=true;btn.innerHTML='<span class="animate-pulse">⏳ Publishing...</span>';sd.classList.add('hidden');try{var parsed=parseVideoUrl(mu),smt=['youtube','tiktok','instagram','facebook'].includes(parsed.type)?(parsed.isVertical?'video/reel':'video/embed'):(mt==='video'||mt==='reel'?'video/direct':'image');if(editingPostId){await updateDoc(doc(db,"blogPosts",editingPostId),{mediaLink:mu,mediaType:smt,category:cat,description:desc,date:new Date().toLocaleDateString()});showToast("✅ Post updated!");}else{await addDoc(collection(db,"blogPosts"),{mediaLink:mu,mediaType:smt,category:cat,description:desc,date:new Date().toLocaleDateString(),timestamp:serverTimestamp(),likes:0,likedBy:[],comments:[]});showToast("✅ Post published!");}setTimeout(function(){closeCreatePostModal();loadFullBlogPosts();btn.disabled=false;btn.innerHTML='<span>Publish Post</span> ➤';},1000);}catch(e){sd.innerText="❌ Error: "+e.message;sd.className="mt-3 text-center text-sm font-medium text-red-400";sd.classList.remove('hidden');btn.disabled=false;btn.innerHTML='<span>Publish Post</span> ';}};
-
-    // --- SHARE MODAL ---
-    var shareModal=document.getElementById('shareModal'),shareMC=document.getElementById('shareModalContent');
-    window.openShareModal=function(pid){shareModal.classList.remove('hidden');shareModal.classList.add('flex');setTimeout(function(){shareMC.classList.remove('scale-95','opacity-0');shareMC.classList.add('scale-100','opacity-100');},10);};
-    window.closeShareModal=function(){shareMC.classList.remove('scale-100','opacity-100');shareMC.classList.add('scale-95','opacity-0');setTimeout(function(){shareModal.classList.add('hidden');shareModal.classList.remove('flex');},300);};
-    window.shareVia=function(p){var u=window.location.href,t="Check out this post from Habib iFix! 🔧";if(p==='whatsapp')window.open('https://wa.me/?text='+encodeURIComponent(t+' '+u),'_blank');else if(p==='facebook')window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(u),'_blank');else if(p==='telegram')window.open('https://t.me/share/url?url='+encodeURIComponent(u)+'&text='+encodeURIComponent(t),'_blank');else if(p==='twitter')window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(u),'_blank');else if(p==='copy')navigator.clipboard.writeText(u).then(function(){showToast("📋 Link copied!");}).catch(function(){showToast("Failed to copy",'error');});closeShareModal();};
-
-    // --- LOAD FEED ---
-    async function loadFullBlogPosts(){
-      var c=document.getElementById('blog-container');
-      try{
-        var q=query(collection(db,"blogPosts"),orderBy("timestamp","desc")),snap=await getDocs(q);
-        if(snap.empty){c.innerHTML='<div class="text-center py-20 glass-3d rounded-3xl border border-white/10 mt-4 shadow-xl"><div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">📭</div><h3 class="text-xl font-bold text-white mb-2">No Posts Yet</h3><p class="text-slate-400">Check back later for updates!</p></div>';return;}
-        c.innerHTML='';
-        snap.forEach(function(ds){
-          var post=ds.data(),pid=ds.id,mediaHTML=generateMediaHTML(post),badge=getPlatformBadge(post.mediaLink);
-          var likedBy=post.likedBy||[],likeCount=post.likes!==undefined?post.likes:likedBy.length,isLiked=globalUserEmail&&likedBy.includes(globalUserEmail);
-          window.postLikesState[pid]={likedBy:likedBy.slice(),count:likeCount};
-          var hf=isLiked?'#818cf8':'none',hs=isLiked?'#818cf8':'#94a3b8',hc=isLiked?'text-indigo-400':'text-slate-400 hover:text-indigo-400';
-          var comments=post.comments||[];
-          var commentsHTML=comments.map(function(cm,i){return'<div class="mb-2 text-sm leading-snug group/comment flex justify-between items-start gap-2" id="comment-'+pid+'-'+i+'"><div><span class="font-bold text-white mr-2">'+escapeHtml(cm.user)+'</span><span class="text-slate-300">'+escapeHtml(cm.text)+'</span><div class="text-[10px] text-slate-400 mt-0.5 ml-1">'+(cm.date||'Now')+'</div></div>'+(isAdmin?'<button onclick="deleteComment(\''+pid+'\','+i+')" class="opacity-0 group-hover/comment:opacity-100 text-slate-400 hover:text-red-400 transition-all p-1 shrink-0 text-xs">✕</button>':'')+'</div>';}).join('');
-          var adminHTML=isAdmin?'<div class="flex items-center gap-1"><button onclick="openEditPostModal(\''+pid+'\')" class="text-slate-400 hover:text-indigo-400 p-2 transition-colors rounded-full hover:bg-white/10 text-sm" title="Edit">✏️</button><button onclick="deleteSinglePost(\''+pid+'\')" class="text-slate-400 hover:text-red-400 p-2 transition-colors rounded-full hover:bg-red-500/20 text-sm" title="Delete">🗑️</button></div>':'<button class="text-slate-400 hover:text-white p-2 transition-colors rounded-full hover:bg-white/10 text-lg">⋯</button>';
-
-          var el=document.createElement('article');
-          el.className="post-card glass-3d sm:rounded-3xl border border-white/15 shadow-xl overflow-hidden animate-fade-in-up bg-slate-900/60";
-          el.innerHTML='<div class="flex items-center justify-between p-3 md:p-4"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full overflow-hidden border-2 border-indigo-400/40 p-[1px]"><img src="https://i.ibb.co.com/Ps26xXt6/Chat-GPT-Image-Aug-11-2026-06-19-28-PM.png" class="w-full h-full rounded-full object-cover" width="36" height="36" alt="Habib Tec"></div><div class="flex flex-col leading-tight"><span class="font-bold text-sm text-white flex items-center gap-1">Habib iFix <svg class="w-3.5 h-3.5 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg></span><div class="flex items-center gap-2"><span class="text-[11px] text-slate-400 font-medium">'+(post.date||'Today')+' · '+(post.category||'Update')+'</span>'+badge+'</div></div></div><div>'+adminHTML+'</div></div><div class="w-full bg-black border-y border-white/10 relative" ondblclick="doubleTapLike(\''+pid+'\')">'+mediaHTML+'<div id="double-tap-heart-'+pid+'" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="#818cf8" stroke="#818cf8" stroke-width="2" class="drop-shadow-2xl"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div></div><div class="p-3 md:p-4 pt-3"><div class="flex items-center justify-between mb-3"><div class="flex items-center gap-4"><button onclick="toggleLike(\''+pid+'\')" class="focus:outline-none transform active:scale-75 transition-transform duration-200"><svg id="heart-icon-'+pid+'" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="'+hf+'" stroke="'+hs+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="'+hc+' transition-colors duration-200"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button><button onclick="focusComment(\''+pid+'\')" class="text-slate-400 hover:text-indigo-400 focus:outline-none transition-colors transform active:scale-90"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button><button onclick="openShareModal(\''+pid+'\')" class="text-slate-400 hover:text-indigo-400 focus:outline-none transition-colors transform active:scale-90"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button></div><button class="text-slate-400 hover:text-indigo-400 focus:outline-none transition-colors" onclick="showToast(\'🔖 Saved!\')"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button></div><p class="font-bold text-sm text-white mb-2" id="like-count-'+pid+'">'+likeCount.toLocaleString()+' likes</p><div class="text-sm text-slate-300 mb-3 leading-relaxed"><span class="font-bold text-white mr-2">habibifix</span>'+escapeHtml(post.description)+'</div>'+(comments.length>0?'<button onclick="toggleComments(\''+pid+'\')" class="text-sm text-slate-400 mb-3 focus:outline-none cursor-pointer hover:text-indigo-400 transition-colors">View all '+comments.length+' comments</button>':'')+'<div id="comment-section-'+pid+'" class="hidden flex-col gap-1 mb-3 max-h-48 overflow-y-auto no-scrollbar pr-2">'+commentsHTML+'</div><div class="flex items-center gap-3 border-t border-white/15 pt-3 mt-1"><img src="'+globalUserAvatar+'" class="w-7 h-7 rounded-full object-cover border border-white/20" width="28" height="28" alt="You"><input type="text" id="comment-input-'+pid+'" placeholder="Add a comment..." class="comment-input bg-white/5 flex-grow text-sm text-white focus:outline-none placeholder-slate-400 rounded-lg px-3 py-1.5 transition-all border border-white/10" onkeypress="if(event.key===\'Enter\')submitComment(\''+pid+'\')"><button onclick="submitComment(\''+pid+'\')" class="text-indigo-400 font-bold text-sm hover:text-indigo-300 transition-colors focus:outline-none">Post</button></div></div>';
-          c.appendChild(el);
-        });
-      }catch(e){console.log("Feed error:",e);c.innerHTML='<p class="text-center text-red-400 py-10">Failed to load feed.</p>';}
-    }
-
-    // --- INTERACTIONS ---
-    window.checkAuthBeforeAction=function(){if(!globalUserEmail){window.location.href='login.html?return=blog.html';return false;}return true;};
-    window.focusComment=function(pid){if(!checkAuthBeforeAction())return;document.getElementById('comment-input-'+pid).focus();toggleComments(pid,true);};
-
-    window.toggleLike=async function(pid){if(!checkAuthBeforeAction())return;var s=window.postLikesState[pid],has=s.likedBy.includes(globalUserEmail),pr=doc(db,"blogPosts",pid),hi=document.getElementById('heart-icon-'+pid),lc=document.getElementById('like-count-'+pid);if(isAdmin){if(has){s.count=Math.max(0,s.count-1);s.likedBy=s.likedBy.filter(function(e){return e!==globalUserEmail;});hi.setAttribute('fill','none');hi.setAttribute('stroke','#94a3b8');hi.classList.remove('text-indigo-400');hi.classList.add('text-slate-400');await updateDoc(pr,{likedBy:arrayRemove(globalUserEmail),likes:s.count});}else{s.count+=1;if(s.likedBy.indexOf(globalUserEmail)===-1){s.likedBy.push(globalUserEmail);await updateDoc(pr,{likedBy:arrayUnion(globalUserEmail),likes:s.count});}else{await updateDoc(pr,{likes:s.count});}hi.setAttribute('fill','#818cf8');hi.setAttribute('stroke','#818cf8');hi.classList.remove('text-slate-400');hi.classList.add('text-indigo-400');hi.classList.add('animate-heart');setTimeout(function(){hi.classList.remove('animate-heart');},300);}}else{if(has){s.count=Math.max(0,s.count-1);s.likedBy=s.likedBy.filter(function(e){return e!==globalUserEmail;});hi.setAttribute('fill','none');hi.setAttribute('stroke','#94a3b8');hi.classList.remove('text-indigo-400');hi.classList.add('text-slate-400');await updateDoc(pr,{likedBy:arrayRemove(globalUserEmail),likes:s.count});}else{s.count+=1;s.likedBy.push(globalUserEmail);hi.setAttribute('fill','#818cf8');hi.setAttribute('stroke','#818cf8');hi.classList.remove('text-slate-400');hi.classList.add('text-indigo-400');hi.classList.add('animate-heart');setTimeout(function(){hi.classList.remove('animate-heart');},300);await updateDoc(pr,{likedBy:arrayUnion(globalUserEmail),likes:s.count});}}lc.innerText=s.count.toLocaleString()+' likes';};
-
-    window.doubleTapLike=function(pid){var ho=document.getElementById('double-tap-heart-'+pid);ho.style.opacity='1';ho.querySelector('svg').classList.add('animate-double-tap');setTimeout(function(){ho.style.opacity='0';ho.querySelector('svg').classList.remove('animate-double-tap');},800);var s=window.postLikesState[pid];if(s&&globalUserEmail&&s.likedBy.indexOf(globalUserEmail)===-1)toggleLike(pid);};
-
-    window.toggleComments=function(pid,force){var sec=document.getElementById('comment-section-'+pid);if(force){sec.classList.remove('hidden');sec.classList.add('flex');}else{sec.classList.toggle('hidden');sec.classList.toggle('flex');}};
-
-    window.submitComment=async function(pid){if(!checkAuthBeforeAction())return;var inp=document.getElementById('comment-input-'+pid),txt=inp.value.trim();if(!txt)return;inp.value='';var dn=globalUserEmail.includes('@')?globalUserEmail.split('@')[0]:"User_"+globalUserEmail.substring(globalUserEmail.length-4);var nc={user:dn,text:txt,date:new Date().toLocaleDateString()};var list=document.getElementById('comment-section-'+pid);list.classList.remove('hidden');list.classList.add('flex');var ci=list.children.length,cd=document.createElement('div');cd.className="mb-2 text-sm leading-snug group/comment flex justify-between items-start gap-2";cd.id='comment-'+pid+'-'+ci;cd.innerHTML='<div><span class="font-bold text-white mr-2">'+escapeHtml(nc.user)+'</span><span class="text-slate-300">'+escapeHtml(nc.text)+'</span><div class="text-[10px] text-slate-400 mt-0.5 ml-1">Just now</div></div>'+(isAdmin?'<button onclick="deleteComment(\''+pid+'\','+ci+')" class="opacity-0 group-hover/comment:opacity-100 text-slate-400 hover:text-red-400 transition-all p-1 shrink-0 text-xs">✕</button>':'');list.appendChild(cd);list.scrollTop=list.scrollHeight;try{await updateDoc(doc(db,"blogPosts",pid),{comments:arrayUnion(nc)});}catch(e){showToast("Failed to post comment.",'error');}};
-
-    window.deleteComment=async function(pid,idx){if(!isAdmin)return;if(!confirm("Delete this comment?"))return;try{var ps=await getDoc(doc(db,"blogPosts",pid));if(ps.exists()){var cms=ps.data().comments||[];cms.splice(idx,1);await updateDoc(doc(db,"blogPosts",pid),{comments:cms});var ce=document.getElementById('comment-'+pid+'-'+idx);if(ce)ce.remove();showToast("Comment deleted.");}}catch(e){showToast("Failed to delete.",'error');}};
-
-    window.deleteSinglePost=async function(pid){if(!isAdmin)return;if(confirm("Delete this post permanently?")){try{await deleteDoc(doc(db,"blogPosts",pid));loadFullBlogPosts();showToast("Post deleted.");}catch(e){showToast("Failed: "+e.message,'error');}}};
-  </script>
-  <script type="module" src="js/site-auth.js"></script>
+        }
+        
+        loadFullBlogFeed();
+    </script>
+<script src="js/ai-agent.js"></script>
+<script type="module" src="js/site-auth.js"></script>
 </body>
 </html>

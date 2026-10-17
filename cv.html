@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title data-en="Interactive CV Maker & Resume Builder - Habib iFix .Tech" data-bn="ইন্টারেক্টিভ সিভি মেকার ও রেজুমে বিল্ডার - হাবিব আইফিক্স .Tech">Interactive CV Maker & Resume Builder - Habib iFix .Tech</title>
+    
+    <script>
+        tailwind = { darkMode: "class" };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+
+    <style>
+        /* Printable A4 CV Styles */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            header, #topPromoBanner, #editorColumn, #habib-ai-widget, .no-print, footer {
+                display: none !important;
+            }
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #previewColumn {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                position: static !important;
+            }
+            #cvPaper {
+                box-shadow: none !important;
+                border: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 15mm 20mm !important;
+                background: #ffffff !important;
+                color: #0f172a !important;
+                border-radius: 0 !important;
+            }
+            #cvPaper * {
+                color: #0f172a !important;
+            }
+            #cvPaper .text-sky-600, #cvPaper .text-sky-700, #cvPaper .text-cyan-500 {
+                color: #0284c7 !important;
+            }
+            #cvPaper .bg-sky-600 {
+                background-color: #0284c7 !important;
+            }
+            #cvPaper .border-sky-600 {
+                border-color: #0284c7 !important;
+            }
+        }
+
+        /* Screen Preview Sheet */
+        .cv-sheet {
+            width: 100%;
+            min-height: 297mm;
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* Theme styles */
+        .theme-executive #cvPaper {
+            border-top: 8px solid #0f172a;
+        }
+        .theme-executive #previewName {
+            color: #0f172a;
+        }
+        .theme-creative #cvPaper {
+            border-top: 8px solid #6366f1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white dark-mode">
+
+    <!-- TOP PROMO BANNER -->
+    <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all no-print">
+        <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
+            <span class="inline-flex items-center gap-1.5 bg-indigo-500/20 text-cyan-300 border border-indigo-500/40 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                PRO RESUME BUILDER
+            </span>
+            <span class="font-bold text-white" data-en="Habib iFix Interactive CV Maker is active! Build, format & download your modern CV in minutes." data-bn="হাবিব আইফিক্স ইন্টারেক্টিভ সিভি মেকার অ্যাক্টিভ! মিনিটেই তৈরি করুন আধুনিক চাকরির সিভি।">
+                Habib iFix Interactive CV Maker is active! Build, format & download your modern CV in minutes.
+            </span>
+            <button onclick="loadSampleCV('engineer')" class="font-extrabold underline underline-offset-2 ml-1 cursor-pointer text-cyan-400 hover:text-cyan-300">
+                <span data-en="Load Sample CV &rarr;" data-bn="স্যাম্পল সিভি লোড করুন &rarr;">Load Sample CV &rarr;</span>
+            </button>
+        </div>
+        <button onclick="closePromoBanner()" class="close-promo-btn p-1 rounded-full ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
+            <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+    </div>
+
+    <!-- MAIN NAVBAR (UNIFIED ACROSS ALL PAGES) -->
+    <header class="sticky top-0 left-0 w-full z-40 glass-nav no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo (Perfect Centered Vector H Logo) -->
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="brand-logo-box w-10 h-10 shrink-0 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1.5px] shadow-[0_0_20px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.7)] transition-all flex items-center justify-center">
+                    <div class="w-full h-full bg-slate-950 rounded-[13px] flex items-center justify-center">
+                        <svg class="h-logo-svg w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="url(#hLogoGradCv)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="5.5" cy="4.5" r="1.5" fill="#38bdf8"/>
+                            <circle cx="18.5" cy="4.5" r="1.5" fill="#818cf8"/>
+                            <circle cx="5.5" cy="19.5" r="1.5" fill="#38bdf8"/>
+                            <circle cx="18.5" cy="19.5" r="1.5" fill="#818cf8"/>
+                            <circle cx="12" cy="12" r="1.8" fill="#ffffff"/>
+                            <defs>
+                                <linearGradient id="hLogoGradCv" x1="5.5" y1="4.5" x2="18.5" y2="19.5" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#38bdf8"/>
+                                    <stop offset="0.5" stop-color="#ffffff"/>
+                                    <stop offset="1" stop-color="#818cf8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center gap-1.5 leading-none">
+                        <span class="brand-name-habib font-black text-xl tracking-tight text-white">Habib</span>
+                        <span class="brand-name-ifix font-black text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">iFix</span>
+                        <span class="brand-name-tech text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-md font-mono-code font-bold ml-1 shadow-sm">.Tech</span>
+                    </div>
+                    <p class="text-[10px] text-slate-300 font-bold mt-1" data-en="Mobile Engineering & Digital Lab" data-bn="মোবাইল ইঞ্জিনিয়ারিং ও ডিজিটাল ল্যাব">Mobile Engineering & Digital Lab</p>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-full border border-white/15 shadow-inner">
+                <a href="index.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Home" data-bn="হোম">Home</a>
+                <a href="about.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="About" data-bn="পরিচিতি">About</a>
+                <a href="services.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Services" data-bn="সেবাসমূহ">Services</a>
+                <a href="courses.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Courses" data-bn="কোর্স">Courses</a>
+                <a href="cv.html" class="px-4 py-2 rounded-full text-xs font-black text-white bg-indigo-600 shadow-md shadow-indigo-600/30 transition-all flex items-center gap-1.5" data-en="CV Maker" data-bn="সিভি মেকার">
+                    <i class="fa-solid fa-file-lines text-xs text-cyan-300"></i> CV Maker
+                </a>
+                <a href="frp.html" class="px-3.5 py-2 rounded-full text-xs font-extrabold text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-unlock-keyhole text-[10px]"></i> FRP 2026
+                </a>
+                <a href="blog.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Blog" data-bn="ব্লগ">Blog</a>
+                <a href="contact.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
+            </nav>
+
+            <!-- Actions: AI Button + Lang + Auth + Mobile Trigger -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                <button onclick="window.openHabibAI()" class="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/25 to-indigo-500/25 hover:from-cyan-500/40 hover:to-indigo-500/40 border border-cyan-400/40 text-cyan-300 px-3 py-2 rounded-xl text-xs font-extrabold transition-all shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+                    <span>AI Assistant</span>
+                </button>
+
+                <!-- Language Switcher -->
+                <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass-card hover:border-white/30 text-slate-100 px-2.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-globe text-indigo-400 text-xs"></i>
+                    <span>English</span>
+                </button>
+
+                <!-- Auth State -->
+                <div id="loginNavBtn">
+                    <a href="login.html" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors shadow-lg shadow-indigo-600/30 flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-user text-xs"></i>
+                        <span data-en="Login" data-bn="লগইন">Login</span>
+                    </a>
+                </div>
+                <div id="profileBtn" class="hidden items-center gap-2"></div>
+
+                <!-- Mobile Hamburger Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden w-9 h-9 rounded-xl glass-card flex items-center justify-center text-slate-100 hover:text-white">
+                    <i id="mobileMenuIcon" class="fa-solid fa-bars text-base"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="lg:hidden hidden border-t border-white/15 px-6 py-6 space-y-3 bg-slate-950/95 backdrop-blur-xl">
+            <a href="index.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Home</a>
+            <a href="about.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">About Habib</a>
+            <a href="services.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Services</a>
+            <a href="courses.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Courses</a>
+            <a href="cv.html" class="block py-2 text-sm font-black text-indigo-400">CV Maker & Builder</a>
+            <a href="frp.html" class="block py-2 text-sm font-extrabold text-cyan-400 flex items-center gap-2">
+                <i class="fa-solid fa-unlock-keyhole"></i> Remove FRP 2026
+            </a>
+            <a href="blog.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Blog</a>
+            <a href="contact.html" class="block py-2 text-sm font-bold text-slate-200 hover:text-white">Contact</a>
+            <a href="login.html" class="block py-2 text-sm font-bold text-white">Login / Register</a>
+            <button onclick="window.openHabibAI()" class="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow">
+                <i class="fa-solid fa-robot"></i> Open Habib AI Assistant
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header Controls Bar -->
+        <div class="glass-card p-5 sm:p-6 rounded-3xl mb-8 border border-indigo-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 no-print shadow-2xl">
+            <div>
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                    <span class="text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2.5 py-0.5 rounded-full font-mono font-bold">PRO RESUME ENGINE</span>
+                    <span class="text-xs text-emerald-400 font-bold flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> 100% Free & ATS-Optimized
+                    </span>
+                    <span class="text-xs text-slate-400">• Standard A4 High Resolution</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight" data-en="Interactive Professional CV Maker & Resume Builder" data-bn="ইন্টারেক্টিভ প্রফেশনাল সিভি মেকার ও রেজুমে বিল্ডার">
+                    Interactive Professional CV Maker & Resume Builder
+                </h1>
+                <p class="text-xs sm:text-sm text-slate-300 font-semibold mt-1" data-en="Type your details on the left, customize photo & theme, see real-time preview, and download crisp A4 PDF." data-bn="বামে তথ্য লিখুন, ছবি ও থিম সিলেক্ট করুন, ডানে লাইভ প্রিভিউ দেখুন এবং সাথে সাথে এ৪ সাইজের পিডিএফ ডাউনলোড করুন।">
+                    Type your details on the left, customize photo & theme, see real-time preview, and download crisp A4 PDF.
+                </p>
+            </div>
+
+            <!-- Action Toolbar -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Template Preset Dropdown -->
+                <div class="relative group">
+                    <button type="button" class="px-3.5 py-2 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 border border-indigo-500/40 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+                        <span>Sample CVs</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] ml-0.5"></i>
+                    </button>
+                    <div class="absolute right-0 mt-1 w-52 bg-slate-900 border border-white/15 rounded-2xl shadow-2xl p-1.5 hidden group-hover:block z-50">
+                        <button onclick="loadSampleCV('engineer')" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:text-white hover:bg-white/10 rounded-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-mobile-screen text-cyan-400"></i> Mobile Hardware Engineer
+                        </button>
+                        <button onclick="loadSampleCV('developer')" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:text-white hover:bg-white/10 rounded-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-code text-indigo-400"></i> Web Developer / IT
+                        </button>
+                        <button onclick="loadSampleCV('designer')" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:text-white hover:bg-white/10 rounded-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-palette text-purple-400"></i> Graphic Designer
+                        </button>
+                        <button onclick="loadSampleCV('fresher')" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:text-white hover:bg-white/10 rounded-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-emerald-400"></i> Fresher / General Job
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" onclick="resetCVForm()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-white/10 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer" title="Reset All Fields">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Reset</span>
+                </button>
+
+                <!-- Export/Import JSON -->
+                <button type="button" onclick="exportCVJSON()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-white/10 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer" title="Export Backup JSON">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Backup</span>
+                </button>
+
+                <!-- Print / Save PDF -->
+                <button type="button" onclick="window.print()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-slate-950 font-black text-xs transition-all shadow-lg shadow-cyan-500/30 flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Print / Save PDF (A4)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mode Switcher Tabs: CV Builder vs Habib Lab Credentials -->
+        <div class="flex items-center gap-3 mb-6 no-print border-b border-white/10 pb-3">
+            <button id="tabBuilderBtn" onclick="switchView('builder')" class="px-4 py-2 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-md flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>1. Interactive CV Maker & Editor</span>
+            </button>
+            <button id="tabProfileBtn" onclick="switchView('profile')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-id-card"></i>
+                <span>2. Habib's Official Lab Credentials & Bio</span>
+            </button>
+        </div>
+
+        <!-- BUILDER VIEW (DEFAULT) -->
+        <div id="viewBuilder" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- LEFT COLUMN: FORM EDITOR (5 COLS) -->
+            <div id="editorColumn" class="lg:col-span-5 space-y-6 no-print">
+                
+                <!-- Section 0: Template & Accent Theme -->
+                <div class="glass-card p-5 rounded-3xl border border-white/15">
+                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
+                        <h3 class="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-palette text-indigo-400"></i> Resume Theme & Color
+                        </h3>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setTheme('modern')" class="theme-btn active p-2 rounded-xl border border-cyan-400/50 bg-cyan-500/10 text-xs font-bold text-cyan-300 text-center">
+                            Modern Tech
+                        </button>
+                        <button onclick="setTheme('executive')" class="theme-btn p-2 rounded-xl border border-white/15 bg-slate-900 text-xs font-bold text-slate-300 text-center hover:border-white/30">
+                            Executive
+                        </button>
+                        <button onclick="setTheme('minimal')" class="theme-btn p-2 rounded-xl border border-white/15 bg-slate-900 text-xs font-bold text-slate-300 text-center hover:border-white/30">
+                            Clean Minimal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section 1: Personal Info & Photo -->
+                <div class="glass-card p-5 sm:p-6 rounded-3xl border border-white/15">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-sm">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <h3 class="text-base font-extrabold text-white">1. Personal Details</h3>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3.5">
+                        <!-- Photo Upload -->
+                        <div class="flex items-center gap-4 p-3 rounded-2xl bg-slate-900/80 border border-white/10">
+                            <img id="formPhotoThumb" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-14 h-14 rounded-xl object-cover border-2 border-cyan-400 shrink-0">
+                            <div class="flex-1">
+                                <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Passport Size Photo (Optional)</label>
+                                <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)" class="text-xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-indigo-600 file:text-white cursor-pointer">
+                                <button type="button" onclick="removePhoto()" id="removePhotoBtn" class="hidden text-[10px] text-red-400 font-bold mt-1 hover:underline">Remove Photo</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Full Name *</label>
+                            <input type="text" id="inputName" oninput="updateCV()" value="Md. Habibur Rahman" class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Job Title / Headline *</label>
+                            <input type="text" id="inputTitle" oninput="updateCV()" value="Senior Mobile Hardware Engineer & IT Specialist" class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Phone Number</label>
+                                <input type="text" id="inputPhone" oninput="updateCV()" value="+880 1868-461577" class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
+                                <input type="email" id="inputEmail" oninput="updateCV()" value="tec.habiburrahman@gmail.com" class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Address / City</label>
+                                <input type="text" id="inputLocation" oninput="updateCV()" value="Chattogram, Bangladesh" class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Website / Portfolio / LinkedIn</label>
+                                <input type="text" id="inputWebsite" oninput="updateCV()" value="habibifix.tech" class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Career Summary -->
+                <div class="glass-card p-5 sm:p-6 rounded-3xl border border-white/15">
+                    <div class="flex items-center gap-2.5 mb-4 pb-3 border-b border-white/10">
+                        <div class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 class="text-base font-extrabold text-white">2. Executive Summary</h3>
+                    </div>
+
+                    <div>
+                        <textarea id="inputSummary" oninput="updateCV()" rows="4" class="w-full bg-slate-900 border border-white/20 rounded-xl p-3.5 text-xs text-white outline-none focus:border-cyan-400 leading-relaxed font-medium">Certified senior mobile engineering professional with 6+ years of expertise in motherboard micro-soldering, CPU/eMMC reballing, Android FRP security bypass, and electronic diagnostic analysis. Proven track record of repairing over 4,500+ premium smartphone devices with 99.4% success rate.</textarea>
+                    </div>
+                </div>
+
+                <!-- Section 3: Work Experience (Dynamic Add/Remove) -->
+                <div class="glass-card p-5 sm:p-6 rounded-3xl border border-white/15">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <h3 class="text-base font-extrabold text-white">3. Professional Experience</h3>
+                        </div>
+                        <button type="button" onclick="addExperienceField()" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> Add Job
+                        </button>
+                    </div>
+
+                    <div id="experienceFieldsList" class="space-y-4">
+                        <!-- Experience Item 1 -->
+                        <div class="p-4 rounded-2xl bg-slate-900/80 border border-white/10 space-y-3 relative group" data-exp-id="1">
+                            <input type="text" class="exp-role w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white font-bold outline-none" value="Lead Mobile Hardware Engineer & Founder" placeholder="Role / Job Title" oninput="updateCV()">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" class="exp-company bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" value="Habib iFix .Tech Lab" placeholder="Company Name" oninput="updateCV()">
+                                <input type="text" class="exp-period bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" value="2020 - Present" placeholder="Year / Period" oninput="updateCV()">
+                            </div>
+                            <textarea class="exp-desc w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-xs text-white outline-none resize-none" rows="3" placeholder="Key responsibilities & accomplishments..." oninput="updateCV()">Led diagnostic laboratory specializing in iPhone, Samsung & Xiaomi micro-soldering, power IC replacement, and thermal camera short circuit tracing. Trained 800+ aspiring technicians.</textarea>
+                        </div>
+
+                        <!-- Experience Item 2 -->
+                        <div class="p-4 rounded-2xl bg-slate-900/80 border border-white/10 space-y-3 relative group" data-exp-id="2">
+                            <input type="text" class="exp-role w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white font-bold outline-none" value="Senior Hardware Repair Specialist" placeholder="Role / Job Title" oninput="updateCV()">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" class="exp-company bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" value="Digital Tech Solutions" placeholder="Company Name" oninput="updateCV()">
+                                <input type="text" class="exp-period bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" value="2018 - 2020" placeholder="Year / Period" oninput="updateCV()">
+                            </div>
+                            <textarea class="exp-desc w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-xs text-white outline-none resize-none" rows="2" placeholder="Responsibilities..." oninput="updateCV()">Handled high-volume smartphone screen replacements, water-damage ultrasonic cleaning, and fast charging circuit repair.</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Skills -->
+                <div class="glass-card p-5 sm:p-6 rounded-3xl border border-white/15">
+                    <div class="flex items-center gap-2.5 mb-4 pb-3 border-b border-white/10">
+                        <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3 class="text-base font-extrabold text-white">4. Core Skills & Competencies</h3>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Enter Skills (Comma Separated)</label>
+                        <textarea id="inputSkills" oninput="updateCV()" rows="3" class="w-full bg-slate-900 border border-white/20 rounded-xl p-3.5 text-xs text-white outline-none focus:border-cyan-400 leading-relaxed font-medium">BGA Micro-Soldering, CPU & eMMC Reballing, Android FRP Bypass, iOS Screen & Battery Repair, Thermal Camera Fault Tracing, Ultrasonic Lab Treatment, Graphic Design & Branding, Web Development & IT Support</textarea>
+                    </div>
+                </div>
+
+                <!-- Section 5: Education & Credentials -->
+                <div class="glass-card p-5 sm:p-6 rounded-3xl border border-white/15">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-sm">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <h3 class="text-base font-extrabold text-white">5. Education & Certification</h3>
+                        </div>
+                        <button type="button" onclick="addEducationField()" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> Add Degree
+                        </button>
+                    </div>
+
+                    <div id="educationFieldsList" class="space-y-3">
+                        <div class="p-3.5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-2.5">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" class="edu-degree bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white font-bold outline-none" value="Diploma in Electronics Engineering" placeholder="Degree / Certificate" oninput="updateCV()">
+                                <input type="text" class="edu-year bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" value="2018" placeholder="Year" oninput="updateCV()">
+                            </div>
+                            <input type="text" class="edu-institute w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" value="Chattogram Polytechnic Institute, Bangladesh" placeholder="Institute / University" oninput="updateCV()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Additional Biodata Info (Optional) -->
+                <div class="glass-card p-5 rounded-3xl border border-white/15">
+                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
+                        <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-id-badge text-cyan-400"></i> Additional Details (Languages & Info)
+                        </h3>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <input type="text" id="inputLanguages" oninput="updateCV()" value="Bengali (Native), English (Fluent)" placeholder="Languages" class="bg-slate-900 border border-white/15 rounded-xl px-3 py-2 text-white outline-none">
+                        <input type="text" id="inputNationality" oninput="updateCV()" value="Bangladeshi" placeholder="Nationality" class="bg-slate-900 border border-white/15 rounded-xl px-3 py-2 text-white outline-none">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: LIVE REAL-TIME CV PREVIEW (7 COLS) -->
+            <div id="previewColumn" class="lg:col-span-7 sticky top-24">
+                
+                <div class="flex items-center justify-between mb-3 px-2 no-print">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-xs font-black uppercase tracking-wider text-slate-200">Live A4 Document Preview</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] text-cyan-400 font-bold font-mono">210mm &times; 297mm</span>
+                        <button onclick="window.print()" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold underline cursor-pointer">
+                            Print
+                        </button>
+                    </div>
+                </div>
+
+                <!-- A4 CV PAPER PREVIEW -->
+                <div class="cv-sheet p-8 sm:p-12 border border-slate-300 shadow-2xl relative" id="cvPaper">
+                    
+                    <!-- CV Header Banner -->
+                    <div class="border-b-2 border-slate-900 pb-6 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <!-- Photo on CV -->
+                            <img id="previewPhoto" src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-20 h-20 rounded-xl object-cover border-2 border-sky-600 shadow-sm shrink-0">
+                            <div>
+                                <h1 id="previewName" class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none mb-2">Md. Habibur Rahman</h1>
+                                <p id="previewTitle" class="text-sm font-bold text-sky-700 tracking-wide">Senior Mobile Hardware Engineer & IT Specialist</p>
+                            </div>
+                        </div>
+                        <div class="text-left sm:text-right space-y-1 text-xs text-slate-600 font-medium shrink-0">
+                            <p id="previewPhone"><i class="fa-solid fa-phone text-sky-600 mr-1.5"></i> <span>+880 1868-461577</span></p>
+                            <p id="previewEmail"><i class="fa-solid fa-envelope text-sky-600 mr-1.5"></i> <span>tec.habiburrahman@gmail.com</span></p>
+                            <p id="previewLocation"><i class="fa-solid fa-location-dot text-sky-600 mr-1.5"></i> <span>Chattogram, Bangladesh</span></p>
+                            <p id="previewWebsite"><i class="fa-solid fa-globe text-sky-600 mr-1.5"></i> <span>habibifix.tech</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Career Objective -->
+                    <div class="mb-6">
+                        <h2 class="text-xs font-black text-slate-900 uppercase tracking-widest border-b border-slate-200 pb-1 mb-2.5 flex items-center gap-2">
+                            <span class="w-1.5 h-3 bg-sky-600 rounded-sm"></span>
+                            <span>Executive Summary</span>
+                        </h2>
+                        <p id="previewSummary" class="text-xs text-slate-700 leading-relaxed font-normal">
+                            Certified senior mobile engineering professional with 6+ years of expertise in motherboard micro-soldering, CPU/eMMC reballing, Android FRP security bypass, and electronic diagnostic analysis. Proven track record of repairing over 4,500+ premium smartphone devices with 99.4% success rate.
+                        </p>
+                    </div>
+
+                    <!-- Work Experience -->
+                    <div class="mb-6">
+                        <h2 class="text-xs font-black text-slate-900 uppercase tracking-widest border-b border-slate-200 pb-1 mb-3.5 flex items-center gap-2">
+                            <span class="w-1.5 h-3 bg-sky-600 rounded-sm"></span>
+                            <span>Professional Experience</span>
+                        </h2>
+
+                        <div id="previewExperienceList" class="space-y-4">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Skills Matrix -->
+                    <div class="mb-6">
+                        <h2 class="text-xs font-black text-slate-900 uppercase tracking-widest border-b border-slate-200 pb-1 mb-3 flex items-center gap-2">
+                            <span class="w-1.5 h-3 bg-sky-600 rounded-sm"></span>
+                            <span>Core Competencies & Skills</span>
+                        </h2>
+                        <div id="previewSkillsTags" class="flex flex-wrap gap-2">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="mb-6">
+                        <h2 class="text-xs font-black text-slate-900 uppercase tracking-widest border-b border-slate-200 pb-1 mb-3 flex items-center gap-2">
+                            <span class="w-1.5 h-3 bg-sky-600 rounded-sm"></span>
+                            <span>Education & Credentials</span>
+                        </h2>
+                        <div id="previewEducationList" class="space-y-2">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Additional Details Footer -->
+                    <div id="previewAdditionalBlock" class="mb-6 text-xs text-slate-600 flex flex-wrap gap-4 border-t border-slate-100 pt-3">
+                        <span id="previewLangSpan"><strong>Languages:</strong> Bengali, English</span>
+                        <span id="previewNationSpan"><strong>Nationality:</strong> Bangladeshi</span>
+                    </div>
+
+                    <!-- Verification Signature -->
+                    <div class="pt-6 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-400">
+                        <span>Generated via Habib iFix .Tech Professional Resume Builder</span>
+                        <span>Certified A4 Format</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: HABIB'S OFFICIAL PROFILE & LAB CREDENTIALS -->
+        <div id="viewProfile" class="hidden space-y-8">
+            <div class="glass-card p-6 sm:p-8 rounded-3xl border border-indigo-500/30">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <img src="https://www.svgrepo.com/show/5125/avatar.svg" class="w-28 h-28 rounded-3xl object-cover border-4 border-cyan-400 shadow-[0_0_30px_rgba(6,182,212,0.5)]">
+                    <div class="text-center md:text-left flex-1">
+                        <span class="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full text-xs font-mono font-bold">
+                            MASTER TECHNICIAN & EDUCATOR
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-white mt-2">Md. Habibur Rahman (Habib)</h2>
+                        <p class="text-indigo-400 font-bold text-sm">Lead Hardware Engineer & Founder, Habib iFix .Tech Lab</p>
+                        <p class="text-slate-300 text-xs sm:text-sm mt-2 max-w-2xl leading-relaxed">
+                            Over 6+ years of dedicated precision electronics engineering in Bangladesh. Specialized in Apple & Android micro-soldering, CPU reballing, 2026 security bypass, and author of professional technician training modules.
+                        </p>
+                    </div>
+                    <div class="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
+                        <a href="https://wa.me/8801868461577" target="_blank" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Habib
+                        </a>
+                        <button onclick="window.print()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30">
+                            <i class="fa-solid fa-file-pdf"></i> Download Official Bio
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credentials Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-3xl border border-white/10">
+                    <i class="fa-solid fa-microchip text-2xl text-cyan-400 mb-3"></i>
+                    <h3 class="text-base font-bold text-white mb-2">4,500+ Devices Repaired</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">High success rate across iPhone, Samsung, Xiaomi, OnePlus motherboard diagnosis and OLED screen refurbishment.</p>
+                </div>
+                <div class="glass-card p-6 rounded-3xl border border-white/10">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-indigo-400 mb-3"></i>
+                    <h3 class="text-base font-bold text-white mb-2">800+ Students Trained</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Conducted practical laboratory masterclasses in mobile hardware, FRP software, and micro-soldering.</p>
+                </div>
+                <div class="glass-card p-6 rounded-3xl border border-white/10">
+                    <i class="fa-solid fa-award text-2xl text-amber-400 mb-3"></i>
+                    <h3 class="text-base font-bold text-white mb-2">Certified Lab Standard</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">Equipped with infrared thermal cameras, vacuum OCA chambers, computerized DC supplies and BGA reballing stations.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- UNIFIED FOOTER -->
+    <footer class="border-t border-white/10 bg-slate-950 py-10 mt-16 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="brand-logo-box w-8 h-8 shrink-0 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1px] flex items-center justify-center">
+                    <div class="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                            <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <span class="font-black text-white text-sm">Habib iFix <span class="text-cyan-400">.Tech</span></span>
+            </div>
+            <p class="text-xs text-slate-400 text-center md:text-left">
+                &copy; 2026 Habib iFix .Tech — Precision Mobile Hardware & Digital Lab. All rights reserved.
+            </p>
+            <div class="flex items-center gap-4 text-xs font-bold">
+                <a href="index.html" class="text-slate-400 hover:text-white">Home</a>
+                <a href="services.html" class="text-slate-400 hover:text-white">Services</a>
+                <a href="courses.html" class="text-slate-400 hover:text-white">Courses</a>
+                <a href="contact.html" class="text-slate-400 hover:text-white">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Universal Scripts -->
+    <script src="js/ai-agent.js"></script>
+    <script src="js/site-auth.js"></script>
+
+    <!-- CV Maker Interactive Engine -->
+    <script>
+        let currentPhotoData = null;
+        let currentTheme = 'modern';
+
+        function switchView(tab) {
+            const builder = document.getElementById('viewBuilder');
+            const profile = document.getElementById('viewProfile');
+            const btnB = document.getElementById('tabBuilderBtn');
+            const btnP = document.getElementById('tabProfileBtn');
+
+            if (tab === 'builder') {
+                builder.classList.remove('hidden');
+                profile.classList.add('hidden');
+                btnB.className = 'px-4 py-2 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-md flex items-center gap-2';
+                btnP.className = 'px-4 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2';
+            } else {
+                builder.classList.add('hidden');
+                profile.classList.remove('hidden');
+                btnP.className = 'px-4 py-2 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-md flex items-center gap-2';
+                btnB.className = 'px-4 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2';
+            }
+        }
+
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.querySelectorAll('.theme-btn').forEach(b => {
+                b.classList.remove('border-cyan-400/50', 'bg-cyan-500/10', 'text-cyan-300');
+                b.classList.add('border-white/15', 'bg-slate-900', 'text-slate-300');
+            });
+            event.target.classList.add('border-cyan-400/50', 'bg-cyan-500/10', 'text-cyan-300');
+            event.target.classList.remove('border-white/15', 'bg-slate-900', 'text-slate-300');
+
+            const paper = document.getElementById('cvPaper');
+            paper.className = `cv-sheet p-8 sm:p-12 border border-slate-300 shadow-2xl relative theme-${theme}`;
+        }
+
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentPhotoData = e.target.result;
+                document.getElementById('formPhotoThumb').src = currentPhotoData;
+                document.getElementById('previewPhoto').src = currentPhotoData;
+                document.getElementById('previewPhoto').classList.remove('hidden');
+                document.getElementById('removePhotoBtn').classList.remove('hidden');
+                updateCV();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removePhoto() {
+            currentPhotoData = null;
+            document.getElementById('photoInput').value = '';
+            document.getElementById('formPhotoThumb').src = 'https://www.svgrepo.com/show/5125/avatar.svg';
+            document.getElementById('previewPhoto').src = 'https://www.svgrepo.com/show/5125/avatar.svg';
+            document.getElementById('removePhotoBtn').classList.add('hidden');
+            updateCV();
+        }
+
+        function addExperienceField() {
+            const container = document.getElementById('experienceFieldsList');
+            const div = document.createElement('div');
+            div.className = 'p-4 rounded-2xl bg-slate-900/80 border border-white/10 space-y-3 relative group';
+            div.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] text-cyan-400 font-bold uppercase">New Job Position</span>
+                    <button type="button" onclick="this.closest('.p-4').remove(); updateCV();" class="text-red-400 text-xs hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <input type="text" class="exp-role w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white font-bold outline-none" placeholder="Job Title / Role" oninput="updateCV()">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" class="exp-company bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" placeholder="Company Name" oninput="updateCV()">
+                    <input type="text" class="exp-period bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" placeholder="Year / Duration" oninput="updateCV()">
+                </div>
+                <textarea class="exp-desc w-full bg-slate-950 border border-white/15 rounded-xl p-3 text-xs text-white outline-none resize-none" rows="2" placeholder="Responsibilities..." oninput="updateCV()"></textarea>
+            `;
+            container.appendChild(div);
+            updateCV();
+        }
+
+        function addEducationField() {
+            const container = document.getElementById('educationFieldsList');
+            const div = document.createElement('div');
+            div.className = 'p-3.5 rounded-2xl bg-slate-900/80 border border-white/10 space-y-2.5 relative';
+            div.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] text-purple-400 font-bold uppercase">New Education</span>
+                    <button type="button" onclick="this.closest('.p-3.5').remove(); updateCV();" class="text-red-400 text-xs hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" class="edu-degree bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white font-bold outline-none" placeholder="Degree" oninput="updateCV()">
+                    <input type="text" class="edu-year bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" placeholder="Year" oninput="updateCV()">
+                </div>
+                <input type="text" class="edu-institute w-full bg-slate-950 border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none" placeholder="Institute" oninput="updateCV()">
+            `;
+            container.appendChild(div);
+            updateCV();
+        }
+
+        function updateCV() {
+            // Personal Info
+            const name = document.getElementById('inputName').value || 'Your Full Name';
+            const title = document.getElementById('inputTitle').value || 'Professional Title';
+            const phone = document.getElementById('inputPhone').value || '';
+            const email = document.getElementById('inputEmail').value || '';
+            const location = document.getElementById('inputLocation').value || '';
+            const website = document.getElementById('inputWebsite').value || '';
+            const summary = document.getElementById('inputSummary').value || '';
+            const languages = document.getElementById('inputLanguages').value || '';
+            const nationality = document.getElementById('inputNationality').value || '';
+
+            document.getElementById('previewName').innerText = name;
+            document.getElementById('previewTitle').innerText = title;
+            document.getElementById('previewPhone').querySelector('span').innerText = phone;
+            document.getElementById('previewEmail').querySelector('span').innerText = email;
+            document.getElementById('previewLocation').querySelector('span').innerText = location;
+            document.getElementById('previewWebsite').querySelector('span').innerText = website;
+            document.getElementById('previewSummary').innerText = summary;
+
+            document.getElementById('previewLangSpan').innerHTML = languages ? `<strong>Languages:</strong> ${escapeHtml(languages)}` : '';
+            document.getElementById('previewNationSpan').innerHTML = nationality ? `<strong>Nationality:</strong> ${escapeHtml(nationality)}` : '';
+
+            // Dynamic Experiences
+            const expList = document.getElementById('previewExperienceList');
+            expList.innerHTML = '';
+            document.querySelectorAll('#experienceFieldsList > div').forEach(item => {
+                const role = item.querySelector('.exp-role') ? item.querySelector('.exp-role').value : '';
+                const company = item.querySelector('.exp-company') ? item.querySelector('.exp-company').value : '';
+                const period = item.querySelector('.exp-period') ? item.querySelector('.exp-period').value : '';
+                const desc = item.querySelector('.exp-desc') ? item.querySelector('.exp-desc').value : '';
+
+                if (role || company) {
+                    const el = document.createElement('div');
+                    el.className = 'border-l-2 border-sky-600 pl-3.5';
+                    el.innerHTML = `
+                        <div class="flex items-center justify-between mb-0.5">
+                            <h3 class="text-xs font-bold text-slate-900">${escapeHtml(role)}</h3>
+                            <span class="text-[11px] font-bold text-sky-700 font-mono">${escapeHtml(period)}</span>
+                        </div>
+                        <p class="text-[11px] font-semibold text-slate-600 mb-1.5">${escapeHtml(company)}</p>
+                        <p class="text-xs text-slate-700 leading-relaxed">${escapeHtml(desc)}</p>
+                    `;
+                    expList.appendChild(el);
+                }
+            });
+
+            // Skills
+            const skillsRaw = document.getElementById('inputSkills').value || '';
+            const skills = skillsRaw.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            const container = document.getElementById('previewSkillsTags');
+            container.innerHTML = skills.map(skill => `
+                <span class="inline-block bg-slate-100 text-slate-800 border border-slate-300 px-2.5 py-1 rounded-md text-[11px] font-bold">
+                    ${escapeHtml(skill)}
+                </span>
+            `).join('');
+
+            // Dynamic Education
+            const eduList = document.getElementById('previewEducationList');
+            eduList.innerHTML = '';
+            document.querySelectorAll('#educationFieldsList > div').forEach(item => {
+                const degree = item.querySelector('.edu-degree') ? item.querySelector('.edu-degree').value : '';
+                const year = item.querySelector('.edu-year') ? item.querySelector('.edu-year').value : '';
+                const inst = item.querySelector('.edu-institute') ? item.querySelector('.edu-institute').value : '';
+
+                if (degree || inst) {
+                    const el = document.createElement('div');
+                    el.className = 'flex items-center justify-between';
+                    el.innerHTML = `
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-900">${escapeHtml(degree)}</h3>
+                            <p class="text-[11px] font-medium text-slate-600">${escapeHtml(inst)}</p>
+                        </div>
+                        <span class="text-xs font-bold text-slate-500 font-mono">${escapeHtml(year)}</span>
+                    `;
+                    eduList.appendChild(el);
+                }
+            });
+        }
+
+        function loadSampleCV(type) {
+            if (type === 'developer') {
+                document.getElementById('inputName').value = "Tanvir Ahmed";
+                document.getElementById('inputTitle').value = "Full Stack Web Developer & Software Engineer";
+                document.getElementById('inputPhone').value = "+880 1712-345678";
+                document.getElementById('inputEmail').value = "tanvir.dev@gmail.com";
+                document.getElementById('inputLocation').value = "Dhaka, Bangladesh";
+                document.getElementById('inputWebsite').value = "github.com/tanvir-dev";
+                document.getElementById('inputSummary').value = "Passionate Full-Stack Developer with 4+ years of building scalable Node.js, React, Tailwind, and PostgreSQL applications. Experience with cloud deployments and RESTful APIs.";
+                document.getElementById('inputSkills').value = "JavaScript, TypeScript, React.js, Node.js, Express, Tailwind CSS, PostgreSQL, Git, Docker, REST API, Next.js";
+            } else if (type === 'designer') {
+                document.getElementById('inputName').value = "Nabila Sultana";
+                document.getElementById('inputTitle').value = "Lead Brand Identity & UI/UX Designer";
+                document.getElementById('inputPhone').value = "+880 1912-987654";
+                document.getElementById('inputEmail').value = "nabila.design@gmail.com";
+                document.getElementById('inputLocation').value = "Chattogram, Bangladesh";
+                document.getElementById('inputWebsite').value = "behance.net/nabiladesign";
+                document.getElementById('inputSummary').value = "Creative visual designer specializing in brand identity, typography, corporate logos, and intuitive UI/UX design. Delivered 200+ successful branding projects globally.";
+                document.getElementById('inputSkills').value = "Adobe Illustrator, Photoshop, Figma, Brand Guidelines, Typography, UI/UX Wireframing, Vector Illustration, Social Media Creatives";
+            } else if (type === 'fresher') {
+                document.getElementById('inputName').value = "Ashikur Rahman";
+                document.getElementById('inputTitle').value = "Junior IT Support & Computer Hardware Trainee";
+                document.getElementById('inputPhone').value = "+880 1812-445566";
+                document.getElementById('inputEmail').value = "ashik.it@gmail.com";
+                document.getElementById('inputLocation').value = "Cumilla, Bangladesh";
+                document.getElementById('inputWebsite').value = "linkedin.com/in/ashik-it";
+                document.getElementById('inputSummary').value = "Enthusiastic Diploma Engineer seeking an entry-level position in technical support and mobile hardware engineering. Quick learner with strong foundational troubleshooting skills.";
+                document.getElementById('inputSkills').value = "Windows Troubleshooting, Hardware Assembly, Basic Soldering, MS Office, Customer Support, Android OS Basics";
+            } else {
+                // Default Engineer
+                document.getElementById('inputName').value = "Md. Habibur Rahman";
+                document.getElementById('inputTitle').value = "Senior Mobile Hardware Engineer & IT Specialist";
+                document.getElementById('inputPhone').value = "+880 1868-461577";
+                document.getElementById('inputEmail').value = "tec.habiburrahman@gmail.com";
+                document.getElementById('inputLocation').value = "Chattogram, Bangladesh";
+                document.getElementById('inputWebsite').value = "habibifix.tech";
+                document.getElementById('inputSummary').value = "Certified senior mobile engineering professional with 6+ years of expertise in motherboard micro-soldering, CPU/eMMC reballing, Android FRP security bypass, and electronic diagnostic analysis. Proven track record of repairing over 4,500+ premium smartphone devices with 99.4% success rate.";
+                document.getElementById('inputSkills').value = "BGA Micro-Soldering, CPU & eMMC Reballing, Android FRP Bypass, iOS Screen & Battery Repair, Thermal Camera Fault Tracing, Ultrasonic Lab Treatment, Graphic Design & Branding, Web Development & IT Support";
+            }
+            updateCV();
+        }
+
+        function resetCVForm() {
+            if (confirm("Reset all CV inputs to empty fields?")) {
+                document.querySelectorAll('#editorColumn input, #editorColumn textarea').forEach(el => el.value = '');
+                removePhoto();
+                updateCV();
+            }
+        }
+
+        function exportCVJSON() {
+            const data = {
+                name: document.getElementById('inputName').value,
+                title: document.getElementById('inputTitle').value,
+                phone: document.getElementById('inputPhone').value,
+                email: document.getElementById('inputEmail').value,
+                location: document.getElementById('inputLocation').value,
+                website: document.getElementById('inputWebsite').value,
+                summary: document.getElementById('inputSummary').value,
+                skills: document.getElementById('inputSkills').value,
+                languages: document.getElementById('inputLanguages').value,
+                nationality: document.getElementById('inputNationality').value,
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `CV_${(data.name || 'resume').replace(/\s+/g, '_')}.json`;
+            a.click();
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCV();
+        });
+    </script>
+    <script src="js/site-auth.js"></script>
+    <script src="js/ai-agent.js"></script>
+</body>
+</html>

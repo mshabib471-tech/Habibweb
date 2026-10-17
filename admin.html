@@ -1,396 +1,318 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Admin Dashboard - Habib iFix</title>
+    <title>Admin Dashboard - Habib iFix .Tech</title>
     
+    <script>
+        tailwind = { darkMode: "class" };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
     <style>
-        * { box-sizing: border-box; }
         body { 
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311045 100%);
-            color: #f1f5f9;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
-        }
-        .glass-3d {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            display: none; /* Shown after auth check */
         }
     </style>
 </head>
-<body class="antialiased p-4 sm:p-8">
+<body class="flex flex-col h-screen overflow-hidden dark-mode">
 
-    <div id="accessDenied" class="hidden max-w-md mx-auto mt-20 text-center glass-3d p-8 rounded-3xl">
-        <div class="w-16 h-16 bg-red-500/20 text-red-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-red-500/30">
-            <i class="fa-solid fa-ban"></i>
-        </div>
-        <h2 class="text-2xl font-bold text-white mb-2">Access Denied!</h2>
-        <p class="text-xs text-slate-300 mb-6">এই পেজটি শুধুমাত্র অ্যাডমিনের জন্য সংরক্ষিত। অনুগ্রহ করে আপনার অ্যাডমিন অ্যাকাউন্ট দিয়ে লগইন করুন।</p>
-        <a href="login.html?return=admin.html" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold text-xs shadow-lg hover:bg-indigo-500 transition-colors">Sign In as Admin</a>
-    </div>
-
-    <div id="adminDashboard" class="hidden max-w-[1400px] mx-auto space-y-8">
-        
-        <div class="glass-3d p-6 rounded-3xl flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-lg">👑</div>
-                <div>
-                    <h1 class="text-lg font-bold text-white">Habib iFix Admin Panel</h1>
-                    <p class="text-[10px] text-emerald-400 font-semibold">Full Control Mode Active</p>
+    <!-- Top Admin Navbar -->
+    <header class="h-16 glass-nav border-b flex items-center justify-between px-6 shrink-0 z-30">
+        <div class="flex items-center gap-3">
+            <div class="brand-logo-box w-9 h-9 shrink-0 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1px] flex items-center justify-center">
+                <div class="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
+                    <svg class="h-logo-svg w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="url(#hLogoGradAdm)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="5.5" cy="4.5" r="1.5" fill="#38bdf8"/>
+                        <circle cx="18.5" cy="4.5" r="1.5" fill="#818cf8"/>
+                        <circle cx="5.5" cy="19.5" r="1.5" fill="#38bdf8"/>
+                        <circle cx="18.5" cy="19.5" r="1.5" fill="#818cf8"/>
+                        <circle cx="12" cy="12" r="1.8" fill="#ffffff"/>
+                        <defs>
+                            <linearGradient id="hLogoGradAdm" x1="5.5" y1="4.5" x2="18.5" y2="19.5" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#38bdf8"/>
+                                <stop offset="0.5" stop-color="#ffffff"/>
+                                <stop offset="1" stop-color="#818cf8"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <a href="courses.html" class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors">View Courses Site</a>
-                <button onclick="doLogout()" class="bg-red-500/20 hover:bg-red-500 text-red-300 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors">Logout</button>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div class="glass-3d p-6 rounded-3xl flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl font-bold">📦</div>
-                <div>
-                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Courses / Tools</p>
-                    <h3 id="totalCoursesCount" class="text-2xl font-extrabold text-white">0</h3>
-                </div>
-            </div>
-            <div class="glass-3d p-6 rounded-3xl flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl font-bold">💬</div>
-                <div>
-                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Live Database Sheet</p>
-                    <a href="https://docs.google.com/spreadsheets/d/1lp2iDc6uigyf4y4piuXuGkRtHqFraw4_JA3xpZl5OKg/edit" target="_blank" class="text-xs font-bold text-indigo-400 hover:underline">Open Google Sheet ↗</a>
-                </div>
-            </div>
-            <div class="glass-3d p-6 rounded-3xl flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 text-xl font-bold">🛠️</div>
-                <div>
-                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Admin Status</p>
-                    <h3 class="text-xs font-bold text-emerald-400">Authorized (tec.habiburrahman@gmail.com)</h3>
-                </div>
+            <div>
+                <h1 class="font-bold text-white tracking-wide text-sm sm:text-base">
+                    Habib <span class="text-cyan-400">iFix</span> <span class="text-cyan-400 font-mono font-bold">.Tech</span> <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full ml-1.5 font-mono">ADMIN</span>
+                </h1>
             </div>
         </div>
 
-        <!-- LIVE CUSTOMER SUPPORT INBOX SECTION -->
-        <div class="glass-3d p-6 sm:p-8 rounded-3xl space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-comments text-indigo-400"></i> Live Customer Support Inbox
-                    </h2>
-                    <p class="text-xs text-slate-400">কাস্টমারদের পাঠানো মেসেজগুলো এখানে দেখতে পাবেন এবং নির্দিষ্ট ইউজার আইডি সিলেক্ট করে সরাসরি রিপ্লাই পাঠাতে পারবেন।</p>
-                </div>
-                <button onclick="loadLiveChats()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors shadow-lg flex items-center gap-2">
-                    <i class="fa-solid fa-rotate"></i> Refresh Chats
+        <div class="flex items-center gap-2.5">
+            <!-- Google Authenticated User Badge -->
+            <div id="adminUserBadge" class="hidden md:flex items-center gap-2 bg-indigo-500/15 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="adminUserName" class="font-mono text-cyan-300 text-[11px]">tec.habiburrahman@gmail.com</span>
+            </div>
+
+            <!-- View Live Site -->
+            <a href="index.html" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-all">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-cyan-400"></i>
+                <span class="hidden sm:inline">View Live Site</span>
+            </a>
+
+            <!-- Logout Button -->
+            <button id="logoutBtn" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-power-off text-xs"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-60 glass-nav border-r flex flex-col p-4 shrink-0 overflow-y-auto">
+            <div class="space-y-1.5 text-xs font-bold">
+                <button onclick="switchTab('bookings')" id="tabBtnBookings" class="w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center gap-2.5 transition-colors shadow">
+                    <i class="fa-solid fa-calendar-check text-xs"></i>
+                    <span>Manage Bookings</span>
                 </button>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[450px]">
-                <div class="glass-3d p-4 rounded-2xl flex flex-col h-full overflow-hidden border border-white/10">
-                    <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Active Users / Senders</h3>
-                    <div id="usersListContainer" class="flex-grow overflow-y-auto space-y-2 pr-1">
-                        <p class="text-xs text-slate-500 italic text-center mt-10">Loading users...</p>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-2 glass-3d p-4 rounded-2xl flex flex-col h-full overflow-hidden border border-white/10">
-                    <div id="activeChatHeader" class="pb-3 border-b border-white/10 text-xs font-bold text-indigo-400">
-                        Select a user from the left to view conversation and reply.
-                    </div>
-                    
-                    <div id="adminChatMessages" class="flex-grow p-3 overflow-y-auto space-y-3 text-xs my-2">
-                        <div class="text-center text-slate-500 italic mt-20">কোনো ইউজার সিলেক্ট করা হয়নি।</div>
-                    </div>
-
-                    <div class="pt-3 border-t border-white/10 flex items-center gap-2">
-                        <input type="text" id="adminReplyInput" placeholder="Type reply to selected user..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-xs outline-none focus:border-indigo-500 text-white" disabled>
-                        <button onclick="sendAdminReply()" id="adminSendBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-colors shadow-md disabled:opacity-50" disabled>
-                            Send
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-3d p-6 sm:p-8 rounded-3xl space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-bold text-white">Manage Courses & Subscriptions</h2>
-                    <p class="text-xs text-slate-400">এখানে যেকোনো কোর্স বা টুলের নাম ও দাম পরিবর্তন করলে তা সাথে সাথে লাইভ সাইটে আপডেট হয়ে যাবে।</p>
-                </div>
-                <button onclick="openAdminCourseModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-2xl font-bold text-xs shadow-lg transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Add New Item
+                <button onclick="switchTab('blogs')" id="tabBtnBlogs" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                    <i class="fa-solid fa-blog text-xs text-indigo-400"></i>
+                    <span>Blog Posts</span>
                 </button>
+                <a href="index.html" class="w-full block text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                    <i class="fa-solid fa-house text-xs text-cyan-400"></i>
+                    <span>Home Page</span>
+                </a>
+                <a href="cv.html" class="w-full block text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                    <i class="fa-solid fa-file-lines text-xs text-purple-400"></i>
+                    <span>CV Maker Tool</span>
+                </a>
+                <a href="frp.html" class="w-full block text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                    <i class="fa-solid fa-unlock-keyhole text-xs text-amber-400"></i>
+                    <span>FRP 2026 Page</span>
+                </a>
             </div>
+        </aside>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-white/5 border-b border-white/10 uppercase text-[10px] text-slate-400">
-                        <tr>
-                            <th class="p-3">Icon</th>
-                            <th class="p-3">Title</th>
-                            <th class="p-3">Price</th>
-                            <th class="p-3">Description</th>
-                            <th class="p-3 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminCoursesTableBody" class="divide-y divide-white/5">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    <div id="adminCourseModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[105] hidden flex items-center justify-center p-4">
-        <div class="glass-3d bg-slate-900/95 w-full max-w-lg p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
-            <button onclick="closeAdminCourseModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-extrabold text-white mb-6" id="adminModalTitle">Add Course</h3>
+        <!-- Main Content Body -->
+        <main class="flex-1 p-6 overflow-y-auto max-w-7xl">
             
-            <form id="adminCourseForm" onsubmit="handleAdminSaveCourse(event)" class="space-y-4">
-                <input type="hidden" id="adminEditIndex" value="-1">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Title</label>
-                    <input type="text" id="acTitle" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
+            <!-- Bookings Section -->
+            <div id="sectionBookings">
+                <div class="flex justify-between items-center mb-6">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Price</label>
-                        <input type="text" id="acPrice" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Customer Repair Bookings</h2>
+                        <p class="text-xs text-slate-400">Real-time incoming repair service and diagnostic reservations.</p>
                     </div>
+                    <button onclick="loadAdminBookings()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-rotate text-cyan-400"></i> Refresh
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminBookingsGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Blogs Section -->
+            <div id="sectionBlogs" class="hidden">
+                <div class="flex justify-between items-center mb-6">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Icon Class</label>
-                        <input type="text" id="acIcon" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Technical Blog Posts</h2>
+                        <p class="text-xs text-slate-400">Manage technical repair guides and posts displayed on home and blog pages.</p>
                     </div>
+                    <button onclick="openPostModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-lg transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Create Post
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminBlogGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div id="postModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="glass-card w-full max-w-lg rounded-3xl p-6 sm:p-8 bg-slate-900 border border-indigo-500/30 shadow-2xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-white">Create New Tech Post</h3>
+                <button onclick="closePostModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="postForm" class="flex flex-col gap-3.5">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Post Title</label>
+                    <input type="text" id="postTitle" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none" placeholder="e.g. How to Bypass FRP on Android 15">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Description</label>
-                    <textarea id="acDesc" rows="3" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 resize-none"></textarea>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Category</label>
+                    <input type="text" id="postCategory" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none" placeholder="e.g. FRP UNLOCK or HARDWARE">
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-xl text-xs transition-colors shadow-lg">Save Changes</button>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Image URL</label>
+                    <input type="url" id="postMedia" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none" placeholder="https://images.unsplash.com/...">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Description / Summary</label>
+                    <textarea id="postDesc" required rows="3" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-indigo-500 outline-none resize-none" placeholder="Detailed guide content..."></textarea>
+                </div>
+                <div class="flex justify-end gap-2.5 mt-2">
+                    <button type="button" onclick="closePostModal()" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2.5 rounded-xl text-xs text-white font-bold transition-colors shadow">Publish Now</button>
+                </div>
             </form>
         </div>
     </div>
 
     <script>
-        const adminEmail = "tec.habiburrahman@gmail.com";
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwS-hEc7WH1oMFPZCWTNtd9tniW2-nMMuQeGrb1_9HtcfnARpIUbhLpDikHpIXRHSM8QQ/exec";
-        let allChats = [];
-        let activeUserId = null;
+        // Tab Switcher
+        function switchTab(tab) {
+            const secBookings = document.getElementById('sectionBookings');
+            const secBlogs = document.getElementById('sectionBlogs');
+            const btnBookings = document.getElementById('tabBtnBookings');
+            const btnBlogs = document.getElementById('tabBtnBlogs');
 
-        const defaultItems = [
-            { title: "Google Gemini Pro 5TB Storage, 18 month.", price: "৳১০০ / ২৫০", icon: "fa-brands fa-google-drive", desc: "Secure cloud storage for 1 full year with high-speed access." },
-            { title: "ChatGPT Pro (3 Months)", price: "৳৮০০", icon: "fa-solid fa-robot", desc: "Advanced AI models, fast response, and custom GPTs access." },
-            { title: "Canva Pro Graphic Tool", price: "৳৫০০", icon: "fa-solid fa-palette", desc: "Unlock premium templates, background remover, and brand kits." },
-            { title: "Mobile Unlocking & FRP Course", price: "৳১,৫০০", icon: "fa-solid fa-mobile-screen", desc: "Learn professional software flashing and FRP bypass techniques." },
-            { title: "Digital Marketing & Ads Mastery", price: "৳২,০০০", icon: "fa-solid fa-bullhorn", desc: "Master Facebook & Google ads setup to boost any online business." }
-        ];
-
-        function checkAuth() {
-            const userEmail = localStorage.getItem('habib_user_email');
-            const isLoggedIn = localStorage.getItem('habib_logged_in') === 'true';
-
-            if (isLoggedIn && userEmail === adminEmail) {
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                document.getElementById('accessDenied').classList.add('hidden');
-                loadAdminTable();
-                loadLiveChats();
-                setInterval(loadLiveChats, 10000);
+            if (tab === 'bookings') {
+                secBookings.classList.remove('hidden');
+                secBlogs.classList.add('hidden');
+                btnBookings.className = "w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center gap-2.5 transition-colors shadow";
+                btnBlogs.className = "w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors";
             } else {
-                document.getElementById('adminDashboard').classList.add('hidden');
-                document.getElementById('accessDenied').classList.remove('hidden');
+                secBookings.classList.add('hidden');
+                secBlogs.classList.remove('hidden');
+                btnBlogs.className = "w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center gap-2.5 transition-colors shadow";
+                btnBookings.className = "w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors";
             }
         }
 
-        function getCourses() {
-            const data = localStorage.getItem('habib_courses');
-            return data ? JSON.parse(data) : defaultItems;
-        }
-
-        function loadAdminTable() {
-            const courses = getCourses();
-            const tbody = document.getElementById('adminCoursesTableBody');
-            document.getElementById('totalCoursesCount').innerText = courses.length;
-            tbody.innerHTML = '';
-
-            courses.forEach((item, index) => {
-                tbody.innerHTML += `
-                    <tr class="hover:bg-white/5 transition-colors">
-                        <td class="p-3"><i class="${item.icon} text-indigo-400 text-base"></i></td>
-                        <td class="p-3 font-bold text-white">${item.title}</td>
-                        <td class="p-3 text-emerald-400 font-bold">${item.price}</td>
-                        <td class="p-3 text-slate-400 truncate max-w-xs">${item.desc}</td>
-                        <td class="p-3 text-right space-x-2">
-                            <button onclick="editAdminCourse(${index})" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors">Edit</button>
-                            <button onclick="deleteAdminCourse(${index})" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors">Delete</button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        async function loadLiveChats() {
-            try {
-                const res = await fetch(SCRIPT_URL);
-                allChats = await res.json();
-                renderUsersList();
-                if (activeUserId) {
-                    selectUserChat(activeUserId);
-                }
-            } catch (err) {
-                console.error("Failed to load chats:", err);
-            }
-        }
-
-        function renderUsersList() {
-            const container = document.getElementById('usersListContainer');
-            const uniqueUsers = [...new Set(allChats.map(c => c.userId))].filter(Boolean);
-            
-            if (uniqueUsers.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 italic text-center mt-10">No messages found.</p>`;
-                return;
-            }
-
-            container.innerHTML = '';
-            uniqueUsers.forEach(userId => {
-                const userMsgs = allChats.filter(c => c.userId === userId);
-                const lastMsg = userMsgs[userMsgs.length - 1];
-                
-                container.innerHTML += `
-                    <div onclick="selectUserChat('${userId}')" class="p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors border ${activeUserId === userId ? 'border-indigo-500 bg-indigo-500/20' : 'border-white/5'}">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold text-white text-xs">${userId}</span>
-                            <span class="text-[9px] text-slate-400">${new Date(lastMsg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                        </div>
-                        <p class="text-[11px] text-slate-300 truncate">${lastMsg.sender}: ${lastMsg.message}</p>
-                    </div>
-                `;
-            });
-        }
-
-        function selectUserChat(userId) {
-            activeUserId = userId;
-            document.getElementById('activeChatHeader').innerText = "Active Conversation with ID: " + userId;
-            document.getElementById('adminReplyInput').disabled = false;
-            document.getElementById('adminSendBtn').disabled = false;
-
-            const msgContainer = document.getElementById('adminChatMessages');
-            const userMsgs = allChats.filter(c => c.userId === userId);
-            
-            msgContainer.innerHTML = '';
-            userMsgs.forEach(m => {
-                const isAdmin = m.sender === "Admin";
-                msgContainer.innerHTML += `
-                    <div class="p-3 rounded-2xl max-w-[85%] ${isAdmin ? 'bg-indigo-600 text-white ml-auto' : 'bg-slate-800 text-slate-200 border border-white/10'}">
-                        <p class="text-[9px] opacity-70 mb-1">${m.sender} (${new Date(m.timestamp).toLocaleTimeString()})</p>
-                        <p>${m.message}</p>
-                    </div>
-                `;
-            });
-            msgContainer.scrollTop = msgContainer.scrollHeight;
-        }
-
-        async function sendAdminReply() {
-            const input = document.getElementById('adminReplyInput');
-            const text = input.value.trim();
-            if (!text || !activeUserId) return;
-
-            input.value = '';
-            
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        action: "admin_reply",
-                        userId: activeUserId,
-                        message: text
-                    })
-                });
-
-                setTimeout(loadLiveChats, 1200);
-            } catch (err) {
-                alert("Failed to send reply.");
-            }
-        }
-
-        function openAdminCourseModal(index = -1) {
-            document.getElementById('adminCourseModal').classList.remove('hidden');
-            document.getElementById('adminCourseModal').classList.add('flex');
-            if (index === -1) {
-                document.getElementById('adminModalTitle').innerText = "Add New Course/Tool";
-                document.getElementById('adminCourseForm').reset();
-                document.getElementById('adminEditIndex').value = -1;
+        // Check Auth immediately
+        fetch('/api/check-admin').then(res => res.json()).then(data => {
+            if(data.isAdmin) {
+                document.body.style.display = 'flex';
+                const email = localStorage.getItem('habib_user_email') || 'tec.habiburrahman@gmail.com';
+                const name = localStorage.getItem('habib_user_name') || 'Habibur Rahman';
+                const userEl = document.getElementById('adminUserName');
+                if (userEl) userEl.innerText = email;
+                loadAdminBookings();
+                loadAdminPosts();
             } else {
-                document.getElementById('adminModalTitle').innerText = "Edit Course/Tool";
-                const courses = getCourses();
-                const item = courses[index];
-                document.getElementById('adminEditIndex').value = index;
-                document.getElementById('acTitle').value = item.title;
-                document.getElementById('acPrice').value = item.price;
-                document.getElementById('acIcon').value = item.icon;
-                document.getElementById('acDesc').value = item.desc;
+                window.location.href = 'login.html';
             }
-        }
-
-        function closeAdminCourseModal() {
-            document.getElementById('adminCourseModal').classList.add('hidden');
-            document.getElementById('adminCourseModal').classList.remove('flex');
-        }
-
-        function handleAdminSaveCourse(e) {
-            e.preventDefault();
-            const index = parseInt(document.getElementById('adminEditIndex').value);
-            let courses = getCourses();
-
-            const newItem = {
-                title: document.getElementById('acTitle').value,
-                price: document.getElementById('acPrice').value,
-                icon: document.getElementById('acIcon').value,
-                desc: document.getElementById('acDesc').value
-            };
-
-            if (index === -1) {
-                courses.unshift(newItem);
-            } else {
-                courses[index] = newItem;
-            }
-
-            localStorage.setItem('habib_courses', JSON.stringify(courses));
-            closeAdminCourseModal();
-            loadAdminTable();
-            alert('Successfully updated and saved globally!');
-        }
-
-        function editAdminCourse(index) {
-            openAdminCourseModal(index);
-        }
-
-        function deleteAdminCourse(index) {
-            if (confirm('Are you sure you want to delete this item?')) {
-                let courses = getCourses();
-                courses.splice(index, 1);
-                localStorage.setItem('habib_courses', JSON.stringify(courses));
-                loadAdminTable();
-            }
-        }
-
-        function doLogout() {
-            localStorage.clear();
-            sessionStorage.clear();
-            window.location.href = 'login.html';
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            checkAuth();
         });
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = 'login.html';
+        });
+
+        async function loadAdminBookings() {
+            try {
+                const res = await fetch('/api/bookings');
+                const bookings = await res.json();
+                const grid = document.getElementById('adminBookingsGrid');
+                if (bookings.length === 0) {
+                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3">No customer bookings yet.</p>';
+                    return;
+                }
+                grid.innerHTML = bookings.map(b => `
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-cyan-400 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-white">${b.planName}</span>
+                                <span class="text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 px-2 py-0.5 rounded-full font-mono font-bold">${b.planPrice}</span>
+                            </div>
+                            <div class="space-y-1 text-xs text-slate-300">
+                                <p><strong class="text-white">Customer:</strong> ${b.customerName}</p>
+                                <p><strong class="text-white">Phone:</strong> <a href="tel:${b.phone}" class="text-cyan-400 hover:underline">${b.phone}</a></p>
+                                ${b.email ? `<p><strong class="text-white">Email:</strong> ${b.email}</p>` : ''}
+                                <p><strong class="text-white">Details:</strong> ${b.address}</p>
+                            </div>
+                        </div>
+                        <div class="pt-3 border-t border-white/10 mt-3 flex items-center justify-between">
+                            <span class="text-[10px] text-slate-500">${b.date || 'Recent'}</span>
+                            <a href="https://wa.me/88${b.phone.replace(/[^0-9]/g, '')}" target="_blank" class="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+                                <i class="fa-brands fa-whatsapp"></i> Chat
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadAdminPosts() {
+            try {
+                const res = await fetch('/api/posts');
+                const posts = await res.json();
+                const grid = document.getElementById('adminBlogGrid');
+                if (posts.length === 0) {
+                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3">No blog posts yet.</p>';
+                    return;
+                }
+                grid.innerHTML = posts.map(p => `
+                    <div class="glass-card p-4 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <img src="${p.mediaLink}" class="w-full h-36 object-cover rounded-xl mb-3">
+                            <span class="text-[9px] text-indigo-400 font-mono font-bold uppercase tracking-wider">${p.category}</span>
+                            <h4 class="font-bold text-white text-sm mt-1 mb-1.5 line-clamp-2">${p.title}</h4>
+                            <p class="text-xs text-slate-400 line-clamp-2 mb-3">${p.description}</p>
+                        </div>
+                        <div class="pt-3 border-t border-white/10 flex justify-between items-center">
+                            <span class="text-[10px] text-slate-500">${p.date || '2026'}</span>
+                            <button onclick="deletePost(${p.id})" class="text-xs text-red-400 hover:text-red-300 font-bold bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg transition-colors">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function openPostModal() {
+            document.getElementById('postModal').style.display = 'flex';
+        }
+        function closePostModal() {
+            document.getElementById('postModal').style.display = 'none';
+            document.getElementById('postForm').reset();
+        }
+
+        document.getElementById('postForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                title: document.getElementById('postTitle').value,
+                category: document.getElementById('postCategory').value,
+                mediaLink: document.getElementById('postMedia').value,
+                description: document.getElementById('postDesc').value,
+                mediaType: 'image'
+            };
+            
+            await fetch('/api/posts', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            closePostModal();
+            loadAdminPosts();
+        });
+
+        async function deletePost(id) {
+            if(confirm('Are you sure you want to delete this post?')) {
+                await fetch(`/api/posts/${id}`, { method: 'DELETE' });
+                loadAdminPosts();
+            }
+        }
     </script>
 </body>
 </html>

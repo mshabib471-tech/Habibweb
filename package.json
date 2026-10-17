@@ -1,0 +1,17 @@
+{
+  "name": "habibweb",
+  "version": "1.0.0",
+  "description": "Imported from mshabib471-tech/Habibweb",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo 'No build step'"
+  },
+  "dependencies": {
+    "@google/genai": "^2.29.1",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.3.0"
+  }
+}

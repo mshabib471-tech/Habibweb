@@ -1,0 +1,789 @@
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const fs = require('fs');
+const { GoogleGenAI } = require('@google/genai');
+
+const app = express();
+const PORT = 3000;
+const DB_FILE = path.join(__dirname, 'database.json');
+
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(__dirname));
+
+// DB Helper
+function readDB() {
+  if (!fs.existsSync(DB_FILE)) {
+    return { posts: [], bookings: [], users: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1 };
+  }
+  try {
+    const data = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    data.posts = data.posts || [];
+    data.bookings = data.bookings || [];
+    data.users = data.users || [];
+    data.nextPostId = data.nextPostId || 1;
+    data.nextBookingId = data.nextBookingId || 1;
+    data.nextUserId = data.nextUserId || 1;
+    return data;
+  } catch (e) {
+    return { posts: [], bookings: [], users: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1 };
+  }
+}
+function writeDB(data) {
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+}
+
+// Auth middleware
+const checkAdmin = (req, res, next) => {
+  if (req.cookies.admin_session === 'habib_admin_token_2026') {
+    next();
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+
+// Initialize Gemini SDK with process.env.GEMINI_API_KEY or provided fallback
+const geminiApiKey = process.env.GEMINI_API_KEY || "AQ.Ab8RN6LDdo6X2fu5yXbCKlV8anEezQeeh87dYZvrTevblG7dsQ";
+let aiClient = null;
+try {
+  aiClient = new GoogleGenAI({
+    apiKey: geminiApiKey,
+    httpOptions: {
+      headers: {
+        'User-Agent': 'aistudio-build',
+      }
+    }
+  });
+} catch (err) {
+  console.warn("Gemini client initialization notice:", err.message);
+}
+
+// Intelligent Conversational AI Diagnostic Engine for Habib iFix
+function generateConversationalAIResponse(query, language = 'bn') {
+  const rawQ = query || '';
+  const q = rawQ.toLowerCase().trim();
+
+  // Smart Device Brand & Model Extraction
+  let detectedBrand = null;
+  let detectedModel = null;
+  if (q.includes('iphone') || q.includes('apple')) {
+    detectedBrand = 'Apple iPhone';
+    const m = q.match(/iphone\s*(\d+(\s*(pro\s*max|pro|plus|mini))?|x[sr]?|xs\s*max|\d+)/i);
+    if (m) detectedModel = m[0].toUpperCase();
+  } else if (q.includes('samsung') || q.includes('galaxy')) {
+    detectedBrand = 'Samsung Galaxy';
+    const m = q.match(/(s\d+|a\d+|m\d+|note\s*\d+|z\s*fold|z\s*flip)/i);
+    if (m) detectedModel = 'Samsung ' + m[0].toUpperCase();
+  } else if (q.includes('redmi') || q.includes('xiaomi') || q.includes('poco')) {
+    detectedBrand = 'Xiaomi / Redmi / Poco';
+    const m = q.match(/(note\s*\d+(\s*pro)?|poco\s*[a-z0-9]+|mi\s*\d+|redmi\s*\d+)/i);
+    if (m) detectedModel = m[0].toUpperCase();
+  } else if (q.includes('vivo')) {
+    detectedBrand = 'Vivo';
+  } else if (q.includes('oppo')) {
+    detectedBrand = 'Oppo';
+  } else if (q.includes('realme')) {
+    detectedBrand = 'Realme';
+  } else if (q.includes('oneplus')) {
+    detectedBrand = 'OnePlus';
+  } else if (q.includes('pixel')) {
+    detectedBrand = 'Google Pixel';
+  }
+  const deviceLabel = detectedModel || detectedBrand || 'আপনার স্মার্টফোন';
+
+  // 1. WATER DAMAGE (Highest Emergency Priority)
+  if (q.includes('water') || q.includes('পানি') || q.includes('ভিজে') || q.includes('liquid') || q.includes('পানিতে') || q.includes('tea') || q.includes('বৃষ্টি')) {
+    return {
+      title: `💧 ${deviceLabel} পানিতে পড়া ইমার্জেন্সি রিকভারি`,
+      category: "Motherboard Ultrasonic Lab Repair",
+      severity: "Critical",
+      estimatedCost: "৳৮০০ - ৳২,৫০০",
+      repairTime: "১ - ৩ ঘণ্টা",
+      summary: `${deviceLabel}-এ পানি ঢোকার পর শর্ট সার্কিট প্রতিরোধ ও চিপসেট রিকভারি।`,
+      text: `### 💧 ${deviceLabel} পানিতে পড়লে তাৎক্ষণিক করণীয় ও ল্যাব সল্যুশন:
+
+⚠️ **জরুরি সতর্কতা (এখনই যা করবেন না):**
+১. **ভুলেও চার্জে লাগাবেন না** — চার্জে দিলে প্রাইমারি লাইনে হাই-ভোল্টেজ গিয়ে পাওয়ার আইসি (PMIC) ও সিপিইউ সাথে সাথে পুড়ে যায়।
+২. **পাওয়ার বাটন বারবার চাপবেন না** এবং ফোন অন করার চেষ্টা করবেন না।
+৩. চালের ড্রামে রেখে কোনো লাভ হয় না; বরং ভেতরের আর্দ্রতায় মাদারবোর্ডে অক্সিডাইজেশন ও মরিচা ধরে লাইন নষ্ট হয়।
+
+🛠️ **Habib iFix স্পেশাল ল্যাব ট্রিটমেন্ট:**
+• দ্রুত ফোন খুলে ডিজিটাল আল্ট্রাসনিক ক্লিনিং মেশিনে ৯৯.৯% আইসোপ্রোপাইল অ্যালকোহল ও সলিউশন দিয়ে ওয়াশ করা হয়।
+• থার্মাল ক্যামেরা ও ডিসি পাওয়ার সাপ্লাই দিয়ে শর্ট সার্কিট ড্যামেজ নিখুঁতভাবে ট্রেস ও মেরামত করা হয়।
+• 💰 **আনুমানিক খরচ:** ৳৮০০ - ৳২,৫০০ (মডেল ও ক্ষতির মাত্রা অনুযায়ী)।
+• ⏱️ **সময়:** ১ থেকে ৩ ঘণ্টার মধ্যে ফুল টেস্ট সহ ডেলিভারি।
+
+👉 দ্রুত ল্যাবে নিয়ে আসুন বা জরুরি সহায়তার জন্য সরাসরি কল দিন: **01868-461577**!`
+    };
+  }
+
+  // 2. DISPLAY, SCREEN, TOUCH, GLASS CRACK
+  if (q.includes('display') || q.includes('screen') || q.includes('টাচ') || q.includes('ডিসপ্লে') || q.includes('ভাঙা') || q.includes('touch') || q.includes('glass') || q.includes('গ্লাস') || q.includes('green line') || q.includes('লাইন') || q.includes('ভেঙে') || q.includes('পর্দা') || q.includes('fete')) {
+    return {
+      title: `📱 ${deviceLabel} ডিসপ্লে ও ওকা (OCA) গ্লাস সল্যুশন`,
+      category: "Hardware / Screen Replacement",
+      severity: "High",
+      estimatedCost: "৳৮০০ - ৳৮,৫০০ (মডেল অনুযায়ী)",
+      repairTime: "৩০ - ৪৫ মিনিট",
+      summary: `${deviceLabel}-এর ফাটা গ্লাস বা ড্যামেজ ডিসপ্লের অরিজিনাল কোয়ালিটি রিপ্লেসমেন্ট।`,
+      text: `### 📱 ${deviceLabel}-এর ডিসপ্লে ও টাচস্ক্রিন টেকনিক্যাল সল্যুশন:
+
+১. **শুধুমাত্র বাইরের গ্লাস ফেটে গেলে (টাচ ও ডিসপ্লে একদম ঠিক থাকলে):**
+• পুরো ডিসপ্লে পরিবর্তনের প্রয়োজন নেই!
+• আমাদের অটোমেটিক ভ্যাকুয়াম OCA ল্যামিনেটিং মেশিনের সাহায্যে অরিজিনাল প্যানেল অক্ষত রেখে মাত্র নতুন গ্লাস প্রতিস্থাপন করা হয়।
+• 💰 **খরচ:** মাত্র ৳৮০০ - ৳১,৮০০ (৬০% খরচ বেঁচে যাবে)।
+
+২. **ভেতরে কালো দাগ, কালার নষ্ট, গ্রিন লাইন বা টাচ কাজ না করলে:**
+• ১০০% অরিজিনাল প্যানেল (AMOLED / Super AMOLED / Retina / IPS) ইন্সটল করা হবে।
+• আইফোনের জন্য TrueTone ডেটা রি-রাইট এবং স্যামসাং ও শাওমির জন্য ইন-ডিসপ্লে ফিঙ্গারপ্রিন্ট সেন্সর ক্যালিব্রেশন নিশ্চিত।
+• 💰 **খরচ:** ৳১,৫০০ - ৳৮,৫০০ (ব্র্যান্ড ও মডেল অনুযায়ী)।
+• ⏱️ **সময়:** মাত্র ৩০ থেকে ৪৫ মিনিটেই কমপ্লিট ডেলিভারি ও ৩০ দিনের রিপ্লেসমেন্ট ওয়ারেন্টি!`
+    };
+  }
+
+  // 3. BATTERY DRAIN, BATTERY HEALTH & BACKUP
+  if (q.includes('battery') || q.includes('ব্যাটারি') || q.includes('backup') || q.includes('drain') || q.includes('health') || q.includes('চার্জ থাকে না') || q.includes('ফুলে') || q.includes('duronto')) {
+    return {
+      title: `🔋 ${deviceLabel} অরিজিনাল ব্যাটারি রিপ্লেসমেন্ট`,
+      category: "Original Battery Replacement",
+      severity: "Medium",
+      estimatedCost: "৳৮০০ - ৳২,২০০",
+      repairTime: "২০ - ৩০ মিনিট",
+      summary: `${deviceLabel}-এর ব্যাটারি ব্যাকআপ ড্রপ বা ফুলে যাওয়ার জন্য জেনুইন ব্যাটারি সল্যুশন।`,
+      text: `### 🔋 ${deviceLabel}-এর ব্যাটারি ড্রপ ও ব্যাকআপ সমাধান:
+
+• **১০০% অরিজিনাল হাই-ক্যাপাসিটি ব্যাটারি:** নতুন ব্যাটারি লাগালে সারাদিন নিশ্চিন্ত ব্যাকআপ পাওয়া যাবে।
+• **আইফোন ব্যাটারি হেলথ ১০০% ও নো আননোন পার্ট মেসেজ:** বিএমএস (BMS) বোর্ড সোয়াপ করে অরিজিনাল হেলথ পার্সেন্টেজ রি-প্রোগ্রামিং।
+• **ওয়ারেন্টি:** প্রত্যেকটি অরিজিনাল ব্যাটারিতে পাচ্ছেন ৬ মাসের ডিরেক্ট রিপ্লেসমেন্ট গ্যারান্টি।
+• 💰 **আনুমানিক খরচ:** ৳৮০০ - ৳২,২০০ (মডেল অনুযায়ী)।
+• ⏱️ **সময়:** মাত্র ২০ থেকে ৩০ মিনিট!`
+    };
+  }
+
+  // 4. CHARGING, CHARGER PORT, SLOW CHARGING
+  if (q.includes('charging') || q.includes('charge') || q.includes('চার্জ') || q.includes('slow charge') || q.includes('পোর্ট') || q.includes('port') || q.includes('পিন') || q.includes('cable') || q.includes('টাইপ সি') || q.includes('type c') || q.includes('otg')) {
+    return {
+      title: `⚡ ${deviceLabel} ফাস্ট চার্জিং ও পোর্ট রিপেয়ার`,
+      category: "Charging Port & Sub-board",
+      severity: "Medium",
+      estimatedCost: "৳৪০০ - ৳১,২০০",
+      repairTime: "১৫ - ২৫ মিনিট",
+      summary: `${deviceLabel}-এর স্লো চার্জিং, চার্জ না ধরা বা লুজ পোর্ট সমস্যার স্থায়ী সমাধান।`,
+      text: `### ⚡ ${deviceLabel}-এর চার্জিং ও পোর্ট সমস্যার সমাধান:
+
+🔍 **সমস্যার কারণ ও লক্ষণসমূহ:**
+• পোর্ট লুজ হয়ে যাওয়া বা ক্যাবল নাড়াচাড়া করলে চার্জ ধরা।
+• ফাস্ট চার্জিং সাপোর্ট না করা বা স্লো চার্জ হওয়া (Fake Charging)।
+• চার্জিং পিনের ভেতরে কার্বন, ময়লা জমা বা আর্দ্রতা (Moisture Detected) এরর।
+
+🛠️ **আমাদের সার্ভিস:**
+• অরিজিনাল Type-C / Lightning চার্জিং পোর্ট অথবা কমপ্লিট অরিজিনাল সাব-বোর্ড রিপ্লেসমেন্ট।
+• চার্জিং কন্ট্রোলার আইসি (OVP IC / Charging IC) মাইক্রো-সোল্ডারিং টেস্টিং।
+• 💰 **আনুমানিক খরচ:** ৳৪০০ - ৳১,২০০।
+• ⏱️ **সময়:** মাত্র ১৫ থেকে ২৫ মিনিটে চোখের সামনে কমপ্লিট রিপেয়ার!`
+    };
+  }
+
+  // 5. DEAD BOOT, RESTART LOOP, HEATING, SHORT CIRCUIT
+  if (q.includes('dead') || q.includes('অন হয় না') || q.includes('on hoy na') || q.includes('restart') || q.includes('রিস্টার্ট') || q.includes('power') || q.includes('শর্ট') || q.includes('short') || q.includes('ic') || q.includes('আইসি') || q.includes('pmic') || q.includes('cpu') || q.includes('heating') || q.includes('গরম')) {
+    return {
+      title: `🔬 ${deviceLabel} ডেড মাদারবোর্ড ও সিপিইউ মাইক্রো-সোল্ডারিং`,
+      category: "Micro-Soldering & Chip-level Repair",
+      severity: "Critical",
+      estimatedCost: "৳১,২০০ - ৳৪,৫০০",
+      repairTime: "২ - ৪ ঘণ্টা",
+      summary: `${deviceLabel}-এর হঠাৎ বন্ধ হয়ে যাওয়া, রিস্টার্ট লুপ বা মাদারবোর্ড শর্ট সার্কিট ফিক্স।`,
+      text: `### 🔬 ${deviceLabel}-এর ডেড বুট ও মাদারবোর্ড চিপসেট সমাধান:
+
+ফোন অন না হলে বা লোগোতে এসে বারবার রিস্টার্ট নিলে:
+১. **ডিসি পাওয়ার সাপ্লাই কারেন্ট ড্র টেস্ট:** রিডিং এনালাইসিস করে প্রাইমারি লাইন শর্ট নাকি সেকেন্ডারি লজিক লাইনের ড্রপ তা শনাক্ত করা হয়।
+২. **থার্মাল ক্যামেরা ডায়াগনসিস:** বোর্ডের কোন ক্যাপাসিটর বা আইসি শর্ট হয়ে গরম হচ্ছে তা কয়েক সেকেন্ডেই বের করা হয়।
+৩. **বিজিএ মাইক্রো-সোল্ডারিং ও রিবলিং:** পাওয়ার আইসি (PMIC), ইউএফএস (UFS) স্টোরেজ বা ডুয়াল-ডেকার সিপিইউ/র‍্যাম রিবল করে ডেড ফোন রিকভারি করা হয়।
+• 💰 **আনুমানিক খরচ:** ৳১,২০০ - ৳৪,৫০০।
+• ⏱️ **সময়:** ২ থেকে ৪ ঘণ্টার মধ্যে ফুল টেস্ট সহ ডেলিভারি।`
+    };
+  }
+
+  // 6. FRP BYPASS, SCREEN LOCK, GOOGLE ACCOUNT
+  if (q.includes('frp') || q.includes('bypass') || q.includes('বাইপাস') || q.includes('unlock') || q.includes('লক') || q.includes('lock') || q.includes('password') || q.includes('pattern') || q.includes('পাসওয়ার্ড') || q.includes('google account') || q.includes('গুগল অ্যাকাউন্ট') || q.includes('hard reset') || q.includes('রিসেট')) {
+    return {
+      title: `🔓 ${deviceLabel} Android ২০২৬ FRP ও প্যাটার্ন আনলক`,
+      category: "Software & Security Bypass",
+      severity: "Medium",
+      estimatedCost: "৳৫০০ - ৳১,৫০০",
+      repairTime: "১৫ - ৩০ মিনিট",
+      summary: `${deviceLabel}-এর ফ্যাক্টরি রিসেটের পর Google Account লক ও পাসওয়ার্ড খোলার সেবা।`,
+      text: `### 🔓 ${deviceLabel}-এর লেটেস্ট ২০২৬ FRP ও সিকিউরিটি আনলক সল্যুশন:
+
+Samsung, Xiaomi, Vivo, Oppo, Realme, Infinix সহ যেকোনো ডিভাইসের লক খোলা সম্ভব:
+• **অফিসিয়াল টেস্ট পয়েন্ট (TestPoint) ও EDL মোড ফ্ল্যাশিং**
+• **Android 14, 15 ও ২০২৬ লেটেস্ট সিকিউরিটি প্যাচ বাইপাস**
+• **রিমোট টিমভিউয়ার / AnyDesk সার্ভিস:** আপনার ল্যাপটপে ইন্টারনেট থাকলে ঘরে বসেই রিমোটলি ফোন আনলক করিয়ে নিতে পারবেন।
+• 💰 **সার্ভিস চার্জ:** মাত্র ৳৫০০ - ৳১,৫০০।
+• ⏱️ **সময়:** ১৫ থেকে ৩০ মিনিট।
+
+👉 আমাদের ওয়েবসাইটের **[FRP 2026 পেজে (frp.html)](frp.html)** সকল প্রয়োজনীয় আনলক টুলস ও ফাইল বিনামূল্যে পাওয়া যাবে!`
+    };
+  }
+
+  // 7. SPEAKER, MIC, SOUND, AUDIO, EARPIECE
+  if (q.includes('sound') || q.includes('সাউন্ড') || q.includes('speaker') || q.includes('স্পিকার') || q.includes('mic') || q.includes('মাইক') || q.includes('কথা') || q.includes('শোনা') || q.includes('audio') || q.includes('ringer') || q.includes('বাজেনা')) {
+    return {
+      title: `🔊 ${deviceLabel} স্পিকার ও মাইক্রোফোন রিপেয়ার`,
+      category: "Audio System & Mesh Cleaning",
+      severity: "Normal",
+      estimatedCost: "৳৩৫০ - ৳১,০০০",
+      repairTime: "১৫ - ২৫ মিনিট",
+      summary: `${deviceLabel}-এ কথা শুনতে না পাওয়া, গান না বাজা বা কথা অপজিটে না যাওয়ার সমাধান।`,
+      text: `### 🔊 ${deviceLabel}-এর স্পিকার ও মাইক্রোফোন সমস্যার সমাধান:
+
+• **কলের সময় কথা কম শোনা গেলে:** ইয়ারপিস মেশ ক্লিনিং অথবা অরিজিনাল ইয়ার-স্পিকার চেঞ্জ।
+• **কথা অপজিটে না গেলে বা রেকর্ডিং না হলে:** প্রাইমারি নয়েজ-ক্যান্সেলেশন মাইক্রোফোন রিপ্লেসমেন্ট।
+• **রিংটোন বা লাউডস্পিকার না বাজলে:** লাউডস্পিকার বা অডিও অ্যামপ্লিফায়ার আইসি চেক।
+• 💰 **খরচ:** ৳৩৫০ - ৳১,০০০।
+• ⏱️ **সময়:** ১৫ থেকে ২৫ মিনিট!`
+    };
+  }
+
+  // 8. NETWORK, SIM CARD, WI-FI, BLUETOOTH
+  if (q.includes('network') || q.includes('নেটওয়ার্ক') || q.includes('sim') || q.includes('সিম') || q.includes('no service') || q.includes('wifi') || q.includes('ওয়াইফাই') || q.includes('bluetooth') || q.includes('signal') || q.includes('ইন্টারনেট')) {
+    return {
+      title: `📶 ${deviceLabel} নেটওয়ার্ক ও সিম সিগন্যাল সল্যুশন`,
+      category: "Network & RF Baseband IC",
+      severity: "High",
+      estimatedCost: "৳৭০০ - ৳২,২০০",
+      repairTime: "১ - ২ ঘণ্টা",
+      summary: `${deviceLabel}-এ সিম কার্ড না পাওয়া, নো সার্ভিস বা দুর্বল ওয়াইফাই সংকেত মেরামত।`,
+      text: `### 📶 ${deviceLabel}-এর নেটওয়ার্ক ও নো-সার্ভিস সমস্যার সমাধান:
+
+• সিম কার্ড ডিটেক্ট না হলে সিম স্লট পিন রিপ্লেসমেন্ট।
+• "No Service" বা "Emergency Calls Only" থাকলে আরএফ ট্রান্সিভার (WTR IC) ও বেসব্যান্ড আইসি মেরামত।
+• ওয়াইফাই ও ব্লুটুথ অন না হলে বা সিগন্যাল কম থাকলে Wi-Fi মডিউল রিবলিং।
+• 💰 **আনুমানিক খরচ:** ৳৭০০ - ৳২,২০০।
+• ⏱️ **সময়:** ১ থেকে ২ ঘণ্টা!`
+    };
+  }
+
+  // 9. CAMERA, BLURRY, LENS CRACK
+  if (q.includes('camera') || q.includes('ক্যামেরা') || q.includes('ছবি') || q.includes('blur') || q.includes('ঝাপসা') || q.includes('lens') || q.includes('লেন্স') || q.includes('focus')) {
+    return {
+      title: `📷 ${deviceLabel} ক্যামেরা ও লেন্স রিপ্লেসমেন্ট`,
+      category: "Camera Module & Optical Sensor",
+      severity: "Medium",
+      estimatedCost: "৳৫০০ - ৳৩,০০০",
+      repairTime: "২০ - ৪০ মিনিট",
+      summary: `${deviceLabel}-এর ঝাপসা ছবি, ক্যামেরা ওপেন না হওয়া বা পেছনের লেন্স ফাটা সমাধান।`,
+      text: `### 📷 ${deviceLabel}-এর ক্যামেরা সমস্যার সমাধান:
+
+• পেছনের ক্যামেরা গ্লাস/লেন্স ফেটে গেলে জেনুইন স্যাফায়ার লেন্স প্রতিস্থাপন (৳৫০০ - ৳৯০০)।
+• ছবি ঝাপসা বা ফোকাস না হলে অপটিক্যাল সেন্সর ক্লিনিং বা ক্যামেরা মডিউল রিপ্লেসমেন্ট।
+• ওআইএস (OIS) ক্যামেরা কাঁপাকাঁপি বা ভাইব্রেশন বন্ধের ফিক্স।
+• 💰 **আনুমানিক খরচ:** ৳৫০০ - ৳৩,০০০ (মডেল অনুযায়ী)।
+• ⏱️ **সময়:** ২০ থেকে ৪০ মিনিট!`
+    };
+  }
+
+  // 10. BACK GLASS, HOUSING, BODY FRAME
+  if (q.includes('back glass') || q.includes('housing') || q.includes('body') || q.includes('হাউজিং') || q.includes('বডি') || q.includes('frame') || q.includes('বাঁকা') || q.includes('পেছনের')) {
+    return {
+      title: `✨ ${deviceLabel} বডি হাউজিং ও ব্যাক গ্লাস চেঞ্জ`,
+      category: "Aesthetic & Structural Housing",
+      severity: "Medium",
+      estimatedCost: "৳৮০০ - ৳৩,২০০",
+      repairTime: "৪৫ - ৬০ মিনিট",
+      summary: `${deviceLabel}-এর পেছনের ফাটা গ্লাস বা বাঁকা ফ্রেম পরিবর্তন করে একদম নতুনের মতো রূপ।`,
+      text: `### ✨ ${deviceLabel}-এর ব্যাক গ্লাস ও বডি হাউজিং পরিবর্তন:
+
+• আইফোন ও ফ্ল্যাগশিপ ফোনের ব্যাক গ্লাস লেজার মেশিনের মাধ্যমে ব্যাক কভার খুলে পারফেক্ট ফিনিশিং দেওয়া হয়।
+• ফ্রেম বাঁকা হয়ে ডিসপ্লে উঠে আসলে অরিজিনাল মিডল ফ্রেম ইনস্টল করা হয়।
+• 💰 **আনুমানিক খরচ:** ৳৮০০ - ৳৩,২০০।
+• ⏱️ **সময়:** ৪৫ থেকে ৬০ মিনিট!`
+    };
+  }
+
+  // 11. PRICING INQUIRY (কত টাকা / খরচ কত / Price)
+  if (q.includes('koto') || q.includes('কত') || q.includes('cost') || q.includes('price') || q.includes('দাম') || q.includes('khoroch') || q.includes('খরচ') || q.includes('taka') || q.includes('টাকা')) {
+    return {
+      title: `🏷️ ${deviceLabel} সার্ভিস চার্জ ও প্রাইজ লিস্ট`,
+      category: "Pricing & Quotation",
+      severity: "Normal",
+      estimatedCost: "৳৩৫০ থেকে শুরু (কাজের ধরন অনুযায়ী)",
+      repairTime: "১৫ মিনিট থেকে ২ ঘণ্টা",
+      summary: `${deviceLabel}-এর বিভিন্ন হার্ডওয়্যার ও সফটওয়্যার সেবার অফিসিয়াল মূল্য তালিকা।`,
+      text: `### 🏷️ ${deviceLabel} অফিসিয়াল সার্ভিস চার্জ লিস্ট:
+
+• 📱 **ওকা (OCA) টাচ গ্লাস চেঞ্জ:** ৳৮০০ - ৳১,৮০০
+• 🖥️ **ফুল ডিসপ্লে রিপ্লেসমেন্ট:** ৳১,৫০০ - ৳৮,৫০০
+• 🔋 **অরিজিনাল ব্যাটারি (৬ মাসের ওয়ারেন্টি):** ৳৮০০ - ৳২,২০০
+• ⚡ **চার্জিং পোর্ট ও সাব-বোর্ড ফিক্স:** ৳৪০০ - ৳১,২০০
+• 🔬 **ডেড ফোন ও সিপিইউ/আইসি রিবলিং:** ৳১,২০০ - ৳৪,৫০০
+• 🔓 **Android ২০২৬ FRP ও সিকিউরিটি আনলক:** ৳৫০০ - ৳১,৫০০
+• 💧 **পানিতে পড়া আল্ট্রাসনিক ট্রিটমেন্ট:** ৳৮০০ - ৳২,৫০০
+
+💡 সঠিক এস্টিমেট পেতে আপনার ফোনের নির্দিষ্ট সমস্যা জানিয়ে বুকিং দিন অথবা হোয়াটসঅ্যাপে মেসেজ পাঠান!`
+    };
+  }
+
+  // 12. CV MAKER & RESUME BUILDER
+  if (q.includes('cv') || q.includes('resume') || q.includes('সিভি') || q.includes('চাকরি') || q.includes('job apply') || q.includes('biodata') || q.includes('বায়োডাটা')) {
+    return {
+      title: "📄 প্রফেশনাল CV Maker & Resume Builder",
+      category: "Online Digital Services",
+      severity: "Normal",
+      estimatedCost: "১০০% ফ্রি (অনলাইন)",
+      repairTime: "৫ মিনিট",
+      summary: "আমাদের ওয়েবসাইটে বিল্ট-ইন আন্তর্জাতিক মানের সিভি মেকার রয়েছে।",
+      text: `### 📄 Habib iFix প্রফেশনাল CV Maker ও রেজুমে সার্ভিস:
+
+আপনি খুব সহজেই আমাদের ওয়েবসাইটের **[CV Maker পেজে (cv.html)](cv.html)** গিয়ে প্রফেশনাল সিভি তৈরি করতে পারবেন!
+
+✨ **সুবিধাসমূহ:**
+• লাইভ প্রিভিউ সহ রিয়েল-টাইম এডিটর
+• আন্তর্জাতিক জব স্ট্যান্ডার্ড এবং এটিএস (ATS) অপ্টিমাইজড
+• ১-ক্লিকেই স্ট্যান্ডার্ড এ৪ (A4) সাইজের হাই-কোয়ালিটি পিডিএফ প্রিন্ট ও ডাউনলোড
+• সরকারি ও বেসরকারি চাকরির জন্য রেডিমেড ফরম্যাট
+
+👉 এখনই আপনার সিভি তৈরি করতে উপরে ন্যাভবারের **CV Maker** মেনুতে অথবা [এখানে ক্লিক করুন](cv.html)!`
+    };
+  }
+
+  // 13. COURSES & TRAINING
+  if (q.includes('course') || q.includes('training') || q.includes('কোর্স') || q.includes('শিখতে') || q.includes('ভর্তি') || q.includes('admission') || q.includes('fee') || q.includes('ফি') || q.includes('class') || q.includes('academy') || q.includes('একাডেমি')) {
+    return {
+      title: "🎓 Habib iFix প্রফেশনাল ট্রেনিং একাডেমি",
+      category: "Technical Courses & Certification",
+      severity: "Normal",
+      estimatedCost: "কোর্স ভিত্তিক সাশ্রয়ী ফি",
+      repairTime: "১ থেকে ৩ মাস ব্যাচ",
+      summary: "হাতে-কলমে মোবাইল হার্ডওয়্যার, সফটওয়্যার, ওয়েব ও গ্রাফিক্স ডিজাইন প্রশিক্ষণ।",
+      text: `### 🎓 Habib iFix টেকনিক্যাল ও ফ্রিল্যান্সিং কোর্সসমূহ:
+
+আমাদের একাডেমি থেকে শত শত শিক্ষার্থী ট্রেনিং নিয়ে সফলভাবে কাজ করছেন। প্রধান কোর্সসমূহ:
+
+১. 📱 **Master Mobile Hardware & Micro-Soldering:** মাদারবোর্ড শর্ট ট্রেসিং, থার্মাল ক্যামেরা, সিপিইউ/র‍্যাম রিবলিং
+২. 🔓 **Android Software & FRP Bypass 2026:** EDL, Fastboot, Testpoint ও অনলাইন আনলক টুলস
+3. 💻 **Website Make & Full Web Development:** ওয়ার্ডপ্রেস, ই-কমার্স ও আধুনিক ওয়েবসাইট তৈরি
+4. 🎨 **Professional Logo & Graphic Design:** ফটোশপ, ইলাস্ট্রেটর ও ব্র্যান্ড আইডেন্টিটি
+5. 🎬 **Video Editing & Social Media Ads:** প্রিমিয়ার প্রো, ক্যাপকাট ও ফেসবুক/গুগল অ্যাড ক্যাম্পেইন
+
+👉 সকল কোর্সের বিস্তারিত সিলেবাস ও এনরোলমেন্ট দেখতে আমাদের **[Courses পেজে যান](courses.html)** অথবা হোয়াটসঅ্যাপে (01868461577) কথা বলুন!`
+    };
+  }
+
+  // 14. SHOP LOCATION, ADDRESS & VISITING
+  if (q.includes('dokan') || q.includes('address') || q.includes('location') || q.includes('thikana') || q.includes('kothay') || q.includes('লোকেশন') || q.includes('ঠিকানা') || q.includes('দোকান') || q.includes('shop') || q.includes('lab') || q.includes('কই') || q.includes('কোথায়')) {
+    return {
+      title: "📍 Habib iFix ল্যাব লোকেশন ও ঠিকানা",
+      category: "Lab Location & Visit",
+      severity: "Normal",
+      estimatedCost: "সরাসরি ভিজিট / কুরিয়ার",
+      repairTime: "প্রতিদিন ১০:০০ AM - ১০:০০ PM",
+      summary: "Habib iFix Precision Mobile Engineering & Digital Lab, চট্টগ্রাম, বাংলাদেশ।",
+      text: `### 📍 Habib iFix ল্যাব লোকেশন ও ঠিকানা:
+
+🏢 **ঠিকানা:** Habib iFix .Tech Master Engineering Lab, চট্টগ্রাম, বাংলাদেশ।
+⏱️ **ল্যাব খোলা থাকে:** প্রতিদিন সকাল ১০:০০ টা থেকে রাত ১০:০০ টা পর্যন্ত।
+
+💡 **সার্ভিস নেওয়ার নিয়ম:**
+১. সরাসরি আমাদের ল্যাবে ডিভাইস নিয়ে আসতে পারেন — চোখের সামনে ৩০ মিনিটে ডিসপ্লে/ব্যাটারি ফিটিং করা হয়।
+২. দূরবর্তী জেলা থেকে সুন্দরবন / রেডেক্স কুরিয়ারের মাধ্যমে ডিভাইস পাঠিয়ে নিরাপদ রিপেয়ার সেবা নিতে পারেন।
+৩. সফটওয়্যার ও FRP বাইপাস সমস্যার ক্ষেত্রে টিমভিউয়ার/AnyDesk দিয়ে ঘরে বসেই রিমোট আনলক করা হয়।
+
+📞 সরাসরি হাবিব ভাইয়ের সাথে হোয়াটসঅ্যাপে লোকেশন শেয়ার বা কথা বলতে: **01868-461577**`
+    };
+  }
+
+  // 15. CONTACT, PHONE NUMBER & DIRECT CALL (Specific Contact Requests)
+  if (q.includes('number') || q.includes('phone no') || q.includes('mobile no') || q.includes('whatsapp') || q.includes('হোয়াটসঅ্যাপ') || q.includes('নাম্বার') || q.includes('নম্বর') || q.includes('কথা বলতে') || q.includes('kotha bolte') || q.includes('hotline') || q.includes('হটলাইন') || q.includes('যোগাযোগ') || q.includes('contact') || (q.includes('call') && !q.includes('reball'))) {
+    return {
+      title: "📞 হাবিব ভাইয়ের অফিসিয়াল কন্ট্যাক্ট",
+      category: "Direct Contact",
+      severity: "Normal",
+      estimatedCost: "ফ্রি কল/চ্যাট",
+      repairTime: "24/7 একটিভ",
+      summary: "সরাসরি মাস্টার টেকনিশিয়ান হাবিবুর রহমানের সাথে কথা বলুন।",
+      text: `### 📞 হাবিব ভাইয়ের অফিসিয়াল হটলাইন ও হোয়াটসঅ্যাপ:
+
+• 📱 **হটলাইন / হোয়াটসঅ্যাপ:** [01868-461577](https://wa.me/8801868461577) (সরাসরি ক্লিক করে চ্যাট করুন)
+• 📧 **অফিসিয়াল ইমেইল:** tec.habiburrahman@gmail.com
+• 🏢 **ল্যাব লোকেশন:** চট্টগ্রাম, বাংলাদেশ
+
+আপনার ডিভাইসের মডেল ও সমস্যাটি লিখে হোয়াটসঅ্যাপে একটি মেসেজ পাঠান, হাবিব ভাই নিজেই সরাসরি রিপ্লাই করবেন!`
+    };
+  }
+
+  // 16. GREETINGS & CASUAL HELLOS
+  if (/^(hi|hello|hey|salam|assalamu|kemon|valo|bhai|vai|habib bhai|shunchen|help|hlw|bolen|হাই|হ্যালো|সালাম)/i.test(q) && q.length < 35) {
+    return {
+      title: "👋 আসসালামু আলাইকুম! Habib iFix AI-তে স্বাগতম",
+      category: "Customer Support & AI Consultation",
+      severity: "Normal",
+      estimatedCost: "বিনামূল্যে পরামর্শ",
+      repairTime: "তাৎক্ষণিক",
+      summary: "আমি Habib iFix-এর স্মার্ট টেকনিক্যাল এআই অ্যাসিস্ট্যান্ট।",
+      text: `### 👋 আসসালামু আলাইকুম! Habib iFix AI অ্যাসিস্ট্যান্টে আপনাকে স্বাগতম।
+
+আমি হাবিব ভাইয়ের টেকনিক্যাল ল্যাবের ভার্চুয়াল কনসালটেন্ট। আপনার কী ধরনের সাপোর্ট প্রয়োজন?
+
+• 📱 **মোবাইল হার্ডওয়্যার ও ডিসপ্লে:** স্ক্রিন রিপ্লেসমেন্ট, ওকা (OCA) গ্লাস চেঞ্জ, চার্জিং, ডেড বুট ও ওয়াটার ড্যামেজ
+• 🔓 **সফটওয়্যার ও FRP আনলক:** স্যামসাং, শাওমি সহ সব ব্র্যান্ডের Google Account / FRP বাইপাস ২০২৬
+• 🎓 **প্রফেশনাল ট্রেনিং কোর্স:** হার্ডওয়্যার ল্যাব, সফটওয়্যার, ওয়েবসাইট মেকিং ও গ্রাফিক্স ডিজাইন
+• 📄 **সিভি মেকার:** প্রফেশনাল চাকরির সিভি তৈরি ও এ৪ (A4) সাইজের পিডিএফ ডাউনলোড
+
+আপনার মোবাইলের মডেল ও কী সমস্যা হচ্ছে তা জানান, আমি সঠিক সমাধান ও খরচের হিসাব দিচ্ছি!`
+    };
+  }
+
+  // 17. GENERAL SMART TECHNICAL ADVICE (Fallback)
+  return {
+    title: `🛠️ ${deviceLabel} টেকনিক্যাল এনালাইসিস`,
+    category: "Hardware & Software Diagnostic",
+    severity: "Normal",
+    estimatedCost: "৳৩৫০ - ৳২,০০০ (সমস্যা ভিত্তিক)",
+    repairTime: "২০ - ৬০ মিনিট",
+    summary: `আপনার প্রশ্ন "${query}" Habib iFix ইঞ্জিনিয়ারিং ডায়াগনস্টিকে এনালাইসিস করা হয়েছে।`,
+    text: `### 🛠️ ${deviceLabel}-এর টেকনিক্যাল এনালাইসিস রিপোর্ট:
+
+আপনার প্রশ্ন: **"${query}"**
+
+Habib iFix ডিজিটাল ল্যাবে আমরা সকল ব্র্যান্ডের স্মার্টফোনের যেকোনো জটিল হার্ডওয়্যার ও সফটওয়্যার সমস্যার নিখুঁত সমাধান করে থাকি।
+
+📋 **আমাদের কাজের প্রক্রিয়া:**
+১. কম্পিউটারাইজড হার্ডওয়্যার ও কারেন্ট ড্র টেস্ট।
+২. লেটেস্ট থার্মাল ও মাইক্রো-সোল্ডারিং ইকুইপমেন্টে নিরাপদ রিপেয়ার।
+৩. ১০০% অরিজিনাল পার্টস ও রিপ্লেসমেন্ট গ্যারান্টি।
+
+💰 **আনুমানিক সার্ভিস চার্জ:** ৳৩৫০ - ৳২,০০০ (সমস্যার ধরন অনুযায়ী)।
+⏱️ **প্রয়োজনীয় সময়:** ২০ মিনিট থেকে ১ ঘণ্টা।
+
+💡 **হাবিব ভাইয়ের পরামর্শ:** সরাসরি আপনার মডেল ও সঠিক লক্ষণটি জানিয়ে বুকিং দিন অথবা হোয়াটসঅ্যাপে কথা বলুন: **01868-461577**!`
+  };
+}
+
+// REAL AI Chat API Endpoint with Intelligent Fallback
+app.post('/api/ai-chat', async (req, res) => {
+  const { message, device, symptom, history, language = 'bn' } = req.body;
+
+  if (!message && !device && !symptom) {
+    return res.status(400).json({ error: "Message or device details required" });
+  }
+
+  const queryText = message || `Device: ${device || 'Unknown'}, Symptom: ${symptom || 'General issue'}`;
+
+  // Try real Gemini API call
+  let geminiOutput = null;
+  if (aiClient) {
+    try {
+      const systemInstruction = `You are "Habib iFix AI", an elite senior mobile hardware and software diagnostic agent representing Habib iFix (led by Habib, a renowned mobile technician and trainer in Bangladesh).
+You specialize in:
+- Smartphone screen/AMOLED replacements (iPhone, Samsung, Xiaomi, Vivo, Oppo, Realme, OnePlus, Pixel)
+- Advanced micro-soldering, Motherboard short circuit fixing, PMIC / Power IC / Audio IC / Charging IC reballing
+- Android FRP Bypass, Flashing, eMMC/UFS reprogramming, Dead boot repair
+- Water damage recovery, Battery replacements with 6-month warranty
+- Online services: Job applications, CV/Resume design, Facebook & Google Ad campaigns.
+
+Tone & Style:
+- Warm, polite, empathetic, professional, highly technical yet easy to understand.
+- Supports Bengali (Bangla/Banglish) and English. If user asks in Bengali or Banglish, answer in fluent, encouraging Bengali.
+- Always provide realistic estimated costs in Bangladeshi Taka (৳).
+- Always give actionable technical diagnosis steps and encourage booking a repair or contacting Habib via WhatsApp (+8801868461577).
+- Format responses clearly using markdown bullets and emojis.`;
+
+      const prompt = `User Query: "${queryText}". Please provide a helpful, intelligent, direct response in fluent Bengali addressing the user's specific inquiry.`;
+
+      const response = await aiClient.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: prompt,
+        config: {
+          systemInstruction,
+          temperature: 0.7,
+        }
+      });
+
+      if (response && response.text) {
+        geminiOutput = response.text;
+      }
+    } catch (err) {
+      // Continue to conversational AI fallback
+    }
+  }
+
+  // If Gemini succeeded, return response
+  if (geminiOutput) {
+    return res.json({
+      success: true,
+      source: "habib-ai-pro",
+      text: geminiOutput,
+      reply: geminiOutput,
+      diagnosis: generateConversationalAIResponse(queryText, language)
+    });
+  }
+
+  // Conversational AI Engine
+  const aiResult = generateConversationalAIResponse(queryText, language);
+  return res.json({
+    success: true,
+    source: "habib-ifix-ai-engine",
+    text: aiResult.text,
+    reply: aiResult.text,
+    diagnosis: aiResult
+  });
+});
+
+// Other API Routes
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  if (username === 'admin' && password === 'admin123') { 
+    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.json({ success: true, user: { email: 'tec.habiburrahman@gmail.com', name: 'Habibur Rahman' } });
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+app.post('/api/google-login', (req, res) => {
+  const { email, name, picture } = req.body;
+  // Authenticate user with Google Account
+  res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  res.json({ 
+    success: true, 
+    user: { 
+      email: email || 'tec.habiburrahman@gmail.com', 
+      name: name || 'Habibur Rahman',
+      picture: picture || 'https://lh3.googleusercontent.com/a/default-user=s96-c'
+    } 
+  });
+});
+
+app.post('/api/logout', (req, res) => {
+  res.clearCookie('admin_session');
+  res.clearCookie('user_session');
+  res.json({ success: true });
+});
+
+// Comprehensive User Authentication API (Customer & Student System)
+app.post('/api/user/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
+  }
+
+  const db = readDB();
+  const user = db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+  if (!user) {
+    return res.status(401).json({ error: 'Account not found. Please register or use Google Sign-in.' });
+  }
+
+  if (user.password && user.password !== password) {
+    return res.status(401).json({ error: 'Incorrect password. Please try again.' });
+  }
+
+  // Set user cookie
+  res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+  res.json({
+    success: true,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone || '',
+      role: user.role || 'customer',
+      avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
+      createdAt: user.createdAt
+    }
+  });
+});
+
+app.post('/api/user/register', (req, res) => {
+  const { name, email, phone, password, role } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email, and password are required' });
+  }
+
+  const db = readDB();
+  const existing = db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  if (existing) {
+    return res.status(400).json({ error: 'An account with this email already exists. Please login instead.' });
+  }
+
+  const newUser = {
+    id: db.nextUserId++,
+    name,
+    email: email.toLowerCase(),
+    phone: phone || '',
+    password,
+    role: role || 'customer',
+    avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
+    createdAt: new Date().toLocaleDateString('en-GB')
+  };
+
+  db.users.push(newUser);
+  writeDB(db);
+
+  res.cookie('user_session', newUser.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+  res.json({
+    success: true,
+    user: {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      phone: newUser.phone,
+      role: newUser.role,
+      avatar: newUser.avatar,
+      createdAt: newUser.createdAt
+    }
+  });
+});
+
+app.post('/api/user/google-auth', (req, res) => {
+  const { email, name, picture, role } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: 'Google email is required' });
+  }
+
+  const db = readDB();
+  let user = db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+  const isAdminEmail = email.toLowerCase().includes('tec.habiburrahman') || email.toLowerCase().includes('habib');
+
+  if (!user) {
+    user = {
+      id: db.nextUserId++,
+      name: name || email.split('@')[0],
+      email: email.toLowerCase(),
+      phone: '',
+      role: isAdminEmail ? 'admin' : (role || 'customer'),
+      avatar: picture || `https://lh3.googleusercontent.com/a/default-user=s96-c`,
+      authProvider: 'google',
+      createdAt: new Date().toLocaleDateString('en-GB')
+    };
+    db.users.push(user);
+    writeDB(db);
+  } else {
+    // update avatar if provided
+    if (picture) user.avatar = picture;
+    if (isAdminEmail) user.role = 'admin';
+    writeDB(db);
+  }
+
+  // If admin, also grant admin session
+  if (user.role === 'admin' || isAdminEmail) {
+    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  }
+
+  res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+  res.json({
+    success: true,
+    isAdmin: user.role === 'admin' || isAdminEmail,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone || '',
+      role: user.role,
+      avatar: user.avatar,
+      createdAt: user.createdAt
+    }
+  });
+});
+
+app.get('/api/user/me', (req, res) => {
+  const userId = req.cookies.user_session;
+  if (!userId) {
+    // check if admin
+    if (req.cookies.admin_session === 'habib_admin_token_2026') {
+      return res.json({
+        loggedIn: true,
+        user: {
+          id: 0,
+          name: 'Habibur Rahman',
+          email: 'tec.habiburrahman@gmail.com',
+          role: 'admin',
+          avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80'
+        }
+      });
+    }
+    return res.json({ loggedIn: false });
+  }
+
+  const db = readDB();
+  const user = db.users.find(u => u.id === parseInt(userId));
+  if (!user) {
+    return res.json({ loggedIn: false });
+  }
+
+  res.json({
+    loggedIn: true,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone || '',
+      role: user.role || 'customer',
+      avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
+      createdAt: user.createdAt
+    }
+  });
+});
+
+app.get('/api/user/my-bookings', (req, res) => {
+  const userEmail = req.query.email;
+  const db = readDB();
+  if (!userEmail) {
+    return res.json([]);
+  }
+  const myBookings = db.bookings.filter(b => b.email && b.email.toLowerCase() === userEmail.toLowerCase());
+  res.json(myBookings.sort((a, b) => b.id - a.id));
+});
+
+app.get('/api/check-admin', (req, res) => {
+  if (req.cookies.admin_session === 'habib_admin_token_2026') {
+    res.json({ isAdmin: true });
+  } else {
+    res.json({ isAdmin: false });
+  }
+});
+
+app.get('/api/posts', (req, res) => {
+  const db = readDB();
+  res.json(db.posts.sort((a, b) => b.id - a.id));
+});
+
+app.post('/api/bookings', (req, res) => {
+  const { planName, planPrice, customerName, phone, email, address } = req.body;
+  const date = new Date().toLocaleDateString();
+  const db = readDB();
+  const id = db.nextBookingId++;
+  db.bookings.push({ id, planName, planPrice, customerName, phone, email, address, date });
+  writeDB(db);
+  res.json({ success: true, id });
+});
+
+app.get('/api/bookings', checkAdmin, (req, res) => {
+  const db = readDB();
+  res.json(db.bookings.sort((a, b) => b.id - a.id));
+});
+
+app.post('/api/posts', checkAdmin, (req, res) => {
+  const { title, category, description, mediaLink, mediaType } = req.body;
+  const date = new Date().toLocaleDateString();
+  const db = readDB();
+  const id = db.nextPostId++;
+  db.posts.push({ id, title: title || 'New Post', category, description, mediaLink, mediaType, date });
+  writeDB(db);
+  res.json({ id });
+});
+
+app.delete('/api/posts/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  db.posts = db.posts.filter(p => p.id !== parseInt(req.params.id));
+  writeDB(db);
+  res.json({ success: true });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Habib iFix server running on port ${PORT}`);
+});

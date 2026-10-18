@@ -663,18 +663,27 @@ app.post('/api/user/login', (req, res) => {
     return res.status(401).json({ error: 'Incorrect password. Please try again.' });
   }
 
+  // Update unique userCode, loginCount, and lastLogin
+  user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
+  user.loginCount = (user.loginCount || 0) + 1;
+  user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  writeDB(db);
+
   // Set user cookie
   res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
   res.json({
     success: true,
     user: {
       id: user.id,
+      userCode: user.userCode,
       name: user.name,
       email: user.email,
       phone: user.phone || '',
       role: user.role || 'customer',
       avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      lastLogin: user.lastLogin,
+      loginCount: user.loginCount
     }
   });
 });
@@ -691,15 +700,20 @@ app.post('/api/user/register', (req, res) => {
     return res.status(400).json({ error: 'An account with this email already exists. Please login instead.' });
   }
 
+  const newId = db.nextUserId++;
   const newUser = {
-    id: db.nextUserId++,
+    id: newId,
+    userCode: `HIFIX-USR-${1000 + newId}`,
     name,
     email: email.toLowerCase(),
     phone: phone || '',
     password,
     role: role || 'customer',
     avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
-    createdAt: new Date().toLocaleDateString('en-GB')
+    authProvider: 'email',
+    createdAt: new Date().toLocaleDateString('en-GB'),
+    lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+    loginCount: 1
   };
 
   db.users.push(newUser);
@@ -710,12 +724,15 @@ app.post('/api/user/register', (req, res) => {
     success: true,
     user: {
       id: newUser.id,
+      userCode: newUser.userCode,
       name: newUser.name,
       email: newUser.email,
       phone: newUser.phone,
       role: newUser.role,
       avatar: newUser.avatar,
-      createdAt: newUser.createdAt
+      createdAt: newUser.createdAt,
+      lastLogin: newUser.lastLogin,
+      loginCount: newUser.loginCount
     }
   });
 });
@@ -732,22 +749,29 @@ app.post('/api/user/google-auth', (req, res) => {
   const isAdminEmail = email.toLowerCase().includes('tec.habiburrahman') || email.toLowerCase().includes('habib');
 
   if (!user) {
+    const newId = db.nextUserId++;
     user = {
-      id: db.nextUserId++,
+      id: newId,
+      userCode: `HIFIX-USR-${1000 + newId}`,
       name: name || email.split('@')[0],
       email: email.toLowerCase(),
       phone: '',
       role: isAdminEmail ? 'admin' : (role || 'customer'),
       avatar: picture || `https://lh3.googleusercontent.com/a/default-user=s96-c`,
       authProvider: 'google',
-      createdAt: new Date().toLocaleDateString('en-GB')
+      createdAt: new Date().toLocaleDateString('en-GB'),
+      lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      loginCount: 1
     };
     db.users.push(user);
     writeDB(db);
   } else {
-    // update avatar if provided
+    // update avatar, login count and userCode
+    user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
     if (picture) user.avatar = picture;
     if (isAdminEmail) user.role = 'admin';
+    user.loginCount = (user.loginCount || 0) + 1;
+    user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     writeDB(db);
   }
 
@@ -762,12 +786,15 @@ app.post('/api/user/google-auth', (req, res) => {
     isAdmin: user.role === 'admin' || isAdminEmail,
     user: {
       id: user.id,
+      userCode: user.userCode,
       name: user.name,
       email: user.email,
       phone: user.phone || '',
       role: user.role,
       avatar: user.avatar,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      lastLogin: user.lastLogin,
+      loginCount: user.loginCount
     }
   });
 });
@@ -780,11 +807,15 @@ app.get('/api/user/me', (req, res) => {
       return res.json({
         loggedIn: true,
         user: {
-          id: 0,
+          id: 1,
+          userCode: 'HIFIX-USR-1001',
           name: 'Habibur Rahman',
           email: 'tec.habiburrahman@gmail.com',
           role: 'admin',
-          avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80'
+          avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80',
+          createdAt: '14/10/2026',
+          lastLogin: 'Today',
+          loginCount: 38
         }
       });
     }
@@ -801,13 +832,128 @@ app.get('/api/user/me', (req, res) => {
     loggedIn: true,
     user: {
       id: user.id,
+      userCode: user.userCode || `HIFIX-USR-${1000 + user.id}`,
       name: user.name,
       email: user.email,
       phone: user.phone || '',
       role: user.role || 'customer',
       avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      lastLogin: user.lastLogin || '',
+      loginCount: user.loginCount || 1
     }
+  });
+});
+
+// Admin Users & Login Stats Management API
+app.get('/api/admin/users', checkAdmin, (req, res) => {
+  const db = readDB();
+  const users = (db.users || []).map(u => ({
+    id: u.id,
+    userCode: u.userCode || `HIFIX-USR-${1000 + u.id}`,
+    name: u.name,
+    email: u.email,
+    phone: u.phone || '',
+    role: u.role || 'customer',
+    avatar: u.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(u.name)}`,
+    authProvider: u.authProvider || 'email',
+    createdAt: u.createdAt || 'N/A',
+    lastLogin: u.lastLogin || 'N/A',
+    loginCount: u.loginCount || 1
+  }));
+  const totalLogins = users.reduce((sum, u) => sum + (u.loginCount || 1), 0);
+  res.json({
+    totalUsers: users.length,
+    totalLogins,
+    users
+  });
+});
+
+app.patch('/api/admin/users/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  const user = (db.users || []).find(u => u.id === parseInt(req.params.id));
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  if (req.body.role) user.role = req.body.role;
+  if (req.body.phone !== undefined) user.phone = req.body.phone;
+  if (req.body.name) user.name = req.body.name;
+  writeDB(db);
+  res.json({ success: true, user });
+});
+
+app.delete('/api/admin/users/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  const targetId = parseInt(req.params.id);
+  if (targetId === 1) {
+    return res.status(400).json({ error: 'Primary admin account cannot be deleted' });
+  }
+  db.users = (db.users || []).filter(u => u.id !== targetId);
+  writeDB(db);
+  res.json({ success: true });
+});
+
+// Site Visitor Counter & Live Stats API
+app.get('/api/site-stats', (req, res) => {
+  const db = readDB();
+  const today = new Date().toLocaleDateString('en-GB');
+  db.siteStats = db.siteStats || { totalVisits: 3420, todayVisits: 285, lastDate: today, visitorLogs: [] };
+
+  const totalUsers = (db.users || []).length;
+  const totalLogins = (db.users || []).reduce((sum, u) => sum + (u.loginCount || 1), 0);
+  const totalBookings = (db.bookings || []).length;
+  const totalOrders = (db.orders || []).length;
+  const totalContacts = (db.contacts || []).length;
+  const pendingContacts = (db.contacts || []).filter(c => c.status !== 'replied').length;
+
+  res.json({
+    totalVisits: db.siteStats.totalVisits || 3420,
+    todayVisits: db.siteStats.todayVisits || 285,
+    lastDate: db.siteStats.lastDate,
+    visitorLogs: (db.siteStats.visitorLogs || []).slice(0, 25),
+    totalUsers,
+    totalLogins,
+    totalBookings,
+    totalOrders,
+    totalContacts,
+    pendingContacts,
+    activeNow: Math.floor(Math.random() * 6) + 12
+  });
+});
+
+app.post('/api/record-visit', (req, res) => {
+  const db = readDB();
+  const today = new Date().toLocaleDateString('en-GB');
+  db.siteStats = db.siteStats || { totalVisits: 3420, todayVisits: 285, lastDate: today, visitorLogs: [] };
+
+  if (db.siteStats.lastDate !== today) {
+    db.siteStats.todayVisits = 1;
+    db.siteStats.lastDate = today;
+  } else {
+    db.siteStats.todayVisits = (db.siteStats.todayVisits || 0) + 1;
+  }
+  db.siteStats.totalVisits = (db.siteStats.totalVisits || 0) + 1;
+
+  const rawIp = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1');
+  const cleanIp = String(rawIp).split(',')[0].trim();
+  const userAgent = String(req.headers['user-agent'] || 'Web Client').substring(0, 70);
+
+  db.siteStats.visitorLogs = db.siteStats.visitorLogs || [];
+  db.siteStats.visitorLogs.unshift({
+    path: req.body.path || '/',
+    ip: cleanIp,
+    userAgent,
+    time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+    date: today
+  });
+
+  if (db.siteStats.visitorLogs.length > 50) {
+    db.siteStats.visitorLogs = db.siteStats.visitorLogs.slice(0, 50);
+  }
+
+  writeDB(db);
+  res.json({
+    success: true,
+    totalVisits: db.siteStats.totalVisits,
+    todayVisits: db.siteStats.todayVisits
   });
 });
 
@@ -866,9 +1012,9 @@ app.delete('/api/posts/:id', checkAdmin, (req, res) => {
   res.json({ success: true });
 });
 
-// Contact Form API
+// Contact Form API with User ID & Admin Message Reply System
 app.post('/api/contact', (req, res) => {
-  const { name, contact, message, subject } = req.body;
+  const { name, contact, message, subject, userCode } = req.body;
   if (!name || !contact || !message) {
     return res.status(400).json({ error: 'Name, contact info, and message are required.' });
   }
@@ -877,10 +1023,15 @@ app.post('/api/contact', (req, res) => {
   db.nextContactId = db.nextContactId || 1;
   const newMsg = {
     id: db.nextContactId++,
-    name,
-    contact,
-    message,
-    subject: subject || 'General Inquiry',
+    userCode: userCode || '',
+    name: name.trim(),
+    contact: contact.trim(),
+    message: message.trim(),
+    subject: (subject || 'General Inquiry').trim(),
+    status: 'pending',
+    adminReply: '',
+    repliedAt: '',
+    replyMethod: '',
     date: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
   };
   db.contacts.unshift(newMsg);
@@ -893,11 +1044,58 @@ app.get('/api/contacts', checkAdmin, (req, res) => {
   res.json(db.contacts || []);
 });
 
+app.post('/api/contacts/:id/reply', checkAdmin, (req, res) => {
+  const { replyMessage, replyMethod } = req.body;
+  if (!replyMessage || !replyMessage.trim()) {
+    return res.status(400).json({ error: 'Reply message cannot be empty' });
+  }
+  const db = readDB();
+  const contact = (db.contacts || []).find(c => c.id === parseInt(req.params.id));
+  if (!contact) {
+    return res.status(404).json({ error: 'Message not found' });
+  }
+  contact.adminReply = replyMessage.trim();
+  contact.repliedAt = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  contact.status = 'replied';
+  contact.replyMethod = replyMethod || 'portal';
+  writeDB(db);
+  res.json({ success: true, contact });
+});
+
+app.patch('/api/contacts/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  const contact = (db.contacts || []).find(c => c.id === parseInt(req.params.id));
+  if (!contact) return res.status(404).json({ error: 'Message not found' });
+  if (req.body.status) contact.status = req.body.status;
+  if (req.body.adminReply !== undefined) {
+    contact.adminReply = req.body.adminReply;
+    contact.repliedAt = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    contact.status = 'replied';
+  }
+  writeDB(db);
+  res.json({ success: true, contact });
+});
+
 app.delete('/api/contacts/:id', checkAdmin, (req, res) => {
   const db = readDB();
   db.contacts = (db.contacts || []).filter(c => c.id !== parseInt(req.params.id));
   writeDB(db);
   res.json({ success: true });
+});
+
+// Customer Public Inquiry & Reply Tracking
+app.get('/api/contact/track', (req, res) => {
+  const query = (req.query.q || '').trim().toLowerCase();
+  if (!query) {
+    return res.json([]);
+  }
+  const db = readDB();
+  const results = (db.contacts || []).filter(c => {
+    return (c.contact && c.contact.toLowerCase().includes(query)) ||
+           (c.userCode && c.userCode.toLowerCase().includes(query)) ||
+           (String(c.id) === query);
+  });
+  res.json(results);
 });
 
 // AI Chat Logs (Admin View)
@@ -915,7 +1113,7 @@ app.delete('/api/ai-messages/:id', checkAdmin, (req, res) => {
 
 // Ecommerce Shop Orders API
 app.post('/api/orders', (req, res) => {
-  const { productId, productName, price, customerName, phone, address, paymentMethod, quantity = 1 } = req.body;
+  const { productId, productName, price, customerName, phone, address, paymentMethod, quantity = 1, userCode } = req.body;
   if (!customerName || !phone || !address) {
     return res.status(400).json({ error: 'Customer name, phone, and delivery address are required.' });
   }
@@ -924,6 +1122,7 @@ app.post('/api/orders', (req, res) => {
   db.nextOrderId = db.nextOrderId || 1;
   const newOrder = {
     id: db.nextOrderId++,
+    userCode: userCode || '',
     productId: productId || 0,
     productName: productName || 'Repair Part / Tool',
     price: price || '৳০',
@@ -960,6 +1159,116 @@ app.delete('/api/orders/:id', checkAdmin, (req, res) => {
   writeDB(db);
   res.json({ success: true });
 });
+
+// Ultimate Free SMS Send API (Carrybee API integration)
+async function handleSmsSend(req, res) {
+  const num = req.query.num || req.body.num || req.body.phone || '';
+  const msg = req.query.msg || req.body.msg || req.body.message || '';
+
+  if (!num || !msg) {
+    return res.status(400).json({
+      status: false,
+      error: 'Missing parameters. Required: num, msg'
+    });
+  }
+
+  let cleanNum = String(num).replace(/[^0-9]/g, '');
+  if (cleanNum.startsWith('880')) {
+    cleanNum = cleanNum.slice(2);
+  } else if (!cleanNum.startsWith('0') && cleanNum.length === 10) {
+    cleanNum = '0' + cleanNum;
+  }
+
+  let cleanMsg = String(msg).trim();
+  if (!cleanMsg) cleanMsg = 'Habib iFix Tech';
+
+  const chars = Array.from(cleanMsg);
+  let halfLength = Math.max(3, Math.ceil(chars.length / 2));
+
+  let namePart = chars.slice(0, halfLength).join('').trim();
+  let businessNamePart = chars.slice(halfLength).join('').trim();
+
+  // Carrybee requires both 'name' and 'business_name' to be between 3 and 50 characters.
+  // Laravel trims strings automatically on backend, so we ensure min 3 non-whitespace chars!
+  if (!namePart || namePart.length < 3) {
+    namePart = (namePart || 'Fix');
+    while (namePart.length < 3) namePart += '.';
+  }
+  if (!businessNamePart || businessNamePart.length < 3) {
+    businessNamePart = (businessNamePart || 'Lab');
+    while (businessNamePart.length < 3) businessNamePart += '.';
+  }
+
+  namePart = namePart.trim();
+  while (namePart.length < 3) namePart += '.';
+
+  businessNamePart = businessNamePart.trim();
+  while (businessNamePart.length < 3) businessNamePart += '.';
+
+  if (namePart.length > 50) {
+    namePart = namePart.slice(0, 50).trim();
+    while (namePart.length < 3) namePart += '.';
+  }
+  if (businessNamePart.length > 50) {
+    businessNamePart = businessNamePart.slice(0, 50).trim();
+    while (businessNamePart.length < 3) businessNamePart += '.';
+  }
+
+  const payload = {
+    name: namePart,
+    phone_number: cleanNum,
+    business_name: businessNamePart
+  };
+
+  try {
+    const response = await fetch('https://api-merchant.carrybee.com/api/v2/merchant/register', {
+      method: 'POST',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 12; V2027 Build/SP1A.210812.003) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.8059.43 Mobile Safari/537.36',
+        'Accept': 'application/json',
+        'Accept-Encoding': 'gzip, deflate, br, zstd',
+        'Content-Type': 'application/json',
+        'sec-ch-ua-platform': '"Android"',
+        'sec-ch-ua': '"Android WebView";v="155", "Chromium";v="155", "Not(A:Brand";v="24"',
+        'sec-ch-ua-mobile': '?1',
+        'origin': 'https://merchant.carrybee.com',
+        'x-requested-with': 'mark.via.gp',
+        'sec-fetch-site': 'same-site',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-dest': 'empty',
+        'referer': 'https://merchant.carrybee.com/',
+        'accept-language': 'en-US,en;q=0.9',
+        'priority': 'u=1, i'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const responseText = await response.text();
+    let decoded;
+    try {
+      decoded = JSON.parse(responseText);
+    } catch(e) {
+      decoded = null;
+    }
+
+    if (decoded) {
+      return res.json(decoded);
+    } else {
+      return res.json({
+        status: true,
+        raw_response: responseText
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      status: false,
+      error: 'cURL / Network Error: ' + err.message
+    });
+  }
+}
+
+app.get('/api/sms-send', handleSmsSend);
+app.post('/api/sms-send', handleSmsSend);
 
 if (require.main === module && !process.env.VERCEL) {
   app.listen(PORT, '0.0.0.0', () => {

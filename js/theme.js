@@ -20,6 +20,14 @@
   // Execute immediately
   enforcePureDarkMode();
 
+  // Global Safe HTML Escape
+  window.escapeHtml = function(text) {
+    if (!text) return '';
+    return String(text).replace(/[&<>"']/g, function(m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+    });
+  };
+
   // Bulletproof Mobile Menu Toggle
   window.toggleMobileMenu = function() {
     const menu = document.getElementById('mobileMenu');
@@ -149,5 +157,17 @@
         window.closePromoBanner();
       });
     });
+
+    // Record page visit for analytics ("site koi jon visit korce")
+    try {
+      const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+      if (!currentPath.includes('admin')) {
+        fetch('/api/record-visit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: currentPath })
+        }).catch(() => {});
+      }
+    } catch(e) {}
   });
 })();

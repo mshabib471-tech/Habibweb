@@ -89,6 +89,10 @@ export function updateAllNavbars() {
             <div class="p-3">
               <p class="text-xs font-extrabold text-white">${user.name || 'User'}</p>
               <p class="text-[10px] text-slate-300 font-mono truncate">${user.email || ''}</p>
+              <div class="mt-2 flex items-center justify-between bg-slate-900/90 px-2 py-1 rounded-lg border border-white/10">
+                <span class="text-[9px] text-slate-400 font-mono font-bold">USER ID:</span>
+                <span class="text-[10px] text-cyan-300 font-mono font-black tracking-wide">${user.userCode || ('HIFIX-USR-' + (1000 + (user.id || 1)))}</span>
+              </div>
               <span class="mt-1.5 inline-block text-[9px] px-2 py-0.5 rounded-md font-mono font-bold ${isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'}">
                 ${isAdmin ? '★ Verified Administrator' : '✓ Verified Member'}
               </span>
@@ -144,7 +148,8 @@ export function updateAllNavbars() {
           <img src="${user.avatar || DEFAULT_AVATAR}" class="w-9 h-9 rounded-xl object-cover border border-cyan-400">
           <div>
             <p class="text-xs font-bold text-white">${user.name}</p>
-            <p class="text-[10px] text-cyan-400 font-mono">${user.email}</p>
+            <p class="text-[10px] text-cyan-400 font-mono truncate max-w-[140px]">${user.email}</p>
+            <span class="text-[9px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-mono font-bold border border-indigo-500/30">ID: ${user.userCode || ('HIFIX-USR-' + (1000 + (user.id || 1)))}</span>
           </div>
         </div>
         <button onclick="window.doRealLogout()" class="text-xs text-red-400 hover:text-red-300 font-bold px-2 py-1 rounded bg-red-500/10 border border-red-500/20">

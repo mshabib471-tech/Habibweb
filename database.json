@@ -1,4 +1,18 @@
 {
+  "siteStats": {
+    "totalVisits": 3421,
+    "todayVisits": 286,
+    "lastDate": "18/10/2026",
+    "visitorLogs": [
+      {
+        "path": "/services.html",
+        "ip": "127.0.0.1",
+        "userAgent": "curl/7.88.1",
+        "time": "07:59 AM",
+        "date": "18/10/2026"
+      }
+    ]
+  },
   "posts": [
     {
       "id": 5,
@@ -46,22 +60,45 @@
       "date": "14/10/2026"
     }
   ],
-  "bookings": [],
+  "bookings": [
+    {
+      "id": 1,
+      "userCode": "HIFIX-USR-1002",
+      "planName": "iPhone 13 OLED Display Fix",
+      "planPrice": "৳৩,২০০",
+      "customerName": "Tanvir Hasan",
+      "phone": "01812345678",
+      "email": "tanvir.hasan@gmail.com",
+      "address": "GEC Circle, Chattogram",
+      "status": "Confirmed",
+      "adminNote": "Slot confirmed for 3:00 PM today.",
+      "date": "17/10/2026"
+    }
+  ],
   "contacts": [
     {
       "id": 2,
-      "name": "Rahim Uddin",
-      "contact": "01711223344",
-      "message": "iPhone 13 display price koto?",
-      "subject": "Screen Replacement",
-      "date": "17/10/2026 02:16 PM"
+      "userCode": "HIFIX-USR-1003",
+      "name": "Shakil Ahmed",
+      "contact": "01722334455",
+      "message": "মাস্টার মোবাইল হার্ডওয়্যার ও মাইক্রো-সোল্ডারিং কোর্সে কিভাবে ভর্তি হতে পারি?",
+      "subject": "Course Admission Inquiry",
+      "status": "replied",
+      "adminReply": "আমাদের পরবর্তী ব্যাচে ভর্তি চলছে। আপনি ল্যাবে এসে সরাসরি ক্লাস দেখতে পারেন অথবা 01868461577 এ কল করুন।",
+      "repliedAt": "18/10/2026 07:59 AM",
+      "date": "18/10/2026 10:25 AM",
+      "replyMethod": "portal"
     },
     {
       "id": 1,
-      "name": "Rahim Uddin",
-      "contact": "01711223344",
-      "message": "iPhone 13 display price koto?",
+      "userCode": "HIFIX-USR-1002",
+      "name": "Tanvir Hasan",
+      "contact": "01812345678",
+      "message": "iPhone 13 original display price koto ar fitting e koto somoy lagbe?",
       "subject": "Screen Replacement",
+      "status": "replied",
+      "adminReply": "iPhone 13 অরিজিনাল OLED ডিসপ্লে রিপ্লেসমেন্ট খরচ ৩,২০০ টাকা (১ মাসের রিপ্লেসমেন্ট ওয়ারেন্টি সহ)। ল্যাবে এলে মাত্র ৩০-৪৫ মিনিটেই কমপ্লিট ডেলিভারি পাবেন।",
+      "repliedAt": "17/10/2026 03:00 PM",
       "date": "17/10/2026 02:16 PM"
     }
   ],
@@ -77,23 +114,80 @@
       "date": "17/10/2026 02:16 PM"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": 1,
+      "userCode": "HIFIX-USR-1002",
+      "productId": 1,
+      "productName": "iPhone 12/13/14 Pro Super Retina OLED Display Panel",
+      "price": "৳৩,২০০",
+      "quantity": 1,
+      "customerName": "Tanvir Hasan",
+      "phone": "01812345678",
+      "address": "House 12, Road 4, Agrabad, Chattogram",
+      "paymentMethod": "Cash on Delivery",
+      "status": "Confirmed",
+      "date": "18/10/2026 11:30 AM"
+    }
+  ],
   "nextPostId": 6,
-  "nextBookingId": 1,
+  "nextBookingId": 2,
   "nextContactId": 3,
   "nextAiMsgId": 2,
-  "nextOrderId": 1,
+  "nextOrderId": 2,
   "users": [
     {
       "id": 1,
+      "userCode": "HIFIX-USR-1001",
       "name": "Habibur Rahman",
       "email": "tec.habiburrahman@gmail.com",
       "phone": "+8801868461577",
       "role": "admin",
       "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80",
       "authProvider": "google",
-      "createdAt": "14/10/2026"
+      "createdAt": "14/10/2026",
+      "lastLogin": "18/10/2026 01:15 PM",
+      "loginCount": 38
+    },
+    {
+      "id": 2,
+      "userCode": "HIFIX-USR-1002",
+      "name": "Tanvir Hasan",
+      "email": "tanvir.hasan@gmail.com",
+      "phone": "01812345678",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Tanvir",
+      "authProvider": "google",
+      "createdAt": "16/10/2026",
+      "lastLogin": "17/10/2026 06:40 PM",
+      "loginCount": 4
+    },
+    {
+      "id": 3,
+      "userCode": "HIFIX-USR-1003",
+      "name": "Shakil Ahmed",
+      "email": "shakil.tech@gmail.com",
+      "phone": "01722334455",
+      "role": "student",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Shakil",
+      "authProvider": "email",
+      "createdAt": "17/10/2026",
+      "lastLogin": "18/10/2026 10:20 AM",
+      "loginCount": 9
+    },
+    {
+      "id": 4,
+      "userCode": "HIFIX-USR-1004",
+      "name": "Sumon Mia",
+      "email": "sumon.ctg@yahoo.com",
+      "phone": "01988776655",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Sumon",
+      "authProvider": "email",
+      "createdAt": "16/10/2026",
+      "lastLogin": "17/10/2026 04:12 PM",
+      "loginCount": 2
     }
   ],
-  "nextUserId": 2
+  "nextUserId": 5
 }

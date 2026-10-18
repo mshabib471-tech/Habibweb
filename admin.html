@@ -19,7 +19,7 @@
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100" style="display: none;">
 
     <!-- Admin Top Header -->
-    <header class="h-16 glass-nav border-b flex items-center justify-between px-6 shrink-0 z-20">
+    <header class="h-16 glass-nav border-b border-white/10 flex items-center justify-between px-4 sm:px-6 shrink-0 z-20">
         <div class="flex items-center gap-3">
             <div class="brand-logo-box w-9 h-9 shrink-0 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1.5px] shadow flex items-center justify-center">
                 <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
@@ -45,66 +45,94 @@
                     <h1 class="font-extrabold text-sm sm:text-base text-white tracking-tight">Habib iFix <span class="text-cyan-400">Master Control</span></h1>
                     <span class="bg-indigo-500/20 text-indigo-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border border-indigo-500/40">ADMIN 2026</span>
                 </div>
-                <p class="text-[10px] text-slate-400">Mobile Engineering Lab & IT Services Hub</p>
+                <p class="text-[10px] text-slate-400 hidden sm:block">Mobile Engineering Lab & IT Services Hub</p>
             </div>
         </div>
 
         <div class="flex items-center gap-3">
-            <div class="hidden sm:flex items-center gap-2 text-xs">
+            <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="text-slate-300 font-mono text-[11px]" id="liveVisitorBadge">Live: 14 online</span>
+            </div>
+
+            <div class="hidden sm:flex items-center gap-2 text-xs">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
                 <span class="text-slate-300 font-bold" id="adminUserName">Admin</span>
             </div>
 
             <!-- Logout Button -->
-            <button id="logoutBtn" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer">
+            <button id="logoutBtn" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer">
                 <i class="fa-solid fa-power-off text-xs"></i>
-                <span>Logout</span>
+                <span class="hidden sm:inline">Logout</span>
             </button>
         </div>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
-        <!-- Sidebar -->
-        <aside class="w-64 glass-nav border-r flex flex-col p-4 shrink-0 overflow-y-auto">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 glass-nav border-r border-white/10 flex flex-col p-4 shrink-0 overflow-y-auto">
             <div class="space-y-1.5 text-xs font-bold">
-                <button onclick="switchTab('bookings')" id="tabBtnBookings" class="w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center justify-between transition-colors shadow">
+                <!-- 1. Overview & Visitor Analytics -->
+                <button onclick="switchTab('overview')" id="tabBtnOverview" class="w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center justify-between transition-colors shadow">
                     <span class="flex items-center gap-2.5">
-                        <i class="fa-solid fa-calendar-check text-xs"></i>
-                        <span>Repair Bookings</span>
+                        <i class="fa-solid fa-chart-line text-xs"></i>
+                        <span>Dashboard & Visits</span>
                     </span>
-                    <span id="badgeBookings" class="bg-white/20 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
+                    <span id="badgeVisits" class="bg-white/20 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
                 </button>
 
-                <button onclick="switchTab('aiMessages')" id="tabBtnAiMessages" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                <!-- 2. Users & Login Emails -->
+                <button onclick="switchTab('users')" id="tabBtnUsers" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
                     <span class="flex items-center gap-2.5">
-                        <i class="fa-solid fa-robot text-xs text-cyan-400"></i>
-                        <span>AI Customer Chats</span>
+                        <i class="fa-solid fa-users text-xs text-cyan-400"></i>
+                        <span>Users & Login Mails</span>
                     </span>
-                    <span id="badgeAi" class="bg-cyan-500/20 text-cyan-300 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
+                    <span id="badgeUsers" class="bg-cyan-500/20 text-cyan-300 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
                 </button>
 
+                <!-- 3. Contact Messages & Reply System -->
                 <button onclick="switchTab('contacts')" id="tabBtnContacts" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
                     <span class="flex items-center gap-2.5">
-                        <i class="fa-solid fa-envelope text-xs text-amber-400"></i>
-                        <span>Contact Messages</span>
+                        <i class="fa-solid fa-reply-all text-xs text-amber-400"></i>
+                        <span>Messages & Replies</span>
                     </span>
-                    <span id="badgeContacts" class="bg-amber-500/20 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
+                    <span id="badgeContacts" class="bg-amber-500/20 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
                 </button>
 
+                <!-- 4. Repair Bookings -->
+                <button onclick="switchTab('bookings')" id="tabBtnBookings" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-calendar-check text-xs text-blue-400"></i>
+                        <span>Repair Bookings</span>
+                    </span>
+                    <span id="badgeBookings" class="bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+
+                <!-- 5. Shop Orders -->
                 <button onclick="switchTab('orders')" id="tabBtnOrders" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
                     <span class="flex items-center gap-2.5">
                         <i class="fa-solid fa-bag-shopping text-xs text-emerald-400"></i>
                         <span>Shop Orders</span>
                     </span>
-                    <span id="badgeOrders" class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
+                    <span id="badgeOrders" class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
                 </button>
 
+                <!-- 6. AI Customer Chats -->
+                <button onclick="switchTab('aiMessages')" id="tabBtnAiMessages" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-robot text-xs text-purple-400"></i>
+                        <span>AI Assistant Chats</span>
+                    </span>
+                    <span id="badgeAi" class="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+
+                <!-- 7. Blog Posts -->
                 <button onclick="switchTab('blogs')" id="tabBtnBlogs" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
                     <span class="flex items-center gap-2.5">
-                        <i class="fa-solid fa-blog text-xs text-indigo-400"></i>
+                        <i class="fa-solid fa-blog text-xs text-pink-400"></i>
                         <span>Blog Posts</span>
                     </span>
-                    <span id="badgeBlogs" class="bg-indigo-500/20 text-indigo-300 text-[10px] px-2 py-0.5 rounded-full font-mono">0</span>
+                    <span id="badgeBlogs" class="bg-pink-500/20 text-pink-300 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
                 </button>
 
                 <div class="pt-4 border-t border-white/10 space-y-1 text-slate-400 text-xs">
@@ -112,13 +140,21 @@
                         <i class="fa-solid fa-house text-xs text-cyan-400"></i>
                         <span>Home Page</span>
                     </a>
+                    <a href="services.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                        <i class="fa-solid fa-screwdriver-wrench text-xs text-yellow-400"></i>
+                        <span>Services & SMS</span>
+                    </a>
                     <a href="shop.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
                         <i class="fa-solid fa-store text-xs text-emerald-400"></i>
-                        <span>Shop Page</span>
+                        <span>Parts Shop</span>
                     </a>
                     <a href="courses.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
                         <i class="fa-solid fa-graduation-cap text-xs text-indigo-400"></i>
                         <span>Courses</span>
+                    </a>
+                    <a href="contact.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
+                        <i class="fa-solid fa-envelope text-xs text-amber-400"></i>
+                        <span>Contact Page</span>
                     </a>
                     <a href="https://cvhabib.vercel.app/" target="_blank" rel="noopener noreferrer" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
                         <span class="flex items-center gap-2.5">
@@ -127,19 +163,220 @@
                         </span>
                         <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-500"></i>
                     </a>
-                    <a href="frp.html" class="w-full block text-left px-3.5 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
-                        <i class="fa-solid fa-unlock-keyhole text-xs text-cyan-400"></i>
-                        <span>FRP 2026 Page</span>
-                    </a>
                 </div>
             </div>
         </aside>
 
-        <!-- Main Content Body -->
-        <main class="flex-1 p-6 overflow-y-auto max-w-7xl">
-            
-            <!-- 1. Bookings Section -->
-            <div id="sectionBookings">
+        <!-- Main Content Area -->
+        <main class="flex-1 p-4 sm:p-6 overflow-y-auto max-w-7xl">
+
+            <!-- Global Live Statistics Strip -->
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-3.5 mb-6">
+                <!-- 1. Total Site Visits -->
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-cyan-400">
+                    <div class="flex items-center justify-between text-slate-400 mb-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider">Site Visits</span>
+                        <i class="fa-solid fa-eye text-cyan-400 text-xs"></i>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xl sm:text-2xl font-black text-white font-mono" id="statTotalVisits">--</span>
+                        <span class="text-[10px] text-cyan-400 font-mono font-bold" id="statTodayVisits">+0 today</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Live visitor tracker</p>
+                </div>
+
+                <!-- 2. Logged-in Users -->
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-indigo-400">
+                    <div class="flex items-center justify-between text-slate-400 mb-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider">Users Logged In</span>
+                        <i class="fa-solid fa-users text-indigo-400 text-xs"></i>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xl sm:text-2xl font-black text-white font-mono" id="statTotalUsers">--</span>
+                        <span class="text-[10px] text-indigo-400 font-mono font-bold" id="statTotalLogins">0 logins</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Registered accounts</p>
+                </div>
+
+                <!-- 3. Inquiries & Pending Replies -->
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-amber-400">
+                    <div class="flex items-center justify-between text-slate-400 mb-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider">Messages</span>
+                        <i class="fa-solid fa-envelope text-amber-400 text-xs"></i>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xl sm:text-2xl font-black text-white font-mono" id="statTotalContacts">--</span>
+                        <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-mono font-bold" id="statPendingContacts">0 pending</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Reply system active</p>
+                </div>
+
+                <!-- 4. Shop Orders -->
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-400">
+                    <div class="flex items-center justify-between text-slate-400 mb-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider">Shop Orders</span>
+                        <i class="fa-solid fa-bag-shopping text-emerald-400 text-xs"></i>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xl sm:text-2xl font-black text-white font-mono" id="statTotalOrders">--</span>
+                        <span class="text-[10px] text-emerald-400 font-mono font-bold">Parts & Tools</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-0.5">E-commerce store</p>
+                </div>
+
+                <!-- 5. Repair Bookings -->
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-l-blue-400 col-span-2 lg:col-span-1">
+                    <div class="flex items-center justify-between text-slate-400 mb-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider">Bookings</span>
+                        <i class="fa-solid fa-calendar-check text-blue-400 text-xs"></i>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xl sm:text-2xl font-black text-white font-mono" id="statTotalBookings">--</span>
+                        <span class="text-[10px] text-blue-400 font-mono font-bold">Lab slots</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-0.5">Hardware repairs</p>
+                </div>
+            </div>
+
+            <!-- SECTION 1: Overview & Visitor Analytics -->
+            <div id="sectionOverview">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
+                            <span>Site Visitor Analytics & Activity</span>
+                            <span class="bg-cyan-500/20 text-cyan-300 text-xs px-2.5 py-0.5 rounded-full border border-cyan-500/40">সাইট ভিজিটর ট্র্যাকিং</span>
+                        </h2>
+                        <p class="text-xs text-slate-400">Live website visit counters, daily traffic breakdown, and recent visitor logs.</p>
+                    </div>
+                    <button onclick="loadAdminStats()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate text-cyan-400"></i> Refresh Stats
+                    </button>
+                </div>
+
+                <!-- Big Visitor Metric Display -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                    <div class="glass-card p-6 rounded-3xl relative overflow-hidden bg-gradient-to-br from-cyan-950/40 via-slate-900 to-slate-950 border border-cyan-500/30">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-bold uppercase text-cyan-400 tracking-wider">Total Website Hits</span>
+                            <div class="w-8 h-8 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl sm:text-4xl font-black text-white font-mono mb-2" id="bigTotalVisits">3,420</div>
+                        <p class="text-xs text-slate-300">Lifetime total page views & visits recorded across all devices.</p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-3xl relative overflow-hidden bg-gradient-to-br from-indigo-950/40 via-slate-900 to-slate-950 border border-indigo-500/30">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-bold uppercase text-indigo-400 tracking-wider">Today's Visits</span>
+                            <div class="w-8 h-8 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl sm:text-4xl font-black text-white font-mono mb-2" id="bigTodayVisits">285</div>
+                        <p class="text-xs text-slate-300">New visitors and returning clients browsing today.</p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-3xl relative overflow-hidden bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-950 border border-emerald-500/30">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-bold uppercase text-emerald-400 tracking-wider">Active Visitors Online</span>
+                            <div class="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+                            </div>
+                        </div>
+                        <div class="text-3xl sm:text-4xl font-black text-emerald-400 font-mono mb-2" id="bigActiveNow">14</div>
+                        <p class="text-xs text-slate-300">Currently exploring services, courses, blog, or tech shop.</p>
+                    </div>
+                </div>
+
+                <!-- Recent Visitor Log Table -->
+                <div class="glass-card rounded-2xl p-5 border border-white/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i>
+                            <span>Recent Visitor Access Logs (সাম্প্রতিক ভিজিটর লগ)</span>
+                        </h3>
+                        <span class="text-[10px] font-mono text-slate-400">Auto-recorded from all pages</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="text-[10px] font-bold text-slate-400 uppercase border-b border-white/10">
+                                <tr>
+                                    <th class="py-2.5 px-3">Time & Date</th>
+                                    <th class="py-2.5 px-3">Page / Path</th>
+                                    <th class="py-2.5 px-3">Visitor IP</th>
+                                    <th class="py-2.5 px-3">Device / Browser</th>
+                                </tr>
+                            </thead>
+                            <tbody id="visitorLogsTableBody" class="divide-y divide-white/5 text-slate-300">
+                                <tr>
+                                    <td colspan="4" class="py-4 text-center text-slate-500">Loading visitor logs...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Users & Login Emails ("user login koi jon korce, user login mail, alada id") -->
+            <div id="sectionUsers" class="hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
+                            <span>User Accounts & Login Records</span>
+                            <span class="bg-indigo-500/20 text-indigo-300 text-xs px-2.5 py-0.5 rounded-full border border-indigo-500/40 font-mono" id="usersCountBadge">0 Users</span>
+                        </h2>
+                        <p class="text-xs text-slate-400">Track user login emails, unique IDs, login count, roles, and activity.</p>
+                    </div>
+
+                    <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                        <div class="relative flex-1 sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-400"></i>
+                            <input type="text" id="userSearchInput" oninput="filterAdminUsers()" placeholder="Search ID, email, name..." class="w-full bg-slate-900 border border-white/15 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none focus:border-cyan-400">
+                        </div>
+                        <button onclick="loadAdminUsers()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shrink-0">
+                            <i class="fa-solid fa-rotate text-indigo-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Users Grid / Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="adminUsersGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- SECTION 3: Contact Messages & Direct Reply System ("user msg dila sei msg er reply system") -->
+            <div id="sectionContacts" class="hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
+                            <span>Customer Messages & Direct Reply System</span>
+                            <span class="bg-amber-500/20 text-amber-300 text-xs px-2.5 py-0.5 rounded-full border border-amber-500/40">মেসেজ ও উত্তর সিস্টেম</span>
+                        </h2>
+                        <p class="text-xs text-slate-400">Read inquiries, send direct portal replies, and contact users via WhatsApp or Email.</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <select id="contactFilterSelect" onchange="filterAdminContacts()" class="bg-slate-900 border border-white/15 rounded-xl px-3 py-1.5 text-xs text-white outline-none">
+                            <option value="all">All Messages</option>
+                            <option value="pending">Pending Reply Only</option>
+                            <option value="replied">Replied Only</option>
+                        </select>
+                        <button onclick="loadAdminContacts()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
+                            <i class="fa-solid fa-rotate text-amber-400"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminContactsGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- SECTION 4: Repair Bookings -->
+            <div id="sectionBookings" class="hidden">
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-extrabold text-white">Customer Repair Bookings</h2>
@@ -154,7 +391,23 @@
                 </div>
             </div>
 
-            <!-- 2. AI Customer Chats Section (NEW) -->
+            <!-- SECTION 5: Tech Shop Orders -->
+            <div id="sectionOrders" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Tech Shop & Parts Orders</h2>
+                        <p class="text-xs text-slate-400">Incoming e-commerce orders for original displays, batteries, ICs & lab tools.</p>
+                    </div>
+                    <button onclick="loadAdminOrders()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate text-emerald-400"></i> Refresh
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminOrdersGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- SECTION 6: AI Assistant Customer Chats -->
             <div id="sectionAiMessages" class="hidden">
                 <div class="flex justify-between items-center mb-6">
                     <div>
@@ -173,39 +426,7 @@
                 </div>
             </div>
 
-            <!-- 3. Contact Form Submissions Section (NEW) -->
-            <div id="sectionContacts" class="hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Contact Form Inquiries</h2>
-                        <p class="text-xs text-slate-400">Direct inquiries sent via the website contact form.</p>
-                    </div>
-                    <button onclick="loadAdminContacts()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
-                        <i class="fa-solid fa-rotate text-amber-400"></i> Refresh
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminContactsGrid">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- 4. Shop Orders Section (NEW) -->
-            <div id="sectionOrders" class="hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-extrabold text-white">Tech Shop & Parts Orders</h2>
-                        <p class="text-xs text-slate-400">Incoming e-commerce orders for original displays, batteries, ICs & lab tools.</p>
-                    </div>
-                    <button onclick="loadAdminOrders()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
-                        <i class="fa-solid fa-rotate text-emerald-400"></i> Refresh
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminOrdersGrid">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- 5. Blogs Section -->
+            <!-- SECTION 7: Blog Posts -->
             <div id="sectionBlogs" class="hidden">
                 <div class="flex justify-between items-center mb-6">
                     <div>
@@ -222,6 +443,60 @@
             </div>
 
         </main>
+    </div>
+
+    <!-- Admin Reply Modal ("user msg dila sei msg er reply system") -->
+    <div id="replyModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="glass-3d w-full max-w-lg p-6 sm:p-7 rounded-3xl border border-white/20 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h3 class="font-extrabold text-lg text-white flex items-center gap-2">
+                        <i class="fa-solid fa-reply text-cyan-400"></i>
+                        <span>Reply to Customer Inquiry</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Send direct response to client message</p>
+                </div>
+                <button onclick="closeReplyModal()" class="text-slate-400 hover:text-white cursor-pointer p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="p-3.5 bg-slate-900/90 rounded-2xl border border-white/10 mb-4 text-xs space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-white" id="modalCustomerName">--</span>
+                    <span class="text-[10px] font-mono font-bold text-cyan-300 bg-cyan-500/20 px-2 py-0.5 rounded border border-cyan-500/30" id="modalCustomerCode">ID: --</span>
+                </div>
+                <p class="text-slate-400 text-[11px]"><strong class="text-slate-300">Contact:</strong> <span id="modalCustomerContact" class="font-mono text-cyan-400">--</span></p>
+                <div class="mt-2 pt-2 border-t border-white/10">
+                    <p class="text-[10px] uppercase font-bold text-slate-400 mb-0.5">Original Message:</p>
+                    <p class="text-slate-200 text-xs italic bg-white/5 p-2 rounded-lg" id="modalCustomerMessage">--</p>
+                </div>
+            </div>
+
+            <form id="replyForm" onsubmit="submitReply(event)" class="space-y-3.5">
+                <input type="hidden" id="replyContactId" value="">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Your Admin Reply (আপনার উত্তর)</label>
+                    <textarea id="replyMessageText" required rows="4" class="w-full bg-slate-950 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-cyan-400 outline-none resize-none leading-relaxed" placeholder="Type your detailed answer or instructions here..."></textarea>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="sendReplyViaWhatsApp()" id="modalWhatsAppBtn" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                        </button>
+                        <button type="button" onclick="sendReplyViaEmail()" id="modalEmailBtn" class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/30 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all">
+                            <i class="fa-solid fa-paper-plane"></i> Email
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="closeReplyModal()" class="px-3.5 py-2 text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">Cancel</button>
+                        <button type="submit" id="saveReplyBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-xl shadow transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-check"></i> Save & Publish Reply
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Create Post Modal -->
@@ -257,7 +532,10 @@
     </div>
 
     <script>
-        const tabList = ['bookings', 'aiMessages', 'contacts', 'orders', 'blogs'];
+        const tabList = ['overview', 'users', 'contacts', 'bookings', 'orders', 'aiMessages', 'blogs'];
+        let cachedUsers = [];
+        let cachedContacts = [];
+        let activeReplyContact = null;
 
         function switchTab(activeTab) {
             tabList.forEach(t => {
@@ -276,10 +554,12 @@
                 activeBtn.className = "w-full text-left px-3.5 py-2.5 bg-indigo-600 text-white rounded-xl flex items-center justify-between transition-colors shadow";
             }
 
-            if (activeTab === 'bookings') loadAdminBookings();
-            if (activeTab === 'aiMessages') loadAdminAiMessages();
+            if (activeTab === 'overview') loadAdminStats();
+            if (activeTab === 'users') loadAdminUsers();
             if (activeTab === 'contacts') loadAdminContacts();
+            if (activeTab === 'bookings') loadAdminBookings();
             if (activeTab === 'orders') loadAdminOrders();
+            if (activeTab === 'aiMessages') loadAdminAiMessages();
             if (activeTab === 'blogs') loadAdminPosts();
         }
 
@@ -294,22 +574,388 @@
                 const email = localStorage.getItem('habib_user_email') || 'tec.habiburrahman@gmail.com';
                 const userEl = document.getElementById('adminUserName');
                 if (userEl) userEl.innerText = email;
-                loadAdminBookings();
-                loadAdminAiMessages();
+                
+                // Load all initial metrics
+                loadAdminStats();
+                loadAdminUsers();
                 loadAdminContacts();
+                loadAdminBookings();
                 loadAdminOrders();
+                loadAdminAiMessages();
                 loadAdminPosts();
             } else {
                 window.location.href = 'login.html';
             }
+        }).catch(() => {
+            window.location.href = 'login.html';
         });
 
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             await fetch('/api/logout', { method: 'POST' });
+            localStorage.removeItem('habib_logged_in');
+            localStorage.removeItem('habib_is_admin');
             window.location.href = 'login.html';
         });
 
-        // 1. Load Bookings
+        // 1. Load Site Stats & Visitor Logs ("site koi jon visit korce")
+        async function loadAdminStats() {
+            try {
+                const res = await fetch('/api/site-stats');
+                const data = await res.json();
+
+                // Top metrics strip
+                document.getElementById('statTotalVisits').innerText = Number(data.totalVisits || 0).toLocaleString();
+                document.getElementById('statTodayVisits').innerText = `+${data.todayVisits || 0} today`;
+                document.getElementById('badgeVisits').innerText = Number(data.totalVisits || 0).toLocaleString();
+
+                document.getElementById('statTotalUsers').innerText = data.totalUsers || 0;
+                document.getElementById('statTotalLogins').innerText = `${data.totalLogins || 0} logins`;
+
+                document.getElementById('statTotalContacts').innerText = data.totalContacts || 0;
+                document.getElementById('statPendingContacts').innerText = `${data.pendingContacts || 0} pending`;
+
+                document.getElementById('statTotalOrders').innerText = data.totalOrders || 0;
+                document.getElementById('statTotalBookings').innerText = data.totalBookings || 0;
+
+                // Big overview metric cards
+                document.getElementById('bigTotalVisits').innerText = Number(data.totalVisits || 0).toLocaleString();
+                document.getElementById('bigTodayVisits').innerText = `+${data.todayVisits || 0}`;
+                document.getElementById('bigActiveNow').innerText = data.activeNow || 14;
+                document.getElementById('liveVisitorBadge').innerText = `Live: ${data.activeNow || 14} online`;
+
+                // Visitor logs table
+                const tableBody = document.getElementById('visitorLogsTableBody');
+                if (tableBody) {
+                    const logs = data.visitorLogs || [];
+                    if (logs.length === 0) {
+                        tableBody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-500">No visitor logs recorded yet today.</td></tr>`;
+                    } else {
+                        tableBody.innerHTML = logs.map(l => `
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-2.5 px-3 font-mono text-[11px] text-cyan-300">${escapeHtml(l.time || '')} <span class="text-slate-500">(${escapeHtml(l.date || '')})</span></td>
+                                <td class="py-2.5 px-3 font-bold text-white"><span class="px-2 py-0.5 rounded bg-white/10 font-mono text-[11px]">${escapeHtml(l.path || '/')}</span></td>
+                                <td class="py-2.5 px-3 font-mono text-slate-400">${escapeHtml(l.ip || '127.0.0.1')}</td>
+                                <td class="py-2.5 px-3 text-slate-300 text-[11px] truncate max-w-[200px]" title="${escapeHtml(l.userAgent || '')}">${escapeHtml(l.userAgent || 'Chrome / Mobile')}</td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+            } catch(e) {
+                console.error("Stats load error:", e);
+            }
+        }
+
+        // 2. Load Users & Login Emails & Unique IDs ("user login koi jon korce, user login mail, alada alada id")
+        async function loadAdminUsers() {
+            try {
+                const res = await fetch('/api/admin/users');
+                const data = await res.json();
+                cachedUsers = data.users || [];
+                
+                document.getElementById('badgeUsers').innerText = data.totalUsers || cachedUsers.length;
+                document.getElementById('usersCountBadge').innerText = `${cachedUsers.length} Users (${data.totalLogins || 0} Total Logins)`;
+
+                renderUsersGrid(cachedUsers);
+            } catch (err) {
+                console.error("Users load error:", err);
+            }
+        }
+
+        function renderUsersGrid(users) {
+            const grid = document.getElementById('adminUsersGrid');
+            if (!grid) return;
+
+            if (users.length === 0) {
+                grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No registered users found.</p>';
+                return;
+            }
+
+            grid.innerHTML = users.map(u => {
+                const userCode = u.userCode || `HIFIX-USR-${1000 + u.id}`;
+                const isAdmin = u.role === 'admin';
+                const isStudent = u.role === 'student';
+                
+                return `
+                    <div class="glass-card p-5 rounded-2xl border-l-4 ${isAdmin ? 'border-l-amber-400' : (isStudent ? 'border-l-indigo-400' : 'border-l-cyan-400')} flex flex-col justify-between">
+                        <div>
+                            <!-- Header with User ID badge and copy button -->
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold px-2 py-0.5 rounded border border-indigo-500/40">${escapeHtml(userCode)}</span>
+                                    <button onclick="copyToClipboard('${escapeHtml(userCode)}', this)" class="text-slate-400 hover:text-white text-[11px] p-1" title="Copy User ID">
+                                        <i class="fa-regular fa-copy"></i>
+                                    </button>
+                                </div>
+                                <span class="text-[10px] uppercase font-bold font-mono px-2 py-0.5 rounded-full ${isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : (isStudent ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40')}">
+                                    ${isAdmin ? '★ ADMIN' : (isStudent ? 'STUDENT' : 'CUSTOMER')}
+                                </span>
+                            </div>
+
+                            <!-- User Identity info -->
+                            <div class="flex items-center gap-3 mb-3">
+                                <img src="${u.avatar}" class="w-11 h-11 rounded-xl object-cover border border-white/20 shrink-0">
+                                <div class="overflow-hidden">
+                                    <h4 class="font-bold text-white text-sm truncate">${escapeHtml(u.name || 'User')}</h4>
+                                    <a href="mailto:${u.email}" class="text-xs text-cyan-400 hover:underline font-mono truncate block" title="${escapeHtml(u.email)}">${escapeHtml(u.email)}</a>
+                                </div>
+                            </div>
+
+                            <!-- User details -->
+                            <div class="space-y-1.5 text-xs text-slate-300 bg-slate-900/80 p-3 rounded-xl border border-white/10 mb-3">
+                                <p class="flex items-center justify-between">
+                                    <strong class="text-slate-400">Phone:</strong>
+                                    <span class="font-mono text-white">${u.phone ? escapeHtml(u.phone) : '<span class="text-slate-500">Not set</span>'}</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <strong class="text-slate-400">Total Logins:</strong>
+                                    <span class="bg-amber-500/20 text-amber-300 px-2 py-0.2 rounded font-mono font-bold">${u.loginCount || 1} logins</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <strong class="text-slate-400">Last Login:</strong>
+                                    <span class="font-mono text-[11px] text-slate-300">${escapeHtml(u.lastLogin || 'Recent')}</span>
+                                </p>
+                                <p class="flex items-center justify-between">
+                                    <strong class="text-slate-400">Joined Date:</strong>
+                                    <span class="font-mono text-[11px] text-slate-400">${escapeHtml(u.createdAt || 'N/A')}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Actions footer -->
+                        <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-1.5">
+                                ${u.phone ? `
+                                    <a href="https://wa.me/88${u.phone.replace(/[^0-9]/g, '')}" target="_blank" class="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-500/30 flex items-center gap-1">
+                                        <i class="fa-brands fa-whatsapp"></i> Chat
+                                    </a>
+                                ` : ''}
+                                <a href="mailto:${u.email}" class="text-[11px] font-bold text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 px-2.5 py-1 rounded-lg border border-blue-500/30 flex items-center gap-1">
+                                    <i class="fa-regular fa-envelope"></i> Mail
+                                </a>
+                            </div>
+
+                            <div class="flex items-center gap-1">
+                                <select onchange="updateUserRole(${u.id}, this.value)" class="bg-slate-900 border border-white/20 text-white rounded-lg text-[11px] px-2 py-1 outline-none">
+                                    <option value="customer" ${u.role === 'customer' ? 'selected' : ''}>Customer</option>
+                                    <option value="student" ${u.role === 'student' ? 'selected' : ''}>Student</option>
+                                    <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+                                </select>
+                                ${u.id !== 1 ? `
+                                    <button onclick="deleteUserAccount(${u.id})" class="text-slate-400 hover:text-red-400 p-1 transition-colors" title="Delete User">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterAdminUsers() {
+            const query = (document.getElementById('userSearchInput').value || '').toLowerCase().trim();
+            if (!query) {
+                renderUsersGrid(cachedUsers);
+                return;
+            }
+            const filtered = cachedUsers.filter(u => {
+                const code = (u.userCode || '').toLowerCase();
+                const email = (u.email || '').toLowerCase();
+                const name = (u.name || '').toLowerCase();
+                const phone = (u.phone || '').toLowerCase();
+                return code.includes(query) || email.includes(query) || name.includes(query) || phone.includes(query);
+            });
+            renderUsersGrid(filtered);
+        }
+
+        async function updateUserRole(id, role) {
+            await fetch(`/api/admin/users/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role })
+            });
+            loadAdminUsers();
+        }
+
+        async function deleteUserAccount(id) {
+            if (confirm('Are you sure you want to delete this user account?')) {
+                const res = await fetch(`/api/admin/users/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    loadAdminUsers();
+                } else {
+                    alert(data.error || 'Failed to delete user.');
+                }
+            }
+        }
+
+        // 3. Load Contact Messages & Reply System ("user msg dila sei msg er reply system")
+        async function loadAdminContacts() {
+            try {
+                const res = await fetch('/api/contacts');
+                const contacts = await res.json();
+                cachedContacts = contacts;
+                document.getElementById('badgeContacts').innerText = contacts.length;
+                renderContactsGrid(contacts);
+            } catch (err) {
+                console.error("Contacts load error:", err);
+            }
+        }
+
+        function filterAdminContacts() {
+            const filterVal = document.getElementById('contactFilterSelect').value;
+            if (filterVal === 'all') {
+                renderContactsGrid(cachedContacts);
+            } else if (filterVal === 'pending') {
+                renderContactsGrid(cachedContacts.filter(c => c.status !== 'replied'));
+            } else if (filterVal === 'replied') {
+                renderContactsGrid(cachedContacts.filter(c => c.status === 'replied'));
+            }
+        }
+
+        function renderContactsGrid(contacts) {
+            const grid = document.getElementById('adminContactsGrid');
+            if (contacts.length === 0) {
+                grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No contact messages received matching this filter.</p>';
+                return;
+            }
+
+            grid.innerHTML = contacts.map(c => {
+                const isReplied = c.status === 'replied' && c.adminReply;
+                return `
+                    <div class="glass-card p-5 rounded-2xl border-l-4 ${isReplied ? 'border-l-emerald-400' : 'border-l-amber-400'} flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-white">${escapeHtml(c.name)}</span>
+                                    ${c.userCode ? `<span class="text-[10px] bg-indigo-500/20 text-indigo-300 font-mono font-bold px-1.5 py-0.5 rounded border border-indigo-500/30">${escapeHtml(c.userCode)}</span>` : ''}
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full font-mono ${isReplied ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'}">
+                                        ${isReplied ? '✓ REPLIED' : '⏳ PENDING'}
+                                    </span>
+                                    <button onclick="deleteContactMsg(${c.id})" class="text-slate-400 hover:text-red-400 transition-colors p-1" title="Delete"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5 text-xs text-slate-300 mb-3">
+                                <p><strong class="text-white">Phone/Email:</strong> <span class="font-mono text-cyan-400">${escapeHtml(c.contact)}</span></p>
+                                <p><strong class="text-white">Subject:</strong> ${escapeHtml(c.subject || 'Website Inquiry')}</p>
+                            </div>
+
+                            <!-- Customer Original Message -->
+                            <div class="p-3 bg-slate-900/90 rounded-xl border border-white/10 text-xs text-slate-200 leading-relaxed mb-3">
+                                <p class="text-[9px] uppercase font-bold text-slate-400 mb-1">Customer Asked:</p>
+                                "${escapeHtml(c.message)}"
+                            </div>
+
+                            <!-- Admin Reply Box (if replied) -->
+                            ${isReplied ? `
+                                <div class="p-3 bg-emerald-950/40 rounded-xl border border-emerald-500/30 text-xs text-emerald-200 leading-relaxed mb-3">
+                                    <div class="flex items-center justify-between text-[10px] text-emerald-400 font-bold uppercase mb-1">
+                                        <span><i class="fa-solid fa-reply"></i> Admin Reply:</span>
+                                        <span class="font-mono font-normal">${escapeHtml(c.repliedAt || '')}</span>
+                                    </div>
+                                    <p class="text-white font-medium">${escapeHtml(c.adminReply)}</p>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="pt-3 border-t border-white/10 mt-3 flex items-center justify-between">
+                            <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(c.date || '')}</span>
+                            
+                            <!-- Reply Button & Actions -->
+                            <div class="flex items-center gap-2">
+                                <button onclick="openReplyModal(${c.id})" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1.5 rounded-xl transition-all shadow flex items-center gap-1.5 cursor-pointer">
+                                    <i class="fa-solid fa-reply text-cyan-300"></i> ${isReplied ? 'Edit Reply' : 'Reply (উত্তর দিন)'}
+                                </button>
+                                <a href="https://wa.me/88${(c.contact || '').replace(/[^0-9]/g, '')}" target="_blank" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1.5 rounded-xl border border-emerald-500/30" title="WhatsApp Chat">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Open Reply Modal
+        function openReplyModal(contactId) {
+            const contact = cachedContacts.find(c => c.id === contactId);
+            if (!contact) return;
+
+            activeReplyContact = contact;
+            document.getElementById('replyContactId').value = contact.id;
+            document.getElementById('modalCustomerName').innerText = contact.name;
+            document.getElementById('modalCustomerCode').innerText = contact.userCode ? `ID: ${contact.userCode}` : `Msg #${contact.id}`;
+            document.getElementById('modalCustomerContact').innerText = contact.contact;
+            document.getElementById('modalCustomerMessage').innerText = contact.message;
+            document.getElementById('replyMessageText').value = contact.adminReply || `Hello ${contact.name}, thank you for reaching out to Habib iFix Tech. Regarding your inquiry: `;
+
+            document.getElementById('replyModal').style.display = 'flex';
+        }
+
+        function closeReplyModal() {
+            document.getElementById('replyModal').style.display = 'none';
+            activeReplyContact = null;
+        }
+
+        async function submitReply(e) {
+            e.preventDefault();
+            const contactId = document.getElementById('replyContactId').value;
+            const replyMessage = document.getElementById('replyMessageText').value.trim();
+            const btn = document.getElementById('saveReplyBtn');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Saving...';
+
+            try {
+                const res = await fetch(`/api/contacts/${contactId}/reply`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ replyMessage, replyMethod: 'portal' })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    closeReplyModal();
+                    loadAdminContacts();
+                } else {
+                    alert(data.error || 'Failed to save reply.');
+                }
+            } catch(err) {
+                alert('Error submitting reply: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Save & Publish Reply';
+            }
+        }
+
+        function sendReplyViaWhatsApp() {
+            if (!activeReplyContact) return;
+            const replyText = document.getElementById('replyMessageText').value.trim();
+            const cleanPhone = (activeReplyContact.contact || '').replace(/[^0-9]/g, '');
+            const targetPhone = cleanPhone.startsWith('880') ? cleanPhone : (cleanPhone.startsWith('0') ? '88' + cleanPhone : '880' + cleanPhone);
+            const waUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(replyText)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        function sendReplyViaEmail() {
+            if (!activeReplyContact) return;
+            const replyText = document.getElementById('replyMessageText').value.trim();
+            const email = activeReplyContact.contact;
+            const subject = encodeURIComponent('Re: ' + (activeReplyContact.subject || 'Habib iFix Support Reply'));
+            const mailUrl = `mailto:${email}?subject=${subject}&body=${encodeURIComponent(replyText)}`;
+            window.location.href = mailUrl;
+        }
+
+        async function deleteContactMsg(id) {
+            if (confirm('Delete this contact message?')) {
+                await fetch(`/api/contacts/${id}`, { method: 'DELETE' });
+                loadAdminContacts();
+            }
+        }
+
+        // 4. Load Bookings
         async function loadAdminBookings() {
             try {
                 const res = await fetch('/api/bookings');
@@ -328,7 +974,7 @@
                                 <span class="text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 px-2 py-0.5 rounded-full font-mono font-bold">${escapeHtml(b.planPrice)}</span>
                             </div>
                             <div class="space-y-1.5 text-xs text-slate-300">
-                                <p><strong class="text-white">Customer:</strong> ${escapeHtml(b.customerName)}</p>
+                                <p><strong class="text-white">Customer:</strong> ${escapeHtml(b.customerName)} ${b.userCode ? `<span class="text-[10px] text-cyan-300 font-mono">(${escapeHtml(b.userCode)})</span>` : ''}</p>
                                 <p><strong class="text-white">Phone:</strong> <a href="tel:${b.phone}" class="text-cyan-400 hover:underline font-mono">${escapeHtml(b.phone)}</a></p>
                                 ${b.email ? `<p><strong class="text-white">Email:</strong> ${escapeHtml(b.email)}</p>` : ''}
                                 <p><strong class="text-white">Address / Issue:</strong> ${escapeHtml(b.address)}</p>
@@ -347,7 +993,7 @@
             }
         }
 
-        // 2. Load AI Messages
+        // 5. Load AI Messages
         async function loadAdminAiMessages() {
             try {
                 const res = await fetch('/api/ai-messages');
@@ -359,14 +1005,14 @@
                     return;
                 }
                 grid.innerHTML = messages.map(m => `
-                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-indigo-400 flex flex-col justify-between">
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-purple-400 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
+                                <span class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
                                     <i class="fa-solid fa-microchip"></i> ${escapeHtml(m.category || 'Diagnostic')}
                                 </span>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 px-2 py-0.5 rounded-full font-mono font-bold">${escapeHtml(m.estimatedCost || 'N/A')}</span>
+                                    <span class="text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded-full font-mono font-bold">${escapeHtml(m.estimatedCost || 'N/A')}</span>
                                     <button onclick="deleteAiMsg(${m.id})" class="text-slate-400 hover:text-red-400 transition-colors p-1" title="Delete"><i class="fa-solid fa-trash-can text-xs"></i></button>
                                 </div>
                             </div>
@@ -399,58 +1045,7 @@
             }
         }
 
-        // 3. Load Contact Messages
-        async function loadAdminContacts() {
-            try {
-                const res = await fetch('/api/contacts');
-                const contacts = await res.json();
-                document.getElementById('badgeContacts').innerText = contacts.length;
-                const grid = document.getElementById('adminContactsGrid');
-                if (contacts.length === 0) {
-                    grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No contact messages received yet.</p>';
-                    return;
-                }
-                grid.innerHTML = contacts.map(c => `
-                    <div class="glass-card p-5 rounded-2xl border-l-4 border-l-amber-400 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-bold text-white">${escapeHtml(c.name)}</span>
-                                <button onclick="deleteContactMsg(${c.id})" class="text-slate-400 hover:text-red-400 transition-colors p-1" title="Delete"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                            </div>
-                            <div class="space-y-1.5 text-xs text-slate-300 mb-3">
-                                <p><strong class="text-white">Phone/Email:</strong> <span class="font-mono text-cyan-400">${escapeHtml(c.contact)}</span></p>
-                                <p><strong class="text-white">Subject:</strong> ${escapeHtml(c.subject || 'Website Inquiry')}</p>
-                            </div>
-                            <div class="p-3 bg-slate-900/80 rounded-xl border border-white/10 text-xs text-slate-200 leading-relaxed">
-                                "${escapeHtml(c.message)}"
-                            </div>
-                        </div>
-                        <div class="pt-3 border-t border-white/10 mt-3 flex items-center justify-between">
-                            <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(c.date || '')}</span>
-                            <div class="flex items-center gap-2">
-                                <a href="tel:${c.contact}" class="text-xs font-bold text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 px-2.5 py-1 rounded-lg border border-cyan-500/30">
-                                    <i class="fa-solid fa-phone"></i> Call
-                                </a>
-                                <a href="https://wa.me/88${(c.contact || '').replace(/[^0-9]/g, '')}" target="_blank" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-500/30">
-                                    <i class="fa-brands fa-whatsapp"></i> Chat
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        async function deleteContactMsg(id) {
-            if (confirm('Delete this contact message?')) {
-                await fetch(`/api/contacts/${id}`, { method: 'DELETE' });
-                loadAdminContacts();
-            }
-        }
-
-        // 4. Load Store Orders
+        // 6. Load Store Orders
         async function loadAdminOrders() {
             try {
                 const res = await fetch('/api/orders');
@@ -469,7 +1064,7 @@
                                 <span class="text-xs font-mono font-bold text-emerald-400">${escapeHtml(o.price)}</span>
                             </div>
                             <div class="space-y-1 text-xs text-slate-300">
-                                <p><strong class="text-white">Customer:</strong> ${escapeHtml(o.customerName)} (Qty: ${o.quantity})</p>
+                                <p><strong class="text-white">Customer:</strong> ${escapeHtml(o.customerName)} (Qty: ${o.quantity}) ${o.userCode ? `<span class="text-[10px] text-cyan-300 font-mono font-bold">(${escapeHtml(o.userCode)})</span>` : ''}</p>
                                 <p><strong class="text-white">Phone:</strong> <a href="tel:${o.phone}" class="text-cyan-400 hover:underline font-mono">${escapeHtml(o.phone)}</a></p>
                                 <p><strong class="text-white">Delivery Address:</strong> ${escapeHtml(o.address)}</p>
                                 <p><strong class="text-white">Payment:</strong> <span class="font-mono text-amber-300">${escapeHtml(o.paymentMethod || 'COD')}</span></p>
@@ -503,7 +1098,7 @@
             loadAdminOrders();
         }
 
-        // 5. Load Posts
+        // 7. Load Posts
         async function loadAdminPosts() {
             try {
                 const res = await fetch('/api/posts');
@@ -567,6 +1162,16 @@
                 await fetch(`/api/posts/${id}`, { method: 'DELETE' });
                 loadAdminPosts();
             }
+        }
+
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i>';
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                }, 1500);
+            });
         }
 
         function escapeHtml(text) {

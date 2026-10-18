@@ -187,6 +187,33 @@
             <!-- Dynamically rendered via JS -->
         </div>
 
+        <!-- ULTIMATE FREE SMS SENDER BOX -->
+        <section class="mb-16">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-emerald-400 font-bold tracking-widest text-[10px] uppercase mb-2 block"><i class="fa-solid fa-paper-plane"></i> ULTIMATE FREE SMS SENDER</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3">Customs Free Ultimate SMS Send Box</h2>
+                <p class="text-xs sm:text-sm text-slate-400">Send custom instant SMS messages via Carrybee API gateway instantly.</p>
+            </div>
+
+            <div class="glass-3d rounded-3xl p-6 sm:p-10 max-w-2xl mx-auto border border-emerald-500/30 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <form id="smsSendForm" class="flex flex-col gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Phone Number (num)</label>
+                        <input type="text" id="smsNum" required placeholder="01711223344" class="w-full bg-slate-950 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Message Content (msg)</label>
+                        <textarea id="smsMsg" required rows="4" placeholder="Type your message here..." class="w-full bg-slate-950 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none resize-none"></textarea>
+                    </div>
+                    <button type="submit" id="smsSubmitBtn" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-600/30 text-sm flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-paper-plane"></i> Send Ultimate SMS Now
+                    </button>
+                    <div id="smsResultBox" class="hidden p-4 rounded-xl text-xs font-mono whitespace-pre-wrap mt-2 overflow-x-auto border"></div>
+                </form>
+            </div>
+        </section>
+
         <!-- PRICING TABLE SECTION -->
         <section class="mb-16">
             <div class="text-center max-w-2xl mx-auto mb-10">
@@ -604,6 +631,42 @@
         }
         function toggleLanguage() {
             applyLanguage(currentLang === 'en' ? 'bn' : 'en');
+        }
+
+        const smsForm = document.getElementById('smsSendForm');
+        if (smsForm) {
+            smsForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const num = document.getElementById('smsNum').value.trim();
+                const msg = document.getElementById('smsMsg').value.trim();
+                const btn = document.getElementById('smsSubmitBtn');
+                const resultBox = document.getElementById('smsResultBox');
+
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Sending SMS...';
+                resultBox.classList.add('hidden');
+
+                try {
+                    const res = await fetch(`/api/sms-send?num=${encodeURIComponent(num)}&msg=${encodeURIComponent(msg)}`);
+                    const data = await res.json();
+
+                    const isSuccess = data && (data.error === false || data.status === true);
+                    const statusHeader = isSuccess 
+                        ? '✅ SUCCESS: SMS Gateway Request Sent Successfully!\n\n' 
+                        : '⚠️ GATEWAY RESPONSE:\n\n';
+
+                    resultBox.className = "p-4 rounded-xl text-xs font-mono whitespace-pre-wrap mt-2 overflow-x-auto border " + (isSuccess ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30" : "bg-red-500/10 text-red-300 border-red-500/30");
+                    resultBox.textContent = statusHeader + JSON.stringify(data, null, 2);
+                    resultBox.classList.remove('hidden');
+                } catch(err) {
+                    resultBox.className = "p-4 rounded-xl text-xs font-mono whitespace-pre-wrap mt-2 overflow-x-auto border bg-red-500/10 text-red-300 border-red-500/30";
+                    resultBox.textContent = '❌ Network Error: ' + err.message;
+                    resultBox.classList.remove('hidden');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Ultimate SMS Now';
+                }
+            });
         }
 
         window.addEventListener('DOMContentLoaded', () => {

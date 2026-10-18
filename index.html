@@ -1562,6 +1562,13 @@
             }
         }
 
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
         // Auto load latest blog posts from API with offline cache
         async function loadStoredBlogs() {
             const grid = document.getElementById('dynamicBlogGrid');

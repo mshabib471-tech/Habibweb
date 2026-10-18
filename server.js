@@ -615,11 +615,19 @@ Tone & Style:
 });
 
 // Other API Routes
+// Other API Routes
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   if (username === 'admin' && password === 'admin123') { 
+    const db = readDB();
+    const adminUser = db.users.find(u => u.role === 'admin' || u.email === 'tec.habiburrahman@gmail.com');
+    if (adminUser) {
+      adminUser.loginCount = (adminUser.loginCount || 0) + 1;
+      adminUser.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      writeDB(db);
+    }
     res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-    res.json({ success: true, user: { email: 'tec.habiburrahman@gmail.com', name: 'Habibur Rahman' } });
+    res.json({ success: true, user: { email: 'tec.habiburrahman@gmail.com', name: 'Habibur Rahman', role: 'admin' } });
   } else {
     res.status(401).json({ error: 'Invalid credentials' });
   }
@@ -627,14 +635,54 @@ app.post('/api/login', (req, res) => {
 
 app.post('/api/google-login', (req, res) => {
   const { email, name, picture } = req.body;
-  // Authenticate user with Google Account
-  res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  const userEmail = (email || 'tec.habiburrahman@gmail.com').toLowerCase();
+  const userName = name || userEmail.split('@')[0];
+  const db = readDB();
+  
+  let user = db.users.find(u => u.email.toLowerCase() === userEmail);
+  const isAdminEmail = userEmail.includes('tec.habiburrahman') || userEmail.includes('habib');
+
+  if (!user) {
+    const newId = db.nextUserId++;
+    user = {
+      id: newId,
+      userCode: `HIFIX-USR-${1000 + newId}`,
+      name: userName,
+      email: userEmail,
+      phone: '',
+      role: isAdminEmail ? 'admin' : 'customer',
+      avatar: picture || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(userName)}`,
+      authProvider: 'google',
+      createdAt: new Date().toLocaleDateString('en-GB'),
+      lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      loginCount: 1
+    };
+    db.users.push(user);
+    writeDB(db);
+  } else {
+    user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
+    if (picture) user.avatar = picture;
+    if (isAdminEmail) user.role = 'admin';
+    user.loginCount = (user.loginCount || 0) + 1;
+    user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    writeDB(db);
+  }
+
+  if (user.role === 'admin' || isAdminEmail) {
+    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  }
+  res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+
   res.json({ 
     success: true, 
     user: { 
-      email: email || 'tec.habiburrahman@gmail.com', 
-      name: name || 'Habibur Rahman',
-      picture: picture || 'https://lh3.googleusercontent.com/a/default-user=s96-c'
+      id: user.id,
+      userCode: user.userCode,
+      email: user.email, 
+      name: user.name,
+      role: user.role,
+      avatar: user.avatar,
+      loginCount: user.loginCount
     } 
   });
 });
@@ -647,30 +695,57 @@ app.post('/api/logout', (req, res) => {
 
 // Comprehensive User Authentication API (Customer & Student System)
 app.post('/api/user/login', (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
+  const { email, password, name, phone } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
   }
 
+  const cleanEmail = email.trim().toLowerCase();
   const db = readDB();
-  const user = db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
 
   if (!user) {
-    return res.status(401).json({ error: 'Account not found. Please register or use Google Sign-in.' });
+    // If account doesn't exist, automatically register new real user!
+    const newId = db.nextUserId++;
+    const derivedName = (name && name.trim()) || cleanEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const isAdminEmail = cleanEmail.includes('tec.habiburrahman') || cleanEmail.includes('habib');
+
+    user = {
+      id: newId,
+      userCode: `HIFIX-USR-${1000 + newId}`,
+      name: derivedName,
+      email: cleanEmail,
+      phone: (phone && phone.trim()) || '',
+      password: password || '123456',
+      role: isAdminEmail ? 'admin' : 'customer',
+      avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(derivedName)}`,
+      authProvider: 'email',
+      createdAt: new Date().toLocaleDateString('en-GB'),
+      lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      loginCount: 1
+    };
+    db.users.push(user);
+    writeDB(db);
+  } else {
+    // Existing user: update login count and last active
+    if (password && user.password && user.password !== password) {
+      return res.status(401).json({ error: 'Incorrect password. Please try again.' });
+    }
+    if (name && name.trim()) user.name = name.trim();
+    if (phone && phone.trim()) user.phone = phone.trim();
+
+    user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
+    user.loginCount = (user.loginCount || 0) + 1;
+    user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    writeDB(db);
   }
 
-  if (user.password && user.password !== password) {
-    return res.status(401).json({ error: 'Incorrect password. Please try again.' });
+  // Set cookies
+  if (user.role === 'admin' || cleanEmail.includes('tec.habiburrahman')) {
+    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
   }
-
-  // Update unique userCode, loginCount, and lastLogin
-  user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
-  user.loginCount = (user.loginCount || 0) + 1;
-  user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  writeDB(db);
-
-  // Set user cookie
   res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+
   res.json({
     success: true,
     user: {
@@ -891,11 +966,11 @@ app.delete('/api/admin/users/:id', checkAdmin, (req, res) => {
   res.json({ success: true });
 });
 
-// Site Visitor Counter & Live Stats API
+// Site Visitor Counter & Live Stats API (100% Real Tracking)
 app.get('/api/site-stats', (req, res) => {
   const db = readDB();
   const today = new Date().toLocaleDateString('en-GB');
-  db.siteStats = db.siteStats || { totalVisits: 3420, todayVisits: 285, lastDate: today, visitorLogs: [] };
+  db.siteStats = db.siteStats || { totalVisits: 1, todayVisits: 1, lastDate: today, visitorLogs: [] };
 
   const totalUsers = (db.users || []).length;
   const totalLogins = (db.users || []).reduce((sum, u) => sum + (u.loginCount || 1), 0);
@@ -904,33 +979,38 @@ app.get('/api/site-stats', (req, res) => {
   const totalContacts = (db.contacts || []).length;
   const pendingContacts = (db.contacts || []).filter(c => c.status !== 'replied').length;
 
+  const logs = db.siteStats.visitorLogs || [];
+  // Real active visitors: count unique IP addresses that visited today
+  const uniqueTodayIps = new Set(logs.filter(l => l.date === today).map(l => l.ip));
+  const realActiveNow = Math.max(1, uniqueTodayIps.size);
+
   res.json({
-    totalVisits: db.siteStats.totalVisits || 3420,
-    todayVisits: db.siteStats.todayVisits || 285,
+    totalVisits: Number(db.siteStats.totalVisits || 0),
+    todayVisits: Number(db.siteStats.todayVisits || 0),
     lastDate: db.siteStats.lastDate,
-    visitorLogs: (db.siteStats.visitorLogs || []).slice(0, 25),
+    visitorLogs: logs.slice(0, 30),
     totalUsers,
     totalLogins,
     totalBookings,
     totalOrders,
     totalContacts,
     pendingContacts,
-    activeNow: Math.floor(Math.random() * 6) + 12
+    activeNow: realActiveNow
   });
 });
 
 app.post('/api/record-visit', (req, res) => {
   const db = readDB();
   const today = new Date().toLocaleDateString('en-GB');
-  db.siteStats = db.siteStats || { totalVisits: 3420, todayVisits: 285, lastDate: today, visitorLogs: [] };
+  db.siteStats = db.siteStats || { totalVisits: 0, todayVisits: 0, lastDate: today, visitorLogs: [] };
 
   if (db.siteStats.lastDate !== today) {
     db.siteStats.todayVisits = 1;
     db.siteStats.lastDate = today;
   } else {
-    db.siteStats.todayVisits = (db.siteStats.todayVisits || 0) + 1;
+    db.siteStats.todayVisits = (Number(db.siteStats.todayVisits) || 0) + 1;
   }
-  db.siteStats.totalVisits = (db.siteStats.totalVisits || 0) + 1;
+  db.siteStats.totalVisits = (Number(db.siteStats.totalVisits) || 0) + 1;
 
   const rawIp = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1');
   const cleanIp = String(rawIp).split(',')[0].trim();

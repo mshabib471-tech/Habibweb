@@ -336,21 +336,28 @@
       window.addEventListener('scroll', revealOnScroll);
       window.addEventListener('load', revealOnScroll);
 
-      function toggleMobileMenu() {
-          const menu = document.getElementById('mobileMenu');
-          const icon = document.getElementById('mobileMenuIcon');
-          if (menu.classList.contains('-translate-y-full')) {
-              menu.classList.remove('-translate-y-full', 'opacity-0', 'invisible');
-              menu.classList.add('translate-y-0', 'opacity-100', 'visible');
-              icon.classList.remove('fa-bars');
-              icon.classList.add('fa-xmark');
-          } else {
-              menu.classList.remove('translate-y-0', 'opacity-100', 'visible');
-              menu.classList.add('-translate-y-full', 'opacity-0', 'invisible');
-              icon.classList.remove('fa-xmark');
-              icon.classList.add('fa-bars');
-          }
-      }
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            if (!menu) return;
+            
+            const isHidden = menu.classList.contains('hidden') || menu.classList.contains('-translate-y-full');
+            if (isHidden) {
+                menu.classList.remove('hidden', '-translate-y-full', 'opacity-0', 'invisible');
+                menu.classList.add('translate-y-0', 'opacity-100', 'visible');
+                if (icon) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                }
+            } else {
+                menu.classList.remove('translate-y-0', 'opacity-100', 'visible');
+                menu.classList.add('hidden', '-translate-y-full', 'opacity-0', 'invisible');
+                if (icon) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        }
 
       let currentLang = localStorage.getItem('habib_lang') || 'en';
       function applyLanguage(lang) {

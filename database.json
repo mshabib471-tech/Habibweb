@@ -1,9 +1,16 @@
 {
   "siteStats": {
-    "totalVisits": 3421,
-    "todayVisits": 286,
+    "totalVisits": 3422,
+    "todayVisits": 287,
     "lastDate": "18/10/2026",
     "visitorLogs": [
+      {
+        "path": "index.html",
+        "ip": "103.136.107.128",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, l",
+        "time": "09:17 AM",
+        "date": "18/10/2026"
+      },
       {
         "path": "/services.html",
         "ip": "127.0.0.1",
@@ -187,7 +194,21 @@
       "createdAt": "16/10/2026",
       "lastLogin": "17/10/2026 04:12 PM",
       "loginCount": 2
+    },
+    {
+      "id": 5,
+      "userCode": "HIFIX-USR-1005",
+      "name": "Tanvir Ahmed",
+      "email": "tanvir@example.com",
+      "phone": "01711223344",
+      "password": "mypassword",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Tanvir%20Ahmed",
+      "authProvider": "email",
+      "createdAt": "18/10/2026",
+      "lastLogin": "18/10/2026 09:32 AM",
+      "loginCount": 1
     }
   ],
-  "nextUserId": 5
+  "nextUserId": 6
 }

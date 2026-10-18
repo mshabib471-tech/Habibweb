@@ -28,21 +28,26 @@
     });
   };
 
-  // Bulletproof Mobile Menu Toggle
-  window.toggleMobileMenu = function() {
+  // Bulletproof Universal Menu Toggle (Desktop & Mobile 3-line bar)
+  window.toggleMobileMenu = function(e) {
+    if (e) {
+      if (e.stopPropagation) e.stopPropagation();
+    }
     const menu = document.getElementById('mobileMenu');
     const icon = document.getElementById('mobileMenuIcon');
     if (!menu) return;
     
-    const isHidden = menu.classList.contains('hidden');
+    const isHidden = menu.classList.contains('hidden') || menu.style.display === 'none';
     if (isHidden) {
       menu.classList.remove('hidden');
+      menu.style.display = 'block';
       if (icon) {
         icon.classList.remove('fa-bars');
         icon.classList.add('fa-xmark');
       }
     } else {
       menu.classList.add('hidden');
+      menu.style.display = 'none';
       if (icon) {
         icon.classList.remove('fa-xmark');
         icon.classList.add('fa-bars');
@@ -134,12 +139,13 @@
       });
     }
 
-    // Close menu when clicking outside
+    // Close menu when clicking outside (safe check)
     document.addEventListener('click', (e) => {
       const menu = document.getElementById('mobileMenu');
-      const hamburger = document.querySelector('[onclick="toggleMobileMenu()"]');
+      const isToggleBtn = e.target.closest('[onclick*="toggleMobileMenu"]') || e.target.closest('.menu-toggle-btn') || e.target.closest('#mobileMenuIcon');
+      if (isToggleBtn) return;
       if (menu && !menu.classList.contains('hidden')) {
-        if (!menu.contains(e.target) && hamburger && !hamburger.contains(e.target)) {
+        if (!menu.contains(e.target)) {
           menu.classList.add('hidden');
           const icon = document.getElementById('mobileMenuIcon');
           if (icon) {

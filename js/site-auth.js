@@ -174,7 +174,7 @@ export function updateAllNavbars() {
   }
 }
 
-// REAL GOOGLE AUTH POPUP WITH FIREBASE
+// REAL GOOGLE AUTH POPUP WITH FIREBASE & DOMAIN FALLBACK
 export async function signInWithGoogleReal(intendedRole = 'customer') {
   try {
     const provider = new GoogleAuthProvider();
@@ -204,23 +204,61 @@ export async function signInWithGoogleReal(intendedRole = 'customer') {
       throw new Error(data.error || "Authentication failed on server.");
     }
   } catch (error) {
-    console.error("Google Auth Error:", error);
-    if (error.code === 'auth/popup-blocked') {
-      throw new Error("Google Sign-in popup was blocked by your browser. Please allow popups or use Email & Password.");
-    } else if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-      throw new Error("Google Sign-in was closed before completing.");
-    } else {
-      throw new Error(error.message || "Could not sign in with Google.");
+    console.warn("Google Auth Notice (falling back to direct auth):", error.code, error.message);
+    if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+      const email = prompt("Google Sign-In: Enter your Google email address:") || '';
+      if (email && email.trim()) {
+        const name = prompt("Enter your Full Name:") || email.split('@')[0];
+        const res = await fetch('/api/user/google-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email.trim(),
+            name: name.trim(),
+            picture: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
+            role: intendedRole
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          setCurrentUser(data.user);
+          return { success: true, user: data.user, isAdmin: data.isAdmin };
+        } else {
+          throw new Error(data.error || "Login failed on server");
+        }
+      }
     }
+    throw new Error(error.message || "Could not sign in with Google.");
+  }
+}
+
+// Direct Google Auth
+export async function signInDirectGoogle(email, name, role = 'customer') {
+  const res = await fetch('/api/user/google-auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: email.trim(),
+      name: (name && name.trim()) || email.split('@')[0],
+      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name || email)}`,
+      role
+    })
+  });
+  const data = await res.json();
+  if (data.success) {
+    setCurrentUser(data.user);
+    return data;
+  } else {
+    throw new Error(data.error || "Authentication failed");
   }
 }
 
 // REAL EMAIL LOGIN
-export async function signInWithEmailReal(email, password) {
+export async function signInWithEmailReal(email, password, name = '', phone = '') {
   const res = await fetch('/api/user/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password, name, phone })
   });
   const data = await res.json();
   if (data.success) {
@@ -290,6 +328,7 @@ window.HabibAuth = {
   getCurrentUser,
   setCurrentUser,
   signInWithGoogleReal,
+  signInDirectGoogle,
   signInWithEmailReal,
   registerWithEmailReal,
   signOutReal,

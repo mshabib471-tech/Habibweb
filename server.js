@@ -30,7 +30,7 @@ function readDB() {
   }
   const targetFile = getDbPath();
   if (!fs.existsSync(targetFile)) {
-    inMemoryDB = { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1 };
+    inMemoryDB = { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1 };
     return inMemoryDB;
   }
   try {
@@ -41,16 +41,18 @@ function readDB() {
     data.contacts = data.contacts || [];
     data.aiMessages = data.aiMessages || [];
     data.orders = data.orders || [];
+    data.offers = data.offers || [];
     data.nextPostId = data.nextPostId || 1;
     data.nextBookingId = data.nextBookingId || 1;
     data.nextUserId = data.nextUserId || 1;
     data.nextContactId = data.nextContactId || 1;
     data.nextAiMsgId = data.nextAiMsgId || 1;
     data.nextOrderId = data.nextOrderId || 1;
+    data.nextOfferId = data.nextOfferId || 1;
     inMemoryDB = data;
     return inMemoryDB;
   } catch (e) {
-    inMemoryDB = { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1 };
+    inMemoryDB = { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1 };
     return inMemoryDB;
   }
 }
@@ -70,13 +72,30 @@ function writeDB(data) {
   }
 }
 
-// Auth middleware
+// Auth middleware - checks admin cookie, admin token header, or admin user session
 const checkAdmin = (req, res, next) => {
-  if (req.cookies.admin_session === 'habib_admin_token_2026') {
-    next();
-  } else {
-    res.status(401).json({ error: 'Unauthorized' });
+  const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
+  const adminHeader = req.headers['x-admin-token'] === 'habib_admin_token_2026';
+  if (adminCookie || adminHeader) {
+    return next();
   }
+
+  // Check user session ID
+  const userSessionId = req.cookies && req.cookies.user_session;
+  if (userSessionId) {
+    const db = readDB();
+    const user = (db.users || []).find(u => u.id === parseInt(userSessionId));
+    if (user && (user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman')))) {
+      return next();
+    }
+  }
+
+  const userEmail = req.headers['x-user-email'];
+  if (userEmail && userEmail.toLowerCase().includes('tec.habiburrahman')) {
+    return next();
+  }
+
+  res.status(401).json({ error: 'Unauthorized: Admin access required' });
 };
 
 // Initialize Gemini SDK with process.env.GEMINI_API_KEY or provided fallback
@@ -1048,11 +1067,27 @@ app.get('/api/user/my-bookings', (req, res) => {
 });
 
 app.get('/api/check-admin', (req, res) => {
-  if (req.cookies.admin_session === 'habib_admin_token_2026') {
-    res.json({ isAdmin: true });
-  } else {
-    res.json({ isAdmin: false });
+  const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
+  const adminHeader = req.headers['x-admin-token'] === 'habib_admin_token_2026';
+  if (adminCookie || adminHeader) {
+    return res.json({ isAdmin: true, email: 'tec.habiburrahman@gmail.com' });
   }
+
+  const userSessionId = req.cookies && req.cookies.user_session;
+  if (userSessionId) {
+    const db = readDB();
+    const user = (db.users || []).find(u => u.id === parseInt(userSessionId));
+    if (user && (user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman')))) {
+      return res.json({ isAdmin: true, email: user.email, name: user.name });
+    }
+  }
+
+  const authEmail = req.headers['x-user-email'];
+  if (authEmail && authEmail.toLowerCase().includes('tec.habiburrahman')) {
+    return res.json({ isAdmin: true, email: authEmail });
+  }
+
+  res.json({ isAdmin: false });
 });
 
 app.get('/api/posts', (req, res) => {
@@ -1090,6 +1125,129 @@ app.delete('/api/posts/:id', checkAdmin, (req, res) => {
   db.posts = (db.posts || []).filter(p => p.id !== parseInt(req.params.id));
   writeDB(db);
   res.json({ success: true });
+});
+
+// ==========================================
+// FREE OFFERS & PERKS CRUD API (Admin & Public)
+// ==========================================
+app.get('/api/offers', (req, res) => {
+  const db = readDB();
+  const offers = (db.offers || []).sort((a, b) => {
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    return b.id - a.id;
+  });
+  res.json(offers);
+});
+
+app.get('/api/offers/:id', (req, res) => {
+  const db = readDB();
+  const offer = (db.offers || []).find(o => o.id === parseInt(req.params.id));
+  if (!offer) return res.status(404).json({ error: 'Offer not found' });
+  res.json(offer);
+});
+
+app.post('/api/offers', checkAdmin, (req, res) => {
+  const {
+    title, subtitle, badge, category, image, description,
+    whatYouGet, whoShouldApply, howToApply, officialProgramUrl,
+    applicationFormUrl, importantNote, shareCallout, featured
+  } = req.body;
+
+  if (!title) {
+    return res.status(400).json({ error: 'Offer title is required' });
+  }
+
+  const db = readDB();
+  db.offers = db.offers || [];
+  db.nextOfferId = db.nextOfferId || (db.offers.length ? Math.max(...db.offers.map(o => o.id)) + 1 : 1);
+  const id = db.nextOfferId++;
+
+  const newOffer = {
+    id,
+    title: title.trim(),
+    subtitle: (subtitle || '').trim(),
+    badge: (badge || 'FREE OFFER').trim(),
+    category: (category || 'Special Offers').trim(),
+    image: (image || '/public/assets/aistudio/IMG_20261022_013415_287_0564f47b.jpg').trim(),
+    description: (description || '').trim(),
+    whatYouGet: Array.isArray(whatYouGet) ? whatYouGet : (whatYouGet ? whatYouGet.split('\n').map(s => s.trim()).filter(Boolean) : []),
+    whoShouldApply: (whoShouldApply || '').trim(),
+    howToApply: Array.isArray(howToApply) ? howToApply : (howToApply ? howToApply.split('\n').map(s => s.trim()).filter(Boolean) : []),
+    officialProgramUrl: (officialProgramUrl || '').trim(),
+    applicationFormUrl: (applicationFormUrl || '').trim(),
+    importantNote: (importantNote || '').trim(),
+    shareCallout: (shareCallout || 'Share this offer with friends!').trim(),
+    reactions: { fire: 1, heart: 1, rocket: 1 },
+    date: new Date().toLocaleDateString('en-GB'),
+    featured: !!featured,
+    status: 'active'
+  };
+
+  db.offers.unshift(newOffer);
+  writeDB(db);
+  res.json({ success: true, offer: newOffer });
+});
+
+app.put('/api/offers/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  const offer = (db.offers || []).find(o => o.id === parseInt(req.params.id));
+  if (!offer) return res.status(404).json({ error: 'Offer not found' });
+
+  const {
+    title, subtitle, badge, category, image, description,
+    whatYouGet, whoShouldApply, howToApply, officialProgramUrl,
+    applicationFormUrl, importantNote, shareCallout, featured, status
+  } = req.body;
+
+  if (title) offer.title = title.trim();
+  if (subtitle !== undefined) offer.subtitle = subtitle.trim();
+  if (badge !== undefined) offer.badge = badge.trim();
+  if (category !== undefined) offer.category = category.trim();
+  if (image !== undefined) offer.image = image.trim();
+  if (description !== undefined) offer.description = description.trim();
+  if (whatYouGet !== undefined) {
+    offer.whatYouGet = Array.isArray(whatYouGet) ? whatYouGet : whatYouGet.split('\n').map(s => s.trim()).filter(Boolean);
+  }
+  if (whoShouldApply !== undefined) offer.whoShouldApply = whoShouldApply.trim();
+  if (howToApply !== undefined) {
+    offer.howToApply = Array.isArray(howToApply) ? howToApply : howToApply.split('\n').map(s => s.trim()).filter(Boolean);
+  }
+  if (officialProgramUrl !== undefined) offer.officialProgramUrl = officialProgramUrl.trim();
+  if (applicationFormUrl !== undefined) offer.applicationFormUrl = applicationFormUrl.trim();
+  if (importantNote !== undefined) offer.importantNote = importantNote.trim();
+  if (shareCallout !== undefined) offer.shareCallout = shareCallout.trim();
+  if (featured !== undefined) offer.featured = !!featured;
+  if (status !== undefined) offer.status = status;
+
+  writeDB(db);
+  res.json({ success: true, offer });
+});
+
+app.delete('/api/offers/:id', checkAdmin, (req, res) => {
+  const db = readDB();
+  const id = parseInt(req.params.id);
+  db.offers = (db.offers || []).filter(o => o.id !== id);
+  writeDB(db);
+  res.json({ success: true, message: 'Offer deleted successfully' });
+});
+
+app.post('/api/offers/:id/react', (req, res) => {
+  const { type } = req.body; // 'fire', 'heart', or 'rocket'
+  if (!['fire', 'heart', 'rocket'].includes(type)) {
+    return res.status(400).json({ error: 'Invalid reaction type' });
+  }
+  const db = readDB();
+  const offer = (db.offers || []).find(o => o.id === parseInt(req.params.id));
+  if (!offer) return res.status(404).json({ error: 'Offer not found' });
+  offer.reactions = offer.reactions || { fire: 0, heart: 0, rocket: 0 };
+  offer.reactions[type] = (offer.reactions[type] || 0) + 1;
+  writeDB(db);
+  res.json({ success: true, reactions: offer.reactions });
+});
+
+app.get(['/free-offer', '/free-offers', '/free-offer.html', '/free-offers.html'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'free-offer.html'));
 });
 
 // Contact Form API with User ID & Admin Message Reply System

@@ -210,5 +210,179 @@
       "loginCount": 1
     }
   ],
-  "nextUserId": 6
+  "nextUserId": 6,
+  "offers": [
+    {
+      "id": 1,
+      "title": "GET HOSTINGER UNLIMITED 12 MONTHS FOR FREE! 🚀",
+      "subtitle": "Hostinger Restore Program — Applications Open!",
+      "badge": "EXCLUSIVE • 100% FREE",
+      "category": "Cloud & Web Hosting",
+      "image": "/public/assets/aistudio/IMG_20261022_013415_287_0564f47b.jpg",
+      "description": "Get 12 months of Hostinger AI Builder & cloud hosting at zero cost to turn your ideas into digital solutions that address environmental challenges and create real-world impact.",
+      "whatYouGet": [
+        "Hostinger Unlimited AI Builder & Hosting — 12 Months",
+        "Free Domain — 1 Year",
+        "Professional Email",
+        "Visitor Analytics",
+        "15 Initial AI Credits + Up to 60 Additional Credits",
+        "Customer Support"
+      ],
+      "whoShouldApply": "Environmental projects, sustainability initiatives, and organizations working to solve real environmental challenges.",
+      "howToApply": [
+        "Visit the official program page.",
+        "Read the eligibility requirements.",
+        "Complete the application form.",
+        "Wait for the review and approval."
+      ],
+      "officialProgramUrl": "https://www.hostinger.com/restore-program",
+      "applicationFormUrl": "https://www.hostinger.com/restore-program#apply",
+      "importantNote": "This is an application-based offer, not a guaranteed free plan. Approval depends on eligibility and the program's selection process. A general website or AI tools store alone may not qualify.",
+      "shareCallout": "Share this opportunity with someone working on an environmental project!",
+      "reactions": {
+        "fire": 142,
+        "heart": 89,
+        "rocket": 106
+      },
+      "date": "22/10/2026",
+      "featured": true,
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "title": "📱 100% Free Master Phone Diagnostics & Dust Cleaning",
+      "subtitle": "Habib iFix Lab Walk-in Privilege Voucher",
+      "badge": "HABIB IFIX EXCLUSIVE",
+      "category": "Lab Repair Perks",
+      "image": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&q=75",
+      "description": "Bring any dead, heating, slow-charging or glitching phone to our Chattogram lab. We will inspect motherboard lines under high-def microscopes, test battery cycles, and ultrasonic-clean charging ports completely free of charge with zero obligation.",
+      "whatYouGet": [
+        "Full Motherboard DC Power Draw & Short Circuit Inspection",
+        "Battery Health & Charge Cycle Diagnosis",
+        "Type-C / Lightning Port & Speaker Grill Ultrasonic Cleaning",
+        "Transparent Repair Cost Estimation with Genuine Parts"
+      ],
+      "whoShouldApply": "Anyone facing phone issues who wants an honest, expert technician opinion before spending money anywhere else.",
+      "howToApply": [
+        "Book a slot online or simply visit Habib iFix lab.",
+        "Show this free offer voucher on your screen.",
+        "Get hands-on diagnosis in 15-20 minutes."
+      ],
+      "officialProgramUrl": "contact.html",
+      "applicationFormUrl": "contact.html?plan=FreeDiagnostic",
+      "importantNote": "Diagnostics and port dusting are completely free. If any hardware components need micro-soldering or replacement, you will be given an exact quote and work will only proceed with your consent.",
+      "shareCallout": "Let your friends know so they don't get overcharged for basic checks!",
+      "reactions": {
+        "fire": 98,
+        "heart": 124,
+        "rocket": 75
+      },
+      "date": "20/10/2026",
+      "featured": true,
+      "status": "active"
+    },
+    {
+      "id": 3,
+      "title": "🛡️ Free 9H Nano Tempered Glass with Any Screen Repair",
+      "subtitle": "Free Screen Shield & Lens Guard Gift",
+      "badge": "INSTANT GIFT",
+      "category": "Lab Repair Perks",
+      "image": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&q=75",
+      "description": "Whenever you replace a cracked display or renew your broken front glass using our OCA lamination service, our technicians will apply a 9H hardness tempered glass protector completely free to keep your new screen safe.",
+      "whatYouGet": [
+        "9H Curved Edge Edge-to-Edge Glass Protector",
+        "Bubble-free Precision Machine & UV Glue Application",
+        "Oleophobic Fingerprint-Resistant Nano Coating",
+        "Free Rear Camera Lens Scratch Protector"
+      ],
+      "whoShouldApply": "All display replacement and OCA glass repair customers at Habib iFix.",
+      "howToApply": [
+        "Book an OCA display or glass replacement job.",
+        "Mention the Free Tempered Glass offer during intake.",
+        "Receive your phone with the protector installed."
+      ],
+      "officialProgramUrl": "services.html",
+      "applicationFormUrl": "services.html#pricing",
+      "importantNote": "Available on all supported iPhone, Samsung, Xiaomi, Vivo, Oppo, Realme, and Infinix models.",
+      "shareCallout": "Save ৳৩০০ - ৳৫০০ on accessories when fixing your screen!",
+      "reactions": {
+        "fire": 87,
+        "heart": 93,
+        "rocket": 62
+      },
+      "date": "18/10/2026",
+      "featured": false,
+      "status": "active"
+    },
+    {
+      "id": 4,
+      "title": "💻 GitHub Student Developer Pack — 00k+ Free Tools",
+      "subtitle": "Free Cloud, Domains, Copilot & Premium IDEs",
+      "badge": "STUDENT PERK",
+      "category": "Student & Dev Perks",
+      "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=75",
+      "description": "If you are a student or learning software development, get access to dozens of premier tools for free: GitHub Copilot, free JetBrains all-products pack, 00 DigitalOcean credit, free Namecheap/Name.com domain names, and Canva Pro.",
+      "whatYouGet": [
+        "GitHub Copilot Free Access while enrolled as student",
+        "JetBrains All Products Pack (WebStorm, IntelliJ, PyCharm)",
+        "00 to 00 Free Cloud Credits (DigitalOcean & Azure)",
+        "1 Free .me Domain + Free SSL Certificate",
+        "Free Canva Pro Subscription for 12 months"
+      ],
+      "whoShouldApply": "Any enrolled school, college, or university student with a valid student ID card or educational (.edu) email address.",
+      "howToApply": [
+        "Visit education.github.com/pack.",
+        "Sign in with your GitHub account.",
+        "Submit proof of student enrollment (ID card or edu email).",
+        "Get approved in 1 to 5 business days."
+      ],
+      "officialProgramUrl": "https://education.github.com/pack",
+      "applicationFormUrl": "https://education.github.com/pack/join",
+      "importantNote": "Requires a valid student ID card with current academic year or educational email address.",
+      "shareCallout": "Share with any student learning coding or web design!",
+      "reactions": {
+        "fire": 156,
+        "heart": 110,
+        "rocket": 140
+      },
+      "date": "16/10/2026",
+      "featured": false,
+      "status": "active"
+    },
+    {
+      "id": 5,
+      "title": "🔓 Habib iFix 2026 USB Drivers & FRP Bypass Toolkit",
+      "subtitle": "Free Master Flashing Tools & Direct High-Speed Download",
+      "badge": "FREE DOWNLOAD",
+      "category": "Software & Tools",
+      "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=75",
+      "description": "Direct high-speed Google Drive and Mega mirrors for Qualcomm EDL 9008 USB drivers, MediaTek VCOM drivers, Samsung Smart Switch USB, ADB Fastboot tools, and verified 2026 Android unlock utilities.",
+      "whatYouGet": [
+        "Universal Qualcomm QDLoader 9008 Drivers (Win 10/11 64-bit)",
+        "MediaTek MTK Preloader & Brom Mode Bypass LibUSB drivers",
+        "Samsung USB Mobile Drivers v1.7.59",
+        "Minimal ADB and Fastboot Portable Toolkit",
+        "Step-by-step PDF Flashing & Test Point Guide"
+      ],
+      "whoShouldApply": "Mobile technicians, repair students, and users needing verified drivers without malware or ad-shortener redirects.",
+      "howToApply": [
+        "Visit our FRP & Tools section.",
+        "Click the verified one-click download mirror.",
+        "Extract zip and run install.bat."
+      ],
+      "officialProgramUrl": "frp.html",
+      "applicationFormUrl": "frp.html#downloads",
+      "importantNote": "All files are scanned with VirusTotal and stored on clean mirrors. For educational & legitimate recovery use only.",
+      "shareCallout": "Save this link so you never struggle with broken USB drivers again!",
+      "reactions": {
+        "fire": 112,
+        "heart": 78,
+        "rocket": 99
+      },
+      "date": "15/10/2026",
+      "featured": false,
+      "status": "active"
+    }
+  ],
+  "nextOfferId": 6
 }

@@ -103,6 +103,9 @@ export function updateAllNavbars() {
                   <i class="fa-solid fa-gauge text-amber-400"></i> Admin Dashboard
                 </a>
               ` : ''}
+              <a href="free-offer.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-purple-300 hover:bg-white/10 rounded-xl transition-colors">
+                <i class="fa-solid fa-gift text-purple-400"></i> Free Offers & Perks 🎁
+              </a>
               <a href="contact.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/10 rounded-xl transition-colors">
                 <i class="fa-solid fa-wrench text-cyan-400"></i> Book Repair / Ticket
               </a>
@@ -111,7 +114,7 @@ export function updateAllNavbars() {
               </a>
             </div>
             <div class="pt-1.5">
-              <button onclick="window.doRealLogout()" class="w-full text-left flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500/10 rounded-xl transition-colors">
+              <button onclick="window.doRealLogout()" class="w-full text-left flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer">
                 <i class="fa-solid fa-power-off text-red-400"></i> Sign Out
               </button>
             </div>
@@ -130,6 +133,32 @@ export function updateAllNavbars() {
         document.addEventListener('click', () => {
           panel.classList.add('hidden');
         });
+      }
+
+      // Universal Floating Admin Ribbon for logged-in admin on all pages
+      if (isAdmin && !window.location.pathname.endsWith('admin.html')) {
+        let adminBar = document.getElementById('adminUniversalQuickBar');
+        if (!adminBar) {
+          adminBar = document.createElement('div');
+          adminBar.id = 'adminUniversalQuickBar';
+          adminBar.className = 'fixed bottom-4 right-4 z-50 flex items-center gap-2 p-2 rounded-2xl bg-slate-950/95 border border-amber-500/40 shadow-[0_10px_35px_rgba(0,0,0,0.8)] backdrop-blur-xl';
+          adminBar.innerHTML = `
+            <div class="flex items-center gap-2 pl-2 pr-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+              <span class="text-xs font-black text-amber-300 hidden md:inline">Admin Mode</span>
+            </div>
+            <a href="admin.html" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-black border border-amber-500/40 transition-colors flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-gauge"></i> <span>Dashboard</span>
+            </a>
+            <a href="free-offer.html" class="px-3 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 text-xs font-black border border-purple-500/40 transition-colors flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-gift"></i> <span>Free Offers</span>
+            </a>
+            <button onclick="window.doRealLogout()" title="Logout" class="p-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-400 text-xs border border-red-500/40 transition-colors cursor-pointer">
+              <i class="fa-solid fa-power-off"></i>
+            </button>
+          `;
+          document.body.appendChild(adminBar);
+        }
       }
     });
 
@@ -171,6 +200,9 @@ export function updateAllNavbars() {
 
     const mobileBox = document.getElementById('mobileUserBox');
     if (mobileBox) mobileBox.remove();
+
+    const existingQuickBar = document.getElementById('adminUniversalQuickBar');
+    if (existingQuickBar) existingQuickBar.remove();
   }
 }
 
@@ -294,6 +326,11 @@ export async function signOutReal() {
     await fetch('/api/logout', { method: 'POST' });
   } catch (e) {}
   setCurrentUser(null);
+  localStorage.removeItem('habib_logged_in');
+  localStorage.removeItem('habib_is_admin');
+  localStorage.removeItem('habib_user_email');
+  const existingQuickBar = document.getElementById('adminUniversalQuickBar');
+  if (existingQuickBar) existingQuickBar.remove();
   window.location.reload();
 }
 

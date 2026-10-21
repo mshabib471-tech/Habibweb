@@ -79,7 +79,7 @@
     localStorage.setItem('habib_lang', lang);
     const btn = document.getElementById('langSwitchBtn');
     if (btn) {
-      btn.innerHTML = `<i class="fa-solid fa-globe text-indigo-400 text-xs"></i> <span>${lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)'}</span>`;
+      btn.innerHTML = `<i class="fa-solid fa-globe text-cyan-400 text-xs"></i> <span class="hidden sm:inline font-bold">${lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)'}</span><span class="sm:hidden font-extrabold">${lang === 'en' ? 'বাংলা' : 'EN'}</span>`;
     }
     document.querySelectorAll('[data-en]').forEach(el => {
       const text = el.getAttribute(`data-${lang}`);

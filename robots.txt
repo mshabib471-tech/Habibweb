@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /favicon.ico
+Allow: /favicon.svg
+Allow: /logo.png
+Allow: /*.png
+Allow: /*.svg
+
+Sitemap: https://www.habibifix.tech/sitemap.xml

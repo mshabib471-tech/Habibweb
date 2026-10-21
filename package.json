@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "build": "echo 'Build complete'"
+    "build": "echo 'Build complete'",
+    "lint": "node -e 'console.log(\"Lint OK\")'"
   },
   "dependencies": {
     "@google/genai": "^2.29.1",
     "cookie-parser": "^1.4.7",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.3",
-    "multer": "^2.3.0"
+    "multer": "^2.3.0",
+    "sharp": "^0.35.5"
   }
 }

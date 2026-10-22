@@ -14,27 +14,12 @@ app.use(cookieParser());
 app.use(express.static(__dirname));
 
 // DB Helper with Serverless Fallback
-let inMemoryDB = null;
-
-function getDbPath() {
-  const tmpPath = path.join('/tmp', 'database.json');
-  if (fs.existsSync(tmpPath)) {
-    return tmpPath;
-  }
-  return DB_FILE;
-}
-
 function readDB() {
-  if (inMemoryDB) {
-    return inMemoryDB;
-  }
-  const targetFile = getDbPath();
-  if (!fs.existsSync(targetFile)) {
-    inMemoryDB = { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1 };
-    return inMemoryDB;
+  if (!fs.existsSync(DB_FILE)) {
+    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1 };
   }
   try {
-    const data = JSON.parse(fs.readFileSync(targetFile, 'utf8'));
+    const data = JSON.parse(fs.readFileSync(DB_FILE, "utf8"));
     data.posts = data.posts || [];
     data.bookings = data.bookings || [];
     data.users = data.users || [];
@@ -49,26 +34,17 @@ function readDB() {
     data.nextAiMsgId = data.nextAiMsgId || 1;
     data.nextOrderId = data.nextOrderId || 1;
     data.nextOfferId = data.nextOfferId || 1;
-    inMemoryDB = data;
-    return inMemoryDB;
+    return data;
   } catch (e) {
-    inMemoryDB = { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1 };
-    return inMemoryDB;
+    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1 };
   }
 }
 
 function writeDB(data) {
-  inMemoryDB = data;
   try {
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
   } catch (err) {
-    // Read-only filesystem in Vercel serverless environment
-    try {
-      const tmpPath = path.join('/tmp', 'database.json');
-      fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2));
-    } catch (tmpErr) {
-      // Retained in inMemoryDB
-    }
+    console.error("Failed to write to database.json:", err);
   }
 }
 

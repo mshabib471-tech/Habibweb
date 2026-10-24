@@ -13,6 +13,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
+const firebaseConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'firebase-applet-config.json'), 'utf8'));
+
+// API Endpoint for Firebase Config
+app.get('/api/firebase-config', (req, res) => {
+  res.json(firebaseConfig);
+});
+
 // DB Helper with Serverless Fallback
 function readDB() {
   if (!fs.existsSync(DB_FILE)) {

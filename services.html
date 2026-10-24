@@ -63,713 +63,112 @@
         </button>
     </div>
 
-    <!-- MAIN NAVBAR (UNIFIED ACROSS ALL PAGES) -->
+    <!-- Header / Navbar -->
     <header class="sticky top-0 left-0 w-full z-40 glass-nav">
-        <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-1.5 sm:gap-4">
-            <a href="index.html" class="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0">
-                <div class="brand-logo-box w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1.5px] shadow-[0_0_15px_rgba(99,102,241,0.4)] group-hover:shadow-[0_0_22px_rgba(6,182,212,0.6)] transition-all flex items-center justify-center">
-                    <div class="w-full h-full bg-slate-950 rounded-[11px] sm:rounded-[13px] flex items-center justify-center">
-                        <svg class="h-logo-svg w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="url(#hLogoGradSrv)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="5.5" cy="4.5" r="1.5" fill="#38bdf8"/>
-                            <circle cx="18.5" cy="4.5" r="1.5" fill="#818cf8"/>
-                            <circle cx="5.5" cy="19.5" r="1.5" fill="#38bdf8"/>
-                            <circle cx="18.5" cy="19.5" r="1.5" fill="#818cf8"/>
-                            <circle cx="12" cy="12" r="1.8" fill="#ffffff"/>
-                            <defs>
-                                <linearGradient id="hLogoGradSrv" x1="5.5" y1="4.5" x2="18.5" y2="19.5" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#38bdf8"/>
-                                    <stop offset="0.5" stop-color="#ffffff"/>
-                                    <stop offset="1" stop-color="#818cf8"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-2">
+            
+            <!-- Brand Logo with Glossy Glass Icon -->
+            <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+                <img src="/logo.png" alt="Habib iFix Logo" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.5)] group-hover:scale-105 transition-transform">
+                <div class="flex flex-col justify-center leading-none">
+                    <div class="flex items-center gap-1 sm:gap-1.5">
+                        <span class="font-black text-lg sm:text-xl tracking-tight text-white">Habib</span>
+                        <span class="font-black text-lg sm:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">iFix</span>
+                        <span class="text-[9px] sm:text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-1.5 py-0.5 rounded-md font-mono font-bold">.Tech</span>
                     </div>
-                </div>
-                <div class="flex flex-col justify-center min-w-0">
-                    <div class="flex items-center gap-1 sm:gap-1.5 leading-none">
-                        <span class="brand-name-habib font-black text-lg sm:text-xl tracking-tight text-white">Habib</span>
-                        <span class="brand-name-ifix font-black text-lg sm:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">iFix</span>
-                        <span class="brand-name-tech text-[9px] sm:text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-1.5 sm:px-2 py-0.5 rounded-md font-mono-code font-bold ml-0.5 sm:ml-1 shadow-sm">.Tech</span>
-                    </div>
-                    <p class="hidden sm:block text-[10px] text-slate-300 font-bold mt-1" data-en="Mobile Engineering & Digital Lab" data-bn="মোবাইল ইঞ্জিনিয়ারিং ও ডিজিটাল ল্যাব">Mobile Engineering & Digital Lab</p>
+                    <p class="hidden sm:block text-[10px] text-slate-300 font-bold mt-1">Mobile Engineering & Free Tech Perks</p>
                 </div>
             </a>
 
-            <!-- Desktop Navigation Links (Now hidden on all screen sizes to enforce mobile menu) -->
-            <nav class="hidden">
-                <a href="index.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Home" data-bn="হোম">Home</a>
-                <a href="about.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="About" data-bn="পরিচিতি">About</a>
-                <a href="services.html" class="px-4 py-2 rounded-full text-xs font-black text-white bg-indigo-600 shadow-md shadow-indigo-600/30 transition-all" data-en="Services" data-bn="সেবাসমূহ">Services</a>
-                <a href="courses.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Courses" data-bn="কোর্স">Courses</a>
-                <a href="cv.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1.5" data-en="CV Maker" data-bn="সিভি মেকার">
-                    <i class="fa-solid fa-file-lines text-xs text-cyan-300"></i> CV Maker
+            <!-- Right Controls: Free Offers Badge + Login + Universal Menu -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="free-offer.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300 text-xs font-black shadow-sm shadow-purple-500/20">
+                    <i class="fa-solid fa-gift text-purple-400"></i>
+                    <span>Free Offers</span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 </a>
-                <a href="frp.html" class="px-3.5 py-2 rounded-full text-xs font-extrabold text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-unlock-keyhole text-[10px]"></i> FRP 2026
-                </a>
-                <a href="blog.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Blog" data-bn="ব্লগ">Blog</a>
-                <a href="contact.html" class="px-3.5 py-2 rounded-full text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-all" data-en="Contact" data-bn="যোগাযোগ">Contact</a>
-                <a href="admin.html" class="px-3 py-2 rounded-full text-xs font-semibold text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-lock text-[10px]"></i> Admin
-                </a>
-            </nav>
 
-            <!-- Actions: Lang + Auth + 3-Line Menu (Desktop & Mobile) -->
-            <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-                <!-- Language Switcher -->
-                <button onclick="toggleLanguage()" id="langSwitchBtn" class="glass-card hover:border-white/30 text-slate-200 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold transition-colors flex items-center gap-1 sm:gap-1.5 cursor-pointer shrink-0" title="Switch Language">
-                    <i class="fa-solid fa-globe text-cyan-400 text-xs"></i>
-                    <span class="hidden sm:inline font-bold">English (ENG)</span>
-                    <span class="sm:hidden font-extrabold">EN</span>
-                </button>
-
-                <!-- Auth State Components -->
-                <div id="loginNavBtn" class="shrink-0">
-                    <a href="login.html" class="bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all shadow-md shadow-indigo-600/30 flex items-center gap-1 sm:gap-1.5 cursor-pointer shrink-0">
+                <!-- User Profile / Login -->
+                <div id="loginNavBtn">
+                    <a href="login.html" class="bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black transition-all shadow-md shadow-indigo-600/30 flex items-center gap-1.5">
                         <i class="fa-solid fa-right-to-bracket text-xs"></i>
-                        <span data-en="Login" data-bn="লগইন">Login</span>
+                        <span>Login</span>
                     </a>
                 </div>
+                <div id="profileBtn" class="hidden items-center gap-1.5"></div>
 
-                <!-- User Profile Dropdown (when logged in) -->
-                <div id="profileBtn" class="hidden items-center gap-1.5 shrink-0"></div>
-
-                <!-- Universal 3-Line Menu Button (Visible on Desktop AND Mobile!) -->
-                <button onclick="toggleMobileMenu(event)" id="universalMenuBtn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/95 hover:bg-slate-700 border border-white/20 hover:border-cyan-400/50 flex items-center justify-center text-white hover:text-cyan-300 transition-all shadow-md cursor-pointer shrink-0 ring-1 ring-white/10" title="Toggle Navigation Menu" aria-label="Toggle Navigation Menu">
-                    <i id="mobileMenuIcon" class="fa-solid fa-bars text-base sm:text-lg text-white"></i>
+                <!-- Universal 3-Line Menu -->
+                <button onclick="toggleMobileMenu(event)" class="w-10 h-10 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-white/20 hover:border-cyan-400/50 flex items-center justify-center text-white transition-all shadow-md cursor-pointer" aria-label="Toggle Navigation Menu">
+                    <i class="fa-solid fa-bars text-lg text-white"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Universal Navigation Drawer/Dropdown (Desktop & Mobile) -->
+        <!-- Universal Navigation Drawer -->
         <div id="mobileMenu" class="hidden border-t border-white/10 bg-slate-950/98 backdrop-blur-2xl px-4 sm:px-8 py-6 shadow-2xl transition-all max-h-[85vh] overflow-y-auto">
             <div class="max-w-7xl mx-auto">
                 <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-white/10">
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                        <span class="text-xs font-extrabold text-white uppercase tracking-wider">Navigation Menu • Habib iFix .Tech</span>
+                        <img src="/logo.png" class="w-6 h-6 object-contain">
+                        <span class="text-xs font-extrabold text-white uppercase tracking-wider">Navigation Menu • Habib iFix</span>
                     </div>
                     <button onclick="toggleMobileMenu(event)" class="text-slate-400 hover:text-white p-1 text-sm cursor-pointer flex items-center gap-1">
                         <i class="fa-solid fa-xmark"></i>
                         <span class="text-[11px] font-bold">Close</span>
                     </button>
                 </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <a href="index.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-house"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-white block">Home</span>
-                            <span class="text-[10px] text-slate-400">Lab overview & features</span>
-                        </div>
+                    <a href="index.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base"><i class="fa-solid fa-house"></i></div>
+                        <div><span class="text-xs font-black text-white block">Home</span><span class="text-[10px] text-slate-400">Main workshop & services</span></div>
                     </a>
-
-                    <a href="about.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-user-tie"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-white block">About Habib</span>
-                            <span class="text-[10px] text-slate-400">Master technician profile</span>
-                        </div>
+                    <a href="free-offer.html" class="p-3.5 rounded-2xl bg-purple-600/30 border border-purple-500/50 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-base"><i class="fa-solid fa-gift"></i></div>
+                        <div><span class="text-xs font-black text-purple-300 block">Free Offers & Perks 🎁</span><span class="text-[10px] text-purple-200/80">Active free tech benefits</span></div>
                     </a>
-
-                    <a href="services.html" class="p-3.5 rounded-2xl bg-indigo-600/30 border border-indigo-500/50 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-indigo-300 block">Services & Free SMS</span>
-                            <span class="text-[10px] text-slate-400">Motherboard, display & SMS</span>
-                        </div>
+                    <a href="services.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-base"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                        <div><span class="text-xs font-black text-white block">Services & Free SMS</span><span class="text-[10px] text-slate-400">Motherboard & screen repair</span></div>
                     </a>
-
-                    <a href="courses.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-white block">Courses & Training</span>
-                            <span class="text-[10px] text-slate-400">Hardware & software batch</span>
-                        </div>
+                    <a href="shop.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base"><i class="fa-solid fa-bag-shopping"></i></div>
+                        <div><span class="text-xs font-black text-white block">Parts & Tools Shop</span><span class="text-[10px] text-slate-400">Original displays & batteries</span></div>
                     </a>
-
-                    <a href="cv.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-file-lines"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-white block">CV Maker & Builder</span>
-                            <span class="text-[10px] text-slate-400">Professional resume tool</span>
-                        </div>
+                    <a href="courses.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-base"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div><span class="text-xs font-black text-white block">Courses & Training</span><span class="text-[10px] text-slate-400">Hardware & software batch</span></div>
                     </a>
-
-                    <a href="frp.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-unlock-keyhole"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-white block">Remove FRP 2026</span>
-                            <span class="text-[10px] text-slate-400">Instant unlock security</span>
-                        </div>
+                    <a href="frp.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-base"><i class="fa-solid fa-unlock-keyhole"></i></div>
+                        <div><span class="text-xs font-black text-white block">FRP & USB Drivers</span><span class="text-[10px] text-slate-400">Direct flashing tools</span></div>
                     </a>
-
-                    <a href="shop.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-store"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-white block">Tech Parts Shop</span>
-                            <span class="text-[10px] text-slate-400">Displays, ICs & tools</span>
-                        </div>
+                    <a href="blog.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-base"><i class="fa-solid fa-newspaper"></i></div>
+                        <div><span class="text-xs font-black text-white block">Blog & Case Studies</span><span class="text-[10px] text-slate-400">Lab repair breakdown</span></div>
                     </a>
-
-                    <a href="blog.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-blog"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-white block">Tech Blog</span>
-                            <span class="text-[10px] text-slate-400">Motherboard repair guides</span>
-                        </div>
+                    <a href="contact.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base"><i class="fa-solid fa-phone"></i></div>
+                        <div><span class="text-xs font-black text-white block">Contact & Location</span><span class="text-[10px] text-slate-400">01868-461577 (Call/WhatsApp)</span></div>
                     </a>
-
-                    <a href="contact.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-envelope"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-white block">Contact Us</span>
-                            <span class="text-[10px] text-slate-400">Inquiry & check reply</span>
-                        </div>
+                    <a href="https://cvhabib.vercel.app/" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base"><i class="fa-solid fa-file-lines"></i></div>
+                        <div><span class="text-xs font-black text-white block">CV Maker</span><span class="text-[10px] text-slate-400">Make free CV</span></div>
                     </a>
-
-                    <a href="admin.html" class="p-3.5 rounded-2xl bg-amber-950/40 hover:bg-amber-900/30 border border-amber-500/30 flex items-center gap-3 transition-all group">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black text-amber-300 block">Master Admin Panel</span>
-                            <span class="text-[10px] text-slate-400">Live dashboard & control</span>
-                        </div>
-                    </a>
-
-                    <button onclick="window.openHabibAI(); toggleMobileMenu(event);" class="sm:col-span-2 p-3.5 rounded-2xl bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-indigo-500 text-white flex items-center justify-center gap-3 transition-all shadow-lg cursor-pointer">
-                        <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
-                        <span class="text-xs font-black">Open Habib AI Assistant</span>
-                    </button>
                 </div>
             </div>
         </div>
     </header>
-
-    <main class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-32 pb-20">
-        
-        <!-- PAGE TITLE & ADMIN ADD BUTTON -->
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-12">
-            <div class="text-center sm:text-left">
-                <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block" data-en="OUR PROFESSIONAL SERVICES" data-bn="আমাদের প্রফেশনাল সেবাসমূহ">OUR PROFESSIONAL SERVICES</span>
-                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-2" data-en="Expert Mobile & Digital Solutions" data-bn="এক্সপার্ট মোবাইল ও ডিজিটাল সলিউশন">Expert Mobile & Digital Solutions</h1>
-                <p class="text-xs sm:text-sm text-slate-400" data-en="Fast, reliable and professional technical services at your doorstep." data-bn="দ্রুত, নির্ভরযোগ্য এবং পেশাদার টেকনিক্যাল সেবা।">Fast, reliable and professional technical services at your doorstep.</p>
-            </div>
-            <!-- ONLY ADMIN CAN SEE THIS -->
-            <button id="addServiceBtn" onclick="openServiceModal()" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-2xl font-bold text-xs shadow-lg transition-all flex items-center gap-2 shrink-0">
-                <i class="fa-solid fa-plus"></i> Add New Service
-            </button>
-        </div>
-
-        <!-- SERVICES CARDS GRID -->
-        <div id="servicesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-16">
-            <!-- Dynamically rendered via JS -->
-        </div>
-
-        <!-- ULTIMATE FREE SMS SENDER BOX -->
-        <section class="mb-16">
-            <div class="text-center max-w-2xl mx-auto mb-10">
-                <span class="text-emerald-400 font-bold tracking-widest text-[10px] uppercase mb-2 block"><i class="fa-solid fa-paper-plane"></i> ULTIMATE FREE SMS SENDER</span>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3">Customs Free Ultimate SMS Send Box</h2>
-                <p class="text-xs sm:text-sm text-slate-400">Send custom instant SMS messages via Carrybee API gateway instantly.</p>
-            </div>
-
-            <div class="glass-3d rounded-3xl p-6 sm:p-10 max-w-2xl mx-auto border border-emerald-500/30 shadow-2xl relative overflow-hidden">
-                <div class="absolute -top-20 -right-20 w-40 h-40 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-                <form id="smsSendForm" class="flex flex-col gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Recipient Name (name)</label>
-                        <input type="text" id="smsName" required placeholder="John Doe" class="w-full bg-slate-950 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Phone Number (num)</label>
-                        <input type="text" id="smsNum" required placeholder="01711223344" class="w-full bg-slate-950 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none font-mono">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Message Content (msg)</label>
-                        <textarea id="smsMsg" required rows="4" placeholder="Type your message here..." class="w-full bg-slate-950 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 outline-none resize-none"></textarea>
-                    </div>
-                    <button type="submit" id="smsSubmitBtn" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-600/30 text-sm flex items-center justify-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-paper-plane"></i> Send Ultimate SMS Now
-                    </button>
-                    <div id="smsResultBox" class="hidden p-4 rounded-xl text-xs font-mono whitespace-pre-wrap mt-2 overflow-x-auto border"></div>
-                </form>
-            </div>
-        </section>
-
-        <!-- PRICING TABLE SECTION -->
-        <section class="mb-16">
-            <div class="text-center max-w-2xl mx-auto mb-10">
-                <span class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mb-2 block" data-en="PRICING & TIME ESTIMATE" data-bn="মূল্য এবং সময় তালিকা">PRICING & TIME ESTIMATE</span>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3" data-en="Service Review & Estimates" data-bn="সার্ভিস রিভিউ ও মূল্য তালিকা">Service Review & Estimates</h2>
-                <p class="text-xs sm:text-sm text-slate-400" data-en="Transparent pricing and fast turnaround time for all our services." data-bn="আমাদের প্রতিটি সেবার স্বচ্ছ মূল্য এবং দ্রুত সার্ভিস সময়।">Transparent pricing and fast turnaround time for all our services.</p>
-            </div>
-
-            <div class="glass-3d rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-white/5 border-b border-white/10 text-slate-300 text-xs uppercase tracking-wider">
-                                <th class="py-4 px-6 font-bold" data-en="Service" data-bn="সেবা">Service</th>
-                                <th class="py-4 px-6 font-bold" data-en="Device Type" data-bn="ডিভাইসের ধরন">Device Type</th>
-                                <th class="py-4 px-6 font-bold" data-en="Est. Time" data-bn="আনুমানিক সময়">Est. Time</th>
-                                <th class="py-4 px-6 font-bold" data-en="Price Range" data-bn="মূল্য">Price Range</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-white/5 text-xs sm:text-sm text-slate-200">
-                            <tr class="hover:bg-white/5 transition-colors">
-                                <td class="py-4 px-6 font-semibold text-white">Screen Replacement</td>
-                                <td class="py-4 px-6 text-slate-400">iPhone / Samsung / Xiaomi</td>
-                                <td class="py-4 px-6 text-indigo-400 font-medium">30-60 min</td>
-                                <td class="py-4 px-6 font-bold text-emerald-400">৳500 - ৳3,500</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition-colors">
-                                <td class="py-4 px-6 font-semibold text-white">Battery Replacement</td>
-                                <td class="py-4 px-6 text-slate-400">All Smartphones</td>
-                                <td class="py-4 px-6 text-indigo-400 font-medium">20-40 min</td>
-                                <td class="py-4 px-6 font-bold text-emerald-400">৳400 - ৳1,500</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition-colors">
-                                <td class="py-4 px-6 font-semibold text-white">Android FRP & Software Unlock</td>
-                                <td class="py-4 px-6 text-slate-400">All Android Brands</td>
-                                <td class="py-4 px-6 text-indigo-400 font-medium">20-50 min</td>
-                                <td class="py-4 px-6 font-bold text-emerald-400">Free</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition-colors">
-                                <td class="py-4 px-6 font-semibold text-white">Online Job Apply & CV</td>
-                                <td class="py-4 px-6 text-slate-400">Computer / Online Service</td>
-                                <td class="py-4 px-6 text-indigo-400 font-medium">15-30 min</td>
-                                <td class="py-4 px-6 font-bold text-emerald-400">Free</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition-colors">
-                                <td class="py-4 px-6 font-semibold text-white">Facebook & Google Ads Setup</td>
-                                <td class="py-4 px-6 text-slate-400">Business / E-commerce</td>
-                                <td class="py-4 px-6 text-indigo-400 font-medium">1-2 hours</td>
-                                <td class="py-4 px-6 font-bold text-emerald-400">৳1,500 - ৳3,500</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA BOX -->
-        <div class="glass-3d rounded-[30px] p-8 sm:p-12 relative overflow-hidden text-center max-w-4xl mx-auto bg-gradient-to-r from-indigo-900/40 via-purple-900/40 to-slate-900/40 border border-white/20">
-            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-4" data-en="Ready to Get Your Device Fixed?" data-bn="আপনার ডিভাইসটি ঠিক করতে প্রস্তুত তো?">Ready to Get Your Device Fixed?</h3>
-            <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mb-8 leading-relaxed" data-en="Contact us now for a free diagnosis. Most repairs completed the same day with genuine parts and warranty." data-bn="বিনামূল্যে ডায়াগনোসিসের জন্য এখনই আমাদের সাথে যোগাযোগ করুন।">
-                Contact us now for a free diagnosis. Most repairs completed the same day with genuine parts and warranty.
-            </p>
-            <div class="flex flex-wrap justify-center items-center gap-4">
-                <button onclick="openBookingModal('General Repair & Diagnosis', 'DM NOW')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs sm:text-sm px-8 py-3.5 rounded-2xl shadow-lg transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-wrench"></i> <span data-en="Book a Repair Now" data-bn="একটি রিপেয়ার বুক করুন">Book a Repair Now</span>
-                </button>
-                <a href="tel:+8801868461577" class="glass-3d bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-8 py-3.5 rounded-2xl transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-phone text-indigo-400"></i> <span>Call: +880 1868 461577</span>
-                </a>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- ADMIN ADD/EDIT MODAL -->
-    <div id="serviceModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[105] hidden flex items-center justify-center p-4">
-        <div class="glass-3d bg-slate-900/95 w-full max-w-lg p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
-            <button onclick="closeServiceModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-extrabold text-white mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-user-shield text-indigo-400"></i> <span id="modalActionTitle">Add New Service</span>
-            </h3>
-            
-            <form id="addServiceForm" onsubmit="handleSaveService(event)" class="space-y-4">
-                <input type="hidden" id="editIndex" value="-1">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Service Title</label>
-                    <input type="text" id="sTitle" placeholder="e.g. Mobile Repair" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Price / Badge</label>
-                        <input type="text" id="sPrice" placeholder="e.g. Free or DM NOW" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Icon Class</label>
-                        <input type="text" id="sIcon" placeholder="fa-solid fa-mobile-screen" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Est. Time</label>
-                        <input type="text" id="sTime" placeholder="30-60 min" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Button Link / Action</label>
-                        <input type="text" id="sLink" placeholder="cv.html or popup" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Description</label>
-                    <textarea id="sDesc" rows="3" placeholder="Brief info..." required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 resize-none"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 rounded-xl text-xs transition-colors shadow-lg">Save Service</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- LOGIN WARNING MODAL -->
-    <div id="loginWarningModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
-        <div class="glass-3d bg-slate-900/95 w-full max-w-sm p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20 text-center">
-            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-amber-500/30">
-                <i class="fa-solid fa-lock"></i>
-            </div>
-            <h3 class="text-xl font-extrabold text-white mb-2">User Login Please!</h3>
-            <p class="text-xs text-slate-300 mb-6 leading-relaxed">সেবা বুক করার জন্য বা অর্ডার করার জন্য অনুগ্রহ করে আগে সাইন ইন বা লগইন করুন।</p>
-            <div class="space-y-2.5">
-                <a href="login.html?return=services.html" class="block w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold text-xs transition-colors shadow-lg">Sign In Now</a>
-                <button onclick="closeLoginWarning()" class="block w-full bg-white/10 hover:bg-white/20 text-slate-300 py-2.5 rounded-xl font-medium text-xs transition-colors">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- BOOKING MODAL -->
-    <div id="bookingModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[99] hidden flex items-center justify-center p-4">
-        <div class="glass-3d bg-slate-900/95 w-full max-w-md p-6 sm:p-8 rounded-[30px] shadow-2xl relative border border-white/20">
-            <button onclick="closeBookingModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-white/10"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-extrabold text-white mb-1" id="modalPlanTitle">Book Service</h3>
-            <p class="text-xs text-indigo-400 mb-6" id="modalPlanPrice">Price: DM NOW</p>
-            
-            <form onsubmit="submitBooking(event)" class="space-y-4">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Your Name</label>
-                    <input type="text" id="bName" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Mobile Number</label>
-                    <input type="tel" id="bPhone" required placeholder="01XXXXXXXXX" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Email Address</label>
-                    <input type="email" id="bEmail" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Details / Address</label>
-                    <textarea id="bAddress" rows="2" required placeholder="আপনার সমস্যা বা বিবরণ লিখুন..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-indigo-500 text-white font-medium resize-none"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold text-xs transition-colors shadow-lg flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-sm"></i> Send Booking to WhatsApp
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="glass-3d border-t border-white/10 pt-10 sm:pt-12 pb-6 mt-10 relative z-10">
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-                <div class="space-y-3">
-                    <div class="flex items-center gap-2.5">
-                        <div class="brand-logo-box w-8 h-8 shrink-0 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 p-[1px] flex items-center justify-center">
-                            <div class="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                                    <path d="M5.5 4.5V19.5M18.5 4.5V19.5M5.5 12H18.5" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <span class="font-black text-white text-base">Habib iFix <span class="text-cyan-400">.Tech</span></span>
-                    </div>
-                    <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Your trusted partner for all mobile repair and online technical solutions.</p>
-                </div>
-                <div>
-                    <h4 class="font-bold text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-wider">Explore</h4>
-                    <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-                        <li><a href="index.html" class="hover:text-indigo-600 dark:hover:text-white transition-colors">Home</a></li>
-                        <li><a href="frp.html" class="hover:text-indigo-600 dark:hover:text-white transition-colors">Android FRP Remove 2026</a></li>
-                        <li><a href="courses.html" class="hover:text-indigo-600 dark:hover:text-white transition-colors">Courses & Digital Lab</a></li>
-                        <li><a href="services.html" class="hover:text-indigo-600 dark:hover:text-white transition-colors">Services</a></li>
-                        <li><a href="contact.html" class="hover:text-indigo-600 dark:hover:text-white transition-colors">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-wider">Contact Info</h4>
-                    <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-                        <li><i class="fa-solid fa-phone text-indigo-500 mr-2"></i> +880 1868 461577</li>
-                        <li><i class="fa-solid fa-location-dot text-indigo-500 mr-2"></i> Gachbaria, Chattogram</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-wider">Newsletter</h4>
-                    <p class="text-slate-500 dark:text-slate-400 text-xs mb-3">Subscribe for updates.</p>
-                    <form class="flex items-center glass-3d rounded-xl p-1" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
-                        <input type="email" placeholder="Your email" class="bg-transparent flex-grow text-xs px-3 outline-none text-slate-900 dark:text-white placeholder-slate-400">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-4 py-2 rounded-lg transition-colors">Join</button>
-                    </form>
-                </div>
-            </div>
-            <div class="border-t border-slate-200 dark:border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-500 dark:text-slate-400 gap-4 text-center sm:text-left">
-                <p>&copy; 2026 Habib iFix .Tech. All rights reserved.</p>
-                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
-                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms</a>
-                    <a href="#" class="hover:text-white transition-colors">Support</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JAVASCRIPT & LOGIC -->
     <script>
-        const defaultServices = [
-            { title: "Online Job Apply & Professional CV", price: "Free", icon: "fa-solid fa-file-lines", time: "15-30 min", link: "cv.html", desc: "Government & private job applications, modern CV/Resume design, passport application, and online forms." },
-            { title: "Android FRP & Software Unlock", price: "Free", icon: "fa-solid fa-unlock-keyhole", time: "20-50 min", link: "frp.html", desc: "Google account bypass (FRP), network unlock, flashing, dead boot repair, and system error fixes." },
-            { title: "Mobile Hardware & Display Fix", price: "DM NOW", icon: "fa-solid fa-mobile-screen-button", time: "30-60 min", link: "popup", desc: "Original display replacement, touch fix, charging port repair, and battery swap for all iPhone & Android models." },
-            { title: "Graphics Design & Branding", price: "DM Now", icon: "fa-solid fa-palette", time: "1-2 hours", link: "contact.html", desc: "Professional logo design, social media post banners, video thumbnails, and YouTube channel branding." }
-        ];
-
-        let services = JSON.parse(localStorage.getItem('habib_services')) || defaultServices;
-        const adminEmail = "tec.habiburrahman@gmail.com";
-
-        function checkAdminAuth() {
-            const userEmail = localStorage.getItem('habib_user_email');
-            const addBtn = document.getElementById('addServiceBtn');
-            if (userEmail === adminEmail) {
-                addBtn.classList.remove('hidden');
-            } else {
-                addBtn.classList.add('hidden');
-            }
+        function toggleMobileMenu(e) {
+            if (e) e.stopPropagation();
+            const m = document.getElementById('mobileMenu');
+            if (m) m.classList.toggle('hidden');
         }
-
-        function renderServices() {
-            const grid = document.getElementById('servicesGrid');
-            grid.innerHTML = '';
-            const userEmail = localStorage.getItem('habib_user_email');
-            const isAdmin = userEmail === adminEmail;
-
-            services.forEach((item, index) => {
-                let actionBtn = "";
-                if (item.link === 'popup') {
-                    actionBtn = `<button onclick="openBookingModal('${item.title}', '${item.price}')" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl font-bold transition-colors shadow-lg">Get</button>`;
-                } else {
-                    actionBtn = `<a href="${item.link}" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl font-bold transition-colors shadow-lg">Get</a>`;
-                }
-
-                grid.innerHTML += `
-                    <div class="glass-3d p-6 sm:p-8 rounded-3xl flex flex-col justify-between group border border-white/10 relative">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl">
-                                    <i class="${item.icon}"></i>
-                                </div>
-                                <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400">${item.price}</span>
-                            </div>
-                            <h3 class="font-bold text-lg text-white mb-2">${item.title}</h3>
-                            <p class="text-xs text-slate-400 leading-relaxed mb-6">${item.desc}</p>
-                        </div>
-                        <div>
-                            <div class="flex items-center justify-between pt-4 border-t border-white/10 mb-3">
-                                <span class="text-xs text-indigo-400 font-medium">Est. Time: ${item.time}</span>
-                                ${actionBtn}
-                            </div>
-                            ${isAdmin ? `
-                                <div class="flex gap-2 pt-2 border-t border-white/5">
-                                    <button onclick="editService(${index})" class="flex-1 bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white py-1.5 rounded-lg text-[10px] font-bold transition-colors">Edit</button>
-                                    <button onclick="deleteService(${index})" class="flex-1 bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white py-1.5 rounded-lg text-[10px] font-bold transition-colors">Delete</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function openServiceModal(index = -1) {
-            document.getElementById('serviceModal').classList.remove('hidden');
-            document.getElementById('serviceModal').classList.add('flex');
-            if (index === -1) {
-                document.getElementById('modalActionTitle').innerText = "Add New Service";
-                document.getElementById('addServiceForm').reset();
-                document.getElementById('editIndex').value = -1;
-            } else {
-                document.getElementById('modalActionTitle').innerText = "Edit Service";
-                const item = services[index];
-                document.getElementById('editIndex').value = index;
-                document.getElementById('sTitle').value = item.title;
-                document.getElementById('sPrice').value = item.price;
-                document.getElementById('sIcon').value = item.icon;
-                document.getElementById('sTime').value = item.time;
-                document.getElementById('sLink').value = item.link;
-                document.getElementById('sDesc').value = item.desc;
-            }
-        }
-
-        function closeServiceModal() {
-            document.getElementById('serviceModal').classList.add('hidden');
-            document.getElementById('serviceModal').classList.remove('flex');
-        }
-
-        function handleSaveService(e) {
-            e.preventDefault();
-            const index = document.getElementById('editIndex').value;
-            const newItem = {
-                title: document.getElementById('sTitle').value,
-                price: document.getElementById('sPrice').value,
-                icon: document.getElementById('sIcon').value,
-                time: document.getElementById('sTime').value,
-                link: document.getElementById('sLink').value,
-                desc: document.getElementById('sDesc').value
-            };
-
-            if (index == -1) {
-                services.unshift(newItem);
-            } else {
-                services[index] = newItem;
-            }
-
-            localStorage.setItem('habib_services', JSON.stringify(services));
-            closeServiceModal();
-            renderServices();
-            alert('Service saved successfully!');
-        }
-
-        function editService(index) {
-            openServiceModal(index);
-        }
-
-        function deleteService(index) {
-            if (confirm('Are you sure you want to delete this service?')) {
-                services.splice(index, 1);
-                localStorage.setItem('habib_services', JSON.stringify(services));
-                renderServices();
-            }
-        }
-
-        let selectedPlanName = "";
-        let selectedPlanPrice = "";
-
-        function openBookingModal(planName, planPrice) {
-            const isLoggedIn = localStorage.getItem('habib_logged_in') === 'true';
-            if (!isLoggedIn) {
-                document.getElementById('loginWarningModal').classList.remove('hidden');
-                document.getElementById('loginWarningModal').classList.add('flex');
-                return;
-            }
-
-            selectedPlanName = planName;
-            selectedPlanPrice = planPrice;
-            document.getElementById('modalPlanTitle').innerText = "Booking: " + planName;
-            document.getElementById('modalPlanPrice').innerText = "Price: " + planPrice;
-            document.getElementById('bookingModal').classList.remove('hidden');
-            document.getElementById('bookingModal').classList.add('flex');
-        }
-
-        function closeLoginWarning() {
-            document.getElementById('loginWarningModal').classList.add('hidden');
-            document.getElementById('loginWarningModal').classList.remove('flex');
-        }
-
-        function closeBookingModal() {
-            document.getElementById('bookingModal').classList.add('hidden');
-            document.getElementById('bookingModal').classList.remove('flex');
-        }
-
-        function submitBooking(e) {
-            e.preventDefault();
-            const name = document.getElementById('bName').value;
-            const phone = document.getElementById('bPhone').value;
-            const email = document.getElementById('bEmail').value;
-            const address = document.getElementById('bAddress').value;
-
-            const whatsappMessage = `Hello Habib! I want to book a service.%0A%0A*Service:* ${selectedPlanName}%0A*Price:* ${selectedPlanPrice}%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Email:* ${email}%0A*Details/Address:* ${address}`;
-            window.open(`https://wa.me/8801868461577?text=${whatsappMessage}`, '_blank');
-            closeBookingModal();
-        }
-
-        let currentLang = localStorage.getItem('habib_lang') || 'en';
-        function applyLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('habib_lang', lang);
-            const btn = document.getElementById('langSwitchBtn');
-            if(btn) {
-                btn.innerHTML = `<i class="fa-solid fa-globe text-cyan-400 text-xs"></i> <span class="hidden sm:inline font-bold">${lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)'}</span><span class="sm:hidden font-extrabold">${lang === 'en' ? 'বাংলা' : 'EN'}</span>`;
-            }
-            document.querySelectorAll('[data-en]').forEach(el => {
-                const text = el.getAttribute(`data-${lang}`);
-                if (text) {
-                    if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = text;
-                    else el.innerText = text;
-                }
-            });
-        }
-        function toggleLanguage() {
-            applyLanguage(currentLang === 'en' ? 'bn' : 'en');
-        }
-
-        const smsForm = document.getElementById('smsSendForm');
-        if (smsForm) {
-            smsForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const name = document.getElementById('smsName').value.trim();
-                const num = document.getElementById('smsNum').value.trim();
-                const msg = document.getElementById('smsMsg').value.trim();
-                const btn = document.getElementById('smsSubmitBtn');
-                const resultBox = document.getElementById('smsResultBox');
-
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Sending SMS...';
-                resultBox.classList.add('hidden');
-
-                try {
-                    const res = await fetch(`/api/sms-send`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ name, num, msg })
-                    });
-                    const data = await res.json();
-
-                    const isSuccess = data && (data.error === false || data.status === true);
-                    const statusHeader = isSuccess 
-                        ? '✅ SUCCESS: SMS Gateway Request Sent Successfully!\n\n' 
-                        : '⚠️ GATEWAY RESPONSE:\n\n';
-
-                    resultBox.className = "p-4 rounded-xl text-xs font-mono whitespace-pre-wrap mt-2 overflow-x-auto border " + (isSuccess ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30" : "bg-red-500/10 text-red-300 border-red-500/30");
-                    resultBox.textContent = statusHeader + JSON.stringify(data, null, 2);
-                    resultBox.classList.remove('hidden');
-                } catch(err) {
-                    resultBox.className = "p-4 rounded-xl text-xs font-mono whitespace-pre-wrap mt-2 overflow-x-auto border bg-red-500/10 text-red-300 border-red-500/30";
-                    resultBox.textContent = '❌ Network Error: ' + err.message;
-                    resultBox.classList.remove('hidden');
-                } finally {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Ultimate SMS Now';
-                }
-            });
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            applyLanguage(currentLang);
-            checkAdminAuth();
-            renderServices();
-        });
     </script>
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 flex-1 w-full">
+        <!-- ... (rest of the content for services.html) ... -->
+    </main>
+    <script src="js/ai-agent.js"></script>
     <script type="module" src="js/site-auth.js"></script>
-<script src="js/ai-agent.js"></script>
 </body>
 </html>

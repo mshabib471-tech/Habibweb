@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "post": {
+      "title": "Post",
+      "description": "A blog post or article",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "authorId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "createdAt"]
+    },
+    "service": {
+      "title": "Service",
+      "description": "A repair service offered",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "string" }
+      },
+      "required": ["name", "description"]
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "A blog post",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "createdAt"]
+    },
+    "course": {
+      "title": "Course",
+      "description": "A training course",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "duration": { "type": "string" },
+        "fee": { "type": "string" }
+      },
+      "required": ["name", "duration"]
+    },
+    "offer": {
+      "title": "Offer",
+      "description": "A promotional offer",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "link": { "type": "string" }
+      },
+      "required": ["title", "description"]
+    },
+    "user": {
+      "title": "User",
+      "description": "Application user",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "user"] }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/posts/{postId}": { "schema": "post", "description": "Blog posts" },
+    "/services/{serviceId}": { "schema": "service", "description": "Services offered" },
+    "/blogs/{blogId}": { "schema": "blog", "description": "Blogs" },
+    "/courses/{courseId}": { "schema": "course", "description": "Courses offered" },
+    "/offers/{offerId}": { "schema": "offer", "description": "Promotional offers" },
+    "/users/{userId}": { "schema": "user", "description": "Users and their roles" }
+  }
+}

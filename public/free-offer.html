@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Offers | Habib iFix .Tech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+    <div class="max-w-4xl mx-auto p-8">
+        <h1 class="text-4xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">🎁 Free Offers & Perks</h1>
+        
+        <div id="offersContainer" class="space-y-6">
+            <!-- Offers will be injected here via Firestore -->
+        </div>
+    </div>
+    
+    <script type="module" src="/js/firebase-init.js"></script>
+    <script type="module">
+        import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+        
+        async function loadOffers() {
+            // Need to wait for window.db to be populated by firebase-init.js
+            const checkDb = setInterval(async () => {
+                if (window.db) {
+                    clearInterval(checkDb);
+                    const offersSnapshot = await getDocs(collection(window.db, 'offers'));
+                    const container = document.getElementById('offersContainer');
+                    offersSnapshot.forEach((doc) => {
+                        const offer = doc.data();
+                        container.innerHTML += `
+                            <div class="p-6 bg-slate-900 rounded-2xl border border-white/10">
+                                <h2 class="text-xl font-bold">${offer.title}</h2>
+                                <p class="text-slate-400 mt-2">${offer.description}</p>
+                                <a href="${offer.link}" class="inline-block mt-4 text-cyan-400 font-bold underline">Official Link</a>
+                            </div>
+                        `;
+                    });
+                }
+            }, 500);
+        }
+        loadOffers();
+    </script>
+</body>
+</html>

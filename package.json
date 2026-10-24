@@ -12,8 +12,12 @@
     "@google/genai": "^2.29.1",
     "cookie-parser": "^1.4.7",
     "express": "^4.21.0",
+    "firebase": "^13.1.0",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.3.0",
     "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@firebase/eslint-plugin-security-rules": "^0.0.2"
   }
 }

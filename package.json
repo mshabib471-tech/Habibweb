@@ -15,7 +15,8 @@
     "firebase": "^13.1.0",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.3.0",
-    "sharp": "^0.35.5"
+    "sharp": "^0.35.5",
+    "swiper": "^14.3.0"
   },
   "devDependencies": {
     "@firebase/eslint-plugin-security-rules": "^0.0.2"

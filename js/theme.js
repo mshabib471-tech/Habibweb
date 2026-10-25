@@ -1,26 +1,70 @@
-// Habib iFix .Tech Global UI Controller
-// Permanent Pure Dark Mode (Black Theme) + Bulletproof Mobile & Desktop Menu
+// Habib iFix .Tech Global Dual-Theme & Luxury Sidebar Controller
 (function() {
-  // Always enforce dark mode as requested: "only black mood raken"
-  function enforcePureDarkMode() {
-    const root = document.documentElement;
-    const body = document.body;
-    
-    root.classList.remove('theme-light');
-    root.classList.add('dark');
-    
-    if (body) {
-      body.classList.remove('light-mode');
-      body.classList.add('dark-mode');
+  // Theme Management
+  window.setSiteTheme = function(theme) {
+    const isDark = theme === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    if (document.body) {
+      document.body.classList.toggle('dark-mode', isDark);
+      document.body.classList.toggle('light-mode', !isDark);
     }
-    
-    localStorage.setItem('habib_theme', 'dark');
+    localStorage.setItem('habib_theme', isDark ? 'dark' : 'light');
+    updateThemeToggleUI(isDark);
+  };
+
+  window.toggleTheme = function() {
+    const currentTheme = localStorage.getItem('habib_theme') || 'dark';
+    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    window.setSiteTheme(nextTheme);
+  };
+
+  function updateThemeToggleUI(isDark) {
+    const darkBtns = document.querySelectorAll('#themeBtnDark, .btn-theme-dark');
+    const lightBtns = document.querySelectorAll('#themeBtnLight, .btn-theme-light');
+
+    darkBtns.forEach(btn => {
+      if (isDark) {
+        btn.classList.add('bg-[#282d3c]', 'text-white', 'shadow-sm', 'font-extrabold');
+        btn.classList.remove('text-slate-400', 'text-slate-500');
+      } else {
+        btn.classList.remove('bg-[#282d3c]', 'text-white', 'shadow-sm', 'font-extrabold');
+        btn.classList.add('text-slate-400');
+      }
+    });
+
+    lightBtns.forEach(btn => {
+      if (!isDark) {
+        btn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-extrabold');
+        btn.classList.remove('text-slate-400', 'text-slate-500');
+      } else {
+        btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-extrabold');
+        btn.classList.add('text-slate-400');
+      }
+    });
   }
 
-  // Execute immediately
-  enforcePureDarkMode();
+  function initTheme() {
+    const savedTheme = localStorage.getItem('habib_theme') || 'dark';
+    const isDark = savedTheme === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    if (document.body) {
+      document.body.classList.toggle('dark-mode', isDark);
+      document.body.classList.toggle('light-mode', !isDark);
+    }
+    updateThemeToggleUI(isDark);
+  }
 
-  // Global Safe HTML Escape
+  // Execute immediately to prevent flash of wrong theme
+  try {
+    const saved = localStorage.getItem('habib_theme') || 'dark';
+    const dark = saved === 'dark';
+    document.documentElement.classList.toggle('dark', dark);
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  } catch(e) {}
+
+  // Universal HTML Escape
   window.escapeHtml = function(text) {
     if (!text) return '';
     return String(text).replace(/[&<>"']/g, function(m) {
@@ -28,32 +72,74 @@
     });
   };
 
-  // Bulletproof Universal Menu Toggle (Desktop & Mobile 3-line bar)
-  window.toggleMobileMenu = function(e) {
-    if (e) {
-      if (e.stopPropagation) e.stopPropagation();
-    }
-    const menu = document.getElementById('mobileMenu');
-    const icon = document.getElementById('mobileMenuIcon');
-    if (!menu) return;
+  // Luxury Sidebar Toggle (Mobile & Desktop)
+  window.toggleSidebar = function() {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    if (!sidebar) return;
     
-    const isHidden = menu.classList.contains('hidden') || menu.style.display === 'none';
+    const isHidden = sidebar.classList.contains('-translate-x-full');
     if (isHidden) {
-      menu.classList.remove('hidden');
-      menu.style.display = 'block';
-      if (icon) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-xmark');
-      }
+      sidebar.classList.remove('-translate-x-full');
+      sidebar.classList.add('translate-x-0');
+      if (backdrop) backdrop.classList.remove('hidden');
     } else {
-      menu.classList.add('hidden');
-      menu.style.display = 'none';
-      if (icon) {
-        icon.classList.remove('fa-xmark');
-        icon.classList.add('fa-bars');
-      }
+      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.remove('translate-x-0');
+      if (backdrop) backdrop.classList.add('hidden');
     }
   };
+
+  window.closeSidebar = function() {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    if (sidebar) {
+      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.remove('translate-x-0');
+    }
+    if (backdrop) backdrop.classList.add('hidden');
+  };
+
+  // Toggle user popup modal from sidebar avatar
+  window.toggleSidebarUserPopup = function(e) {
+    if (e) e.stopPropagation();
+    const popup = document.getElementById('sidebarUserPopup');
+    if (popup) {
+      popup.classList.toggle('hidden');
+    }
+  };
+
+  // Universal Active Page Filter: Hides active page link in sidebar
+  function hideCurrentPageInSidebar() {
+    let currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    if (!currentPath || currentPath === '') currentPath = 'index.html';
+
+    // Normalize mapping
+    const pathMap = {
+      '': 'index.html',
+      '/': 'index.html',
+      'index.html': 'index.html',
+      'free-offer.html': 'free-offer.html',
+      'services.html': 'services.html',
+      'shop.html': 'shop.html',
+      'courses.html': 'courses.html',
+      'blog.html': 'blog.html',
+      'contact.html': 'contact.html',
+      'frp.html': 'frp.html',
+      'admin.html': 'admin.html',
+      'about.html': 'about.html',
+      'login.html': 'login.html'
+    };
+
+    const target = pathMap[currentPath] || currentPath;
+
+    document.querySelectorAll('.sidebar-link, [data-page]').forEach(link => {
+      const page = link.getAttribute('data-page');
+      if (page && (page === target || page === currentPath)) {
+        link.style.display = 'none';
+      }
+    });
+  }
 
   // Close Promo Banner
   window.closePromoBanner = function() {
@@ -65,9 +151,7 @@
       banner.style.overflow = 'hidden';
       banner.style.paddingTop = '0';
       banner.style.paddingBottom = '0';
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 250);
+      setTimeout(() => { banner.style.display = 'none'; }, 250);
     }
     sessionStorage.setItem('habib_promo_dismissed', 'true');
   };
@@ -97,74 +181,28 @@
     window.applyLanguage(currentLang === 'en' ? 'bn' : 'en');
   };
 
-  // Active Menu Link Highlighter
-  function highlightCurrentMenuLink() {
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    
-    document.querySelectorAll('.glass-nav nav a, #mobileMenu a').forEach(a => {
-      const href = a.getAttribute('href');
-      if (href && (href === currentPath || (currentPath === '' && href === 'index.html'))) {
-        if (!a.classList.contains('bg-indigo-600') && !a.classList.contains('text-cyan-400')) {
-          a.classList.add('text-indigo-400', 'font-bold');
-        }
+  // Close popups when clicking outside
+  document.addEventListener('click', (e) => {
+    const popup = document.getElementById('sidebarUserPopup');
+    const profileBtn = document.getElementById('sidebarProfileSection');
+    if (popup && !popup.classList.contains('hidden')) {
+      if (!popup.contains(e.target) && (!profileBtn || !profileBtn.contains(e.target))) {
+        popup.classList.add('hidden');
       }
-    });
-  }
+    }
+  });
 
   document.addEventListener('DOMContentLoaded', () => {
-    enforcePureDarkMode();
+    initTheme();
+    hideCurrentPageInSidebar();
     window.applyLanguage(currentLang);
-    highlightCurrentMenuLink();
 
-    // Check if promo banner was dismissed
     if (sessionStorage.getItem('habib_promo_dismissed') === 'true') {
       const banner = document.getElementById('topPromoBanner');
       if (banner) banner.style.display = 'none';
     }
 
-    // Auto-close mobile drawer when any link is clicked
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-      mobileMenu.querySelectorAll('a, button').forEach(link => {
-        link.addEventListener('click', () => {
-          if (!link.classList.contains('theme-toggle-btn')) {
-            mobileMenu.classList.add('hidden');
-            const icon = document.getElementById('mobileMenuIcon');
-            if (icon) {
-              icon.classList.remove('fa-xmark');
-              icon.classList.add('fa-bars');
-            }
-          }
-        });
-      });
-    }
-
-    // Close menu when clicking outside (safe check)
-    document.addEventListener('click', (e) => {
-      const menu = document.getElementById('mobileMenu');
-      const isToggleBtn = e.target.closest('[onclick*="toggleMobileMenu"]') || e.target.closest('.menu-toggle-btn') || e.target.closest('#mobileMenuIcon');
-      if (isToggleBtn) return;
-      if (menu && !menu.classList.contains('hidden')) {
-        if (!menu.contains(e.target)) {
-          menu.classList.add('hidden');
-          const icon = document.getElementById('mobileMenuIcon');
-          if (icon) {
-            icon.classList.remove('fa-xmark');
-            icon.classList.add('fa-bars');
-          }
-        }
-      }
-    });
-
-    // Close promo banner buttons
-    document.querySelectorAll('.close-promo-btn, #closePromoBtn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.closePromoBanner();
-      });
-    });
-
-    // Record page visit for analytics ("site koi jon visit korce")
+    // Analytics record visit
     try {
       const currentPath = window.location.pathname.split('/').pop() || 'index.html';
       if (!currentPath.includes('admin')) {

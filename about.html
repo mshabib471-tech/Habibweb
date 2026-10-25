@@ -21,7 +21,8 @@
   <meta name="twitter:image" content="https://www.habibifix.tech/logo.png">
 
   <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
+      </div>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
   
   <!-- Tailwind CSS with class-based Dark Mode -->
   <script>
@@ -47,7 +48,7 @@
       .img-hover-zoom:hover img { transform: scale(1.08); }
   </style>
   <!-- Theme Manager -->
-  <script src="js/theme.js"></script>
+  <script src="/js/theme.js"></script>
 </head>
 <body class="antialiased selection:bg-indigo-500 selection:text-white dark-mode">
 
@@ -70,108 +71,139 @@
         </button>
     </div>
 
-    <!-- Header / Navbar -->
-    <header class="sticky top-0 left-0 w-full z-40 glass-nav">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-2">
-            
-            <!-- Brand Logo with Glossy Glass Icon -->
-            <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-                <img src="/logo.png" alt="Habib iFix Logo" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-contain drop-shadow-[0_0_15px_rgba(56,189,248,0.5)] group-hover:scale-105 transition-transform">
-                <div class="flex flex-col justify-center leading-none">
-                    <div class="flex items-center gap-1 sm:gap-1.5">
-                        <span class="font-black text-lg sm:text-xl tracking-tight text-white">Habib</span>
-                        <span class="font-black text-lg sm:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">iFix</span>
-                        <span class="text-[9px] sm:text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-1.5 py-0.5 rounded-md font-mono font-bold">.Tech</span>
+        <!-- Mobile Backdrop -->
+    <div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-45 lg:hidden transition-opacity"></div>
+
+    <!-- Luxury Sidebar Navigation (Matching Reference Image) -->
+    <nav id="sidebar" class="sidebar-luxury fixed left-0 top-0 h-full w-64 z-50 transition-all duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col justify-between select-none">
+        <!-- Top Section: User Profile & Brand -->
+        <div class="p-4 border-b sidebar-divider flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <img src="/logo.png" class="w-8 h-8 rounded-lg object-contain shadow-sm" alt="Habib iFix">
+                    <div class="flex flex-col">
+                        <span class="text-xs font-black tracking-wider uppercase brand-name-habib">Habib iFix</span>
+                        <span class="text-[9px] text-cyan-500 font-mono font-bold tracking-tight">MASTER LAB</span>
                     </div>
-                    <p class="hidden sm:block text-[10px] text-slate-300 font-bold mt-1">Mobile Engineering & Free Tech Perks</p>
-                </div>
+                </a>
+                <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Profile Widget Container (Populated dynamically by site-auth.js) -->
+            <div id="sidebarProfileSection" class="pt-2 border-t sidebar-divider">
+                <a href="login.html" class="flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left">
+                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+                        <i class="fa-solid fa-user text-base"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="sidebar-user-name text-sm font-black text-slate-900 dark:text-white">Account</div>
+                        <div class="sidebar-user-email text-xs text-indigo-600 dark:text-cyan-400 font-bold">Sign In / Register &rarr;</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Center Section: Navigation Links (Current page hidden dynamically) -->
+        <div id="sidebar-links" class="p-3 space-y-1.5 flex-1 overflow-y-auto">
+            <a href="admin.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="admin.html">
+                <i class="fa-solid fa-gauge w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Dashboard</span>
+            </a>
+            <a href="frp.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="frp.html">
+                <i class="fa-solid fa-unlock-keyhole w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">FRP 2027</span>
+            </a>
+            <a href="index.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="index.html">
+                <i class="fa-solid fa-house w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Home</span>
+            </a>
+            <a href="free-offer.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="free-offer.html">
+                <i class="fa-solid fa-gift w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Free Offers</span>
+            </a>
+            <a href="services.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="services.html">
+                <i class="fa-solid fa-screwdriver-wrench w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Free Services</span>
+            </a>
+            <a href="shop.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="shop.html">
+                <i class="fa-solid fa-bag-shopping w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Shop</span>
+            </a>
+            <a href="courses.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="courses.html">
+                <i class="fa-solid fa-graduation-cap w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Courses</span>
+            </a>
+            <a href="blog.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="blog.html">
+                <i class="fa-solid fa-newspaper w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Blog</span>
             </a>
 
-            <!-- Right Controls: Free Offers Badge + Login + Universal Menu -->
-            <div class="flex items-center gap-2 sm:gap-3">
-                <a href="free-offer.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300 text-xs font-black shadow-sm shadow-purple-500/20">
-                    <i class="fa-solid fa-gift text-purple-400"></i>
-                    <span>Free Offers</span>
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                </a>
+            <!-- Divider before utility links -->
+            <div class="my-2 border-t sidebar-divider"></div>
 
-                <!-- User Profile / Login -->
-                <div id="loginNavBtn">
-                    <a href="login.html" class="bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black transition-all shadow-md shadow-indigo-600/30 flex items-center gap-1.5">
-                        <i class="fa-solid fa-right-to-bracket text-xs"></i>
-                        <span>Login</span>
-                    </a>
-                </div>
-                <div id="profileBtn" class="hidden items-center gap-1.5"></div>
-
-                <!-- Universal 3-Line Menu -->
-                <button onclick="toggleMobileMenu(event)" class="w-10 h-10 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-white/20 hover:border-cyan-400/50 flex items-center justify-center text-white transition-all shadow-md cursor-pointer" aria-label="Toggle Navigation Menu">
-                    <i class="fa-solid fa-bars text-lg text-white"></i>
+            <a href="contact.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="contact.html">
+                <i class="fa-solid fa-headset w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Support</span>
+            </a>
+            <a href="settings.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="settings.html">
+                <i class="fa-solid fa-gear w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Settings</span>
+            </a>
+            <button id="sidebarLogoutBtn" onclick="window.doRealLogout()" class="sidebar-link hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-red-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer text-left">
+                <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-sm"></i>
+                <span class="text-sm font-bold">Log Out</span>
+            </button>
+        </div>
+        
+        <!-- Bottom Section: Segmented Light / Dark Toggle (Exact match to reference image) -->
+        <div class="p-3 border-t sidebar-divider">
+            <div class="theme-switch-pill flex items-center p-1 rounded-xl">
+                <button onclick="setSiteTheme('light')" id="themeBtnLight" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+                    <i class="fa-regular fa-sun text-sm"></i>
+                    <span>Light</span>
+                </button>
+                <button onclick="setSiteTheme('dark')" id="themeBtnDark" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+                    <i class="fa-regular fa-moon text-sm"></i>
+                    <span>Dark</span>
                 </button>
             </div>
         </div>
+    </nav>
 
-        <!-- Universal Navigation Drawer -->
-        <div id="mobileMenu" class="hidden border-t border-white/10 bg-slate-950/98 backdrop-blur-2xl px-4 sm:px-8 py-6 shadow-2xl transition-all max-h-[85vh] overflow-y-auto">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-white/10">
-                    <div class="flex items-center gap-2">
-                        <img src="/logo.png" class="w-6 h-6 object-contain">
-                        <span class="text-xs font-extrabold text-white uppercase tracking-wider">Navigation Menu • Habib iFix</span>
-                    </div>
-                    <button onclick="toggleMobileMenu(event)" class="text-slate-400 hover:text-white p-1 text-sm cursor-pointer flex items-center gap-1">
-                        <i class="fa-solid fa-xmark"></i>
-                        <span class="text-[11px] font-bold">Close</span>
+    <!-- Main Content Wrapper (adjust for sidebar) -->
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300">
+        <header class="sticky top-0 left-0 w-full z-40 glass-nav">
+            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">
+                        <i class="fa-solid fa-bars text-lg text-slate-800 dark:text-white"></i>
                     </button>
+                    <a href="index.html" class="lg:hidden flex items-center gap-2">
+                        <img src="/logo.png" class="w-7 h-7 rounded-lg object-contain" alt="Habib iFix">
+                        <span class="text-xs font-black uppercase brand-name-habib">Habib iFix</span>
+                    </a>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <a href="index.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base"><i class="fa-solid fa-house"></i></div>
-                        <div><span class="text-xs font-black text-white block">Home</span><span class="text-[10px] text-slate-400">Main workshop & services</span></div>
-                    </a>
-                    <a href="free-offer.html" class="p-3.5 rounded-2xl bg-purple-600/30 border border-purple-500/50 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-base"><i class="fa-solid fa-gift"></i></div>
-                        <div><span class="text-xs font-black text-purple-300 block">Free Offers & Perks 🎁</span><span class="text-[10px] text-purple-200/80">Active free tech benefits</span></div>
-                    </a>
-                    <a href="services.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-base"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                        <div><span class="text-xs font-black text-white block">Services & Free SMS</span><span class="text-[10px] text-slate-400">Motherboard & screen repair</span></div>
-                    </a>
-                    <a href="shop.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base"><i class="fa-solid fa-bag-shopping"></i></div>
-                        <div><span class="text-xs font-black text-white block">Parts & Tools Shop</span><span class="text-[10px] text-slate-400">Original displays & batteries</span></div>
-                    </a>
-                    <a href="courses.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-base"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <div><span class="text-xs font-black text-white block">Courses & Training</span><span class="text-[10px] text-slate-400">Hardware & software batch</span></div>
-                    </a>
-                    <a href="frp.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-base"><i class="fa-solid fa-unlock-keyhole"></i></div>
-                        <div><span class="text-xs font-black text-white block">FRP & USB Drivers</span><span class="text-[10px] text-slate-400">Direct flashing tools</span></div>
-                    </a>
-                    <a href="blog.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-base"><i class="fa-solid fa-newspaper"></i></div>
-                        <div><span class="text-xs font-black text-white block">Blog & Case Studies</span><span class="text-[10px] text-slate-400">Lab repair breakdown</span></div>
-                    </a>
-                    <a href="contact.html" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base"><i class="fa-solid fa-phone"></i></div>
-                        <div><span class="text-xs font-black text-white block">Contact & Location</span><span class="text-[10px] text-slate-400">01868-461577 (Call/WhatsApp)</span></div>
-                    </a>
-                    <a href="https://cvhabib.vercel.app/" class="p-3.5 rounded-2xl bg-slate-900/80 hover:bg-white/10 border border-white/10 flex items-center gap-3 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base"><i class="fa-solid fa-file-lines"></i></div>
-                        <div><span class="text-xs font-black text-white block">CV Maker</span><span class="text-[10px] text-slate-400">Make free CV</span></div>
-                    </a>
+
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="toggleLanguage()" id="langSwitchBtn" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer flex items-center gap-1.5 text-slate-700 dark:text-slate-200">
+                        <i class="fa-solid fa-globe text-cyan-400 text-xs"></i> <span>EN | BN</span>
+                    </button>
+                    <div id="loginNavBtn" class="sm:hidden">
+                        <a href="login.html" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-indigo-600 text-white">Login</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
+
     <script>
-        function toggleMobileMenu(e) {
-            if (e) e.stopPropagation();
-            const m = document.getElementById('mobileMenu');
-            if (m) m.classList.toggle('hidden');
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
         }
     </script>
+
 
   <main class="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pt-32 pb-20">
       
@@ -352,7 +384,7 @@
           revealOnScroll();
       });
   </script>
-  <script type="module" src="js/site-auth.js"></script>
-<script src="js/ai-agent.js"></script>
+  <script type="module" src="/js/site-auth.js"></script>
+<script src="/js/ai-agent.js"></script>
 </body>
 </html>

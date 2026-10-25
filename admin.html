@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/theme.js"></script>
+    <script src="/js/theme.js"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100" style="display: none;">
 
@@ -49,6 +49,18 @@
             <div class="hidden sm:flex items-center gap-2 text-xs">
                 <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
                 <span class="text-slate-300 font-bold" id="adminUserName">Admin</span>
+            </div>
+
+            <!-- Theme Toggle Pill -->
+            <div class="theme-switch-pill flex items-center p-0.5 rounded-full border border-slate-700/60 bg-[#12141a]">
+                <button type="button" id="themeBtnLight" onclick="setSiteTheme('light')" class="btn-theme-light flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold text-slate-400 transition-all cursor-pointer">
+                    <i class="fa-solid fa-sun text-[11px] text-amber-400"></i>
+                    <span class="hidden md:inline">Light</span>
+                </button>
+                <button type="button" id="themeBtnDark" onclick="setSiteTheme('dark')" class="btn-theme-dark flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-[#282d3c] text-white shadow-sm transition-all cursor-pointer">
+                    <i class="fa-solid fa-moon text-[11px] text-cyan-400"></i>
+                    <span class="hidden md:inline">Dark</span>
+                </button>
             </div>
 
             <!-- Logout Button -->

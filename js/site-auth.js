@@ -57,6 +57,66 @@ export function updateAllNavbars() {
   const user = getCurrentUser();
   const loginNavContainers = document.querySelectorAll('#loginNavBtn, .login-nav-btn');
   const profileContainers = document.querySelectorAll('#profileBtn, .user-profile-widget');
+  const sidebarProfile = document.getElementById('sidebarProfileSection');
+  const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
+
+  if (sidebarProfile) {
+    if (user) {
+      const avatarUrl = user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || 'User')}`;
+      const isAdmin = user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman'));
+      const safeName = window.escapeHtml ? window.escapeHtml(user.name || 'User') : (user.name || 'User');
+      const safeEmail = window.escapeHtml ? window.escapeHtml(user.email || 'Member') : (user.email || 'Member');
+      sidebarProfile.innerHTML = `
+        <div class="relative w-full">
+          <div onclick="window.toggleSidebarUserPopup(event)" class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left cursor-pointer">
+            <img src="${avatarUrl}" class="w-10 h-10 rounded-xl object-cover border-2 ${isAdmin ? 'border-amber-400' : 'border-cyan-400'} shrink-0 shadow-sm" alt="Avatar">
+            <div class="flex-1 min-w-0">
+              <div class="sidebar-user-name text-sm font-black truncate">${safeName}</div>
+              <div class="sidebar-user-email text-xs truncate">${safeEmail}</div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs opacity-60"></i>
+          </div>
+          <div id="sidebarUserPopup" class="hidden absolute left-0 right-0 top-full mt-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-2xl p-3 z-50 divide-y divide-slate-100 dark:divide-white/10">
+            <div class="pb-2">
+              <div class="text-xs font-black text-slate-900 dark:text-white">${safeName}</div>
+              <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${safeEmail}</div>
+              <div class="mt-1 text-[10px] font-mono font-bold ${isAdmin ? 'text-amber-500' : 'text-cyan-500'}">${isAdmin ? '★ ADMINISTRATOR' : '✓ MEMBER'}</div>
+            </div>
+            <div class="py-2 space-y-1">
+              <a href="admin.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                <i class="fa-solid fa-gauge text-amber-500"></i> Dashboard
+              </a>
+              <a href="contact.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                <i class="fa-solid fa-wrench text-cyan-500"></i> My Repairs / Tickets
+              </a>
+              <a href="free-offer.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                <i class="fa-solid fa-gift text-purple-500"></i> Free Offers & Perks
+              </a>
+            </div>
+            <div class="pt-2">
+              <button onclick="window.doRealLogout()" class="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer">
+                <i class="fa-solid fa-power-off"></i> Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      if (sidebarLogoutBtn) sidebarLogoutBtn.classList.remove('hidden');
+    } else {
+      sidebarProfile.innerHTML = `
+        <a href="login.html" class="flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left">
+          <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+            <i class="fa-solid fa-user text-base"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="sidebar-user-name text-sm font-black text-slate-900 dark:text-white">Account</div>
+            <div class="sidebar-user-email text-xs text-indigo-600 dark:text-cyan-400 font-bold">Sign In / Register &rarr;</div>
+          </div>
+        </a>
+      `;
+      if (sidebarLogoutBtn) sidebarLogoutBtn.classList.add('hidden');
+    }
+  }
 
   if (user) {
     loginNavContainers.forEach(el => {

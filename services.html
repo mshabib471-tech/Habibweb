@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title data-en="Our Services - Habib iFix .Tech" data-bn="আমাদের সেবাসমূহ - হাবিব আইফিক্স .Tech">Our Services - Habib iFix .Tech</title>
+    <title data-en="Free Services & Repair Lab - Habib iFix .Tech" data-bn="ফ্রি সার্ভিস ও ল্যাব সেবা - হাবিব আইফিক্স .Tech">Free Services & Repair Lab - Habib iFix .Tech</title>
+    <meta name="description" content="Professional Mobile Repair Services, Free Diagnostic Tools, SMS Portals & Software Unlocking by Habib iFix .Tech">
     
     <!-- Google Search Favicons & App Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -20,15 +21,9 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://www.habibifix.tech/logo.png">
 
-    <!-- Google AdSense -->
-        </div>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6358115896801136" crossorigin="anonymous"></script>
-
     <!-- Tailwind CSS with class-based Dark Mode -->
     <script>
-        tailwind = {
-            darkMode: 'class'
-        };
+        tailwind = { darkMode: 'class' };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Custom Style with Frosted Glass & Light/Dark Support -->
@@ -45,31 +40,30 @@
 </head>
 <body class="antialiased selection:bg-indigo-500 selection:text-white dark-mode">
 
-    <!-- TOP PROMO BANNER WITH CLOSE BUTTON -->
+    <!-- TOP PROMO BANNER -->
     <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all">
         <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
             <span class="inline-flex items-center gap-1.5 bg-indigo-500/15 text-indigo-600 dark:text-cyan-300 border border-indigo-500/30 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
                 <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-cyan-400 animate-ping"></span>
                 ACTIVE
             </span>
-            <span class="font-medium" data-en="Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds." data-bn="হাবিব আইফিক্স এআই টেকনিক্যাল অ্যাসিস্ট্যান্ট অ্যাক্টিভ! সেকেন্ডেই মোবাইল ডায়াগনসিস করুন।">
-                Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds.
+            <span class="font-medium" data-en="Habib iFix Free Services Lab is open! Book repairs or use free diagnostic tools below." data-bn="হাবিব আইফিক্স ফ্রি সার্ভিস ল্যাব খোলা! নিচে ফ্রি ডায়াগনস্টিক টুলস ব্যবহার করুন বা রিপেয়ার বুক করুন।">
+                Habib iFix Free Services Lab is open! Book repairs or use free diagnostic tools below.
             </span>
-            <button onclick="window.openHabibAI()" class="font-bold underline underline-offset-2 ml-1 cursor-pointer text-indigo-600 hover:text-indigo-800 dark:text-cyan-400 dark:hover:text-cyan-300">
-                <span data-en="Try AI Now &rarr;" data-bn="এখনই এআই ট্রাই করুন &rarr;">Try AI Now &rarr;</span>
+            <button onclick="window.openHabibAI('ফ্রি সার্ভিস ও রিপেয়ার বুকিং সম্পর্কে জানতে চাই')" class="font-bold underline underline-offset-2 ml-1 cursor-pointer text-indigo-600 hover:text-indigo-800 dark:text-cyan-400 dark:hover:text-cyan-300">
+                <span data-en="Ask AI &rarr;" data-bn="এআই জানুন &rarr;">Ask AI &rarr;</span>
             </button>
         </div>
-        <button onclick="closePromoBanner()" class="text-slate-400 hover:text-slate-800 dark:hover:text-white p-1 rounded-full transition-colors ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
+        <button onclick="closePromoBanner()" class="text-slate-400 hover:text-slate-800 dark:hover:text-white p-1 rounded-full transition-colors ml-2 cursor-pointer shrink-0" title="Close">
             <i class="fa-solid fa-xmark text-xs"></i>
         </button>
     </div>
 
-        <!-- Mobile Backdrop -->
+    <!-- Mobile Backdrop -->
     <div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-45 lg:hidden transition-opacity"></div>
 
-    <!-- Luxury Sidebar Navigation (Matching Reference Image) -->
+    <!-- Luxury Sidebar Navigation -->
     <nav id="sidebar" class="sidebar-luxury fixed left-0 top-0 h-full w-64 z-50 transition-all duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col justify-between select-none">
-        <!-- Top Section: User Profile & Brand -->
         <div class="p-4 border-b sidebar-divider flex flex-col gap-3">
             <div class="flex items-center justify-between">
                 <a href="index.html" class="flex items-center gap-2 group">
@@ -84,7 +78,6 @@
                 </button>
             </div>
 
-            <!-- Profile Widget Container (Populated dynamically by site-auth.js) -->
             <div id="sidebarProfileSection" class="pt-2 border-t sidebar-divider">
                 <a href="login.html" class="flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left">
                     <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
@@ -98,7 +91,6 @@
             </div>
         </div>
         
-        <!-- Center Section: Navigation Links (Current page hidden dynamically) -->
         <div id="sidebar-links" class="p-3 space-y-1.5 flex-1 overflow-y-auto">
             <a href="admin.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="admin.html">
                 <i class="fa-solid fa-gauge w-5 text-center text-sm"></i>
@@ -133,7 +125,6 @@
                 <span class="text-sm font-bold">Blog</span>
             </a>
 
-            <!-- Divider before utility links -->
             <div class="my-2 border-t sidebar-divider"></div>
 
             <a href="contact.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="contact.html">
@@ -150,7 +141,6 @@
             </button>
         </div>
         
-        <!-- Bottom Section: Segmented Light / Dark Toggle (Exact match to reference image) -->
         <div class="p-3 border-t sidebar-divider">
             <div class="theme-switch-pill flex items-center p-1 rounded-xl">
                 <button onclick="setSiteTheme('light')" id="themeBtnLight" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
@@ -165,8 +155,8 @@
         </div>
     </nav>
 
-    <!-- Main Content Wrapper (adjust for sidebar) -->
-    <div id="mainContent" class="lg:ml-64 transition-all duration-300">
+    <!-- Main Content Wrapper -->
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col min-h-screen">
         <header class="sticky top-0 left-0 w-full z-40 glass-nav">
             <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
@@ -190,16 +180,149 @@
             </div>
         </header>
 
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 flex-1 w-full">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-cyan-400 text-[11px] font-mono font-bold px-3 py-1 rounded-full uppercase tracking-widest inline-block mb-3">
+                    HABIB IFIX LAB SERVICES
+                </span>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">
+                    Free Services & Professional Repair Lab
+                </h1>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Explore our complimentary diagnostic tools, software guides, and professional repair booking portal with 30-day lab warranty.
+                </p>
+            </div>
+
+            <!-- Free Services Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <!-- 1. Free Diagnostic -->
+                <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-500 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-stethoscope"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Free AI Mobile Diagnostic</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                            Describe your phone's symptoms (battery draining, display flickering, touch unresponsive) and get instant AI troubleshooting steps.
+                        </p>
+                    </div>
+                    <button onclick="window.openHabibAI('আমার মোবাইল ফোনের সমস্যা ডায়াগনসিস করতে চাই')" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold py-3 rounded-xl transition-all shadow cursor-pointer">
+                        Start AI Diagnosis &rarr;
+                    </button>
+                </div>
+
+                <!-- 2. Free FRP Guide -->
+                <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-500 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-unlock-keyhole"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">FRP 2027 Bypass Portal</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                            Access safe, verified Android Google Account bypass tools, APKs, and testpoint instructions for Samsung, Xiaomi, Oppo, and Vivo.
+                        </p>
+                    </div>
+                    <a href="frp.html" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-3 rounded-xl transition-all shadow text-center inline-block">
+                        Open FRP 2027 Hub &rarr;
+                    </a>
+                </div>
+
+                <!-- 3. Repair Booking -->
+                <div class="glass-card p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Lab Repair Booking</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                            Book express screen replacement, glass lamination, or motherboard micro-soldering with Habib iFix senior technicians.
+                        </p>
+                    </div>
+                    <button onclick="openBookingModal()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-3 rounded-xl transition-all shadow cursor-pointer">
+                        Book Repair Now &rarr;
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="glass-card border-t mt-auto py-12 px-4 sm:px-6 lg:px-8 text-xs text-slate-400">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="font-black text-lg text-white">Habib <span class="text-cyan-400">iFix</span> <span class="text-xs font-mono text-cyan-300">.Tech</span></span>
+                    </div>
+                    <p class="text-xs leading-relaxed max-w-md text-slate-400">
+                        Trusted Mobile Engineering Lab, OCA Display Refurbishment Center & IT Services Hub in Bangladesh.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white uppercase text-[11px] mb-3">Quick Navigation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="hover:text-white">Home Page</a></li>
+                        <li><a href="shop.html" class="hover:text-white">Tech Parts Shop</a></li>
+                        <li><a href="courses.html" class="hover:text-white">Training Courses</a></li>
+                        <li><a href="services.html" class="text-cyan-400 font-bold">Free Services</a></li>
+                        <li><a href="frp.html" class="hover:text-white">FRP 2027 Bypass</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white uppercase text-[11px] mb-3">Direct Support</h4>
+                    <p class="mb-2"><strong class="text-white">Hotline / WhatsApp:</strong> +880 1868-461577</p>
+                    <p class="mb-2"><strong class="text-white">Email:</strong> tec.habiburrahman@gmail.com</p>
+                    <p><strong class="text-white">Location:</strong> Chattogram, Bangladesh</p>
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
+                <p>&copy; 2026 Habib iFix .Tech — All Rights Reserved.</p>
+                <p class="text-slate-500">Quality Guaranteed &bull; Fast Delivery &bull; Safe Checkout</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="glass-card w-full max-w-md p-6 sm:p-8 rounded-3xl border border-emerald-500/30 relative">
+            <button onclick="closeBookingModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full flex items-center justify-center bg-black/10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-black text-white mb-2">Book Repair Service</h3>
+            <p class="text-xs text-slate-300 mb-4">Fill in your details and our lab technician will call you back shortly.</p>
+            <form onsubmit="submitBooking(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Your Name</label>
+                    <input type="text" id="bookName" required class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white" placeholder="Md. Rahim">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Mobile Number</label>
+                    <input type="tel" id="bookPhone" required class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white" placeholder="018XXXXXXXX">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Device Model & Issue</label>
+                    <input type="text" id="bookDevice" required class="w-full bg-slate-900 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white" placeholder="e.g. iPhone 14 Pro - Broken Glass">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs py-3 rounded-xl transition-all shadow">
+                    Confirm Repair Booking &rarr;
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        function toggleMobileMenu(e) {
-            if (e) e.stopPropagation();
-            const m = document.getElementById('mobileMenu');
-            if (m) m.classList.toggle('hidden');
+        function openBookingModal() {
+            document.getElementById('bookingModal').classList.remove('hidden');
+            document.getElementById('bookingModal').classList.add('flex');
+        }
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+            document.getElementById('bookingModal').classList.remove('flex');
+        }
+        function submitBooking(e) {
+            e.preventDefault();
+            alert('Repair booking submitted successfully! Habib iFix lab team will contact you within 15 minutes.');
+            closeBookingModal();
         }
     </script>
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 flex-1 w-full">
-        <!-- ... (rest of the content for services.html) ... -->
-    </main>
     <script src="/js/ai-agent.js"></script>
     <script type="module" src="/js/site-auth.js"></script>
 </body>

@@ -45,7 +45,11 @@
   }
 
   function initTheme() {
-    const savedTheme = localStorage.getItem('habib_theme') || 'dark';
+    let savedTheme = localStorage.getItem('habib_theme');
+    if (!savedTheme) {
+      savedTheme = 'dark';
+      try { localStorage.setItem('habib_theme', 'dark'); } catch(e) {}
+    }
     const isDark = savedTheme === 'dark';
     document.documentElement.classList.toggle('dark', isDark);
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
@@ -58,7 +62,11 @@
 
   // Execute immediately to prevent flash of wrong theme and wrong sidebar width
   try {
-    const savedTheme = localStorage.getItem('habib_theme') || 'dark';
+    let savedTheme = localStorage.getItem('habib_theme');
+    if (!savedTheme) {
+      savedTheme = 'dark';
+      localStorage.setItem('habib_theme', 'dark');
+    }
     const dark = savedTheme === 'dark';
     document.documentElement.classList.toggle('dark', dark);
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
@@ -161,6 +169,8 @@
       '': 'index.html',
       '/': 'index.html',
       'index.html': 'index.html',
+      'dashboard': 'dashboard.html',
+      'dashboard.html': 'dashboard.html',
       'free-offer.html': 'free-offer.html',
       'services.html': 'services.html',
       'shop.html': 'shop.html',

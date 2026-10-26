@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL7V4KQXC1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GL7V4KQXC1');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title data-en="Free Services & Repair Lab - Habib iFix .Tech" data-bn="ফ্রি সার্ভিস ও ল্যাব সেবা - হাবিব আইফিক্স .Tech">Free Services & Repair Lab - Habib iFix .Tech</title>
@@ -101,7 +111,7 @@
                 <i class="fa-solid fa-house w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Home</span>
             </a>
-            <a href="admin.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="admin.html" title="Dashboard">
+            <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="dashboard.html" title="Dashboard">
                 <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Dashboard</span>
             </a>
@@ -248,6 +258,362 @@
                     </button>
                 </div>
             </div>
+
+            <!-- INTERACTIVE FREE TOOLS BOXES REQUESTED BY USER -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                
+                <!-- 1. Facebook Profile / Locked ID Picture Downloader -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl border border-cyan-500/30 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-brands fa-facebook"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-widest">FREE SERVICE TOOL #1</span>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white">FB Locked ID Profile Pic Downloader</h3>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">
+                            Paste any Facebook profile URL (even if locked or private) to fetch and download high-resolution profile pictures instantly.
+                        </p>
+
+                        <div class="space-y-3 mb-5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Facebook Profile Link</label>
+                                <div class="flex gap-2">
+                                    <input type="url" id="fbProfileUrlInput" placeholder="https://www.facebook.com/username or profile.php?id=..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500">
+                                    <button onclick="downloadFbProfilePic()" id="fbFetchBtn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all cursor-pointer shrink-0">
+                                        <i class="fa-solid fa-download mr-1"></i> Get Pic
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div id="fbResultContainer" class="hidden p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center">
+                            <div class="w-24 h-24 mx-auto mb-3 rounded-2xl overflow-hidden border-2 border-cyan-400 shadow-md">
+                                <img id="fbResultImg" src="" alt="Fetched Profile" class="w-full h-full object-cover">
+                            </div>
+                            <p id="fbResultStatus" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-3">Profile picture extracted successfully!</p>
+                            <a id="fbDownloadLink" href="#" target="_blank" download="fb-profile.jpg" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow">
+                                <i class="fa-solid fa-cloud-arrow-down"></i> Download HD Image File
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Custom SMS Sender / Unlimited Bomber (BD Only) -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl border border-purple-500/30 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-600/20 text-purple-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-comment-sms"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono font-bold text-purple-400 uppercase tracking-widest">FREE SERVICE TOOL #2 🇧🇩</span>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white">Custom SMS Sender (Unlimited Use)</h3>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">
+                            Send instant verification & custom SMS messages to any Bangladeshi phone number (BD Only 🇧🇩) using high-speed carrier gateways.
+                        </p>
+
+                        <div class="space-y-3 mb-5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Recipient Mobile Number (BD)</label>
+                                <input type="tel" id="smsNumInput" placeholder="018XXXXXXXX or +88018XXXXXXXX" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-purple-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Custom Message / Business Text</label>
+                                <textarea id="smsMsgInput" rows="2" placeholder="Your verification code is 4829 or custom promotional text..." class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-purple-500"></textarea>
+                            </div>
+                            <button onclick="sendCustomSms()" id="smsSendBtn" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl text-xs transition-all shadow cursor-pointer">
+                                <i class="fa-solid fa-paper-plane mr-1.5"></i> Send SMS Now (Unlimited 🚀)
+                            </button>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div id="smsResultContainer" class="hidden p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10">
+                            <p class="text-[11px] font-mono font-bold text-slate-400 mb-1">GATEWAY RESPONSE:</p>
+                            <pre id="smsResultJson" class="text-[11px] font-mono text-cyan-400 overflow-x-auto p-2 rounded-lg bg-black/40 max-h-28"></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Banglalink SIM Bar / Off Tool -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl border border-red-500/30 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-red-600/20 text-red-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-sim-card"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono font-bold text-red-400 uppercase tracking-widest">FREE SERVICE TOOL #3 🇧🇩</span>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white">Banglalink SIM Bar / Off Tool</h3>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">
+                            Permanently or temporarily bar / lock any Banglalink SIM using NID and Date of Birth verification via official MyBL gateway.
+                        </p>
+
+                        <div class="space-y-3 mb-5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Banglalink MSISDN (Number)</label>
+                                <input type="tel" id="blNumInput" placeholder="019XXXXXXXX" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">NID Number</label>
+                                <input type="text" id="blNidInput" placeholder="National ID Number" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Date of Birth (DOB)</label>
+                                <input type="text" id="blDobInput" placeholder="YYYY-MM-DD or DD-MM-YYYY" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-red-500">
+                            </div>
+                            <button onclick="executeBanglalinkSimBar()" id="blSubmitBtn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl text-xs transition-all shadow cursor-pointer">
+                                <i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Execute SIM Bar / Off 🔴
+                            </button>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div id="blResultContainer" class="hidden p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10">
+                            <p class="text-[11px] font-mono font-bold text-slate-400 mb-1">GATEWAY RESPONSE:</p>
+                            <pre id="blResultJson" class="text-[11px] font-mono text-red-400 overflow-x-auto p-2 rounded-lg bg-black/40 max-h-28"></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Passport Size Photo Maker -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-600/20 text-amber-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest">FREE SERVICE TOOL #4 © HABIB IFIX</span>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white">Passport Size Photo Studio</h3>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">
+                            Upload any portrait photo, remove background with 1-click AI, adjust zoom & position, change formal suit or color background, and generate 4K printable sheets!
+                        </p>
+
+                        <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-center mb-6">
+                            <div class="flex items-center justify-center gap-2 mb-2 text-amber-300 text-xs font-bold">
+                                <i class="fa-solid fa-crown"></i> Powered by Habib iFix Lab Studio
+                            </div>
+                            <p class="text-[11px] text-slate-400">Instantly prepare passport size photos (35x45mm) for visa, NID, and CV applications.</p>
+                        </div>
+                    </div>
+
+                    <a href="passport-photo.html" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black py-3.5 rounded-xl text-xs transition-all shadow-lg text-center inline-flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-camera-retro"></i> Launch Passport Photo Studio &rarr;
+                    </a>
+                </div>
+
+                <!-- 5. AI Background Remover & HD PNG Downloader -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest">FREE SERVICE TOOL #5 🌟 HD</span>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white">AI Background Remover (HD PNG)</h3>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">
+                            Upload any photo to instantly remove its background with AI and download the high-definition transparent PNG file.
+                        </p>
+
+                        <div class="space-y-3 mb-5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Select Image File</label>
+                                <input type="file" id="bgRemoverFileInput" accept="image/*" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-white file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-500 file:text-white hover:file:bg-emerald-600 cursor-pointer">
+                            </div>
+                            <button onclick="removeBgStandalone()" id="bgRemoverBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition-all shadow cursor-pointer">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Remove Background & Get HD PNG
+                            </button>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div id="bgRemoverResultContainer" class="hidden p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center">
+                            <div class="w-28 h-28 mx-auto mb-3 rounded-2xl overflow-hidden border-2 border-emerald-400 shadow-md bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px]">
+                                <img id="bgRemoverResultImg" src="" alt="Transparent PNG" class="w-full h-full object-contain">
+                            </div>
+                            <p class="text-xs font-bold text-emerald-500 mb-3">Background removed successfully!</p>
+                            <a id="bgRemoverDownloadLink" href="#" target="_blank" download="habib-ifix-transparent-hd.png" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow">
+                                <i class="fa-solid fa-cloud-arrow-down"></i> Download HD PNG
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- JAVASCRIPT FOR TOOLS -->
+            <script>
+                async function downloadFbProfilePic() {
+                    const urlInput = document.getElementById('fbProfileUrlInput').value.trim();
+                    const btn = document.getElementById('fbFetchBtn');
+                    const container = document.getElementById('fbResultContainer');
+                    const img = document.getElementById('fbResultImg');
+                    const downloadLink = document.getElementById('fbDownloadLink');
+
+                    if (!urlInput) {
+                        alert('Please enter a valid Facebook profile URL.');
+                        return;
+                    }
+
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Fetching...';
+                    container.classList.add('hidden');
+
+                    try {
+                        const res = await fetch('/api/tools/fb-profile-pic?url=' + encodeURIComponent(urlInput));
+                        if (!res.ok) {
+                            const errData = await res.json().catch(() => ({ error: 'Failed to fetch profile picture' }));
+                            throw new Error(errData.error || 'Failed to fetch profile picture');
+                        }
+
+                        const blob = await res.blob();
+                        const blobUrl = URL.createObjectURL(blob);
+                        img.src = blobUrl;
+                        downloadLink.href = blobUrl;
+                        container.classList.remove('hidden');
+                    } catch (err) {
+                        alert('Error: ' + err.message);
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-download mr-1"></i> Get Pic';
+                    }
+                }
+
+                async function sendCustomSms() {
+                    const num = document.getElementById('smsNumInput').value.trim();
+                    const msg = document.getElementById('smsMsgInput').value.trim();
+                    const btn = document.getElementById('smsSendBtn');
+                    const container = document.getElementById('smsResultContainer');
+                    const jsonPre = document.getElementById('smsResultJson');
+
+                    if (!num || !msg) {
+                        alert('Please enter both mobile number and message text.');
+                        return;
+                    }
+
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Sending SMS...';
+                    container.classList.add('hidden');
+
+                    try {
+                        const res = await fetch('/api/sms-send', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ num, msg, name: 'Habib iFix' })
+                        });
+                        const data = await res.json();
+                        jsonPre.textContent = JSON.stringify(data, null, 2);
+                        container.classList.remove('hidden');
+                        alert('SMS Request dispatched successfully!');
+                    } catch (err) {
+                        jsonPre.textContent = JSON.stringify({ status: false, error: err.message }, null, 2);
+                        container.classList.remove('hidden');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-paper-plane mr-1.5"></i> Send SMS Now (Unlimited 🚀)';
+                    }
+                }
+
+                async function executeBanglalinkSimBar() {
+                    const num = document.getElementById('blNumInput').value.trim();
+                    const nid = document.getElementById('blNidInput').value.trim();
+                    const dob = document.getElementById('blDobInput').value.trim();
+                    const btn = document.getElementById('blSubmitBtn');
+                    const container = document.getElementById('blResultContainer');
+                    const jsonPre = document.getElementById('blResultJson');
+
+                    if (!num || !nid || !dob) {
+                        alert('Please fill in MSISDN, NID, and Date of Birth.');
+                        return;
+                    }
+
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Processing SIM Bar...';
+                    container.classList.add('hidden');
+
+                    try {
+                        const res = await fetch('/api/tools/banglalink-sim-bar', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ num, nid, dob })
+                        });
+                        const data = await res.json();
+                        jsonPre.textContent = JSON.stringify(data, null, 2);
+                        container.classList.remove('hidden');
+                        if (data.status === 'SUCCESS' || data.success) {
+                            alert('Banglalink SIM Bar / Off request executed successfully!');
+                        } else {
+                            alert('SIM Bar request completed with gateway response.');
+                        }
+                    } catch (err) {
+                        jsonPre.textContent = JSON.stringify({ error: err.message }, null, 2);
+                        container.classList.remove('hidden');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Execute SIM Bar / Off 🔴';
+                    }
+                }
+
+                async function removeBgStandalone() {
+                    const fileInput = document.getElementById('bgRemoverFileInput');
+                    const btn = document.getElementById('bgRemoverBtn');
+                    const container = document.getElementById('bgRemoverResultContainer');
+                    const img = document.getElementById('bgRemoverResultImg');
+                    const downloadLink = document.getElementById('bgRemoverDownloadLink');
+
+                    if (!fileInput.files || fileInput.files.length === 0) {
+                        alert('Please select an image file first.');
+                        return;
+                    }
+
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+                    reader.onload = async function(e) {
+                        const base64Image = e.target.result;
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Removing Background with AI...';
+                        container.classList.add('hidden');
+
+                        try {
+                            const res = await fetch('/api/tools/remove-bg', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ image: base64Image })
+                            });
+
+                            if (!res.ok) {
+                                const errJson = await res.json().catch(() => ({ message: 'Background removal failed' }));
+                                throw new Error(errJson.message || 'Background removal failed');
+                            }
+
+                            const resultBlob = await res.blob();
+                            const blobUrl = URL.createObjectURL(resultBlob);
+                            img.src = blobUrl;
+                            downloadLink.href = blobUrl;
+                            container.classList.remove('hidden');
+                            alert('Background successfully removed! HD PNG is ready for download.');
+                        } catch (err) {
+                            alert('Error: ' + err.message);
+                        } finally {
+                            btn.disabled = false;
+                            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Remove Background & Get HD PNG';
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            </script>
         </main>
 
         <!-- FOOTER -->

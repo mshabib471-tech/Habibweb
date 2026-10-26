@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL7V4KQXC1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GL7V4KQXC1');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title data-en="Mobile Parts & Lab Tools Shop - Habib iFix .Tech" data-bn="মোবাইল পার্টস ও ল্যাব টুলস শপ - হাবিব আইফিক্স .Tech">Mobile Parts & Lab Tools Shop - Habib iFix .Tech</title>
@@ -131,7 +141,7 @@
                 <i class="fa-solid fa-house w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Home</span>
             </a>
-            <a href="admin.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="admin.html" title="Dashboard">
+            <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="dashboard.html" title="Dashboard">
                 <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Dashboard</span>
             </a>
@@ -218,17 +228,17 @@
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24 flex-1">
         
-        <!-- Shop Hero Banner -->
-        <div class="relative rounded-3xl overflow-hidden mb-10 p-8 sm:p-12 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-white/10 shadow-2xl">
-            <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Shop Hero Banner (Adaptive Light & Dark Mode) -->
+        <div class="relative rounded-3xl overflow-hidden mb-10 p-8 sm:p-12 dark:bg-gradient-to-r dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900 bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-indigo-50/80 border dark:border-white/10 border-slate-200 shadow-xl transition-colors">
+            <div class="absolute -right-10 -bottom-10 w-96 h-96 dark:bg-emerald-500/10 bg-emerald-200/40 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative z-10 max-w-3xl">
-                <div class="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-full text-xs font-mono font-bold uppercase mb-4">
+                <div class="inline-flex items-center gap-2 dark:bg-emerald-500/20 bg-emerald-100 text-emerald-800 dark:text-emerald-300 border dark:border-emerald-500/40 border-emerald-300 px-3 py-1 rounded-full text-xs font-mono font-bold uppercase mb-4 shadow-xs">
                     <i class="fa-solid fa-truck-fast"></i> সারাদেশে ২৪-৪৮ ঘণ্টায় হোম ডেলিভারি
                 </div>
-                <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight mb-4">
-                    Habib iFix <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-indigo-400">Tech & Parts Store</span>
+                <h1 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
+                    Habib iFix <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 dark:from-emerald-400 dark:via-cyan-400 dark:to-indigo-400">Tech & Parts Store</span>
                 </h1>
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                <p class="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed mb-6 font-medium">
                     ১০০% অরিজিনাল স্মার্টফোন ডিসপ্লে প্যানেল, হাই-ক্যাপাসিটি ব্যাটারি, পাওয়ার আইসি, ওকা ল্যামিনেশন গ্লাস এবং পেশাদার টেকনিশিয়ানদের ল্যাব মাইক্রো-সোল্ডারিং টুলস।
                 </p>
 
@@ -236,7 +246,7 @@
                 <div class="flex flex-col sm:flex-row gap-3">
                     <div class="relative flex-1">
                         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="text" id="productSearch" oninput="filterProducts()" placeholder="Search parts (e.g. iPhone Screen, Battery, PMIC, Microscope)..." class="w-full bg-slate-950/80 border border-white/20 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm text-white placeholder-slate-400 focus:border-emerald-400 outline-none">
+                        <input type="text" id="productSearch" oninput="filterProducts()" placeholder="Search parts (e.g. iPhone Screen, Battery, PMIC, Microscope)..." class="w-full dark:bg-slate-950/80 bg-white border dark:border-white/20 border-slate-300 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-emerald-500 outline-none shadow-xs">
                     </div>
                     <a href="https://wa.me/8801868461577?text=Assalamu%20Alaikum,%20I%20need%20a%20custom%20mobile%20part%20quotation" target="_blank" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all shrink-0">
                         <i class="fa-brands fa-whatsapp text-base"></i>

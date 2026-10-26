@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL7V4KQXC1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GL7V4KQXC1');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title data-en="User & Admin Login - Habib iFix .Tech" data-bn="ইউজার ও অ্যাডমিন লগইন - হাবিব আইফিক্স .Tech">User & Admin Login - Habib iFix .Tech</title>
@@ -135,7 +145,7 @@
                 <i class="fa-solid fa-house w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Home</span>
             </a>
-            <a href="admin.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="admin.html" title="Dashboard">
+            <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="dashboard.html" title="Dashboard">
                 <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Dashboard</span>
             </a>
@@ -463,7 +473,7 @@
                     if (result.isAdmin || result.user.role === 'admin') {
                         window.location.href = 'admin.html';
                     } else {
-                        window.location.href = 'index.html';
+                        window.location.href = 'dashboard.html';
                     }
                 }, 800);
             } catch (err) {
@@ -498,7 +508,7 @@
                 alertBox.classList.remove('hidden');
 
                 setTimeout(() => {
-                    window.location.href = result.user.role === 'admin' ? 'admin.html' : 'index.html';
+                    window.location.href = result.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
                 }, 800);
             } catch (err) {
                 alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
@@ -533,7 +543,7 @@
 
                 setTimeout(() => {
                     closeRegisterModal();
-                    window.location.href = 'index.html';
+                    window.location.href = 'dashboard.html';
                 }, 800);
             } catch (err) {
                 alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';

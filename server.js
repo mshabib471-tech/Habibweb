@@ -9,7 +9,8 @@ const PORT = 3000;
 const DB_FILE = path.join(__dirname, 'database.json');
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
@@ -1046,13 +1047,69 @@ app.post('/api/record-visit', (req, res) => {
 });
 
 app.get('/api/user/my-bookings', (req, res) => {
-  const userEmail = req.query.email;
+  const userEmail = (req.query.email || '').trim().toLowerCase();
+  const userPhone = (req.query.phone || '').trim();
+  const userCode = (req.query.userCode || '').trim().toLowerCase();
   const db = readDB();
-  if (!userEmail) {
-    return res.json([]);
-  }
-  const myBookings = db.bookings.filter(b => b.email && b.email.toLowerCase() === userEmail.toLowerCase());
+
+  const myBookings = (db.bookings || []).filter(b => {
+    if (userEmail && b.email && b.email.toLowerCase() === userEmail) return true;
+    if (userPhone && b.phone && b.phone.includes(userPhone)) return true;
+    if (userCode && b.userCode && b.userCode.toLowerCase() === userCode) return true;
+    return false;
+  });
   res.json(myBookings.sort((a, b) => b.id - a.id));
+});
+
+app.get('/api/user/my-orders', (req, res) => {
+  const userEmail = (req.query.email || '').trim().toLowerCase();
+  const userPhone = (req.query.phone || '').trim();
+  const userCode = (req.query.userCode || '').trim().toLowerCase();
+  const db = readDB();
+
+  const myOrders = (db.orders || []).filter(o => {
+    if (userCode && o.userCode && o.userCode.toLowerCase() === userCode) return true;
+    if (userPhone && o.phone && o.phone.includes(userPhone)) return true;
+    if (userEmail && o.email && o.email.toLowerCase() === userEmail) return true;
+    return false;
+  });
+  res.json(myOrders.sort((a, b) => b.id - a.id));
+});
+
+app.post('/api/user/update-profile', (req, res) => {
+  const { id, email, name, phone, address } = req.body;
+  const db = readDB();
+  let user = null;
+
+  if (id) {
+    user = (db.users || []).find(u => u.id === parseInt(id));
+  }
+  if (!user && email) {
+    user = (db.users || []).find(u => u.email && u.email.toLowerCase() === email.trim().toLowerCase());
+  }
+
+  if (!user) {
+    return res.status(404).json({ error: 'User account not found' });
+  }
+
+  if (name && name.trim()) user.name = name.trim();
+  if (phone !== undefined) user.phone = phone.trim();
+  if (address !== undefined) user.address = address.trim();
+
+  writeDB(db);
+  res.json({
+    success: true,
+    user: {
+      id: user.id,
+      userCode: user.userCode || `HIFIX-USR-${1000 + user.id}`,
+      name: user.name,
+      email: user.email,
+      phone: user.phone || '',
+      address: user.address || '',
+      role: user.role,
+      avatar: user.avatar
+    }
+  });
 });
 
 app.get('/api/check-admin', (req, res) => {
@@ -1237,6 +1294,10 @@ app.post('/api/offers/:id/react', (req, res) => {
 
 app.get(['/free-offer', '/free-offers', '/free-offer.html', '/free-offers.html'], (req, res) => {
   res.sendFile(path.join(__dirname, 'free-offer.html'));
+});
+
+app.get(['/dashboard', '/dashboard.html', '/user-dashboard', '/user-dashboard.html'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'dashboard.html'));
 });
 
 // Contact Form API with User ID & Admin Message Reply System
@@ -1490,8 +1551,173 @@ app.post('/api/sms-bomber', async (req, res) => {
   }
 });
 
+app.get('/api/tools/fb-profile-pic', async (req, res) => {
+  const url = req.query.url || '';
+  if (!url) {
+    return res.status(400).json({ success: false, error: 'url parameter missing' });
+  }
+  if (!/^https?:\/\/(www\.|m\.|web\.)?facebook\.com\//i.test(url)) {
+    return res.status(400).json({ success: false, error: 'Invalid Facebook URL' });
+  }
+
+  try {
+    const params = new URLSearchParams();
+    params.append('query', url);
+    params.append('downloader', 'profile');
+
+    const fvRes = await fetch('https://fvdownloader.net/req', {
+      method: 'POST',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36',
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Origin': 'https://fvdownloader.net',
+        'Referer': 'https://fvdownloader.net/facebook-profile-picture-viewer',
+        'Cookie': 'PHPSESSID=p87k0atbdulafssq1apr161doi; _ga=GA1.1.1832896960.1792768535; _ga_5JPP6DDGFQ=GS2.1.s1792768534$o1$g1$t1792768577$j17$l0$h0'
+      },
+      body: params.toString()
+    });
+
+    const responseText = await fvRes.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch(e) {
+      data = null;
+    }
+
+    if (!data || data.error || !data.downloadUrl) {
+      return res.status(404).json({ success: false, error: data?.error || 'Profile picture not found or profile is locked/private' });
+    }
+
+    const imageUrl = data.downloadUrl.replace('&dl=1', '');
+    
+    const imgRes = await fetch(imageUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    if (!imgRes.ok) {
+      return res.status(502).json({ success: true, downloadUrl: imageUrl, error: 'Could not stream image binary' });
+    }
+
+    const contentType = imgRes.headers.get('content-type') || 'image/jpeg';
+    const buffer = await imgRes.arrayBuffer();
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    return res.send(Buffer.from(buffer));
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Server Error: ' + err.message });
+  }
+});
+
 app.get('/api/sms-send', handleSmsSend);
 app.post('/api/sms-send', handleSmsSend);
+
+app.all('/api/tools/banglalink-sim-bar', async (req, res) => {
+  const msisdn = req.query.num || req.body.num || req.query.msisdn || req.body.msisdn || '';
+  const nid = req.query.nid || req.body.nid || '';
+  const dob = req.query.dob || req.body.dob || '';
+
+  if (!msisdn || !nid || !dob) {
+    return res.status(400).json({ error: "Missing Parameters", message: "msisdn (num), nid, or dob is required." });
+  }
+
+  let cleanNum = String(msisdn).replace(/[^0-9]/g, '');
+  if (cleanNum.startsWith('880')) {
+    cleanNum = cleanNum.slice(2);
+  } else if (!cleanNum.startsWith('0') && cleanNum.length === 10) {
+    cleanNum = '0' + cleanNum;
+  }
+
+  const headers = {
+    'User-Agent': 'okhttp/5.0.0-alpha.10',
+    'Connection': 'Keep-Alive',
+    'Accept-Encoding': 'gzip',
+    'device-token': 'c2r3mvSlSTifyw3iQB5JwW:APA91bFYAe1icbyjTFPZaDp0bmTjk40uuDIf-vjLx0m6avQlg9_uKBdiJ50PoDV_tAaejQcVes9Aw4aKUKDEIXcsnoE3z6nYGfgAF1g5H7TIm187gb95Rr4',
+    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjlkNTQ1ZjNiZWYyOTQwM2Q0MjAyMjUxOWYyZjFlMTM0NGU3YWFmYjkyYmMyZmNkYTkwMDg1NDgzYzhmZTdlMTE3OWQwY2ViN2U5MGQ3ZmE1In0.eyJhdWQiOiJmOGViZTc2MC0wZWIzLTExZWEtOGIwOC00M2E4MmNjOWQxOGMiLCJqdGkiOiI5ZDU0NWYzYmVmMjk0MDNkNDIwMjI1MTlmMmYxZTEzNDRlN2FhZmI5MmJjMmZjZGE5MDA4NTQ4M2M4ZmU3ZTExNzlkMGNlYjdlOTBkN2ZhNSIsImlhdCI6MTczMzY4NTA0MSwibmJmIjoxNzMzNjg1MDQxLCJleHAiOjE3NjUyMjEwNDEsInN1YiI6IjM1MzE3NjM1Iiwic2NvcGVzIjpbXX0.0Bpf2cpg6ldVuTA4H3ezZUl0EuoPJxQGjDmmE_H4CLvlrbPDutKBLf1lR4y1crtnUarJOqAbfSt9f18r0D4HIP94nGJRNSJzMCAeLApOrw2wsqjSRfNRIz3hHCwKl-pr0-1sNAc-pXXw4ROKG8Bf8pP5imXoA9NMBRQRpzqZgmvr3DRWYHO0pxktPsabTH17wQBQ7xSBWVoGdS6Pi9ugZvgR6tQKCxTt4Rh--rbdKLp-4t69q583uqOvPrPVpuJJ5hXplro11qhIT-MuK0b3ryVWXEEEB-iJ7wvTiBpDjjguGaN9UMTvp9ZyO3WtghUjSMakILCb1wEw7NGFxFcdzvYoZl4-0PfPvInH7xDGFOIRL6fHjoUoUlQJW_tq0mPTSklNiQUI2H9o_yat7uHrSDUJof_WUpBjqEpbKOSV_cOiRJNtCBMo4sa_zPQZasyEk3G5StNRUtJevilEdKFvjcu6SygAiDOFq5uf0IHtxPAYS_rgW1oVTUyKCdtra197mCVlYtreDaCp1RXsRE0a9M-g48oWx2SssQyxYYZl_ql30T5wONbuI6TJPSRmXB2aZ6koTpRJ--_8bBy6-KkDT8deJG63mGsJJ8suIvtGLOKBGLZ0djzuXmfhzha-_44moyFAAwdvtScKcpgF66pPL22ruzSmzNc-kTe2RNXjV2s',
+    'Accept-Language': 'en',
+    'platform': 'android',
+    'app-version': '11.17.0',
+    'version-code': '1117000',
+    'api-client-pass': '1E6F751EBCD16B4B719E76A34FBA9',
+    'msisdn': cleanNum,
+    'connection-type': 'prepaid',
+    'X-Entitlements': 'PREPAID',
+    'Content-Type': 'application/json; charset=UTF-8'
+  };
+
+  try {
+    const initiateRes = await fetch('https://myblapi.banglalink.net/api/v1/sim-bar/initiate', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ dob, msisdn: cleanNum, nid })
+    });
+    const initiateData = await initiateRes.json();
+
+    if (initiateData && initiateData.status === 'SUCCESS' && initiateData.data && initiateData.data.tran_id) {
+      const tranId = initiateData.data.tran_id;
+
+      const updateRes = await fetch('https://myblapi.banglalink.net/api/v1/sim-bar/update', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({ tran_id: tranId })
+      });
+      const updateData = await updateRes.json();
+      return res.json(updateData);
+    } else {
+      return res.status(400).json({ error: "Failed to initiate SIM bar", response: initiateData });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "Server cURL Error", message: err.message });
+  }
+});
+
+app.all('/api/tools/remove-bg', async (req, res) => {
+  const imageUrl = req.query.image || req.body.image || '';
+  if (!imageUrl) {
+    return res.status(400).json({ status: 'error', message: 'Please provide an image URL or base64. Example: /api/tools/remove-bg?image=IMAGE_URL' });
+  }
+
+  try {
+    let imageBuffer;
+    if (imageUrl.startsWith('data:image')) {
+      const base64Data = imageUrl.split(',')[1];
+      imageBuffer = Buffer.from(base64Data, 'base64');
+    } else {
+      const imgRes = await fetch(imageUrl);
+      if (!imgRes.ok) {
+        return res.status(400).json({ status: 'error', message: 'Failed to download image from the provided URL.' });
+      }
+      imageBuffer = Buffer.from(await imgRes.arrayBuffer());
+    }
+
+    const apiKey = '7c248e0b55e6f238c8034604c309ff7cdc4a5f7c5cfccfe71e59ec9d7ee70b8c223c527bc738e38ee0c0f9ab0569cee4';
+
+    const formData = new FormData();
+    const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
+    formData.append('image_file', blob, 'image.jpg');
+
+    const clipdropRes = await fetch('https://clipdrop-api.co/remove-background/v1', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey
+      },
+      body: formData
+    });
+
+    if (!clipdropRes.ok) {
+      const errText = await clipdropRes.text();
+      return res.status(clipdropRes.status).json({ status: 'error', message: 'Failed to process image with AI API.', details: errText });
+    }
+
+    const arrayBuffer = await clipdropRes.arrayBuffer();
+    res.setHeader('Content-Type', 'image/png');
+    return res.send(Buffer.from(arrayBuffer));
+  } catch (err) {
+    return res.status(500).json({ status: 'error', message: 'Server Error: ' + err.message });
+  }
+});
 
 if (require.main === module && !process.env.VERCEL) {
   app.listen(PORT, '0.0.0.0', () => {

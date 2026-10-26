@@ -90,9 +90,12 @@ export function updateAllNavbars() {
               <div class="mt-1 text-[10px] font-mono font-bold ${isAdmin ? 'text-amber-500' : 'text-cyan-500'}">${isAdmin ? '★ ADMINISTRATOR' : '✓ MEMBER'}</div>
             </div>
             <div class="py-2 space-y-1">
+              <a href="dashboard.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                <i class="fa-solid fa-gauge text-cyan-500"></i> My Dashboard
+              </a>
               ${isAdmin ? `
-              <a href="admin.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
-                <i class="fa-solid fa-gauge text-amber-500"></i> Dashboard
+              <a href="admin.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                <i class="fa-solid fa-shield-halved text-amber-500"></i> Admin CMS & Control
               </a>
               ` : ''}
               <a href="contact.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
@@ -124,6 +127,30 @@ export function updateAllNavbars() {
         </a>
       `;
       if (sidebarLogoutBtn) sidebarLogoutBtn.classList.add('hidden');
+    }
+  }
+
+  // Sidebar admin CMS inject
+  const sidebarLinks = document.getElementById('sidebar-links');
+  if (sidebarLinks && user && (user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman')))) {
+    if (!document.getElementById('sidebarAdminLink')) {
+      const adminLink = document.createElement('a');
+      adminLink.id = 'sidebarAdminLink';
+      adminLink.href = 'admin.html';
+      adminLink.className = 'sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-amber-500 hover:text-amber-400 bg-amber-500/10 border border-amber-500/20';
+      adminLink.setAttribute('data-page', 'admin.html');
+      adminLink.setAttribute('title', 'Admin CMS');
+      adminLink.setAttribute('data-tooltip', 'Admin CMS');
+      adminLink.innerHTML = `
+        <i class="fa-solid fa-shield-halved w-5 text-center text-sm shrink-0 text-amber-500"></i>
+        <span class="sidebar-label text-sm font-bold">Admin CMS</span>
+      `;
+      const dashItem = sidebarLinks.querySelector('[data-page="dashboard.html"]');
+      if (dashItem && dashItem.nextSibling) {
+        sidebarLinks.insertBefore(adminLink, dashItem.nextSibling);
+      } else {
+        sidebarLinks.appendChild(adminLink);
+      }
     }
   }
 
@@ -167,9 +194,12 @@ export function updateAllNavbars() {
               </span>
             </div>
             <div class="py-1.5 space-y-0.5">
+              <a href="dashboard.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-cyan-300 hover:bg-white/10 rounded-xl transition-colors">
+                <i class="fa-solid fa-gauge text-cyan-400"></i> My Dashboard
+              </a>
               ${isAdmin ? `
                 <a href="admin.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-amber-300 hover:bg-white/10 rounded-xl transition-colors">
-                  <i class="fa-solid fa-gauge text-amber-400"></i> Admin Dashboard
+                  <i class="fa-solid fa-shield-halved text-amber-400"></i> Admin CMS
                 </a>
               ` : ''}
               <a href="free-offer.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-purple-300 hover:bg-white/10 rounded-xl transition-colors">

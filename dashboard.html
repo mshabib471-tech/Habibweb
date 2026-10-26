@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - Habib iFix .Tech | User & Student Portal</title>
+    <meta name="description" content="Personal user dashboard for Habib iFix customers and students. Track repair status, view shop orders, access enrolled courses and claimed free perks.">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL7V4KQXC1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GL7V4KQXC1');
+    </script>
+
+    <!-- Google Search Favicons & App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <script>
+        tailwind = { darkMode: "class" };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="/js/theme.js"></script>
+    <script type="module" src="/js/site-auth.js"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white dark-mode">
+
+    <!-- TOP PROMO BANNER -->
+    <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all">
+        <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
+            <span class="inline-flex items-center gap-1.5 bg-indigo-500/20 text-cyan-300 border border-indigo-500/40 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                ACTIVE
+            </span>
+            <span class="font-bold text-white" data-en="Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds." data-bn="হাবিব আইফিক্স এআই টেকনিক্যাল অ্যাসিস্ট্যান্ট অ্যাক্টিভ! সেকেন্ডেই মোবাইল ডায়াগনসিস করুন।">
+                Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds.
+            </span>
+            <button onclick="window.openHabibAI()" class="font-extrabold underline underline-offset-2 ml-1 cursor-pointer text-cyan-400 hover:text-cyan-300">
+                <span data-en="Try AI Now &rarr;" data-bn="এখনই এআই ট্রাই করুন &rarr;">Try AI Now &rarr;</span>
+            </button>
+        </div>
+        <button onclick="closePromoBanner()" class="close-promo-btn p-1 rounded-full ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
+            <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-45 lg:hidden transition-opacity"></div>
+
+    <!-- Luxury Sidebar Navigation (Responsive Desktop Collapsible & Mobile Drawer) -->
+    <nav id="sidebar" class="sidebar-luxury fixed left-0 top-0 h-full w-64 z-50 transition-all duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col justify-between select-none">
+        <!-- Top Section: User Profile & Brand -->
+        <div class="p-4 border-b sidebar-divider flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-2 group overflow-hidden">
+                    <img src="/logo.png" class="w-8 h-8 rounded-lg object-contain shadow-sm shrink-0" alt="Habib iFix">
+                    <div class="sidebar-brand-text flex flex-col">
+                        <span class="text-xs font-black tracking-wider uppercase brand-name-habib">Habib iFix</span>
+                        <span class="text-[9px] text-cyan-500 font-mono font-bold tracking-tight">MASTER LAB</span>
+                    </div>
+                </a>
+                <div class="flex items-center gap-1">
+                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer" title="Collapse / Expand Sidebar">
+                        <i class="fa-solid fa-angles-left text-xs transition-transform duration-300"></i>
+                    </button>
+                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Widget Container (Populated dynamically by site-auth.js) -->
+            <div id="sidebarProfileSection" class="pt-2 border-t sidebar-divider">
+                <a href="dashboard.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left" title="My Dashboard">
+                    <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+                        <i class="fa-solid fa-user text-base"></i>
+                    </div>
+                    <div class="sidebar-user-info flex-1 min-w-0">
+                        <div class="sidebar-user-name text-sm font-black text-slate-900 dark:text-white">Account</div>
+                        <div class="sidebar-user-email text-xs text-indigo-600 dark:text-cyan-400 font-bold">Sign In / Register &rarr;</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Center Section: Navigation Links -->
+        <div id="sidebar-links" class="p-3 space-y-1.5 flex-1 overflow-y-auto">
+            <a href="index.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="index.html" title="Home">
+                <i class="fa-solid fa-house w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Home</span>
+            </a>
+            <a href="dashboard.html" class="sidebar-link sidebar-active-page flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="dashboard.html" title="Dashboard">
+                <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Dashboard</span>
+            </a>
+            <a href="frp.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="frp.html" title="FRP 2027">
+                <i class="fa-solid fa-unlock-keyhole w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">FRP 2027</span>
+            </a>
+            <a href="free-offer.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="free-offer.html" title="Free Offers">
+                <i class="fa-solid fa-gift w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Free Offers</span>
+            </a>
+            <a href="services.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="services.html" title="Free Services">
+                <i class="fa-solid fa-screwdriver-wrench w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Free Services</span>
+            </a>
+            <a href="shop.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="shop.html" title="Shop">
+                <i class="fa-solid fa-bag-shopping w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Shop</span>
+            </a>
+            <a href="courses.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="courses.html" title="Courses">
+                <i class="fa-solid fa-graduation-cap w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Courses</span>
+            </a>
+            <a href="blog.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="blog.html" title="Blog">
+                <i class="fa-solid fa-newspaper w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Blog</span>
+            </a>
+
+            <!-- Divider before utility links -->
+            <div class="my-2 border-t sidebar-divider"></div>
+
+            <a href="contact.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="contact.html" title="Support">
+                <i class="fa-solid fa-headset w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Support</span>
+            </a>
+            <a href="about.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="about.html" title="Settings">
+                <i class="fa-solid fa-gear w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Settings</span>
+            </a>
+            <a href="admin.html" id="sidebarAdminLink" class="sidebar-link hidden flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 transition-all cursor-pointer" data-page="admin.html" title="Admin Panel">
+                <i class="fa-solid fa-gauge-high w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Admin Panel</span>
+            </a>
+            <button id="sidebarLogoutBtn" onclick="window.doRealLogout()" class="sidebar-link hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-red-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer text-left" title="Log Out">
+                <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Log Out</span>
+            </button>
+        </div>
+        
+        <!-- Bottom Section: Segmented Light / Dark Toggle -->
+        <div class="p-3 border-t sidebar-divider">
+            <div class="theme-switch-pill flex items-center p-1 rounded-xl">
+                <button onclick="setSiteTheme('light')" id="themeBtnLight" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Light Theme">
+                    <i class="fa-regular fa-sun text-sm shrink-0"></i>
+                    <span class="theme-btn-label">Light</span>
+                </button>
+                <button onclick="setSiteTheme('dark')" id="themeBtnDark" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Dark Theme">
+                    <i class="fa-regular fa-moon text-sm shrink-0"></i>
+                    <span class="theme-btn-label">Dark</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300 min-h-screen flex flex-col">
+        
+        <!-- Top Sticky Header -->
+        <header class="sticky top-0 left-0 w-full z-40 glass-nav">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">
+                        <i class="fa-solid fa-bars text-lg text-slate-800 dark:text-white"></i>
+                    </button>
+                    <a href="index.html" class="lg:hidden flex items-center gap-2">
+                        <img src="/logo.png" class="w-7 h-7 rounded-lg object-contain" alt="Habib iFix">
+                        <span class="text-xs font-black uppercase brand-name-habib">Habib iFix</span>
+                    </a>
+                    <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
+                        <span>Portal</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        <span class="text-slate-900 dark:text-white">Customer & Student Dashboard</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="toggleLanguage()" id="langSwitchBtn" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer flex items-center gap-1.5 text-slate-700 dark:text-slate-200">
+                        <i class="fa-solid fa-globe text-cyan-500 dark:text-cyan-400 text-xs"></i> <span>EN | BN</span>
+                    </button>
+                    <button onclick="window.doRealLogout()" class="px-3.5 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-power-off text-xs"></i>
+                        <span class="hidden sm:inline">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+            <!-- Admin Notice Banner (Only shown if user is admin) -->
+            <div id="adminNoticeBanner" class="hidden p-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-amber-500/20 border border-amber-500/40 flex items-center justify-between gap-4 flex-wrap">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-lg">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm font-black text-slate-900 dark:text-white">Master Admin Privileges Detected</div>
+                        <div class="text-xs text-amber-800 dark:text-amber-300">You are logged in as Habib iFix Administrator (<span id="adminEmailBadge">tec.habiburrahman@gmail.com</span>).</div>
+                    </div>
+                </div>
+                <a href="admin.html" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Open Master Admin CMS &rarr;</span>
+                </a>
+            </div>
+
+            <!-- User Welcome Hero Card -->
+            <div class="glass-card rounded-[32px] p-6 sm:p-10 relative overflow-hidden border border-slate-200 dark:border-white/10 shadow-xl dark:bg-slate-900/90 bg-white">
+                <div class="absolute -right-10 -top-10 w-80 h-80 bg-gradient-to-br from-cyan-500/15 via-indigo-500/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="flex items-center gap-4 sm:gap-6">
+                        <div class="relative shrink-0">
+                            <img id="userHeroAvatar" src="https://api.dicebear.com/7.x/initials/svg?seed=HabibUser" alt="Avatar" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-cyan-400/60 shadow-lg shadow-cyan-500/20">
+                            <span class="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] text-white" title="Verified Active">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h1 id="userHeroName" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Customer Portal</h1>
+                                <span id="userHeroRoleBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30">Verified Member</span>
+                            </div>
+                            <p id="userHeroEmail" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">user@habibifix.tech</p>
+                            <div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 font-mono pt-1 flex-wrap">
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-fingerprint text-indigo-500"></i> <span id="userHeroCode">HIFIX-USR-1001</span></span>
+                                <span>•</span>
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-phone text-emerald-500"></i> <span id="userHeroPhone">Not provided</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <button onclick="openEditProfileModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/15 dark:bg-white/5 bg-slate-100 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-xs transition-all flex items-center gap-2 cursor-pointer shadow-xs">
+                            <i class="fa-solid fa-user-pen text-indigo-500"></i>
+                            <span>Edit Profile</span>
+                        </button>
+                        <a href="https://wa.me/8801868461577" target="_blank" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs shadow-lg shadow-emerald-600/30 transition-all flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Direct Lab WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Metric Statistics -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Stat 1: Bookings -->
+                <div onclick="switchDashTab('bookings')" class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white hover:border-cyan-400/50 transition-all cursor-pointer shadow-xs group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Repair Bookings</span>
+                        <div class="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-sm group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono" id="statBookingsCount">0</div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Live tracking active</p>
+                </div>
+
+                <!-- Stat 2: Orders -->
+                <div onclick="switchDashTab('orders')" class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white hover:border-emerald-400/50 transition-all cursor-pointer shadow-xs group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Shop Orders</span>
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono" id="statOrdersCount">0</div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Hardware & tools history</p>
+                </div>
+
+                <!-- Stat 3: Courses -->
+                <div onclick="switchDashTab('courses')" class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white hover:border-indigo-400/50 transition-all cursor-pointer shadow-xs group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Enrolled Courses</span>
+                        <div class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono" id="statCoursesCount">3</div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Tech student hub</p>
+                </div>
+
+                <!-- Stat 4: Free Offers Claimed -->
+                <div onclick="switchDashTab('perks')" class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white hover:border-purple-400/50 transition-all cursor-pointer shadow-xs group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Claimed Perks</span>
+                        <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-sm group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-gift"></i>
+                        </div>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono" id="statPerksCount">5</div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Free tools & voucher</p>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Strip -->
+            <div class="border-b border-slate-200 dark:border-white/10 flex items-center gap-2 overflow-x-auto pb-1 text-xs font-bold">
+                <button onclick="switchDashTab('bookings')" id="tabBtn-bookings" class="dash-tab-btn active px-4 py-2.5 rounded-xl transition-all border-b-2 border-cyan-500 text-cyan-600 dark:text-cyan-400 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>My Repair Bookings</span>
+                </button>
+                <button onclick="switchDashTab('orders')" id="tabBtn-orders" class="dash-tab-btn px-4 py-2.5 rounded-xl transition-all border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span>My Shop Orders</span>
+                </button>
+                <button onclick="switchDashTab('courses')" id="tabBtn-courses" class="dash-tab-btn px-4 py-2.5 rounded-xl transition-all border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>My Courses & Notes</span>
+                </button>
+                <button onclick="switchDashTab('perks')" id="tabBtn-perks" class="dash-tab-btn px-4 py-2.5 rounded-xl transition-all border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-gift"></i>
+                    <span>Claimed Perks & Vouchers</span>
+                </button>
+                <button onclick="switchDashTab('profile')" id="tabBtn-profile" class="dash-tab-btn px-4 py-2.5 rounded-xl transition-all border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Account Settings</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: REPAIR BOOKINGS -->
+            <section id="dashPane-bookings" class="dash-pane space-y-6">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <h2 class="text-lg font-black text-slate-900 dark:text-white">Active & Past Device Repairs</h2>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Real-time status of your smartphone hardware diagnostics and chip-level servicing.</p>
+                    </div>
+                    <a href="services.html" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Book New Repair Service</span>
+                    </a>
+                </div>
+
+                <div id="userBookingsList" class="space-y-4">
+                    <!-- Loaded dynamically -->
+                    <div class="text-center py-12 text-slate-400 text-xs">
+                        <div class="inline-block w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mb-2"></div>
+                        <p>Loading your device bookings...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: SHOP ORDERS -->
+            <section id="dashPane-orders" class="dash-pane hidden space-y-6">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <h2 class="text-lg font-black text-slate-900 dark:text-white">Hardware Parts & Accessories Orders</h2>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Tracking numbers, delivery status, and invoice history for replacement components.</p>
+                    </div>
+                    <a href="shop.html" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>Browse Parts Store</span>
+                    </a>
+                </div>
+
+                <div id="userOrdersList" class="space-y-4">
+                    <!-- Loaded dynamically -->
+                    <div class="text-center py-12 text-slate-400 text-xs">
+                        <div class="inline-block w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin mb-2"></div>
+                        <p>Loading your orders...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: COURSES & NOTES -->
+            <section id="dashPane-courses" class="dash-pane hidden space-y-6">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <h2 class="text-lg font-black text-slate-900 dark:text-white">Enrolled Technical Masterclasses</h2>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Course lectures, motherboard schematics, test-point guides, and certificates.</p>
+                    </div>
+                    <a href="courses.html" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Explore All Courses</span>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Course 1 -->
+                    <div class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border border-indigo-500/30">Master Hardware</span>
+                            <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">80% Done</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Advanced Mobile PMIC & Power IC Reballing</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Covers stencil alignment, low-temp solder paste handling, and motherboard short elimination.</p>
+                        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-indigo-600 h-full rounded-full" style="width: 80%"></div>
+                        </div>
+                        <div class="pt-2 flex items-center justify-between">
+                            <a href="courses.html" class="text-xs font-bold text-indigo-600 dark:text-cyan-400 hover:underline">Watch Lectures &rarr;</a>
+                            <a href="/public/assets/aistudio/IMG_20261022_013415_287_0564f47b.jpg" target="_blank" class="text-[11px] font-mono text-slate-500 dark:text-slate-400 hover:underline">PDF Schematics</a>
+                        </div>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/15 text-cyan-700 dark:text-cyan-400 border border-cyan-500/30">Security Unlock</span>
+                            <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">100% Complete</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">FRP 2027 Android 14/15 Security Master</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">One-click APK tools, testpoint EDL flashing, and Qualcomm/MediaTek baseband repair.</p>
+                        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-cyan-500 h-full rounded-full" style="width: 100%"></div>
+                        </div>
+                        <div class="pt-2 flex items-center justify-between">
+                            <a href="frp.html" class="text-xs font-bold text-cyan-600 dark:text-cyan-400 hover:underline">Download Unlock Tools &rarr;</a>
+                            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Certificate Issued</span>
+                        </div>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/15 text-purple-700 dark:text-purple-400 border border-purple-500/30">Display Technology</span>
+                            <span class="text-xs font-mono font-bold text-amber-600 dark:text-amber-400">45% In Progress</span>
+                        </div>
+                        <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">AMOLED & Curved Glass OCA Lamination</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Machine bubble remover calibration, polaroid film replacement, and edge screen separation.</p>
+                        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-purple-600 h-full rounded-full" style="width: 45%"></div>
+                        </div>
+                        <div class="pt-2 flex items-center justify-between">
+                            <a href="courses.html" class="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline">Resume Course &rarr;</a>
+                            <span class="text-[11px] font-mono text-slate-500">Module 4 of 9</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: PERKS & VOUCHERS -->
+            <section id="dashPane-perks" class="dash-pane hidden space-y-6">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <h2 class="text-lg font-black text-slate-900 dark:text-white">Claimed Free Opportunities & Member Perks</h2>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Exclusive vouchers, hosting guides, and verified tools unlocked from the Free Offers repository.</p>
+                    </div>
+                    <a href="free-offer.html" class="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-all shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-gift"></i>
+                        <span>Explore Free Offers</span>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Voucher Card -->
+                    <div class="p-6 rounded-3xl bg-gradient-to-r from-purple-900/40 via-indigo-900/40 to-slate-900 border border-purple-500/40 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 uppercase">Lab Discount</span>
+                            <span class="text-xs font-mono font-bold text-purple-300">Valid till Dec 2026</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-white">৳২০০ Lab Service Voucher</h3>
+                            <p class="text-xs text-slate-300 mt-1">Get ৳200 flat discount on any display replacement, battery install, or PMIC motherboard repair.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between">
+                            <span class="font-mono font-extrabold text-sm text-cyan-400" id="voucherCodeText">HIFIX-DISC-2026</span>
+                            <button onclick="copyVoucherCode()" class="text-xs font-bold text-white hover:text-cyan-300 px-2 py-1 rounded bg-white/10 hover:bg-white/20 transition-all cursor-pointer">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Cloud Hosting Guide Perk -->
+                    <div class="p-6 rounded-3xl bg-gradient-to-r from-cyan-900/40 via-blue-900/40 to-slate-900 border border-cyan-500/40 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-400 text-slate-950 uppercase">Verified Perk</span>
+                            <span class="text-xs font-mono font-bold text-cyan-300">Active</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-white">12-Month Cloud Hosting Guide</h3>
+                            <p class="text-xs text-slate-300 mt-1">Step-by-step verified blueprint for deploying websites, Node.js tools, and WordPress servers completely free.</p>
+                        </div>
+                        <a href="free-offer.html" class="inline-flex items-center gap-2 text-xs font-bold text-cyan-300 hover:text-white pt-2">
+                            <span>Open Guide & Claim Links &rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: ACCOUNT SETTINGS -->
+            <section id="dashPane-profile" class="dash-pane hidden space-y-6">
+                <div>
+                    <h2 class="text-lg font-black text-slate-900 dark:text-white">Account Details & Contact Information</h2>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Update your phone number and home delivery address for automatic booking autofill.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white max-w-2xl space-y-5">
+                    <form onsubmit="saveUserProfile(event)" class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-800 dark:text-slate-200 mb-1">Full Name</label>
+                            <input type="text" id="settingFullName" required class="w-full p-3 rounded-xl border border-slate-300 dark:border-white/20 dark:bg-slate-950 bg-white text-slate-900 dark:text-white text-xs outline-none focus:border-cyan-400">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-800 dark:text-slate-200 mb-1">Email Address</label>
+                            <input type="email" id="settingEmail" readonly disabled class="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 dark:bg-slate-950/50 bg-slate-100 text-slate-500 text-xs outline-none cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-800 dark:text-slate-200 mb-1">Phone Number (For Repair Updates)</label>
+                            <input type="tel" id="settingPhone" placeholder="018XXXXXXXX" class="w-full p-3 rounded-xl border border-slate-300 dark:border-white/20 dark:bg-slate-950 bg-white text-slate-900 dark:text-white text-xs outline-none focus:border-cyan-400">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-800 dark:text-slate-200 mb-1">Delivery Address</label>
+                            <textarea id="settingAddress" rows="3" placeholder="e.g. House #14, Road #3, Halishahar, Chattogram" class="w-full p-3 rounded-xl border border-slate-300 dark:border-white/20 dark:bg-slate-950 bg-white text-slate-900 dark:text-white text-xs outline-none focus:border-cyan-400 resize-none"></textarea>
+                        </div>
+                        <div class="pt-2 flex items-center justify-between">
+                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Save Changes</span>
+                            </button>
+                            <span id="profileSaveMsg" class="text-xs font-bold text-emerald-500 hidden">✓ Profile updated successfully!</span>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-md w-full border border-slate-200 dark:border-white/15 dark:bg-slate-900 bg-white shadow-2xl relative">
+            <button onclick="closeEditProfileModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-900 dark:hover:text-white text-base cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-base font-black text-slate-900 dark:text-white mb-4">Edit Profile</h3>
+            <form onsubmit="saveUserProfile(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Your Full Name</label>
+                    <input type="text" id="modalFullName" required class="w-full p-3 rounded-xl border border-slate-300 dark:border-white/20 dark:bg-slate-950 bg-white text-slate-900 dark:text-white text-xs outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Contact Phone</label>
+                    <input type="tel" id="modalPhone" placeholder="018XXXXXXXX" class="w-full p-3 rounded-xl border border-slate-300 dark:border-white/20 dark:bg-slate-950 bg-white text-slate-900 dark:text-white text-xs outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Default Shipping Address</label>
+                    <textarea id="modalAddress" rows="2" class="w-full p-3 rounded-xl border border-slate-300 dark:border-white/20 dark:bg-slate-950 bg-white text-slate-900 dark:text-white text-xs outline-none focus:border-cyan-400 resize-none"></textarea>
+                </div>
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" onclick="closeEditProfileModal()" class="px-4 py-2 rounded-xl text-slate-500 hover:text-slate-800 dark:hover:text-white font-bold text-xs">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold text-xs shadow-md transition-all">Save Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script to populate User Dashboard -->
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardUser();
+        });
+
+        async function loadDashboardUser() {
+            // Check local user first
+            try {
+                const stored = localStorage.getItem('habib_current_user');
+                if (stored) {
+                    currentUser = JSON.parse(stored);
+                }
+            } catch(e) {}
+
+            // Verify with server /api/user/me
+            try {
+                const res = await fetch('/api/user/me');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.loggedIn && data.user) {
+                        currentUser = data.user;
+                        localStorage.setItem('habib_current_user', JSON.stringify(currentUser));
+                    }
+                }
+            } catch(err) {
+                console.warn("User status check:", err);
+            }
+
+            if (!currentUser) {
+                // If not logged in, show demo friendly prompt or redirect to login
+                currentUser = {
+                    id: 0,
+                    userCode: 'HIFIX-GUEST',
+                    name: 'Guest Member',
+                    email: 'guest@habibifix.tech',
+                    phone: '',
+                    role: 'guest',
+                    avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Guest'
+                };
+            }
+
+            renderDashboardUI();
+            fetchUserBookings();
+            fetchUserOrders();
+        }
+
+        function renderDashboardUI() {
+            if (!currentUser) return;
+
+            document.getElementById('userHeroName').textContent = currentUser.name || 'Member';
+            document.getElementById('userHeroEmail').textContent = currentUser.email || '';
+            document.getElementById('userHeroCode').textContent = currentUser.userCode || `HIFIX-USR-${1000 + (currentUser.id || 1)}`;
+            document.getElementById('userHeroPhone').textContent = currentUser.phone || 'Not provided';
+            
+            if (currentUser.avatar) {
+                document.getElementById('userHeroAvatar').src = currentUser.avatar;
+            }
+
+            const roleBadge = document.getElementById('userHeroRoleBadge');
+            const adminNotice = document.getElementById('adminNoticeBanner');
+            const sidebarAdminLink = document.getElementById('sidebarAdminLink');
+
+            const isAdmin = currentUser.role === 'admin' || (currentUser.email && currentUser.email.toLowerCase().includes('tec.habiburrahman'));
+            if (isAdmin) {
+                roleBadge.textContent = 'Master Admin';
+                roleBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/40';
+                adminNotice.classList.remove('hidden');
+                document.getElementById('adminEmailBadge').textContent = currentUser.email;
+                if (sidebarAdminLink) sidebarAdminLink.classList.remove('hidden');
+            } else {
+                roleBadge.textContent = currentUser.role === 'student' ? 'Tech Student' : 'Verified Member';
+                adminNotice.classList.add('hidden');
+            }
+
+            // Populate form fields
+            document.getElementById('settingFullName').value = currentUser.name || '';
+            document.getElementById('settingEmail').value = currentUser.email || '';
+            document.getElementById('settingPhone').value = currentUser.phone || '';
+            document.getElementById('settingAddress').value = currentUser.address || '';
+
+            document.getElementById('modalFullName').value = currentUser.name || '';
+            document.getElementById('modalPhone').value = currentUser.phone || '';
+            document.getElementById('modalAddress').value = currentUser.address || '';
+        }
+
+        async function fetchUserBookings() {
+            const listEl = document.getElementById('userBookingsList');
+            const countEl = document.getElementById('statBookingsCount');
+            if (!currentUser || !currentUser.email) return;
+
+            try {
+                const res = await fetch(`/api/user/my-bookings?email=${encodeURIComponent(currentUser.email)}&phone=${encodeURIComponent(currentUser.phone || '')}&userCode=${encodeURIComponent(currentUser.userCode || '')}`);
+                const data = await res.json();
+                
+                countEl.textContent = Array.isArray(data) ? data.length : 0;
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    listEl.innerHTML = `
+                        <div class="text-center py-12 rounded-2xl border border-dashed border-slate-300 dark:border-white/10 dark:bg-slate-900/40 bg-slate-50 p-6 space-y-3">
+                            <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center mx-auto text-xl">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">No Active Repair Requests</h3>
+                            <p class="text-xs text-slate-500 max-w-sm mx-auto">Have a broken AMOLED screen, dead power IC, or swollen battery? Book a free diagnostic repair with Habib iFix Lab.</p>
+                            <a href="services.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold shadow-md">
+                                <span>Book Repair Now &rarr;</span>
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                listEl.innerHTML = data.map(b => `
+                    <div class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                                <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">${b.planName || 'Mobile Repair Service'}</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30">Diagnosing & Repair</span>
+                                <span class="text-xs font-bold text-indigo-600 dark:text-cyan-400 font-mono">${b.planPrice || '৳০'}</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-500 dark:text-slate-400 pt-1">
+                            <div><span class="font-bold">Client:</span> ${b.customerName || currentUser.name}</div>
+                            <div><span class="font-bold">Phone:</span> ${b.phone || 'N/A'}</div>
+                            <div><span class="font-bold">Date:</span> ${b.date || 'Recent'}</div>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs">
+                            <span class="text-slate-500 text-[11px]"><i class="fa-solid fa-location-dot text-cyan-500"></i> ${b.address || 'Lab Pickup'}</span>
+                            <a href="https://wa.me/8801868461577?text=Assalamu%20Alaikum,%20checking%20status%20for%20Repair%20Booking%20%23${b.id}" target="_blank" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline flex items-center gap-1">
+                                <i class="fa-brands fa-whatsapp"></i> Live Chat with Habib
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch(e) {
+                console.error("Fetch bookings err:", e);
+                listEl.innerHTML = `<div class="text-center py-6 text-xs text-red-400">Failed to load repair bookings.</div>`;
+            }
+        }
+
+        async function fetchUserOrders() {
+            const listEl = document.getElementById('userOrdersList');
+            const countEl = document.getElementById('statOrdersCount');
+            if (!currentUser) return;
+
+            try {
+                const res = await fetch(`/api/user/my-orders?email=${encodeURIComponent(currentUser.email || '')}&phone=${encodeURIComponent(currentUser.phone || '')}&userCode=${encodeURIComponent(currentUser.userCode || '')}`);
+                const data = await res.json();
+                
+                countEl.textContent = Array.isArray(data) ? data.length : 0;
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    listEl.innerHTML = `
+                        <div class="text-center py-12 rounded-2xl border border-dashed border-slate-300 dark:border-white/10 dark:bg-slate-900/40 bg-slate-50 p-6 space-y-3">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto text-xl">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">No Shop Orders Placed Yet</h3>
+                            <p class="text-xs text-slate-500 max-w-sm mx-auto">Purchase 100% genuine AMOLED displays, power ICs, and lab tools with cash on delivery across Bangladesh.</p>
+                            <a href="shop.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md">
+                                <span>Shop Parts & Tools &rarr;</span>
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                listEl.innerHTML = data.map(o => `
+                    <div class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div>
+                                <span class="text-[10px] font-mono text-slate-400">ORDER #${o.id}</span>
+                                <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">${o.productName}</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${o.status === 'Delivered' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${o.status || 'Pending'}</span>
+                                <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono">${o.price}</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-500 dark:text-slate-400">
+                            <div><span class="font-bold">Quantity:</span> ${o.quantity || 1} pcs</div>
+                            <div><span class="font-bold">Payment:</span> ${o.paymentMethod || 'Cash on Delivery'}</div>
+                            <div><span class="font-bold">Date:</span> ${o.date || 'Recent'}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch(e) {
+                console.error("Fetch orders err:", e);
+                listEl.innerHTML = `<div class="text-center py-6 text-xs text-red-400">Failed to load orders.</div>`;
+            }
+        }
+
+        function switchDashTab(tabKey) {
+            document.querySelectorAll('.dash-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.dash-tab-btn').forEach(btn => {
+                btn.classList.remove('border-cyan-500', 'text-cyan-600', 'dark:text-cyan-400');
+                btn.classList.add('border-transparent', 'text-slate-600', 'dark:text-slate-400');
+            });
+
+            const targetPane = document.getElementById(`dashPane-${tabKey}`);
+            const targetBtn = document.getElementById(`tabBtn-${tabKey}`);
+
+            if (targetPane) targetPane.classList.remove('hidden');
+            if (targetBtn) {
+                targetBtn.classList.remove('border-transparent', 'text-slate-600', 'dark:text-slate-400');
+                targetBtn.classList.add('border-cyan-500', 'text-cyan-600', 'dark:text-cyan-400');
+            }
+        }
+
+        function openEditProfileModal() {
+            document.getElementById('editProfileModal').classList.remove('hidden');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.add('hidden');
+        }
+
+        async function saveUserProfile(e) {
+            e.preventDefault();
+            const name = document.getElementById('settingFullName').value || document.getElementById('modalFullName').value;
+            const phone = document.getElementById('settingPhone').value || document.getElementById('modalPhone').value;
+            const address = document.getElementById('settingAddress').value || document.getElementById('modalAddress').value;
+
+            try {
+                const res = await fetch('/api/user/update-profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: currentUser ? currentUser.id : undefined,
+                        email: currentUser ? currentUser.email : undefined,
+                        name,
+                        phone,
+                        address
+                    })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.user) {
+                        currentUser = Object.assign({}, currentUser, data.user);
+                        localStorage.setItem('habib_current_user', JSON.stringify(currentUser));
+                        renderDashboardUI();
+                    }
+                    closeEditProfileModal();
+                    const msg = document.getElementById('profileSaveMsg');
+                    if (msg) {
+                        msg.classList.remove('hidden');
+                        setTimeout(() => msg.classList.add('hidden'), 3000);
+                    }
+                }
+            } catch(err) {
+                console.error("Save profile err:", err);
+            }
+        }
+
+        function copyVoucherCode() {
+            navigator.clipboard.writeText('HIFIX-DISC-2026');
+            alert('Voucher Code Copied: HIFIX-DISC-2026 (৳২০০ OFF on any lab repair service)');
+        }
+    </script>
+</body>
+</html>

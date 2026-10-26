@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="bn" class="dark">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL7V4KQXC1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GL7V4KQXC1');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>এক্সক্লুসিভ ফ্রি টেক অফার ও ল্যাব পার্কস | Free Offers & Perks - Habib iFix .Tech</title>
@@ -86,7 +96,7 @@
                 <i class="fa-solid fa-house w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Home</span>
             </a>
-            <a href="admin.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="admin.html" title="Dashboard">
+            <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="dashboard.html" title="Dashboard">
                 <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Dashboard</span>
             </a>
@@ -173,19 +183,19 @@
     <!-- Main Content Container -->
     <main class="flex-1 pb-20">
 
-        <!-- Page Hero Banner -->
-        <section class="relative py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-white/10 overflow-hidden bg-gradient-to-b from-purple-950/20 via-slate-950 to-slate-950">
+        <!-- Page Hero Banner (Adaptive Light & Dark Mode) -->
+        <section class="relative py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b dark:border-white/10 border-slate-200 overflow-hidden dark:bg-gradient-to-b dark:from-purple-950/30 dark:via-slate-950 dark:to-slate-950 bg-gradient-to-b from-purple-50/80 via-white to-slate-50 transition-colors">
             <div class="max-w-5xl mx-auto text-center">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/30 text-purple-300 text-xs font-black tracking-wide mb-4 shadow-sm">
-                    <i class="fa-solid fa-fire text-amber-400"></i>
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full dark:bg-purple-500/10 bg-purple-100/80 border dark:border-purple-400/30 border-purple-300 text-purple-700 dark:text-purple-300 text-xs font-black tracking-wide mb-4 shadow-xs">
+                    <i class="fa-solid fa-fire text-amber-500 dark:text-amber-400"></i>
                     <span>VERIFIED 100% FREE OPPORTUNITIES & TECH PERKS</span>
                 </div>
                 
-                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-4">
-                    এক্সক্লুসিভ <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300">ফ্রি অফার</span> ও স্পেশাল সুযোগ
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
+                    এক্সক্লুসিভ <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 dark:from-purple-400 dark:via-pink-400 dark:to-amber-300">ফ্রি অফার</span> ও স্পেশাল সুযোগ
                 </h1>
 
-                <p class="text-sm sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed font-medium">
+                <p class="text-sm sm:text-base text-slate-700 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed font-medium">
                     আমরা শুধু ফোনের মাদারবোর্ড বা ডিসপ্লে মেরামত করি না—আমাদের ভিজিটর, টেক স্টুডেন্ট ও ডেভেলপার বন্ধুদের জন্য বিশ্বের সেরা প্রিমিয়াম টুলস, ১২ মাসের ফ্রি ক্লাউড হোস্টিং এবং আমাদের ল্যাব ভাউচার একসাথে সংগ্রহ করে রেখেছি। নিচের যেকোনো অফার সম্পূর্ণ বিনামূল্যে গ্রহণ করুন।
                 </p>
 
@@ -206,16 +216,16 @@
                     <button onclick="filterOffers('all')" class="cat-filter-btn active px-4 py-2 rounded-xl bg-purple-600 text-white border border-purple-500/40 shadow-sm transition-all" data-category="all">
                         All Offers (সব অফার)
                     </button>
-                    <button onclick="filterOffers('Cloud & Web Hosting')" class="cat-filter-btn px-4 py-2 rounded-xl bg-slate-900/90 text-slate-300 hover:text-white border border-white/10 hover:border-white/30 transition-all" data-category="Cloud & Web Hosting">
+                    <button onclick="filterOffers('Cloud & Web Hosting')" class="cat-filter-btn px-4 py-2 rounded-xl dark:bg-slate-900/90 dark:text-slate-300 bg-white text-slate-700 border border-slate-200 dark:border-white/10 hover:border-purple-400 transition-all shadow-xs" data-category="Cloud & Web Hosting">
                         🌐 Cloud & Web Hosting
                     </button>
-                    <button onclick="filterOffers('Lab Repair Perks')" class="cat-filter-btn px-4 py-2 rounded-xl bg-slate-900/90 text-slate-300 hover:text-white border border-white/10 hover:border-white/30 transition-all" data-category="Lab Repair Perks">
+                    <button onclick="filterOffers('Lab Repair Perks')" class="cat-filter-btn px-4 py-2 rounded-xl dark:bg-slate-900/90 dark:text-slate-300 bg-white text-slate-700 border border-slate-200 dark:border-white/10 hover:border-purple-400 transition-all shadow-xs" data-category="Lab Repair Perks">
                         🔧 Lab Repair Perks
                     </button>
-                    <button onclick="filterOffers('Student & Dev Perks')" class="cat-filter-btn px-4 py-2 rounded-xl bg-slate-900/90 text-slate-300 hover:text-white border border-white/10 hover:border-white/30 transition-all" data-category="Student & Dev Perks">
+                    <button onclick="filterOffers('Student & Dev Perks')" class="cat-filter-btn px-4 py-2 rounded-xl dark:bg-slate-900/90 dark:text-slate-300 bg-white text-slate-700 border border-slate-200 dark:border-white/10 hover:border-purple-400 transition-all shadow-xs" data-category="Student & Dev Perks">
                         🎓 Student & Dev Perks
                     </button>
-                    <button onclick="filterOffers('Software & Tools')" class="cat-filter-btn px-4 py-2 rounded-xl bg-slate-900/90 text-slate-300 hover:text-white border border-white/10 hover:border-white/30 transition-all" data-category="Software & Tools">
+                    <button onclick="filterOffers('Software & Tools')" class="cat-filter-btn px-4 py-2 rounded-xl dark:bg-slate-900/90 dark:text-slate-300 bg-white text-slate-700 border border-slate-200 dark:border-white/10 hover:border-purple-400 transition-all shadow-xs" data-category="Software & Tools">
                         💻 Software & Tools
                     </button>
                 </div>
@@ -515,7 +525,7 @@
             const reactions = offer.reactions || { fire: 0, heart: 0, rocket: 0 };
 
             return `
-                <article class="relative rounded-3xl bg-slate-900/90 border ${isFeatured ? 'border-purple-500/50 shadow-[0_0_40px_rgba(168,85,247,0.15)]' : 'border-white/15'} overflow-hidden transition-all duration-300 hover:border-purple-400/50">
+                <article class="relative rounded-3xl dark:bg-slate-900/90 bg-white border ${isFeatured ? 'border-purple-500/60 shadow-lg' : 'dark:border-white/15 border-slate-200 shadow-sm'} overflow-hidden transition-all duration-300 hover:border-purple-400/50">
                     
                     ${isFeatured ? `
                         <div class="bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white px-4 py-1.5 text-[11px] font-black tracking-wider uppercase flex items-center justify-between">
@@ -529,7 +539,7 @@
                             
                             <!-- Left: Image Preview & Badge -->
                             <div class="lg:col-span-5 flex flex-col items-center">
-                                <div class="relative w-full rounded-2xl overflow-hidden border border-white/20 bg-slate-950 shadow-xl group">
+                                <div class="relative w-full rounded-2xl overflow-hidden border dark:border-white/20 border-slate-200 dark:bg-slate-950 bg-slate-100 shadow-xl group">
                                     <img src="${offer.image || '/public/assets/aistudio/IMG_20261022_013415_287_0564f47b.jpg'}" alt="${offer.title}" class="w-full h-auto max-h-[380px] object-contain sm:object-cover transition-transform duration-500 group-hover:scale-105">
                                     <div class="absolute top-3 left-3">
                                         <span class="px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-cyan-300 border border-white/20">
@@ -544,20 +554,20 @@
                                 </div>
 
                                 <!-- Reactions Bar -->
-                                <div class="w-full mt-4 p-3 rounded-2xl bg-slate-950/80 border border-white/10 flex items-center justify-between">
-                                    <span class="text-[11px] text-slate-400 font-bold hidden sm:inline">Don't forget to react:</span>
+                                <div class="w-full mt-4 p-3 rounded-2xl dark:bg-slate-950/80 bg-slate-50 border dark:border-white/10 border-slate-200 flex items-center justify-between">
+                                    <span class="text-[11px] text-slate-600 dark:text-slate-400 font-bold hidden sm:inline">Don't forget to react:</span>
                                     <div class="flex items-center gap-2">
-                                        <button onclick="reactToOffer(${offer.id}, 'fire', this)" class="px-2.5 py-1.5 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 border border-orange-500/30 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer">
+                                        <button onclick="reactToOffer(${offer.id}, 'fire', this)" class="px-2.5 py-1.5 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/30 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer">
                                             <span>🔥</span> <span id="react-fire-${offer.id}">${reactions.fire || 0}</span>
                                         </button>
-                                        <button onclick="reactToOffer(${offer.id}, 'heart', this)" class="px-2.5 py-1.5 rounded-xl bg-pink-500/10 hover:bg-pink-500/20 text-pink-400 border border-pink-500/30 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer">
+                                        <button onclick="reactToOffer(${offer.id}, 'heart', this)" class="px-2.5 py-1.5 rounded-xl bg-pink-500/10 hover:bg-pink-500/20 text-pink-600 dark:text-pink-400 border border-pink-500/30 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer">
                                             <span>❤️</span> <span id="react-heart-${offer.id}">${reactions.heart || 0}</span>
                                         </button>
-                                        <button onclick="reactToOffer(${offer.id}, 'rocket', this)" class="px-2.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer">
+                                        <button onclick="reactToOffer(${offer.id}, 'rocket', this)" class="px-2.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-700 dark:text-cyan-400 border border-cyan-500/30 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer">
                                             <span>🚀</span> <span id="react-rocket-${offer.id}">${reactions.rocket || 0}</span>
                                         </button>
                                     </div>
-                                    <button onclick="openShareModal(${offer.id})" title="Share" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs border border-white/10 cursor-pointer">
+                                    <button onclick="openShareModal(${offer.id})" title="Share" class="p-2 rounded-xl dark:bg-white/5 bg-slate-200 hover:bg-slate-300 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 text-xs border dark:border-white/10 border-slate-300 cursor-pointer">
                                         <i class="fa-solid fa-share-nodes"></i>
                                     </button>
                                 </div>
@@ -566,29 +576,29 @@
                             <!-- Right: Detailed Content -->
                             <div class="lg:col-span-7 space-y-4">
                                 <div>
-                                    <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-snug tracking-tight">
+                                    <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white leading-snug tracking-tight">
                                         ${offer.title}
                                     </h2>
                                     ${offer.subtitle ? `
-                                        <p class="text-sm font-bold text-amber-300 mt-1 flex items-center gap-1.5">
+                                        <p class="text-sm font-bold text-amber-700 dark:text-amber-300 mt-1 flex items-center gap-1.5">
                                             <i class="fa-solid fa-sparkles text-xs"></i> ${offer.subtitle}
                                         </p>
                                     ` : ''}
-                                    <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+                                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed font-medium">
                                         ${offer.description}
                                     </p>
                                 </div>
 
                                 <!-- What You Could Get Checklist -->
                                 ${whatYouGet.length > 0 ? `
-                                    <div class="p-4 rounded-2xl bg-slate-950/70 border border-white/10">
-                                        <h4 class="text-xs font-extrabold text-purple-300 uppercase tracking-wider mb-2.5 flex items-center gap-2">
+                                    <div class="p-4 rounded-2xl dark:bg-slate-950/70 bg-purple-50/70 border dark:border-white/10 border-purple-200">
+                                        <h4 class="text-xs font-extrabold text-purple-700 dark:text-purple-300 uppercase tracking-wider mb-2.5 flex items-center gap-2">
                                             <span>🎁</span> What You Could Get:
                                         </h4>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                                             ${whatYouGet.map(item => `
-                                                <div class="flex items-start gap-2 text-slate-200">
-                                                    <span class="text-emerald-400 font-bold shrink-0">✅</span>
+                                                <div class="flex items-start gap-2 text-slate-800 dark:text-slate-200 font-medium">
+                                                    <span class="text-emerald-500 font-bold shrink-0">✅</span>
                                                     <span>${item.replace(/^[✅•\-\*]\s*/, '')}</span>
                                                 </div>
                                             `).join('')}
@@ -598,8 +608,8 @@
 
                                 <!-- Who Should Apply -->
                                 ${offer.whoShouldApply ? `
-                                    <div class="p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/20 text-xs text-slate-200">
-                                        <span class="font-extrabold text-cyan-300 block mb-0.5">🎯 Who Should Apply?</span>
+                                    <div class="p-3.5 rounded-xl dark:bg-cyan-950/30 bg-cyan-50/80 border dark:border-cyan-500/20 border-cyan-200 text-xs text-slate-800 dark:text-slate-200">
+                                        <span class="font-extrabold text-cyan-800 dark:text-cyan-300 block mb-0.5">🎯 Who Should Apply?</span>
                                         <span>${offer.whoShouldApply}</span>
                                     </div>
                                 ` : ''}
@@ -607,13 +617,13 @@
                                 <!-- How to Apply Steps -->
                                 ${howToApply.length > 0 ? `
                                     <div class="space-y-1.5">
-                                        <h4 class="text-xs font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                                        <h4 class="text-xs font-extrabold text-slate-800 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                             <span>📝</span> How to Apply:
                                         </h4>
                                         <div class="space-y-1.5">
                                             ${howToApply.map((step, idx) => `
-                                                <div class="flex items-start gap-2.5 text-xs text-slate-300 bg-white/5 p-2 rounded-xl">
-                                                    <span class="font-mono font-bold text-amber-400 shrink-0">${step.match(/^[0-9️⃣🔟]+/) || (idx + 1 + '.')}</span>
+                                                <div class="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300 dark:bg-white/5 bg-slate-100 p-2 rounded-xl border dark:border-transparent border-slate-200 font-medium">
+                                                    <span class="font-mono font-bold text-amber-600 dark:text-amber-400 shrink-0">${step.match(/^[0-9️⃣🔟]+/) || (idx + 1 + '.')}</span>
                                                     <span>${step.replace(/^[0-9️⃣🔟\.\s]+/, '')}</span>
                                                 </div>
                                             `).join('')}

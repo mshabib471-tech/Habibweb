@@ -286,6 +286,97 @@ html:not(.dark) #topPromoBanner * {
   color: #ffffff !important;
 }
 
+/* ========================================================
+   LIGHT MODE: PRESERVE CRISP LUMINOUS TEXT ON INTENTIONAL DARK CONTAINERS
+   Ensures text on dark cards, promotional banners, and gradient boxes
+   never turns black or dark gray!
+   ======================================================== */
+html:not(.dark) [class*="from-slate-900"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-slate-900"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-slate-900"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-slate-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-slate-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-slate-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-purple-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-purple-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-purple-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-indigo-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-indigo-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-indigo-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-cyan-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-cyan-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="from-cyan-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="via-slate-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="via-slate-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="via-slate-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="via-slate-900"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="via-slate-900"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="via-slate-900"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="bg-slate-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="bg-slate-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="bg-slate-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="bg-slate-900"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="bg-slate-900"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) [class*="bg-slate-900"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
+html:not(.dark) .frp-highlight-box h1,
+html:not(.dark) .frp-highlight-box h2,
+html:not(.dark) .frp-highlight-box h3,
+html:not(.dark) .frp-highlight-box h4 {
+  color: #ffffff !important;
+}
+
+html:not(.dark) [class*="from-slate-900"] p,
+html:not(.dark) [class*="from-slate-950"] p,
+html:not(.dark) [class*="from-purple-950"] p,
+html:not(.dark) [class*="from-indigo-950"] p,
+html:not(.dark) [class*="from-cyan-950"] p,
+html:not(.dark) [class*="via-slate-950"] p,
+html:not(.dark) [class*="via-slate-900"] p,
+html:not(.dark) [class*="bg-slate-950"] p,
+html:not(.dark) [class*="bg-slate-900"] p,
+html:not(.dark) .frp-highlight-box p {
+  color: #e2e8f0 !important;
+}
+
+html:not(.dark) [class*="from-slate-900"] .text-white,
+html:not(.dark) [class*="from-slate-950"] .text-white,
+html:not(.dark) [class*="from-purple-950"] .text-white,
+html:not(.dark) [class*="from-indigo-950"] .text-white,
+html:not(.dark) [class*="from-cyan-950"] .text-white,
+html:not(.dark) [class*="via-slate-950"] .text-white,
+html:not(.dark) [class*="via-slate-900"] .text-white,
+html:not(.dark) [class*="bg-slate-950"] .text-white,
+html:not(.dark) [class*="bg-slate-900"] .text-white,
+html:not(.dark) .frp-highlight-box .text-white {
+  color: #ffffff !important;
+}
+
+html:not(.dark) [class*="from-slate-900"] .text-slate-300,
+html:not(.dark) [class*="from-slate-950"] .text-slate-300,
+html:not(.dark) [class*="from-purple-950"] .text-slate-300,
+html:not(.dark) [class*="from-indigo-950"] .text-slate-300,
+html:not(.dark) [class*="from-cyan-950"] .text-slate-300,
+html:not(.dark) [class*="via-slate-950"] .text-slate-300,
+html:not(.dark) [class*="via-slate-900"] .text-slate-300,
+html:not(.dark) [class*="bg-slate-950"] .text-slate-300,
+html:not(.dark) [class*="bg-slate-900"] .text-slate-300,
+html:not(.dark) .frp-highlight-box .text-slate-300 {
+  color: #cbd5e1 !important;
+}
+
+html:not(.dark) [class*="from-slate-900"] .text-slate-400,
+html:not(.dark) [class*="from-slate-950"] .text-slate-400,
+html:not(.dark) [class*="from-purple-950"] .text-slate-400,
+html:not(.dark) [class*="from-indigo-950"] .text-slate-400,
+html:not(.dark) [class*="from-cyan-950"] .text-slate-400,
+html:not(.dark) [class*="via-slate-950"] .text-slate-400,
+html:not(.dark) [class*="via-slate-900"] .text-slate-400,
+html:not(.dark) [class*="bg-slate-950"] .text-slate-400,
+html:not(.dark) [class*="bg-slate-900"] .text-slate-400,
+html:not(.dark) .frp-highlight-box .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
 /* Light mode secondary / frosted buttons & chips */
 html:not(.dark) button[class*="bg-white\/"],
 html:not(.dark) a[class*="bg-white\/"]:not([class*="bg-gradient"]),

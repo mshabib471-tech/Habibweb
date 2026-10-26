@@ -1,5 +1,5 @@
 // Habib iFix .Tech - Real Firebase Google Auth & User Authentication Manager
-// Integrates real Google Sign-In popup with Firebase project 'habib-yt' and backend sync
+// Integrates real Google Sign-In popup with Firebase project 'composite-entropy-26pck' and backend sync
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
   getAuth, 
@@ -13,17 +13,19 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAaLdtzOIZVYB-Bdc42CXm2T8iclWLc4o0",
-  authDomain: "habib-yt.firebaseapp.com",
-  projectId: "habib-yt",
-  storageBucket: "habib-yt.firebasestorage.app",
-  messagingSenderId: "656628491244",
-  appId: "1:656628491244:web:e01ccd42bd8a2b1b4c96c9",
-  measurementId: "G-GNY1T88D34"
+  projectId: "composite-entropy-26pck",
+  appId: "1:799648339661:web:cf5ef3e467363f64d33b84",
+  apiKey: "AIzaSyCyv5mWrOTxhdjVzEH_Go9cZ8kwAeWxzGU",
+  authDomain: "composite-entropy-26pck.firebaseapp.com",
+  firestoreDatabaseId: "ai-studio-habibweb-c47ad6be-1c6a-4e92-9a01-4d4f3334d43e",
+  storageBucket: "composite-entropy-26pck.firebasestorage.app",
+  messagingSenderId: "799648339661",
+  measurementId: "",
+  oAuthClientId: "799648339661-h724lekklaluoadvqqlvkgc3tvt4hop9.apps.googleusercontent.com"
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 const STORAGE_USER_KEY = 'habib_current_user';
 const DEFAULT_AVATAR = 'https://api.dicebear.com/7.x/initials/svg?seed=User';
@@ -41,18 +43,23 @@ export function setCurrentUser(user) {
   if (user) {
     localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user));
     localStorage.setItem('habib_logged_in', 'true');
-    if (user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman'))) {
+    if (user.email) {
+      localStorage.setItem('habib_user_email', user.email);
+    }
+    const isAdmin = user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman'));
+    if (isAdmin) {
       localStorage.setItem('habib_is_admin', 'true');
     }
   } else {
     localStorage.removeItem(STORAGE_USER_KEY);
     localStorage.removeItem('habib_logged_in');
     localStorage.removeItem('habib_is_admin');
+    localStorage.removeItem('habib_user_email');
   }
   updateAllNavbars();
 }
 
-// Universal Navbar Sync
+// Universal Navbar & Sidebar Sync
 export function updateAllNavbars() {
   const user = getCurrentUser();
   const loginNavContainers = document.querySelectorAll('#loginNavBtn, .login-nav-btn');
@@ -68,13 +75,13 @@ export function updateAllNavbars() {
       const safeEmail = window.escapeHtml ? window.escapeHtml(user.email || 'Member') : (user.email || 'Member');
       sidebarProfile.innerHTML = `
         <div class="relative w-full">
-          <div onclick="window.toggleSidebarUserPopup(event)" class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left cursor-pointer">
-            <img src="${avatarUrl}" class="w-10 h-10 rounded-xl object-cover border-2 ${isAdmin ? 'border-amber-400' : 'border-cyan-400'} shrink-0 shadow-sm" alt="Avatar">
-            <div class="flex-1 min-w-0">
-              <div class="sidebar-user-name text-sm font-black truncate">${safeName}</div>
-              <div class="sidebar-user-email text-xs truncate">${safeEmail}</div>
+          <div onclick="window.toggleSidebarUserPopup(event)" class="sidebar-user-card w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left cursor-pointer" title="${safeName} (${safeEmail})">
+            <img src="${avatarUrl}" class="sidebar-user-avatar w-10 h-10 rounded-xl object-cover border-2 ${isAdmin ? 'border-amber-400' : 'border-cyan-400'} shrink-0 shadow-sm" alt="Avatar">
+            <div class="sidebar-user-info flex-1 min-w-0">
+              <div class="sidebar-user-name text-sm font-black truncate text-slate-900 dark:text-white">${safeName}</div>
+              <div class="sidebar-user-email text-xs truncate text-slate-500 dark:text-slate-400">${safeEmail}</div>
             </div>
-            <i class="fa-solid fa-chevron-right text-xs opacity-60"></i>
+            <i class="sidebar-user-chevron fa-solid fa-chevron-right text-xs opacity-60 text-slate-400"></i>
           </div>
           <div id="sidebarUserPopup" class="hidden absolute left-0 right-0 top-full mt-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-2xl p-3 z-50 divide-y divide-slate-100 dark:divide-white/10">
             <div class="pb-2">
@@ -83,9 +90,11 @@ export function updateAllNavbars() {
               <div class="mt-1 text-[10px] font-mono font-bold ${isAdmin ? 'text-amber-500' : 'text-cyan-500'}">${isAdmin ? '★ ADMINISTRATOR' : '✓ MEMBER'}</div>
             </div>
             <div class="py-2 space-y-1">
+              ${isAdmin ? `
               <a href="admin.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                 <i class="fa-solid fa-gauge text-amber-500"></i> Dashboard
               </a>
+              ` : ''}
               <a href="contact.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                 <i class="fa-solid fa-wrench text-cyan-500"></i> My Repairs / Tickets
               </a>
@@ -104,11 +113,11 @@ export function updateAllNavbars() {
       if (sidebarLogoutBtn) sidebarLogoutBtn.classList.remove('hidden');
     } else {
       sidebarProfile.innerHTML = `
-        <a href="login.html" class="flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left">
-          <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+        <a href="login.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left" title="Sign In / Register">
+          <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
             <i class="fa-solid fa-user text-base"></i>
           </div>
-          <div class="flex-1 min-w-0">
+          <div class="sidebar-user-info flex-1 min-w-0">
             <div class="sidebar-user-name text-sm font-black text-slate-900 dark:text-white">Account</div>
             <div class="sidebar-user-email text-xs text-indigo-600 dark:text-cyan-400 font-bold">Sign In / Register &rarr;</div>
           </div>
@@ -137,7 +146,7 @@ export function updateAllNavbars() {
         wrapper.id = 'userDropdownMenu';
         wrapper.className = 'relative inline-block text-left';
         wrapper.innerHTML = `
-          <button id="userMenuToggleBtn" type="button" class="flex items-center gap-2 p-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-white/20 transition-all text-xs font-bold text-white shadow-md">
+          <button id="userMenuToggleBtn" type="button" class="flex items-center gap-2 p-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-white/20 transition-all text-xs font-bold text-white shadow-md cursor-pointer">
             <img id="navUserAvatar" src="${avatarUrl}" class="w-8 h-8 rounded-lg object-cover border-2 ${isAdmin ? 'border-amber-400' : 'border-cyan-400'}">
             <div class="hidden sm:flex flex-col text-left pr-1 leading-tight">
               <span class="text-xs font-black text-white max-w-[110px] truncate">${user.name || 'Account'}</span>
@@ -185,17 +194,19 @@ export function updateAllNavbars() {
 
         const toggleBtn = wrapper.querySelector('#userMenuToggleBtn');
         const panel = wrapper.querySelector('#userDropdownPanel');
-        toggleBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          panel.classList.toggle('hidden');
-        });
+        if (toggleBtn && panel) {
+          toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            panel.classList.toggle('hidden');
+          });
 
-        document.addEventListener('click', () => {
-          panel.classList.add('hidden');
-        });
+          document.addEventListener('click', () => {
+            panel.classList.add('hidden');
+          });
+        }
       }
 
-      // Universal Floating Admin Ribbon for logged-in admin on all pages
+      // Universal Floating Admin Ribbon for logged-in admin
       if (isAdmin && !window.location.pathname.endsWith('admin.html')) {
         let adminBar = document.getElementById('adminUniversalQuickBar');
         if (!adminBar) {
@@ -221,31 +232,6 @@ export function updateAllNavbars() {
         }
       }
     });
-
-    // Update Mobile Menu
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-      let mobileBox = mobileMenu.querySelector('#mobileUserBox');
-      if (!mobileBox) {
-        mobileBox = document.createElement('div');
-        mobileBox.id = 'mobileUserBox';
-        mobileBox.className = 'p-3 rounded-2xl bg-slate-900 border border-white/15 mb-3 flex items-center justify-between';
-        mobileMenu.insertBefore(mobileBox, mobileMenu.firstChild);
-      }
-      mobileBox.innerHTML = `
-        <div class="flex items-center gap-2.5">
-          <img src="${user.avatar || DEFAULT_AVATAR}" class="w-9 h-9 rounded-xl object-cover border border-cyan-400">
-          <div>
-            <p class="text-xs font-bold text-white">${user.name}</p>
-            <p class="text-[10px] text-cyan-400 font-mono truncate max-w-[140px]">${user.email}</p>
-            <span class="text-[9px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-mono font-bold border border-indigo-500/30">ID: ${user.userCode || ('HIFIX-USR-' + (1000 + (user.id || 1)))}</span>
-          </div>
-        </div>
-        <button onclick="window.doRealLogout()" class="text-xs text-red-400 hover:text-red-300 font-bold px-2 py-1 rounded bg-red-500/10 border border-red-500/20">
-          Logout
-        </button>
-      `;
-    }
   } else {
     loginNavContainers.forEach(el => {
       el.style.display = 'flex';
@@ -258,15 +244,12 @@ export function updateAllNavbars() {
       el.innerHTML = '';
     });
 
-    const mobileBox = document.getElementById('mobileUserBox');
-    if (mobileBox) mobileBox.remove();
-
     const existingQuickBar = document.getElementById('adminUniversalQuickBar');
     if (existingQuickBar) existingQuickBar.remove();
   }
 }
 
-// REAL GOOGLE AUTH POPUP WITH FIREBASE & DOMAIN FALLBACK
+// REAL GOOGLE AUTH POPUP WITH FIREBASE & BACKEND SYNC
 export async function signInWithGoogleReal(intendedRole = 'customer') {
   try {
     const provider = new GoogleAuthProvider();
@@ -377,37 +360,53 @@ export async function registerWithEmailReal(name, email, phone, password) {
   }
 }
 
-// REAL LOGOUT
+// REAL LOGOUT - Clears Firebase, Server Cookies, Local Storage, & Updates UI
 export async function signOutReal() {
   try {
     await signOut(auth);
-  } catch (e) {}
+  } catch (e) {
+    console.warn("Firebase signOut notice:", e);
+  }
   try {
     await fetch('/api/logout', { method: 'POST' });
-  } catch (e) {}
-  setCurrentUser(null);
+    await fetch('/api/logout');
+  } catch (e) {
+    console.warn("Server logout notice:", e);
+  }
+
+  // Clear all local session tokens
+  localStorage.removeItem(STORAGE_USER_KEY);
   localStorage.removeItem('habib_logged_in');
   localStorage.removeItem('habib_is_admin');
   localStorage.removeItem('habib_user_email');
+  sessionStorage.clear();
+
   const existingQuickBar = document.getElementById('adminUniversalQuickBar');
   if (existingQuickBar) existingQuickBar.remove();
-  window.location.reload();
+
+  updateAllNavbars();
+
+  if (window.location.pathname.endsWith('admin.html')) {
+    window.location.href = 'login.html';
+  } else {
+    window.location.reload();
+  }
 }
 
 // Listen to Firebase auth state changes
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
+onAuthStateChanged(auth, async (firebaseUser) => {
+  if (firebaseUser) {
     const existing = getCurrentUser();
-    if (!existing || existing.email !== user.email) {
+    if (!existing || existing.email !== firebaseUser.email) {
       try {
         const res = await fetch('/api/user/google-auth', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email: user.email,
-            name: user.displayName || user.email.split('@')[0],
-            picture: user.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.displayName || 'User')}`,
-            role: user.email.toLowerCase().includes('tec.habiburrahman') ? 'admin' : 'customer'
+            email: firebaseUser.email,
+            name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+            picture: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
+            role: firebaseUser.email.toLowerCase().includes('tec.habiburrahman') ? 'admin' : 'customer'
           })
         });
         const data = await res.json();
@@ -416,6 +415,18 @@ onAuthStateChanged(auth, async (user) => {
         }
       } catch (e) {}
     }
+  } else {
+    // Firebase auth has no user - verify if server session has any active user
+    try {
+      const res = await fetch('/api/user/me');
+      const data = await res.json();
+      if (!data.loggedIn) {
+        // Both Firebase and Server agree user is logged out!
+        if (getCurrentUser()) {
+          setCurrentUser(null);
+        }
+      }
+    } catch (e) {}
   }
 });
 
@@ -443,6 +454,10 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(d => {
       if (d.loggedIn && d.user) {
         setCurrentUser(d.user);
+      } else {
+        if (!auth.currentUser) {
+          setCurrentUser(null);
+        }
       }
     })
     .catch(() => {});

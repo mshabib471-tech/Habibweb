@@ -695,6 +695,12 @@ app.post('/api/logout', (req, res) => {
   res.json({ success: true });
 });
 
+app.get('/api/logout', (req, res) => {
+  res.clearCookie('admin_session');
+  res.clearCookie('user_session');
+  res.json({ success: true });
+});
+
 // Comprehensive User Authentication API (Customer & Student System)
 app.post('/api/user/login', (req, res) => {
   const { email, password, name, phone } = req.body;

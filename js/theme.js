@@ -1,4 +1,4 @@
-// Habib iFix .Tech Global Dual-Theme & Luxury Sidebar Controller
+// Habib iFix .Tech Global Dual-Theme & Luxury Responsive Collapsible Sidebar Controller
 (function() {
   // Theme Management
   window.setSiteTheme = function(theme) {
@@ -56,13 +56,56 @@
     updateThemeToggleUI(isDark);
   }
 
-  // Execute immediately to prevent flash of wrong theme
+  // Execute immediately to prevent flash of wrong theme and wrong sidebar width
   try {
-    const saved = localStorage.getItem('habib_theme') || 'dark';
-    const dark = saved === 'dark';
+    const savedTheme = localStorage.getItem('habib_theme') || 'dark';
+    const dark = savedTheme === 'dark';
     document.documentElement.classList.toggle('dark', dark);
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+
+    const isCollapsed = localStorage.getItem('habib_sidebar_collapsed') === 'true';
+    if (isCollapsed) {
+      document.documentElement.classList.add('sidebar-collapsed-mode');
+    }
   } catch(e) {}
+
+  // Desktop Collapsible Sidebar
+  window.toggleDesktopSidebar = function() {
+    const isCollapsed = document.documentElement.classList.toggle('sidebar-collapsed-mode');
+    if (document.body) {
+      document.body.classList.toggle('sidebar-collapsed-mode', isCollapsed);
+    }
+    localStorage.setItem('habib_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+    updateCollapseButtonUI(isCollapsed);
+  };
+
+  function updateCollapseButtonUI(isCollapsed) {
+    const btn = document.getElementById('sidebarCollapseBtn');
+    if (btn) {
+      const icon = btn.querySelector('i');
+      if (icon) {
+        if (isCollapsed) {
+          icon.className = 'fa-solid fa-angles-right text-xs transition-transform duration-300';
+          btn.setAttribute('title', 'Expand Sidebar');
+        } else {
+          icon.className = 'fa-solid fa-angles-left text-xs transition-transform duration-300';
+          btn.setAttribute('title', 'Collapse Sidebar');
+        }
+      }
+    }
+  }
+
+  function initSidebarState() {
+    const isCollapsed = localStorage.getItem('habib_sidebar_collapsed') === 'true';
+    if (isCollapsed) {
+      document.documentElement.classList.add('sidebar-collapsed-mode');
+      if (document.body) document.body.classList.add('sidebar-collapsed-mode');
+    } else {
+      document.documentElement.classList.remove('sidebar-collapsed-mode');
+      if (document.body) document.body.classList.remove('sidebar-collapsed-mode');
+    }
+    updateCollapseButtonUI(isCollapsed);
+  }
 
   // Universal HTML Escape
   window.escapeHtml = function(text) {
@@ -72,7 +115,7 @@
     });
   };
 
-  // Luxury Sidebar Toggle (Mobile & Desktop)
+  // Luxury Mobile Drawer Toggle
   window.toggleSidebar = function() {
     const sidebar = document.getElementById('sidebar');
     const backdrop = document.getElementById('sidebarBackdrop');
@@ -109,12 +152,11 @@
     }
   };
 
-  // Universal Active Page Filter: Hides active page link in sidebar
-  function hideCurrentPageInSidebar() {
+  // Highlight active page link and set up tooltip + mobile auto-close
+  function setupSidebarNavigation() {
     let currentPath = window.location.pathname.split('/').pop() || 'index.html';
     if (!currentPath || currentPath === '') currentPath = 'index.html';
 
-    // Normalize mapping
     const pathMap = {
       '': 'index.html',
       '/': 'index.html',
@@ -135,9 +177,30 @@
 
     document.querySelectorAll('.sidebar-link, [data-page]').forEach(link => {
       const page = link.getAttribute('data-page');
-      if (page && (page === target || page === currentPath)) {
-        link.style.display = 'none';
+      const label = link.querySelector('.sidebar-label, span');
+      const text = label ? label.innerText.trim() : (link.getAttribute('title') || '');
+
+      // Assign data-tooltip for desktop collapsed hover
+      if (text) {
+        link.setAttribute('data-tooltip', text);
+        if (!link.getAttribute('title')) {
+          link.setAttribute('title', text);
+        }
       }
+
+      // Check active state
+      if (page && (page === target || page === currentPath)) {
+        link.classList.add('sidebar-active-page');
+      } else {
+        link.classList.remove('sidebar-active-page');
+      }
+
+      // Mobile auto-close on link click
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) {
+          window.closeSidebar();
+        }
+      });
     });
   }
 
@@ -192,9 +255,17 @@
     }
   });
 
+  // Close mobile drawer on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      window.closeSidebar();
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
-    hideCurrentPageInSidebar();
+    initSidebarState();
+    setupSidebarNavigation();
     window.applyLanguage(currentLang);
 
     if (sessionStorage.getItem('habib_promo_dismissed') === 'true') {

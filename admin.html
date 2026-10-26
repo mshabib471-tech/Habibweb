@@ -24,6 +24,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="/js/theme.js"></script>
+    <script type="module" src="/js/site-auth.js"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100" style="display: none;">
 
@@ -701,10 +702,16 @@
         });
 
         document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await fetch('/api/logout', { method: 'POST' });
-            localStorage.removeItem('habib_logged_in');
-            localStorage.removeItem('habib_is_admin');
-            window.location.href = 'login.html';
+            if (window.doRealLogout) {
+                await window.doRealLogout();
+            } else {
+                await fetch('/api/logout', { method: 'POST' });
+                localStorage.removeItem('habib_logged_in');
+                localStorage.removeItem('habib_is_admin');
+                localStorage.removeItem('habib_current_user');
+                localStorage.removeItem('habib_user_email');
+                window.location.href = 'login.html';
+            }
         });
 
         // 1. Load Site Stats & Visitor Logs ("site koi jon visit korce")

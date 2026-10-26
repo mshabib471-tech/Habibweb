@@ -1069,3 +1069,138 @@ html:not(.dark) ::-webkit-scrollbar-track {
   background: #6366f1;
   border-radius: 4px;
 }
+
+
+/* ========================================================
+   RESPONSIVE COLLAPSIBLE SIDEBAR ENGINE (DESKTOP & MOBILE)
+   ======================================================== */
+@media (min-width: 1024px) {
+  /* When sidebar is collapsed */
+  html.sidebar-collapsed-mode #sidebar,
+  body.sidebar-collapsed-mode #sidebar {
+    width: 72px !important;
+  }
+
+  html.sidebar-collapsed-mode #mainContent,
+  body.sidebar-collapsed-mode #mainContent {
+    margin-left: 72px !important;
+  }
+
+  html.sidebar-collapsed-mode .sidebar-label,
+  html.sidebar-collapsed-mode .sidebar-brand-text,
+  html.sidebar-collapsed-mode .sidebar-user-info,
+  html.sidebar-collapsed-mode .sidebar-user-chevron,
+  html.sidebar-collapsed-mode .theme-btn-label,
+  body.sidebar-collapsed-mode .sidebar-label,
+  body.sidebar-collapsed-mode .sidebar-brand-text,
+  body.sidebar-collapsed-mode .sidebar-user-info,
+  body.sidebar-collapsed-mode .sidebar-user-chevron,
+  body.sidebar-collapsed-mode .theme-btn-label {
+    display: none !important;
+  }
+
+  html.sidebar-collapsed-mode .sidebar-link,
+  body.sidebar-collapsed-mode .sidebar-link {
+    justify-content: center !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  html.sidebar-collapsed-mode .sidebar-user-card,
+  body.sidebar-collapsed-mode .sidebar-user-card {
+    justify-content: center !important;
+    padding: 0.25rem !important;
+  }
+
+  html.sidebar-collapsed-mode #sidebarCollapseBtn i,
+  body.sidebar-collapsed-mode #sidebarCollapseBtn i {
+    transform: rotate(180deg);
+  }
+
+  html.sidebar-collapsed-mode .theme-switch-pill,
+  body.sidebar-collapsed-mode .theme-switch-pill {
+    flex-direction: column !important;
+    padding: 2px !important;
+  }
+
+  html.sidebar-collapsed-mode .theme-btn-option,
+  body.sidebar-collapsed-mode .theme-btn-option {
+    padding: 6px 0 !important;
+  }
+
+  /* Tooltip on hover in collapsed mode */
+  html.sidebar-collapsed-mode .sidebar-link {
+    position: relative;
+  }
+
+  html.sidebar-collapsed-mode .sidebar-link:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    margin-left: 12px;
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  html:not(.dark).sidebar-collapsed-mode .sidebar-link:hover::after {
+    background-color: #111827;
+    color: #ffffff;
+    border: 1px solid #374151;
+  }
+}
+
+/* Active Sidebar Page Indicator */
+.sidebar-active-page {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(99, 102, 241, 0.12)) !important;
+  border-left: 3px solid #06b6d4 !important;
+  color: #0284c7 !important;
+  font-weight: 800 !important;
+}
+
+.sidebar-active-page i {
+  color: #0284c7 !important;
+}
+
+html.dark .sidebar-active-page {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(99, 102, 241, 0.18)) !important;
+  border-left: 3px solid #38bdf8 !important;
+  color: #38bdf8 !important;
+  font-weight: 800 !important;
+}
+
+html.dark .sidebar-active-page i {
+  color: #38bdf8 !important;
+}
+
+/* Admin Panel Sidebar & Elements Light Mode Compatibility */
+html:not(.dark) aside.glass-nav {
+  background-color: #ffffff !important;
+  border-right: 1px solid #e2e8f0 !important;
+}
+
+html:not(.dark) aside.glass-nav button:not(.bg-indigo-600) {
+  color: #374151 !important;
+}
+
+html:not(.dark) aside.glass-nav button:not(.bg-indigo-600):hover {
+  background-color: #f1f5f9 !important;
+  color: #111827 !important;
+}
+
+html:not(.dark) aside.glass-nav a {
+  color: #374151 !important;
+}
+
+html:not(.dark) aside.glass-nav a:hover {
+  background-color: #f1f5f9 !important;
+  color: #111827 !important;
+}

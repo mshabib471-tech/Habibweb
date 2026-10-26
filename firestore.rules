@@ -1,0 +1,119 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper Functions
+    function isSignedIn() { 
+      return request.auth != null; 
+    }
+    
+    function isVerified() {
+      return isSignedIn() && (request.auth.token.email_verified == true || request.auth.token.firebase.sign_in_provider == 'google.com');
+    }
+
+    function isAdmin() { 
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email != null && request.auth.token.email.lower().matches('.*tec\\.habiburrahman@gmail\\.com.*'))
+      ); 
+    }
+
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+
+    function incoming() { 
+      return request.resource.data; 
+    }
+
+    function existing() { 
+      return resource.data; 
+    }
+
+    // Default Deny Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Admins Collection - RBAC
+    match /admins/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow write: if false; // Managed by master admin
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
+      allow create: if isSignedIn() && request.auth.uid == userId &&
+        incoming().keys().hasAll(['email']) &&
+        incoming().email is string &&
+        incoming().email.size() <= 150 &&
+        (!('role' in incoming()) || incoming().role == 'customer' || isAdmin());
+      allow update: if isSignedIn() && (
+        isAdmin() || 
+        (request.auth.uid == userId && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'avatar', 'lastLogin']))
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Offers: Public read, Admin write
+    match /offers/{offerId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Services: Public read, Admin write
+    match /services/{serviceId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Courses: Public read, Admin write
+    match /courses/{courseId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Blog / Posts: Public read, Admin write
+    match /posts/{postId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /blogs/{blogId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Repair Bookings: User can create & read own bookings; Admin full access
+    match /bookings/{bookingId} {
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && incoming().keys().hasAll(['customerName', 'phone']) &&
+        incoming().customerName is string && incoming().customerName.size() <= 100 &&
+        incoming().phone is string && incoming().phone.size() <= 30;
+      allow update, delete: if isAdmin();
+    }
+
+    // Shop Orders: Customer can create & read own orders; Admin full access
+    match /orders/{orderId} {
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if incoming().keys().hasAll(['customerName', 'phone', 'address']) &&
+        incoming().customerName is string && incoming().customerName.size() <= 100 &&
+        incoming().phone is string && incoming().phone.size() <= 30 &&
+        incoming().address is string && incoming().address.size() <= 300;
+      allow update, delete: if isAdmin();
+    }
+
+    // Contact Inquiries: Anyone can create; Admin can read & reply
+    match /contacts/{contactId} {
+      allow get, list: if isAdmin();
+      allow create: if incoming().keys().hasAll(['name', 'contact', 'message']) &&
+        incoming().name is string && incoming().name.size() <= 100 &&
+        incoming().contact is string && incoming().contact.size() <= 100 &&
+        incoming().message is string && incoming().message.size() <= 2000;
+      allow update, delete: if isAdmin();
+    }
+  }
+}

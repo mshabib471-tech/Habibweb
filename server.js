@@ -8,11 +8,18 @@ const app = express();
 const PORT = 3000;
 const DB_FILE = path.join(__dirname, 'database.json');
 
+process.on('uncaughtException', (err) => {
+  console.error('[CRITICAL] Uncaught exception in server:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[CRITICAL] Unhandled promise rejection in server:', reason);
+});
+
 // Middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
-app.use(express.static(__dirname));
 
 const firebaseConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'firebase-applet-config.json'), 'utf8'));
 
@@ -56,30 +63,71 @@ function writeDB(data) {
   }
 }
 
-// Auth middleware - checks admin cookie, admin token header, or admin user session
-const checkAdmin = (req, res, next) => {
+// Strict Admin Access Control
+// Only tec.habiburrahman@gmail.com and mshabib471@gmail.com are permitted to access Admin Panel
+const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
+
+function isAuthorizedAdmin(email) {
+  if (!email || typeof email !== 'string') return false;
+  return ADMIN_EMAILS.includes(email.trim().toLowerCase());
+}
+
+// Route Gatekeeper for Admin Panel (Runs BEFORE express.static to prevent static bypass)
+app.get(['/admin', '/admin.html'], (req, res, next) => {
+  const userSessionId = req.cookies && req.cookies.user_session;
   const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
-  const adminHeader = req.headers['x-admin-token'] === 'habib_admin_token_2026';
-  if (adminCookie || adminHeader) {
-    return next();
+  const adminEmail = req.cookies && req.cookies.admin_email;
+
+  let currentUser = null;
+  if (userSessionId) {
+    const db = readDB();
+    currentUser = (db.users || []).find(u => u.id === parseInt(userSessionId));
   }
 
+  if (currentUser) {
+    if (isAuthorizedAdmin(currentUser.email)) {
+      return res.sendFile(path.join(__dirname, 'admin.html'));
+    } else {
+      // Logged-in non-admin user trying to access admin panel -> redirect strictly to User Dashboard!
+      return res.redirect('/dashboard.html?denied=admin');
+    }
+  }
+
+  if (adminCookie && adminEmail && isAuthorizedAdmin(adminEmail)) {
+    return res.sendFile(path.join(__dirname, 'admin.html'));
+  }
+
+  // Not authenticated as admin -> redirect to login
+  return res.redirect('/login.html?redirect=admin.html');
+});
+
+app.use(express.static(__dirname));
+
+// Auth middleware - strictly checks authorized admin accounts
+const checkAdmin = (req, res, next) => {
   // Check user session ID
   const userSessionId = req.cookies && req.cookies.user_session;
   if (userSessionId) {
     const db = readDB();
     const user = (db.users || []).find(u => u.id === parseInt(userSessionId));
-    if (user && (user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman')))) {
+    if (user && isAuthorizedAdmin(user.email)) {
       return next();
     }
   }
 
   const userEmail = req.headers['x-user-email'];
-  if (userEmail && userEmail.toLowerCase().includes('tec.habiburrahman')) {
+  if (userEmail && isAuthorizedAdmin(userEmail)) {
     return next();
   }
 
-  res.status(401).json({ error: 'Unauthorized: Admin access required' });
+  const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
+  const adminEmail = req.cookies && req.cookies.admin_email;
+  const adminHeader = req.headers['x-admin-token'] === 'habib_admin_token_2026';
+  if ((adminCookie || adminHeader) && (!adminEmail || isAuthorizedAdmin(adminEmail))) {
+    return next();
+  }
+
+  res.status(403).json({ error: 'Unauthorized: Admin access strictly reserved for tec.habiburrahman@gmail.com & mshabib471@gmail.com' });
 };
 
 // Initialize Gemini SDK with process.env.GEMINI_API_KEY or provided fallback
@@ -638,12 +686,12 @@ app.post('/api/login', (req, res) => {
 
 app.post('/api/google-login', (req, res) => {
   const { email, name, picture } = req.body;
-  const userEmail = (email || 'tec.habiburrahman@gmail.com').toLowerCase();
+  const userEmail = (email || '').toLowerCase().trim();
   const userName = name || userEmail.split('@')[0];
   const db = readDB();
   
   let user = db.users.find(u => u.email.toLowerCase() === userEmail);
-  const isAdminEmail = userEmail.includes('tec.habiburrahman') || userEmail.includes('habib');
+  const isAdminEmail = isAuthorizedAdmin(userEmail);
 
   if (!user) {
     const newId = db.nextUserId++;
@@ -665,19 +713,24 @@ app.post('/api/google-login', (req, res) => {
   } else {
     user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
     if (picture) user.avatar = picture;
-    if (isAdminEmail) user.role = 'admin';
+    user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
     user.loginCount = (user.loginCount || 0) + 1;
     user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     writeDB(db);
   }
 
-  if (user.role === 'admin' || isAdminEmail) {
+  if (isAdminEmail) {
     res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('admin_email', userEmail, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  } else {
+    res.clearCookie('admin_session');
+    res.clearCookie('admin_email');
   }
   res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
   res.json({ 
     success: true, 
+    isAdmin: isAdminEmail,
     user: { 
       id: user.id,
       userCode: user.userCode,
@@ -692,12 +745,14 @@ app.post('/api/google-login', (req, res) => {
 
 app.post('/api/logout', (req, res) => {
   res.clearCookie('admin_session');
+  res.clearCookie('admin_email');
   res.clearCookie('user_session');
   res.json({ success: true });
 });
 
 app.get('/api/logout', (req, res) => {
   res.clearCookie('admin_session');
+  res.clearCookie('admin_email');
   res.clearCookie('user_session');
   res.json({ success: true });
 });
@@ -712,16 +767,16 @@ app.post('/api/user/login', (req, res) => {
   const cleanEmail = email.trim().toLowerCase();
   const db = readDB();
   let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
+  const isAdminEmail = isAuthorizedAdmin(cleanEmail);
 
   if (!user) {
     // If account doesn't exist, automatically register new real user!
     const newId = db.nextUserId++;
     const derivedName = (name && name.trim()) || cleanEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    const isAdminEmail = cleanEmail.includes('tec.habiburrahman') || cleanEmail.includes('habib');
 
     user = {
       id: newId,
-      userCode: `HIFIX-USR-${1000 + newId}`,
+      userCode: isAdminEmail ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
       name: derivedName,
       email: cleanEmail,
       phone: (phone && phone.trim()) || '',
@@ -743,20 +798,26 @@ app.post('/api/user/login', (req, res) => {
     if (name && name.trim()) user.name = name.trim();
     if (phone && phone.trim()) user.phone = phone.trim();
 
-    user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
+    user.userCode = user.userCode || (isAdminEmail ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`);
+    user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
     user.loginCount = (user.loginCount || 0) + 1;
     user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     writeDB(db);
   }
 
   // Set cookies
-  if (user.role === 'admin' || cleanEmail.includes('tec.habiburrahman')) {
+  if (isAdminEmail) {
     res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('admin_email', cleanEmail, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  } else {
+    res.clearCookie('admin_session');
+    res.clearCookie('admin_email');
   }
   res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
   res.json({
     success: true,
+    isAdmin: isAdminEmail,
     user: {
       id: user.id,
       userCode: user.userCode,
@@ -827,18 +888,19 @@ app.post('/api/user/google-auth', (req, res) => {
     return res.status(400).json({ error: 'Google email is required' });
   }
 
+  const cleanEmail = email.trim().toLowerCase();
   const db = readDB();
-  let user = db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
 
-  const isAdminEmail = email.toLowerCase().includes('tec.habiburrahman') || email.toLowerCase().includes('habib');
+  const isAdminEmail = isAuthorizedAdmin(cleanEmail);
 
   if (!user) {
     const newId = db.nextUserId++;
     user = {
       id: newId,
-      userCode: `HIFIX-USR-${1000 + newId}`,
-      name: name || email.split('@')[0],
-      email: email.toLowerCase(),
+      userCode: isAdminEmail ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
+      name: name || cleanEmail.split('@')[0],
+      email: cleanEmail,
       phone: '',
       role: isAdminEmail ? 'admin' : (role || 'customer'),
       avatar: picture || `https://lh3.googleusercontent.com/a/default-user=s96-c`,
@@ -851,23 +913,27 @@ app.post('/api/user/google-auth', (req, res) => {
     writeDB(db);
   } else {
     // update avatar, login count and userCode
-    user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
+    user.userCode = user.userCode || (isAdminEmail ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`);
     if (picture) user.avatar = picture;
-    if (isAdminEmail) user.role = 'admin';
+    user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
     user.loginCount = (user.loginCount || 0) + 1;
     user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     writeDB(db);
   }
 
-  // If admin, also grant admin session
-  if (user.role === 'admin' || isAdminEmail) {
+  // If admin, grant admin session cookies; otherwise ensure they are cleared
+  if (isAdminEmail) {
     res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('admin_email', cleanEmail, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  } else {
+    res.clearCookie('admin_session');
+    res.clearCookie('admin_email');
   }
 
   res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
   res.json({
     success: true,
-    isAdmin: user.role === 'admin' || isAdminEmail,
+    isAdmin: isAdminEmail,
     user: {
       id: user.id,
       userCode: user.userCode,
@@ -888,20 +954,28 @@ app.get('/api/user/me', (req, res) => {
   if (!userId) {
     // check if admin
     if (req.cookies.admin_session === 'habib_admin_token_2026') {
-      return res.json({
-        loggedIn: true,
-        user: {
-          id: 1,
-          userCode: 'HIFIX-USR-1001',
-          name: 'Habibur Rahman',
-          email: 'tec.habiburrahman@gmail.com',
-          role: 'admin',
-          avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80',
-          createdAt: '14/10/2026',
-          lastLogin: 'Today',
-          loginCount: 38
+      const adminEmail = req.cookies.admin_email || 'tec.habiburrahman@gmail.com';
+      if (isAuthorizedAdmin(adminEmail)) {
+        const db = readDB();
+        const adminUser = db.users.find(u => u.email.toLowerCase() === adminEmail.toLowerCase());
+        if (adminUser) {
+          return res.json({
+            loggedIn: true,
+            isAdmin: true,
+            user: {
+              id: adminUser.id,
+              userCode: adminUser.userCode,
+              name: adminUser.name,
+              email: adminUser.email,
+              role: 'admin',
+              avatar: adminUser.avatar,
+              createdAt: adminUser.createdAt,
+              lastLogin: adminUser.lastLogin,
+              loginCount: adminUser.loginCount
+            }
+          });
         }
-      });
+      }
     }
     return res.json({ loggedIn: false });
   }
@@ -912,15 +986,17 @@ app.get('/api/user/me', (req, res) => {
     return res.json({ loggedIn: false });
   }
 
+  const isAdmin = isAuthorizedAdmin(user.email);
   res.json({
     loggedIn: true,
+    isAdmin,
     user: {
       id: user.id,
-      userCode: user.userCode || `HIFIX-USR-${1000 + user.id}`,
+      userCode: user.userCode || (isAdmin ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`),
       name: user.name,
       email: user.email,
       phone: user.phone || '',
-      role: user.role || 'customer',
+      role: isAdmin ? 'admin' : (user.role || 'customer'),
       avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
       createdAt: user.createdAt,
       lastLogin: user.lastLogin || '',
@@ -1113,23 +1189,24 @@ app.post('/api/user/update-profile', (req, res) => {
 });
 
 app.get('/api/check-admin', (req, res) => {
-  const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
-  const adminHeader = req.headers['x-admin-token'] === 'habib_admin_token_2026';
-  if (adminCookie || adminHeader) {
-    return res.json({ isAdmin: true, email: 'tec.habiburrahman@gmail.com' });
-  }
-
   const userSessionId = req.cookies && req.cookies.user_session;
   if (userSessionId) {
     const db = readDB();
     const user = (db.users || []).find(u => u.id === parseInt(userSessionId));
-    if (user && (user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman')))) {
+    if (user && isAuthorizedAdmin(user.email)) {
       return res.json({ isAdmin: true, email: user.email, name: user.name });
     }
   }
 
+  const adminEmail = req.cookies && req.cookies.admin_email;
+  const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
+  const adminHeader = req.headers['x-admin-token'] === 'habib_admin_token_2026';
+  if ((adminCookie || adminHeader) && adminEmail && isAuthorizedAdmin(adminEmail)) {
+    return res.json({ isAdmin: true, email: adminEmail });
+  }
+
   const authEmail = req.headers['x-user-email'];
-  if (authEmail && authEmail.toLowerCase().includes('tec.habiburrahman')) {
+  if (authEmail && isAuthorizedAdmin(authEmail)) {
     return res.json({ isAdmin: true, email: authEmail });
   }
 

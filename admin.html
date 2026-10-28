@@ -34,6 +34,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="/js/theme.js"></script>
+    <script>
+        // Immediate client-side security guard for Admin Panel
+        (function() {
+            const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
+            try {
+                const userRaw = localStorage.getItem('habib_current_user');
+                const userEmail = (localStorage.getItem('habib_user_email') || '').toLowerCase().trim();
+                let email = userEmail;
+                if (userRaw) {
+                    const u = JSON.parse(userRaw);
+                    if (u && u.email) email = u.email.toLowerCase().trim();
+                }
+                const isLoggedIn = localStorage.getItem('habib_logged_in') === 'true' || !!email;
+                if (isLoggedIn && email && !ADMIN_EMAILS.includes(email)) {
+                    // Unauthorized regular user -> immediately send to User Dashboard!
+                    window.location.replace('dashboard.html?denied=admin');
+                }
+            } catch(e) {}
+        })();
+    </script>
     <script type="module" src="/js/site-auth.js"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100" style="display: none;">
@@ -692,11 +712,11 @@
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
-        // Check Auth immediately
+        // Check Auth immediately with server
         fetch('/api/check-admin').then(res => res.json()).then(data => {
             if (data.isAdmin) {
                 document.body.style.display = 'flex';
-                const email = localStorage.getItem('habib_user_email') || 'tec.habiburrahman@gmail.com';
+                const email = data.email || localStorage.getItem('habib_user_email') || 'tec.habiburrahman@gmail.com';
                 const userEl = document.getElementById('adminUserName');
                 if (userEl) userEl.innerText = email;
                 
@@ -709,10 +729,17 @@
                 loadAdminAiMessages();
                 loadAdminPosts();
             } else {
-                window.location.href = 'login.html';
+                // If logged in as regular user -> redirect to User Dashboard
+                const userRaw = localStorage.getItem('habib_current_user');
+                const userEmail = localStorage.getItem('habib_user_email');
+                if (userRaw || userEmail || localStorage.getItem('habib_logged_in') === 'true') {
+                    window.location.replace('dashboard.html?denied=admin');
+                } else {
+                    window.location.replace('login.html?redirect=admin.html');
+                }
             }
         }).catch(() => {
-            window.location.href = 'login.html';
+            window.location.replace('login.html?redirect=admin.html');
         });
 
         document.getElementById('logoutBtn').addEventListener('click', async () => {

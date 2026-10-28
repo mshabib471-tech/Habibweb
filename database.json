@@ -153,8 +153,8 @@
       "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80",
       "authProvider": "google",
       "createdAt": "14/10/2026",
-      "lastLogin": "18/10/2026 01:15 PM",
-      "loginCount": 38
+      "lastLogin": "28/10/2026 12:11 PM",
+      "loginCount": 39
     },
     {
       "id": 2,
@@ -208,9 +208,49 @@
       "createdAt": "18/10/2026",
       "lastLogin": "18/10/2026 09:32 AM",
       "loginCount": 1
+    },
+    {
+      "id": 6,
+      "userCode": "HIFIX-ADM-1002",
+      "name": "MS Habib",
+      "email": "mshabib471@gmail.com",
+      "phone": "+8801868461577",
+      "role": "admin",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=MS%20Habib",
+      "authProvider": "google",
+      "createdAt": "28/10/2026",
+      "lastLogin": "28/10/2026 12:11 PM",
+      "loginCount": 3
+    },
+    {
+      "id": 7,
+      "userCode": "HIFIX-USR-1007",
+      "name": "Publicuser",
+      "email": "publicuser@gmail.com",
+      "phone": "",
+      "password": "123",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Publicuser",
+      "authProvider": "email",
+      "createdAt": "28/10/2026",
+      "lastLogin": "28/10/2026 12:11 PM",
+      "loginCount": 1
+    },
+    {
+      "id": 8,
+      "userCode": "HIFIX-USR-1008",
+      "name": "Student",
+      "email": "student@gmail.com",
+      "phone": "",
+      "role": "customer",
+      "avatar": "https://lh3.googleusercontent.com/a/default-user=s96-c",
+      "authProvider": "google",
+      "createdAt": "28/10/2026",
+      "lastLogin": "28/10/2026 12:11 PM",
+      "loginCount": 1
     }
   ],
-  "nextUserId": 6,
+  "nextUserId": 9,
   "offers": [
     {
       "id": 1,

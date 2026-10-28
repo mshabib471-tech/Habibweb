@@ -27,6 +27,18 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
 
+// Strict Whitelist of Authorized Administrators:
+// ONLY tec.habiburrahman@gmail.com and mshabib471@gmail.com can access Admin Panel
+export const AUTHORIZED_ADMIN_EMAILS = [
+  'tec.habiburrahman@gmail.com',
+  'mshabib471@gmail.com'
+];
+
+export function isAuthorizedAdminEmail(email) {
+  if (!email || typeof email !== 'string') return false;
+  return AUTHORIZED_ADMIN_EMAILS.includes(email.trim().toLowerCase());
+}
+
 const STORAGE_USER_KEY = 'habib_current_user';
 const DEFAULT_AVATAR = 'https://api.dicebear.com/7.x/initials/svg?seed=User';
 
@@ -46,9 +58,11 @@ export function setCurrentUser(user) {
     if (user.email) {
       localStorage.setItem('habib_user_email', user.email);
     }
-    const isAdmin = user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman'));
+    const isAdmin = isAuthorizedAdminEmail(user.email);
     if (isAdmin) {
       localStorage.setItem('habib_is_admin', 'true');
+    } else {
+      localStorage.removeItem('habib_is_admin');
     }
   } else {
     localStorage.removeItem(STORAGE_USER_KEY);
@@ -70,7 +84,7 @@ export function updateAllNavbars() {
   if (sidebarProfile) {
     if (user) {
       const avatarUrl = user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || 'User')}`;
-      const isAdmin = user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman'));
+      const isAdmin = isAuthorizedAdminEmail(user.email);
       const safeName = window.escapeHtml ? window.escapeHtml(user.name || 'User') : (user.name || 'User');
       const safeEmail = window.escapeHtml ? window.escapeHtml(user.email || 'Member') : (user.email || 'Member');
       sidebarProfile.innerHTML = `
@@ -132,24 +146,31 @@ export function updateAllNavbars() {
 
   // Sidebar admin CMS inject
   const sidebarLinks = document.getElementById('sidebar-links');
-  if (sidebarLinks && user && (user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman')))) {
-    if (!document.getElementById('sidebarAdminLink')) {
-      const adminLink = document.createElement('a');
-      adminLink.id = 'sidebarAdminLink';
-      adminLink.href = 'admin.html';
-      adminLink.className = 'sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-amber-500 hover:text-amber-400 bg-amber-500/10 border border-amber-500/20';
-      adminLink.setAttribute('data-page', 'admin.html');
-      adminLink.setAttribute('title', 'Admin CMS');
-      adminLink.setAttribute('data-tooltip', 'Admin CMS');
-      adminLink.innerHTML = `
-        <i class="fa-solid fa-shield-halved w-5 text-center text-sm shrink-0 text-amber-500"></i>
-        <span class="sidebar-label text-sm font-bold">Admin CMS</span>
-      `;
-      const dashItem = sidebarLinks.querySelector('[data-page="dashboard.html"]');
-      if (dashItem && dashItem.nextSibling) {
-        sidebarLinks.insertBefore(adminLink, dashItem.nextSibling);
-      } else {
-        sidebarLinks.appendChild(adminLink);
+  if (sidebarLinks) {
+    const existingAdminLink = document.getElementById('sidebarAdminLink');
+    if (user && isAuthorizedAdminEmail(user.email)) {
+      if (!existingAdminLink) {
+        const adminLink = document.createElement('a');
+        adminLink.id = 'sidebarAdminLink';
+        adminLink.href = 'admin.html';
+        adminLink.className = 'sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-amber-500 hover:text-amber-400 bg-amber-500/10 border border-amber-500/20';
+        adminLink.setAttribute('data-page', 'admin.html');
+        adminLink.setAttribute('title', 'Admin CMS');
+        adminLink.setAttribute('data-tooltip', 'Admin CMS');
+        adminLink.innerHTML = `
+          <i class="fa-solid fa-shield-halved w-5 text-center text-sm shrink-0 text-amber-500"></i>
+          <span class="sidebar-label text-sm font-bold">Admin CMS</span>
+        `;
+        const dashItem = sidebarLinks.querySelector('[data-page="dashboard.html"]');
+        if (dashItem && dashItem.nextSibling) {
+          sidebarLinks.insertBefore(adminLink, dashItem.nextSibling);
+        } else {
+          sidebarLinks.appendChild(adminLink);
+        }
+      }
+    } else {
+      if (existingAdminLink) {
+        existingAdminLink.remove();
       }
     }
   }
@@ -165,7 +186,7 @@ export function updateAllNavbars() {
       el.classList.remove('hidden');
 
       const avatarUrl = user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || 'User')}`;
-      const isAdmin = user.role === 'admin' || (user.email && user.email.toLowerCase().includes('tec.habiburrahman'));
+      const isAdmin = isAuthorizedAdminEmail(user.email);
 
       let dropdown = el.querySelector('#userDropdownMenu');
       if (!dropdown) {
@@ -436,7 +457,7 @@ onAuthStateChanged(auth, async (firebaseUser) => {
             email: firebaseUser.email,
             name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
             picture: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
-            role: firebaseUser.email.toLowerCase().includes('tec.habiburrahman') ? 'admin' : 'customer'
+            role: isAuthorizedAdminEmail(firebaseUser.email) ? 'admin' : 'customer'
           })
         });
         const data = await res.json();
@@ -463,6 +484,8 @@ onAuthStateChanged(auth, async (firebaseUser) => {
 // Expose globally on window
 window.HabibAuth = {
   auth,
+  AUTHORIZED_ADMIN_EMAILS,
+  isAuthorizedAdminEmail,
   getCurrentUser,
   setCurrentUser,
   signInWithGoogleReal,

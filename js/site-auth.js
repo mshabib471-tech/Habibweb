@@ -1,16 +1,24 @@
-// Habib iFix .Tech - Real Firebase Google Auth & User Authentication Manager
-// Integrates real Google Sign-In popup with Firebase project 'composite-entropy-26pck' and backend sync
+// Habib iFix .Tech - Authoritative Firebase Authentication & Session Manager
+// Single source of truth with browserLocalPersistence, real Email/Password, Email Verification & Session Sync
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
   getAuth, 
+  setPersistence,
+  browserLocalPersistence,
   signInWithPopup, 
   GoogleAuthProvider, 
   onAuthStateChanged, 
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  sendEmailVerification,
+  applyActionCode,
+  checkActionCode
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+  getFirestore 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   projectId: "composite-entropy-26pck",
@@ -24,8 +32,15 @@ const firebaseConfig = {
   oAuthClientId: "799648339661-h724lekklaluoadvqqlvkgc3tvt4hop9.apps.googleusercontent.com"
 };
 
+// Singleton Firebase App and Auth initialization
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
+export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+// Enforce browser local persistence for resilient session preservation across refreshes
+setPersistence(auth, browserLocalPersistence).catch(err => {
+  console.warn("Auth persistence configuration notice:", err);
+});
 
 // Strict Whitelist of Authorized Administrators:
 // ONLY tec.habiburrahman@gmail.com and mshabib471@gmail.com can access Admin Panel
@@ -41,6 +56,20 @@ export function isAuthorizedAdminEmail(email) {
 
 const STORAGE_USER_KEY = 'habib_current_user';
 const DEFAULT_AVATAR = 'https://api.dicebear.com/7.x/initials/svg?seed=User';
+
+// Centralized Auth Ready Promise: prevents premature redirects during session restoration
+let authIsReady = false;
+let authReadyResolve;
+const authReadyPromise = new Promise(resolve => {
+  authReadyResolve = resolve;
+});
+
+export function waitForAuthReady() {
+  if (authIsReady) {
+    return Promise.resolve(auth.currentUser);
+  }
+  return authReadyPromise;
+}
 
 // Get current local session
 export function getCurrentUser() {
@@ -101,7 +130,10 @@ export function updateAllNavbars() {
             <div class="pb-2">
               <div class="text-xs font-black text-slate-900 dark:text-white">${safeName}</div>
               <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${safeEmail}</div>
-              <div class="mt-1 text-[10px] font-mono font-bold ${isAdmin ? 'text-amber-500' : 'text-cyan-500'}">${isAdmin ? '★ ADMINISTRATOR' : '✓ MEMBER'}</div>
+              <div class="mt-1 flex items-center gap-1.5 flex-wrap">
+                <span class="text-[10px] font-mono font-bold ${isAdmin ? 'text-amber-500' : 'text-cyan-500'}">${isAdmin ? '★ ADMINISTRATOR' : '✓ MEMBER'}</span>
+                ${user.emailVerified ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold font-mono">VERIFIED</span>' : '<span class="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 font-bold font-mono">UNVERIFIED</span>'}
+              </div>
             </div>
             <div class="py-2 space-y-1">
               <a href="dashboard.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
@@ -144,7 +176,7 @@ export function updateAllNavbars() {
     }
   }
 
-  // Sidebar admin CMS inject
+  // Sidebar admin CMS link inject for authorized administrators only
   const sidebarLinks = document.getElementById('sidebar-links');
   if (sidebarLinks) {
     const existingAdminLink = document.getElementById('sidebarAdminLink');
@@ -309,105 +341,252 @@ export async function signInWithGoogleReal(intendedRole = 'customer') {
     // Trigger real Google OAuth popup
     const result = await signInWithPopup(auth, provider);
     const googleUser = result.user;
+    const idToken = await googleUser.getIdToken();
 
     // Send verified Google user to server backend
-    const res = await fetch('/api/user/google-auth', {
+    const res = await fetch('/api/user/sync-session', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`
+      },
       body: JSON.stringify({
+        uid: googleUser.uid,
         email: googleUser.email,
         name: googleUser.displayName || googleUser.email.split('@')[0],
-        picture: googleUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(googleUser.displayName || 'User')}`,
+        avatar: googleUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(googleUser.displayName || 'User')}`,
+        emailVerified: true,
+        authProvider: 'google',
         role: intendedRole
       })
     });
     
     const data = await res.json();
-    if (data.success) {
+    if (res.ok && data.success) {
       setCurrentUser(data.user);
-      return { success: true, user: data.user, isAdmin: data.isAdmin };
+      return { success: true, user: data.user, isAdmin: data.isAdmin, firebaseUser: googleUser };
     } else {
+      if (data.isBanned) {
+        await signOut(auth);
+      }
       throw new Error(data.error || "Authentication failed on server.");
     }
   } catch (error) {
-    console.warn("Google Auth Notice (falling back to direct auth):", error.code, error.message);
-    if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-      const email = prompt("Google Sign-In: Enter your Google email address:") || '';
-      if (email && email.trim()) {
-        const name = prompt("Enter your Full Name:") || email.split('@')[0];
-        const res = await fetch('/api/user/google-auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: email.trim(),
-            name: name.trim(),
-            picture: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
-            role: intendedRole
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          setCurrentUser(data.user);
-          return { success: true, user: data.user, isAdmin: data.isAdmin };
-        } else {
-          throw new Error(data.error || "Login failed on server");
-        }
-      }
+    console.warn("Google Auth Notice:", error.code, error.message);
+    throw new Error(formatAuthError(error));
+  }
+}
+
+// REAL FIREBASE EMAIL LOGIN (signInWithEmailAndPassword)
+// Strict: Email must exist in Firebase, password must match, never auto-creates!
+export async function signInWithEmailReal(email, password) {
+  if (!email || !email.trim()) {
+    throw new Error("Please enter your email address.");
+  }
+  if (!password) {
+    throw new Error("Please enter your password.");
+  }
+
+  try {
+    const credential = await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
+    const firebaseUser = credential.user;
+    const idToken = await firebaseUser.getIdToken();
+
+    // Synchronize authoritative session with backend
+    const res = await fetch('/api/user/sync-session', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`
+      },
+      body: JSON.stringify({
+        uid: firebaseUser.uid,
+        email: firebaseUser.email,
+        name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+        avatar: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
+        emailVerified: firebaseUser.emailVerified,
+        authProvider: 'email'
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      await signOut(auth);
+      throw new Error(data.error || "Login verification failed on server.");
     }
-    throw new Error(error.message || "Could not sign in with Google.");
-  }
-}
 
-// Direct Google Auth
-export async function signInDirectGoogle(email, name, role = 'customer') {
-  const res = await fetch('/api/user/google-auth', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email: email.trim(),
-      name: (name && name.trim()) || email.split('@')[0],
-      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name || email)}`,
-      role
-    })
-  });
-  const data = await res.json();
-  if (data.success) {
     setCurrentUser(data.user);
-    return data;
-  } else {
-    throw new Error(data.error || "Authentication failed");
+    return { success: true, user: data.user, isAdmin: data.isAdmin, firebaseUser };
+  } catch (err) {
+    console.error("Firebase Email Login Error:", err);
+    throw new Error(formatAuthError(err));
   }
 }
 
-// REAL EMAIL LOGIN
-export async function signInWithEmailReal(email, password, name = '', phone = '') {
-  const res = await fetch('/api/user/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, name, phone })
-  });
-  const data = await res.json();
-  if (data.success) {
-    setCurrentUser(data.user);
-    return data;
-  } else {
-    throw new Error(data.error || "Invalid email or password.");
-  }
-}
-
-// REAL REGISTER
+// REAL FIREBASE EMAIL REGISTRATION (createUserWithEmailAndPassword)
+// Sends real email verification and initializes clean user profile
 export async function registerWithEmailReal(name, email, phone, password) {
-  const res = await fetch('/api/user/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, phone, password })
-  });
-  const data = await res.json();
-  if (data.success) {
-    setCurrentUser(data.user);
-    return data;
-  } else {
-    throw new Error(data.error || "Registration failed.");
+  if (!name || !name.trim()) {
+    throw new Error("Full name is required for registration.");
+  }
+  if (!email || !email.trim()) {
+    throw new Error("Valid email address is required.");
+  }
+  if (!password || password.length < 6) {
+    throw new Error("Password must be at least 6 characters long.");
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const cleanName = name.trim();
+
+  try {
+    // 1. Real account creation in Firebase Auth
+    const credential = await createUserWithEmailAndPassword(auth, cleanEmail, password);
+    const firebaseUser = credential.user;
+
+    // 2. Set profile display name
+    await updateProfile(firebaseUser, { displayName: cleanName });
+
+    // 3. Send real Firebase verification email
+    try {
+      await sendEmailVerification(firebaseUser);
+    } catch (vErr) {
+      console.warn("sendEmailVerification notice:", vErr);
+    }
+
+    const idToken = await firebaseUser.getIdToken();
+
+    // 4. Create clean minimal profile on backend (0 orders, 0 bookings, 0 diamonds)
+    const res = await fetch('/api/user/sync-session', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`
+      },
+      body: JSON.stringify({
+        uid: firebaseUser.uid,
+        email: cleanEmail,
+        name: cleanName,
+        phone: phone ? phone.trim() : '',
+        avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(cleanName)}`,
+        emailVerified: false,
+        authProvider: 'email'
+      })
+    });
+
+    const data = await res.json();
+    setCurrentUser(data.user || {
+      name: cleanName,
+      email: cleanEmail,
+      emailVerified: false,
+      role: 'customer'
+    });
+
+    return { 
+      success: true, 
+      user: data.user, 
+      needsVerification: true, 
+      firebaseUser 
+    };
+  } catch (err) {
+    console.error("Firebase Registration Error:", err);
+    throw new Error(formatAuthError(err));
+  }
+}
+
+// Resend Email Verification with 60s abuse cooldown
+export async function resendVerificationEmail() {
+  if (!auth.currentUser) {
+    throw new Error("No user is signed in to receive a verification email. Please log in first.");
+  }
+  if (auth.currentUser.emailVerified) {
+    return { alreadyVerified: true };
+  }
+
+  const lastSent = sessionStorage.getItem('last_verif_email_timestamp');
+  const now = Date.now();
+  if (lastSent && (now - parseInt(lastSent)) < 60000) {
+    const remain = Math.ceil((60000 - (now - parseInt(lastSent))) / 1000);
+    throw new Error(`অনুগ্রহ করে ${remain} সেকেন্ড অপেক্ষা করুন (Please wait ${remain}s before requesting another email).`);
+  }
+
+  await sendEmailVerification(auth.currentUser);
+  sessionStorage.setItem('last_verif_email_timestamp', String(now));
+  return { success: true };
+}
+
+// Verify Action Code from link (e.g. verify-email.html?oobCode=...)
+export async function verifyEmailActionCode(actionCode) {
+  if (!actionCode) {
+    throw new Error("Verification code is missing.");
+  }
+  await applyActionCode(auth, actionCode);
+  if (auth.currentUser) {
+    await auth.currentUser.reload();
+    await fetch('/api/user/sync-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        uid: auth.currentUser.uid,
+        email: auth.currentUser.email,
+        emailVerified: true
+      })
+    });
+  }
+  return { success: true };
+}
+
+// Authoritative check if current user is email verified
+export async function reloadAndCheckEmailVerified() {
+  if (!auth.currentUser) return false;
+  await auth.currentUser.reload();
+  const verified = !!auth.currentUser.emailVerified;
+  if (verified) {
+    await fetch('/api/user/sync-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        uid: auth.currentUser.uid,
+        email: auth.currentUser.email,
+        emailVerified: true
+      })
+    });
+    const curr = getCurrentUser();
+    if (curr) {
+      curr.emailVerified = true;
+      setCurrentUser(curr);
+    }
+  }
+  return verified;
+}
+
+// Helper to translate Firebase Auth errors into clear, friendly messages
+function formatAuthError(error) {
+  const code = error.code || '';
+  switch (code) {
+    case 'auth/user-not-found':
+      return "এই ইমেইলে কোনো একাউন্ট পাওয়া যায়নি। অনুগ্রহ করে প্রথমে একাউন্ট তৈরি করুন (No account found with this email. Please register first).";
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential':
+      return "ভুল ইমেইল বা পাসওয়ার্ড। সঠিক তথ্য দিয়ে আবার চেষ্টা করুন (Incorrect email or password. Please verify your credentials).";
+    case 'auth/email-already-in-use':
+      return "এই ইমেইল দিয়ে ইতোমধ্যে একটি একাউন্ট খোলা রয়েছে। লগইন করার চেষ্টা করুন (An account with this email already exists. Please login instead).";
+    case 'auth/weak-password':
+      return "পাসওয়ার্ডটি অন্তত ৬ অক্ষরের হতে হবে (Password must be at least 6 characters long).";
+    case 'auth/invalid-email':
+      return "অনুগ্রহ করে একটি সঠিক ইমেইল এড্রেস লিখুন (Please enter a valid email address).";
+    case 'auth/user-disabled':
+      return "আপনার একাউন্টটি সাময়িকভাবে বন্ধ বা বরখাস্ত করা হয়েছে (This account has been suspended by the administrator).";
+    case 'auth/too-many-requests':
+      return "অনেকবার ভুল চেষ্টা করা হয়েছে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন (Too many failed attempts. Please try again later).";
+    case 'auth/network-request-failed':
+      return "ইন্টারনেট কানেকশন সমস্যা। সংযোগ চেক করে আবার চেষ্টা করুন (Network error. Please check your internet connection).";
+    case 'auth/popup-closed-by-user':
+      return "Google সাইন-ইন উইন্ডো বন্ধ করা হয়েছে (Sign-in popup was closed before completion).";
+    case 'auth/popup-blocked':
+      return "ব্রাউজার পপআপ ব্লক করেছে। অনুগ্রহ করে পপআপ এলাও করুন (Popup was blocked by the browser).";
+    default:
+      return error.message || "Authentication error occurred. Please try again.";
   }
 }
 
@@ -437,61 +616,74 @@ export async function signOutReal() {
 
   updateAllNavbars();
 
-  if (window.location.pathname.endsWith('admin.html')) {
-    window.location.href = 'login.html';
+  const currentPath = window.location.pathname;
+  if (currentPath.endsWith('admin.html') || currentPath.endsWith('dashboard.html')) {
+    window.location.replace('login.html');
   } else {
     window.location.reload();
   }
 }
 
-// Listen to Firebase auth state changes
+// AUTHORITATIVE SINGLE SOURCE OF TRUTH: onAuthStateChanged
 onAuthStateChanged(auth, async (firebaseUser) => {
   if (firebaseUser) {
-    const existing = getCurrentUser();
-    if (!existing || existing.email !== firebaseUser.email) {
-      try {
-        const res = await fetch('/api/user/google-auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: firebaseUser.email,
-            name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
-            picture: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
-            role: isAuthorizedAdminEmail(firebaseUser.email) ? 'admin' : 'customer'
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          setCurrentUser(data.user);
-        }
-      } catch (e) {}
+    try {
+      const idToken = await firebaseUser.getIdToken();
+      const res = await fetch('/api/user/sync-session', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}`
+        },
+        body: JSON.stringify({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+          avatar: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
+          emailVerified: firebaseUser.emailVerified,
+          authProvider: firebaseUser.providerData?.[0]?.providerId === 'google.com' ? 'google' : 'email'
+        })
+      });
+
+      const data = await res.json();
+      if (data.success && data.user) {
+        setCurrentUser(data.user);
+      } else if (data.isBanned) {
+        await signOut(auth);
+        setCurrentUser(null);
+      }
+    } catch (e) {
+      console.warn("Firebase Auth sync notice:", e);
     }
   } else {
-    // Firebase auth has no user - verify if server session has any active user
-    try {
-      const res = await fetch('/api/user/me');
-      const data = await res.json();
-      if (!data.loggedIn) {
-        // Both Firebase and Server agree user is logged out!
-        if (getCurrentUser()) {
-          setCurrentUser(null);
-        }
-      }
-    } catch (e) {}
+    // When Firebase reports no active user, clear client state
+    const current = getCurrentUser();
+    if (current) {
+      setCurrentUser(null);
+    }
   }
+
+  // Resolve auth readiness barrier
+  authIsReady = true;
+  authReadyResolve(firebaseUser);
+  updateAllNavbars();
 });
 
-// Expose globally on window
+// Expose globally on window for seamless inline script compatibility
 window.HabibAuth = {
   auth,
+  db,
   AUTHORIZED_ADMIN_EMAILS,
   isAuthorizedAdminEmail,
+  waitForAuthReady,
   getCurrentUser,
   setCurrentUser,
   signInWithGoogleReal,
-  signInDirectGoogle,
   signInWithEmailReal,
   registerWithEmailReal,
+  resendVerificationEmail,
+  verifyEmailActionCode,
+  reloadAndCheckEmailVerified,
   signOutReal,
   updateAllNavbars
 };
@@ -500,18 +692,4 @@ window.doRealLogout = signOutReal;
 
 document.addEventListener('DOMContentLoaded', () => {
   updateAllNavbars();
-  
-  // Verify with server session
-  fetch('/api/user/me')
-    .then(r => r.json())
-    .then(d => {
-      if (d.loggedIn && d.user) {
-        setCurrentUser(d.user);
-      } else {
-        if (!auth.currentUser) {
-          setCurrentUser(null);
-        }
-      }
-    })
-    .catch(() => {});
 });

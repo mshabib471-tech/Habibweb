@@ -178,6 +178,15 @@
                     <span id="badgeOffers" class="bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
                 </button>
 
+                <!-- 9. Security & Audit Logs -->
+                <button onclick="switchTab('auditLogs')" id="tabBtnAuditLogs" class="w-full text-left px-3.5 py-2.5 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center justify-between transition-colors">
+                    <span class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-shield-virus text-xs text-rose-400"></i>
+                        <span>Audit Logs & Security</span>
+                    </span>
+                    <span id="badgeAuditLogs" class="bg-rose-500/20 text-rose-300 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+
                 <div class="pt-4 border-t border-white/10 space-y-1 text-slate-400 text-xs">
                     <a href="free-offer.html" target="_blank" class="w-full block text-left px-3.5 py-2 text-purple-300 hover:text-white hover:bg-white/5 rounded-xl flex items-center gap-2.5 transition-colors">
                         <i class="fa-solid fa-gift text-xs text-purple-400"></i>
@@ -384,8 +393,21 @@
                     <div class="flex items-center gap-2.5 w-full sm:w-auto">
                         <div class="relative flex-1 sm:w-64">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-400"></i>
-                            <input type="text" id="userSearchInput" oninput="filterAdminUsers()" placeholder="Search ID, email, name..." class="w-full bg-slate-900 border border-white/15 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none focus:border-cyan-400">
+                            <input type="text" id="userSearchInput" oninput="filterAdminUsers()" placeholder="Search ID, UID, email, name..." class="w-full bg-slate-900 border border-white/15 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none focus:border-cyan-400">
                         </div>
+                        <select id="userRoleFilter" onchange="filterAdminUsers()" class="bg-slate-900 border border-white/15 rounded-xl px-2.5 py-1.5 text-xs text-white outline-none">
+                            <option value="all">All Roles</option>
+                            <option value="customer">Customer</option>
+                            <option value="student">Student</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <select id="userStatusFilter" onchange="filterAdminUsers()" class="bg-slate-900 border border-white/15 rounded-xl px-2.5 py-1.5 text-xs text-white outline-none">
+                            <option value="all">All Status</option>
+                            <option value="active">Active Only</option>
+                            <option value="banned">Suspended Only</option>
+                            <option value="verified">Verified Email Only</option>
+                            <option value="unverified">Unverified Only</option>
+                        </select>
                         <button onclick="loadAdminUsers()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shrink-0">
                             <i class="fa-solid fa-rotate text-indigo-400"></i>
                         </button>
@@ -516,6 +538,43 @@
                 <!-- Offers Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="adminOffersGrid">
                     <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- SECTION 9: Audit Logs & Security History -->
+            <div id="sectionAuditLogs" class="hidden space-y-6">
+                <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-shield-virus text-rose-400"></i>
+                            <span>Administrative Audit Logs</span>
+                            <span class="bg-rose-500/20 text-rose-300 text-xs px-2.5 py-0.5 rounded-full border border-rose-500/40 font-mono" id="auditLogsCountBadge">0 Logs</span>
+                        </h2>
+                        <p class="text-xs text-slate-400">Real-time chronological record of administrative security actions, user bans, and privilege changes.</p>
+                    </div>
+                    <button onclick="loadAdminAuditLogs()" class="glass-card hover:bg-white/10 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate text-rose-400"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl border border-white/10 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="text-[10px] font-bold text-slate-400 uppercase border-b border-white/10 bg-slate-900/60">
+                                <tr>
+                                    <th class="py-3 px-4">Timestamp</th>
+                                    <th class="py-3 px-4">Action</th>
+                                    <th class="py-3 px-4">Admin Email</th>
+                                    <th class="py-3 px-4">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditLogsTableBody" class="divide-y divide-white/5 text-slate-300">
+                                <tr>
+                                    <td colspan="4" class="py-6 text-center text-slate-500">Loading audit logs...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -676,10 +735,10 @@
         </div>
     </div>
 
-    <script>
-        const tabList = ['overview', 'users', 'contacts', 'bookings', 'orders', 'aiMessages', 'blogs', 'offers'];
+        const tabList = ['overview', 'users', 'contacts', 'bookings', 'orders', 'aiMessages', 'blogs', 'offers', 'auditLogs'];
         let cachedUsers = [];
         let cachedContacts = [];
+        let cachedAuditLogs = [];
         let activeReplyContact = null;
 
         function switchTab(activeTab) {
@@ -706,41 +765,56 @@
             if (activeTab === 'orders') loadAdminOrders();
             if (activeTab === 'aiMessages') loadAdminAiMessages();
             if (activeTab === 'blogs') loadAdminPosts();
+            if (activeTab === 'auditLogs') loadAdminAuditLogs();
         }
 
         function capitalize(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
-        // Check Auth immediately with server
-        fetch('/api/check-admin').then(res => res.json()).then(data => {
-            if (data.isAdmin) {
-                document.body.style.display = 'flex';
-                const email = data.email || localStorage.getItem('habib_user_email') || 'tec.habiburrahman@gmail.com';
-                const userEl = document.getElementById('adminUserName');
-                if (userEl) userEl.innerText = email;
-                
-                // Load all initial metrics
-                loadAdminStats();
-                loadAdminUsers();
-                loadAdminContacts();
-                loadAdminBookings();
-                loadAdminOrders();
-                loadAdminAiMessages();
-                loadAdminPosts();
-            } else {
-                // If logged in as regular user -> redirect to User Dashboard
-                const userRaw = localStorage.getItem('habib_current_user');
-                const userEmail = localStorage.getItem('habib_user_email');
-                if (userRaw || userEmail || localStorage.getItem('habib_logged_in') === 'true') {
+        // Authoritative Check Auth with Firebase Persistence & Server Verification
+        async function initAdminAuth() {
+            try {
+                let firebaseUser = null;
+                if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
+                    firebaseUser = await window.HabibAuth.waitForAuthReady();
+                }
+
+                const res = await fetch('/api/check-admin');
+                const data = await res.json().catch(() => ({ isAdmin: false }));
+
+                const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
+                const currentEmail = (firebaseUser?.email || data?.email || localStorage.getItem('habib_user_email') || '').toLowerCase().trim();
+                const isAdmin = ADMIN_EMAILS.includes(currentEmail) || Boolean(data.isAdmin);
+
+                if (isAdmin) {
+                    document.body.style.display = 'flex';
+                    const userEl = document.getElementById('adminUserName');
+                    if (userEl) userEl.innerText = currentEmail || 'Master Admin';
+
+                    // Load all dashboard metrics
+                    loadAdminStats();
+                    loadAdminUsers();
+                    loadAdminContacts();
+                    loadAdminBookings();
+                    loadAdminOrders();
+                    loadAdminAiMessages();
+                    loadAdminPosts();
+                    loadAdminAuditLogs();
+                } else if (firebaseUser || data.email || localStorage.getItem('habib_current_user')) {
+                    // Logged in as regular customer -> send to customer dashboard
                     window.location.replace('dashboard.html?denied=admin');
                 } else {
+                    // Not logged in
                     window.location.replace('login.html?redirect=admin.html');
                 }
+            } catch (err) {
+                console.error("Admin auth verification error:", err);
+                window.location.replace('login.html?redirect=admin.html');
             }
-        }).catch(() => {
-            window.location.replace('login.html?redirect=admin.html');
-        });
+        }
+
+        window.addEventListener('DOMContentLoaded', initAdminAuth);
 
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             if (window.doRealLogout) {
@@ -824,7 +898,7 @@
             if (!grid) return;
 
             if (users.length === 0) {
-                grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No registered users found.</p>';
+                grid.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-8 text-center">No registered users matching filters.</p>';
                 return;
             }
 
@@ -832,31 +906,49 @@
                 const userCode = u.userCode || `HIFIX-USR-${1000 + u.id}`;
                 const isAdmin = u.role === 'admin';
                 const isStudent = u.role === 'student';
+                const isVerified = Boolean(u.emailVerified || u.provider === 'google.com');
+                const isBanned = Boolean(u.isBanned);
                 
                 return `
-                    <div class="glass-card p-5 rounded-2xl border-l-4 ${isAdmin ? 'border-l-amber-400' : (isStudent ? 'border-l-indigo-400' : 'border-l-cyan-400')} flex flex-col justify-between">
+                    <div class="glass-card p-5 rounded-2xl border-l-4 ${isBanned ? 'border-l-red-500 opacity-90' : (isAdmin ? 'border-l-amber-400' : (isStudent ? 'border-l-indigo-400' : 'border-l-cyan-400'))} flex flex-col justify-between">
                         <div>
                             <!-- Header with User ID badge and copy button -->
-                            <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
                                 <div class="flex items-center gap-1.5">
                                     <span class="bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold px-2 py-0.5 rounded border border-indigo-500/40">${escapeHtml(userCode)}</span>
                                     <button onclick="copyToClipboard('${escapeHtml(userCode)}', this)" class="text-slate-400 hover:text-white text-[11px] p-1" title="Copy User ID">
                                         <i class="fa-regular fa-copy"></i>
                                     </button>
                                 </div>
-                                <span class="text-[10px] uppercase font-bold font-mono px-2 py-0.5 rounded-full ${isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : (isStudent ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40')}">
-                                    ${isAdmin ? '★ ADMIN' : (isStudent ? 'STUDENT' : 'CUSTOMER')}
-                                </span>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-[9px] uppercase font-bold font-mono px-2 py-0.5 rounded-full ${isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : (isStudent ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40')}">
+                                        ${isAdmin ? '★ ADMIN' : (isStudent ? 'STUDENT' : 'CUSTOMER')}
+                                    </span>
+                                    <span class="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full border ${isVerified ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : 'bg-amber-500/20 text-amber-300 border-amber-500/40'}">
+                                        ${isVerified ? '<i class="fa-solid fa-check"></i> VERIFIED' : '<i class="fa-solid fa-clock"></i> UNVERIFIED'}
+                                    </span>
+                                    <span class="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full border ${isBanned ? 'bg-red-500/20 text-red-300 border-red-500/40' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'}">
+                                        ${isBanned ? '<i class="fa-solid fa-ban"></i> BANNED' : '<i class="fa-solid fa-circle text-[6px]"></i> ACTIVE'}
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- User Identity info -->
                             <div class="flex items-center gap-3 mb-3">
                                 <img src="${u.avatar}" class="w-11 h-11 rounded-xl object-cover border border-white/20 shrink-0">
-                                <div class="overflow-hidden">
+                                <div class="overflow-hidden flex-1 min-w-0">
                                     <h4 class="font-bold text-white text-sm truncate">${escapeHtml(u.name || 'User')}</h4>
                                     <a href="mailto:${u.email}" class="text-xs text-cyan-400 hover:underline font-mono truncate block" title="${escapeHtml(u.email)}">${escapeHtml(u.email)}</a>
+                                    ${u.uid ? `<div class="text-[10px] font-mono text-slate-400 truncate mt-0.5" title="Firebase UID: ${escapeHtml(u.uid)}">UID: ${escapeHtml(u.uid.slice(0, 16))}...</div>` : ''}
                                 </div>
                             </div>
+
+                            <!-- Banned warning banner if suspended -->
+                            ${isBanned ? `
+                                <div class="p-2 mb-3 rounded-xl bg-red-500/15 border border-red-500/30 text-[11px] text-red-300 font-medium">
+                                    <strong class="font-bold">Suspended:</strong> ${escapeHtml(u.bannedReason || 'Terms violation or security lock')}
+                                </div>
+                            ` : ''}
 
                             <!-- User details -->
                             <div class="space-y-1.5 text-xs text-slate-300 bg-slate-900/80 p-3 rounded-xl border border-white/10 mb-3">
@@ -873,33 +965,37 @@
                                     <span class="font-mono text-[11px] text-slate-300">${escapeHtml(u.lastLogin || 'Recent')}</span>
                                 </p>
                                 <p class="flex items-center justify-between">
-                                    <strong class="text-slate-400">Joined Date:</strong>
+                                    <strong class="text-slate-400">Registered:</strong>
                                     <span class="font-mono text-[11px] text-slate-400">${escapeHtml(u.createdAt || 'N/A')}</span>
                                 </p>
                             </div>
                         </div>
 
                         <!-- Actions footer -->
-                        <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                        <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2 flex-wrap">
                             <div class="flex items-center gap-1.5">
                                 ${u.phone ? `
-                                    <a href="https://wa.me/88${u.phone.replace(/[^0-9]/g, '')}" target="_blank" class="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-500/30 flex items-center gap-1">
+                                    <a href="https://wa.me/88${u.phone.replace(/[^0-9]/g, '')}" target="_blank" class="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 rounded-lg border border-emerald-500/30 flex items-center gap-1">
                                         <i class="fa-brands fa-whatsapp"></i> Chat
                                     </a>
                                 ` : ''}
-                                <a href="mailto:${u.email}" class="text-[11px] font-bold text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 px-2.5 py-1 rounded-lg border border-blue-500/30 flex items-center gap-1">
+                                <a href="mailto:${u.email}" class="text-[11px] font-bold text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 px-2 py-1 rounded-lg border border-blue-500/30 flex items-center gap-1">
                                     <i class="fa-regular fa-envelope"></i> Mail
                                 </a>
                             </div>
 
-                            <div class="flex items-center gap-1">
+                            <div class="flex items-center gap-1.5">
                                 <select onchange="updateUserRole(${u.id}, this.value)" class="bg-slate-900 border border-white/20 text-white rounded-lg text-[11px] px-2 py-1 outline-none">
                                     <option value="customer" ${u.role === 'customer' ? 'selected' : ''}>Customer</option>
                                     <option value="student" ${u.role === 'student' ? 'selected' : ''}>Student</option>
                                     <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
                                 </select>
+                                
                                 ${u.id !== 1 ? `
-                                    <button onclick="deleteUserAccount(${u.id})" class="text-slate-400 hover:text-red-400 p-1 transition-colors" title="Delete User">
+                                    <button onclick="toggleUserBan(${u.id}, ${!isBanned})" class="px-2 py-1 rounded-lg text-[11px] font-bold border transition-colors cursor-pointer ${isBanned ? 'bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border-emerald-500/30' : 'bg-red-500/15 hover:bg-red-500/25 text-red-300 border-red-500/30'}" title="${isBanned ? 'Unban User' : 'Ban User'}">
+                                        ${isBanned ? '<i class="fa-solid fa-user-check"></i> Unban' : '<i class="fa-solid fa-ban"></i> Ban'}
+                                    </button>
+                                    <button onclick="deleteUserAccount(${u.id})" class="text-slate-400 hover:text-red-400 p-1 transition-colors cursor-pointer" title="Delete User">
                                         <i class="fa-solid fa-trash-can text-xs"></i>
                                     </button>
                                 ` : ''}
@@ -911,19 +1007,103 @@
         }
 
         function filterAdminUsers() {
-            const query = (document.getElementById('userSearchInput').value || '').toLowerCase().trim();
-            if (!query) {
-                renderUsersGrid(cachedUsers);
-                return;
+            const query = (document.getElementById('userSearchInput')?.value || '').toLowerCase().trim();
+            const roleFilter = document.getElementById('userRoleFilter')?.value || 'all';
+            const statusFilter = document.getElementById('userStatusFilter')?.value || 'all';
+
+            let filtered = cachedUsers;
+
+            if (roleFilter !== 'all') {
+                filtered = filtered.filter(u => u.role === roleFilter);
             }
-            const filtered = cachedUsers.filter(u => {
-                const code = (u.userCode || '').toLowerCase();
-                const email = (u.email || '').toLowerCase();
-                const name = (u.name || '').toLowerCase();
-                const phone = (u.phone || '').toLowerCase();
-                return code.includes(query) || email.includes(query) || name.includes(query) || phone.includes(query);
-            });
+
+            if (statusFilter === 'active') {
+                filtered = filtered.filter(u => !u.isBanned);
+            } else if (statusFilter === 'banned') {
+                filtered = filtered.filter(u => u.isBanned);
+            } else if (statusFilter === 'verified') {
+                filtered = filtered.filter(u => u.emailVerified || u.provider === 'google.com');
+            } else if (statusFilter === 'unverified') {
+                filtered = filtered.filter(u => !u.emailVerified && u.provider !== 'google.com');
+            }
+
+            if (query) {
+                filtered = filtered.filter(u => {
+                    const code = (u.userCode || '').toLowerCase();
+                    const email = (u.email || '').toLowerCase();
+                    const name = (u.name || '').toLowerCase();
+                    const phone = (u.phone || '').toLowerCase();
+                    const uid = (u.uid || '').toLowerCase();
+                    return code.includes(query) || email.includes(query) || name.includes(query) || phone.includes(query) || uid.includes(query);
+                });
+            }
+
             renderUsersGrid(filtered);
+        }
+
+        async function toggleUserBan(id, shouldBan) {
+            let reason = 'Administrative suspension';
+            if (shouldBan) {
+                const userReason = prompt('Enter suspension reason for this user:', 'Violating community guidelines or suspicious activity');
+                if (userReason === null) return; // user cancelled
+                if (userReason.trim()) reason = userReason.trim();
+            }
+
+            try {
+                const res = await fetch(`/api/admin/users/${id}/ban`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ isBanned: shouldBan, reason })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert(shouldBan ? 'User has been banned.' : 'User has been unbanned.');
+                    loadAdminUsers();
+                    loadAdminAuditLogs();
+                } else {
+                    alert(data.error || 'Failed to update user ban status.');
+                }
+            } catch (err) {
+                console.error("Ban update error:", err);
+                alert('Network error while updating ban status.');
+            }
+        }
+
+        async function loadAdminAuditLogs() {
+            try {
+                const res = await fetch('/api/admin/audit-logs');
+                const data = await res.json();
+                cachedAuditLogs = data.logs || [];
+
+                const countEl = document.getElementById('auditLogsCountBadge');
+                const badgeEl = document.getElementById('badgeAuditLogs');
+                const tbody = document.getElementById('auditLogsTableBody');
+
+                if (countEl) countEl.innerText = `${cachedAuditLogs.length} Logs`;
+                if (badgeEl) badgeEl.innerText = cachedAuditLogs.length;
+
+                if (!tbody) return;
+
+                if (cachedAuditLogs.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-500">No administrative audit logs recorded yet.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = cachedAuditLogs.map(log => `
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="py-3 px-4 font-mono text-[11px] text-cyan-300 whitespace-nowrap">${escapeHtml(new Date(log.timestamp).toLocaleString())}</td>
+                        <td class="py-3 px-4">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${log.action.includes('BAN') ? 'bg-red-500/20 text-red-300 border border-red-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'}">
+                                ${escapeHtml(log.action)}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 font-mono text-slate-300 text-[11px]">${escapeHtml(log.adminEmail || 'Admin')}</td>
+                        <td class="py-3 px-4 text-slate-300 text-xs">${escapeHtml(JSON.stringify(log.details || {}))}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error("Audit logs load error:", err);
+            }
         }
 
         async function updateUserRole(id, role) {

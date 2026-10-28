@@ -153,8 +153,8 @@
       "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80",
       "authProvider": "google",
       "createdAt": "14/10/2026",
-      "lastLogin": "28/10/2026 12:11 PM",
-      "loginCount": 39
+      "lastLogin": "28/10/2026 01:24 PM",
+      "loginCount": 42
     },
     {
       "id": 2,
@@ -248,9 +248,96 @@
       "createdAt": "28/10/2026",
       "lastLogin": "28/10/2026 12:11 PM",
       "loginCount": 1
+    },
+    {
+      "id": 9,
+      "uid": "firebase_uid_test_1793193786059",
+      "userCode": "HIFIX-USR-1009",
+      "name": "Test Customer",
+      "email": "customer_test_1793193786059@gmail.com",
+      "phone": "01812345678",
+      "password": "",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Test%20Customer",
+      "authProvider": "email",
+      "emailVerified": false,
+      "isBanned": false,
+      "createdAt": "28/10/2026",
+      "lastLogin": "28/10/2026 01:23 PM",
+      "loginCount": 1
+    },
+    {
+      "id": 10,
+      "uid": "firebase_uid_test_1793193830186",
+      "userCode": "HIFIX-USR-1010",
+      "name": "Test Customer",
+      "email": "customer_test_1793193830186@gmail.com",
+      "phone": "01812345678",
+      "password": "",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Test%20Customer",
+      "authProvider": "email",
+      "emailVerified": false,
+      "isBanned": true,
+      "createdAt": "28/10/2026",
+      "lastLogin": "28/10/2026 01:23 PM",
+      "loginCount": 1,
+      "bannedReason": "Test Security Ban"
+    },
+    {
+      "id": 11,
+      "uid": "firebase_uid_test_1793193863260",
+      "userCode": "HIFIX-USR-1011",
+      "name": "Test Customer",
+      "email": "customer_test_1793193863260@gmail.com",
+      "phone": "01812345678",
+      "password": "",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Test%20Customer",
+      "authProvider": "email",
+      "emailVerified": false,
+      "isBanned": true,
+      "createdAt": "28/10/2026",
+      "lastLogin": "28/10/2026 01:24 PM",
+      "loginCount": 1,
+      "bannedReason": "Test Security Ban"
+    },
+    {
+      "id": 12,
+      "uid": "firebase_uid_test_1793193884490",
+      "userCode": "HIFIX-USR-1012",
+      "name": "Test Customer",
+      "email": "customer_test_1793193884490@gmail.com",
+      "phone": "01812345678",
+      "password": "",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Test%20Customer",
+      "authProvider": "email",
+      "emailVerified": false,
+      "isBanned": true,
+      "createdAt": "28/10/2026",
+      "lastLogin": "28/10/2026 01:24 PM",
+      "loginCount": 1,
+      "bannedReason": "Test Security Ban"
+    },
+    {
+      "id": 13,
+      "uid": "",
+      "userCode": "HIFIX-USR-1013",
+      "name": "normal_customer",
+      "email": "normal_customer@example.com",
+      "phone": "",
+      "role": "customer",
+      "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=normal_customer",
+      "authProvider": "email",
+      "emailVerified": false,
+      "isBanned": false,
+      "createdAt": "28/10/2026",
+      "lastLogin": "28/10/2026 01:24 PM",
+      "loginCount": 1
     }
   ],
-  "nextUserId": 9,
+  "nextUserId": 14,
   "offers": [
     {
       "id": 1,
@@ -424,5 +511,31 @@
       "status": "active"
     }
   ],
-  "nextOfferId": 6
+  "nextOfferId": 6,
+  "auditLogs": [
+    {
+      "action": "BAN_USER",
+      "adminEmail": "tec.habiburrahman@gmail.com",
+      "targetEmail": "customer_test_1793193884490@gmail.com",
+      "targetUserId": 12,
+      "reason": "Test Security Ban",
+      "timestamp": "28/10/2026, 13:24:44"
+    },
+    {
+      "action": "BAN_USER",
+      "adminEmail": "tec.habiburrahman@gmail.com",
+      "targetEmail": "customer_test_1793193863260@gmail.com",
+      "targetUserId": 11,
+      "reason": "Test Security Ban",
+      "timestamp": "28/10/2026, 13:24:23"
+    },
+    {
+      "action": "BAN_USER",
+      "adminEmail": "tec.habiburrahman@gmail.com",
+      "targetEmail": "customer_test_1793193830186@gmail.com",
+      "targetUserId": 10,
+      "reason": "Test Security Ban",
+      "timestamp": "28/10/2026, 13:23:50"
+    }
+  ]
 }

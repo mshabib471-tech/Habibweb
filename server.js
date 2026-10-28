@@ -101,7 +101,14 @@ app.get(['/admin', '/admin.html'], (req, res, next) => {
   return res.redirect('/login.html?redirect=admin.html');
 });
 
-app.use(express.static(__dirname));
+app.use(express.static(__dirname, {
+  maxAge: '1h',
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
+  }
+}));
 
 // Auth middleware - strictly checks authorized admin accounts
 const checkAdmin = (req, res, next) => {
@@ -770,38 +777,109 @@ app.post('/api/user/login', (req, res) => {
   const isAdminEmail = isAuthorizedAdmin(cleanEmail);
 
   if (!user) {
-    // If account doesn't exist, automatically register new real user!
-    const newId = db.nextUserId++;
-    const derivedName = (name && name.trim()) || cleanEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    // Unregistered email MUST NOT log in!
+    return res.status(401).json({ error: 'No account found with this email. Please create an account first.' });
+  }
 
+  if (user.isBanned) {
+    return res.status(403).json({ error: 'Your account has been suspended by the administrator.' });
+  }
+
+  // Existing user: check password if set
+  if (password && user.password && user.password !== password) {
+    return res.status(401).json({ error: 'Incorrect password. Please try again.' });
+  }
+
+  if (name && name.trim()) user.name = name.trim();
+  if (phone && phone.trim()) user.phone = phone.trim();
+
+  user.userCode = user.userCode || (isAdminEmail ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`);
+  user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
+  user.loginCount = (user.loginCount || 0) + 1;
+  user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  writeDB(db);
+
+  // Set cookies
+  if (isAdminEmail) {
+    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('admin_email', cleanEmail, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+  } else {
+    res.clearCookie('admin_session');
+    res.clearCookie('admin_email');
+  }
+  res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+
+  res.json({
+    success: true,
+    isAdmin: isAdminEmail,
+    user: {
+      id: user.id,
+      uid: user.uid || '',
+      userCode: user.userCode,
+      name: user.name,
+      email: user.email,
+      phone: user.phone || '',
+      role: user.role || 'customer',
+      avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
+      emailVerified: !!user.emailVerified,
+      isBanned: !!user.isBanned,
+      createdAt: user.createdAt,
+      lastLogin: user.lastLogin,
+      loginCount: user.loginCount
+    }
+  });
+});
+
+// Authoritative Session Sync for Firebase Authenticated Users
+app.post('/api/user/sync-session', (req, res) => {
+  const { uid, email, name, phone, avatar, emailVerified, authProvider } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required for session synchronization.' });
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const db = readDB();
+  let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
+  const isAdminEmail = isAuthorizedAdmin(cleanEmail);
+
+  if (user) {
+    if (user.isBanned) {
+      res.clearCookie('user_session');
+      res.clearCookie('admin_session');
+      res.clearCookie('admin_email');
+      return res.status(403).json({ error: 'Your account has been suspended by the administrator.' });
+    }
+    if (uid) user.uid = uid;
+    if (name && name.trim()) user.name = name.trim();
+    if (phone && phone.trim()) user.phone = phone.trim();
+    if (avatar) user.avatar = avatar;
+    if (emailVerified !== undefined) user.emailVerified = !!emailVerified;
+    if (authProvider) user.authProvider = authProvider;
+    user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
+    user.loginCount = (user.loginCount || 0) + 1;
+    user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    writeDB(db);
+  } else {
+    // Brand new registered Firebase user
+    const newId = db.nextUserId++;
+    const derivedName = (name && name.trim()) || cleanEmail.split('@')[0];
     user = {
       id: newId,
+      uid: uid || '',
       userCode: isAdminEmail ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
       name: derivedName,
       email: cleanEmail,
       phone: (phone && phone.trim()) || '',
-      password: password || '123456',
       role: isAdminEmail ? 'admin' : 'customer',
-      avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(derivedName)}`,
-      authProvider: 'email',
+      avatar: avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(derivedName)}`,
+      authProvider: authProvider || 'email',
+      emailVerified: !!emailVerified,
+      isBanned: false,
       createdAt: new Date().toLocaleDateString('en-GB'),
       lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
       loginCount: 1
     };
     db.users.push(user);
-    writeDB(db);
-  } else {
-    // Existing user: update login count and last active
-    if (password && user.password && user.password !== password) {
-      return res.status(401).json({ error: 'Incorrect password. Please try again.' });
-    }
-    if (name && name.trim()) user.name = name.trim();
-    if (phone && phone.trim()) user.phone = phone.trim();
-
-    user.userCode = user.userCode || (isAdminEmail ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`);
-    user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
-    user.loginCount = (user.loginCount || 0) + 1;
-    user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     writeDB(db);
   }
 
@@ -820,12 +898,15 @@ app.post('/api/user/login', (req, res) => {
     isAdmin: isAdminEmail,
     user: {
       id: user.id,
+      uid: user.uid || '',
       userCode: user.userCode,
       name: user.name,
       email: user.email,
       phone: user.phone || '',
       role: user.role || 'customer',
-      avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
+      avatar: user.avatar,
+      emailVerified: !!user.emailVerified,
+      isBanned: !!user.isBanned,
       createdAt: user.createdAt,
       lastLogin: user.lastLogin,
       loginCount: user.loginCount
@@ -834,28 +915,33 @@ app.post('/api/user/login', (req, res) => {
 });
 
 app.post('/api/user/register', (req, res) => {
-  const { name, email, phone, password, role } = req.body;
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Name, email, and password are required' });
+  const { name, email, phone, password, role, uid } = req.body;
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Name and email are required' });
   }
 
+  const cleanEmail = email.trim().toLowerCase();
   const db = readDB();
-  const existing = db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  const existing = db.users.find(u => u.email.toLowerCase() === cleanEmail);
   if (existing) {
     return res.status(400).json({ error: 'An account with this email already exists. Please login instead.' });
   }
 
   const newId = db.nextUserId++;
+  const isAdminEmail = isAuthorizedAdmin(cleanEmail);
   const newUser = {
     id: newId,
-    userCode: `HIFIX-USR-${1000 + newId}`,
-    name,
-    email: email.toLowerCase(),
-    phone: phone || '',
-    password,
-    role: role || 'customer',
+    uid: uid || '',
+    userCode: isAdminEmail ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
+    name: name.trim(),
+    email: cleanEmail,
+    phone: phone ? phone.trim() : '',
+    password: password || '',
+    role: isAdminEmail ? 'admin' : (role || 'customer'),
     avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
     authProvider: 'email',
+    emailVerified: false,
+    isBanned: false,
     createdAt: new Date().toLocaleDateString('en-GB'),
     lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
     loginCount: 1
@@ -869,12 +955,15 @@ app.post('/api/user/register', (req, res) => {
     success: true,
     user: {
       id: newUser.id,
+      uid: newUser.uid,
       userCode: newUser.userCode,
       name: newUser.name,
       email: newUser.email,
       phone: newUser.phone,
       role: newUser.role,
       avatar: newUser.avatar,
+      emailVerified: false,
+      isBanned: false,
       createdAt: newUser.createdAt,
       lastLogin: newUser.lastLogin,
       loginCount: newUser.loginCount
@@ -986,18 +1075,28 @@ app.get('/api/user/me', (req, res) => {
     return res.json({ loggedIn: false });
   }
 
+  if (user.isBanned) {
+    res.clearCookie('user_session');
+    res.clearCookie('admin_session');
+    res.clearCookie('admin_email');
+    return res.json({ loggedIn: false, isBanned: true, error: 'Your account has been suspended by the administrator.' });
+  }
+
   const isAdmin = isAuthorizedAdmin(user.email);
   res.json({
     loggedIn: true,
     isAdmin,
     user: {
       id: user.id,
+      uid: user.uid || '',
       userCode: user.userCode || (isAdmin ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`),
       name: user.name,
       email: user.email,
       phone: user.phone || '',
       role: isAdmin ? 'admin' : (user.role || 'customer'),
       avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
+      emailVerified: !!user.emailVerified,
+      isBanned: !!user.isBanned,
       createdAt: user.createdAt,
       lastLogin: user.lastLogin || '',
       loginCount: user.loginCount || 1
@@ -1005,11 +1104,12 @@ app.get('/api/user/me', (req, res) => {
   });
 });
 
-// Admin Users & Login Stats Management API
+// Admin Users & Login Stats Management API with Search & Ban support
 app.get('/api/admin/users', checkAdmin, (req, res) => {
   const db = readDB();
-  const users = (db.users || []).map(u => ({
+  let users = (db.users || []).map(u => ({
     id: u.id,
+    uid: u.uid || `USR-${u.id}`,
     userCode: u.userCode || `HIFIX-USR-${1000 + u.id}`,
     name: u.name,
     email: u.email,
@@ -1017,10 +1117,14 @@ app.get('/api/admin/users', checkAdmin, (req, res) => {
     role: u.role || 'customer',
     avatar: u.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(u.name)}`,
     authProvider: u.authProvider || 'email',
+    emailVerified: !!u.emailVerified,
+    isBanned: !!u.isBanned,
+    bannedReason: u.bannedReason || '',
     createdAt: u.createdAt || 'N/A',
     lastLogin: u.lastLogin || 'N/A',
     loginCount: u.loginCount || 1
   }));
+
   const totalLogins = users.reduce((sum, u) => sum + (u.loginCount || 1), 0);
   res.json({
     totalUsers: users.length,
@@ -1029,13 +1133,63 @@ app.get('/api/admin/users', checkAdmin, (req, res) => {
   });
 });
 
+app.post('/api/admin/users/:id/ban', checkAdmin, (req, res) => {
+  const db = readDB();
+  const targetId = parseInt(req.params.id);
+  const user = (db.users || []).find(u => u.id === targetId);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  if (isAuthorizedAdmin(user.email)) {
+    return res.status(400).json({ error: 'Master administrator accounts cannot be banned.' });
+  }
+
+  const newBannedState = req.body.isBanned !== undefined ? !!req.body.isBanned : !user.isBanned;
+  user.isBanned = newBannedState;
+  user.bannedReason = req.body.reason || (newBannedState ? 'Suspended by admin' : '');
+
+  // Log action
+  db.auditLogs = db.auditLogs || [];
+  db.auditLogs.unshift({
+    action: newBannedState ? 'BAN_USER' : 'UNBAN_USER',
+    adminEmail: req.cookies.admin_email || 'tec.habiburrahman@gmail.com',
+    targetEmail: user.email,
+    targetUserId: user.id,
+    reason: user.bannedReason,
+    timestamp: new Date().toLocaleString('en-GB')
+  });
+  if (db.auditLogs.length > 100) db.auditLogs = db.auditLogs.slice(0, 100);
+
+  writeDB(db);
+  res.json({ success: true, isBanned: user.isBanned, bannedReason: user.bannedReason, user });
+});
+
+app.get('/api/admin/audit-logs', checkAdmin, (req, res) => {
+  const db = readDB();
+  res.json({ success: true, logs: db.auditLogs || [] });
+});
+
 app.patch('/api/admin/users/:id', checkAdmin, (req, res) => {
   const db = readDB();
   const user = (db.users || []).find(u => u.id === parseInt(req.params.id));
   if (!user) return res.status(404).json({ error: 'User not found' });
-  if (req.body.role) user.role = req.body.role;
+  if (req.body.role) {
+    if (req.body.role === 'admin' && !isAuthorizedAdmin(user.email)) {
+      return res.status(403).json({ error: 'Admin role is restricted strictly to authorized master emails.' });
+    }
+    user.role = req.body.role;
+  }
   if (req.body.phone !== undefined) user.phone = req.body.phone;
   if (req.body.name) user.name = req.body.name;
+
+  db.auditLogs = db.auditLogs || [];
+  db.auditLogs.unshift({
+    action: 'UPDATE_USER_PROFILE',
+    adminEmail: req.cookies.admin_email || 'tec.habiburrahman@gmail.com',
+    targetEmail: user.email,
+    targetUserId: user.id,
+    details: req.body,
+    timestamp: new Date().toLocaleString('en-GB')
+  });
+
   writeDB(db);
   res.json({ success: true, user });
 });
@@ -1043,9 +1197,21 @@ app.patch('/api/admin/users/:id', checkAdmin, (req, res) => {
 app.delete('/api/admin/users/:id', checkAdmin, (req, res) => {
   const db = readDB();
   const targetId = parseInt(req.params.id);
-  if (targetId === 1) {
-    return res.status(400).json({ error: 'Primary admin account cannot be deleted' });
+  const user = (db.users || []).find(u => u.id === targetId);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  if (targetId === 1 || isAuthorizedAdmin(user.email)) {
+    return res.status(400).json({ error: 'Master admin accounts cannot be deleted' });
   }
+
+  db.auditLogs = db.auditLogs || [];
+  db.auditLogs.unshift({
+    action: 'DELETE_USER',
+    adminEmail: req.cookies.admin_email || 'tec.habiburrahman@gmail.com',
+    targetEmail: user.email,
+    targetUserId: user.id,
+    timestamp: new Date().toLocaleString('en-GB')
+  });
+
   db.users = (db.users || []).filter(u => u.id !== targetId);
   writeDB(db);
   res.json({ success: true });

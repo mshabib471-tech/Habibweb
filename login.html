@@ -445,6 +445,32 @@
             document.getElementById('registerModal').classList.add('hidden');
         }
 
+        // Check if user is already authenticated on load
+        window.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('logout') === 'true' || params.get('switch') === 'true') {
+                return;
+            }
+            try {
+                if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
+                    const authUser = await window.HabibAuth.waitForAuthReady();
+                    if (authUser) {
+                        const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
+                        const email = (authUser.email || '').toLowerCase().trim();
+                        const isAdmin = ADMIN_EMAILS.includes(email);
+                        const redirectTarget = params.get('redirect');
+                        if (redirectTarget) {
+                            window.location.href = redirectTarget;
+                        } else {
+                            window.location.href = isAdmin ? 'admin.html' : 'dashboard.html';
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn("Auth check on login page:", e);
+            }
+        });
+
         // REAL GOOGLE LOGIN TRIGGER
         async function executeGoogleLogin(role) {
             const btnText = document.getElementById('googleBtnText');
@@ -497,6 +523,7 @@
             const btn = document.getElementById('userSubmitBtn');
             const alertBox = document.getElementById('userAuthAlert');
 
+            btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Checking credentials...';
             alertBox.classList.add('hidden');
 
@@ -507,19 +534,36 @@
                 const result = await window.HabibAuth.signInWithEmailReal(email, password);
 
                 alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-                alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Welcome back, ${result.user.name}! Redirecting...`;
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Welcome back, ${result.user.name || 'Member'}! Redirecting...`;
                 alertBox.classList.remove('hidden');
 
                 setTimeout(() => {
                     const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
                     const userEmail = (result.user && result.user.email ? result.user.email : '').toLowerCase().trim();
                     const isRealAdmin = ADMIN_EMAILS.includes(userEmail);
-                    window.location.href = isRealAdmin ? 'admin.html' : 'dashboard.html';
+                    const redirectTarget = new URLSearchParams(window.location.search).get('redirect');
+                    if (redirectTarget) {
+                        window.location.href = redirectTarget;
+                    } else {
+                        window.location.href = isRealAdmin ? 'admin.html' : 'dashboard.html';
+                    }
                 }, 800);
             } catch (err) {
+                let friendlyMsg = err.message || 'Invalid email or password.';
+                if (err.code === 'auth/user-not-found' || err.message?.includes('user-not-found')) {
+                    friendlyMsg = 'No account found with this email. Please register first.';
+                } else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential' || err.message?.includes('invalid-credential')) {
+                    friendlyMsg = 'Incorrect email or password. Please try again.';
+                } else if (err.code === 'auth/user-disabled' || err.message?.includes('suspended') || err.message?.includes('disabled')) {
+                    friendlyMsg = 'This account has been suspended. Please contact Habib iFix support.';
+                } else if (err.code === 'auth/too-many-requests') {
+                    friendlyMsg = 'Too many attempts. Please wait a minute and try again.';
+                }
+
                 alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
-                alertBox.innerText = err.message || 'Invalid email or password.';
+                alertBox.innerText = friendlyMsg;
                 alertBox.classList.remove('hidden');
+                btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
             }
         }
@@ -534,7 +578,15 @@
             const btn = document.getElementById('regSubmitBtn');
             const alertBox = document.getElementById('regAlert');
 
-            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Registering...';
+            if (password.length < 6) {
+                alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40';
+                alertBox.innerText = 'Password must be at least 6 characters.';
+                alertBox.classList.remove('hidden');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Creating Account & Sending Verification Email...';
             alertBox.classList.add('hidden');
 
             try {
@@ -543,20 +595,43 @@
                 }
                 const result = await window.HabibAuth.registerWithEmailReal(name, email, phone, password);
 
-                alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-                alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Account created! Logging in...`;
+                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                alertBox.innerHTML = `
+                    <div class="space-y-1">
+                        <div><i class="fa-solid fa-circle-check"></i> Account created successfully!</div>
+                        <div class="text-[11px] text-emerald-200">A verification link has been sent to <strong>${escapeHtml(email)}</strong>.</div>
+                        <div class="text-[11px] text-slate-300 pt-1">Redirecting to your new dashboard...</div>
+                    </div>
+                `;
                 alertBox.classList.remove('hidden');
 
                 setTimeout(() => {
                     closeRegisterModal();
                     window.location.href = 'dashboard.html';
-                }, 800);
+                }, 1800);
             } catch (err) {
+                let friendlyMsg = err.message || 'Registration failed.';
+                if (err.code === 'auth/email-already-in-use' || err.message?.includes('already-in-use') || err.message?.includes('already registered')) {
+                    friendlyMsg = 'This email address is already registered. Please sign in instead.';
+                } else if (err.code === 'auth/weak-password') {
+                    friendlyMsg = 'Password is too weak. Please use at least 6 characters.';
+                } else if (err.code === 'auth/invalid-email') {
+                    friendlyMsg = 'Please enter a valid email address.';
+                }
+
                 alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
-                alertBox.innerText = err.message || 'Registration failed.';
+                alertBox.innerText = friendlyMsg;
                 alertBox.classList.remove('hidden');
+                btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-check"></i> Complete Registration';
             }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
         }
 
         // REAL ADMIN CREDENTIALS LOGIN
@@ -567,6 +642,7 @@
             const btn = document.getElementById('adminSubmitBtn');
             const alertBox = document.getElementById('adminAuthAlert');
 
+            btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Verifying...';
             alertBox.classList.add('hidden');
 
@@ -599,12 +675,14 @@
                     alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
                     alertBox.innerText = data.error || 'Access Denied: Invalid admin credentials.';
                     alertBox.classList.remove('hidden');
+                    btn.disabled = false;
                     btn.innerHTML = '<i class="fa-solid fa-lock"></i> Login to Admin Dashboard';
                 }
             } catch (err) {
                 alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
                 alertBox.innerText = 'Network connection error. Try again.';
                 alertBox.classList.remove('hidden');
+                btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-lock"></i> Login to Admin Dashboard';
             }
         }

@@ -13,7 +13,10 @@ service cloud.firestore {
     function isAdmin() { 
       return isSignedIn() && (
         exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
-        (request.auth.token.email != null && request.auth.token.email.lower().matches('.*tec\\.habiburrahman@gmail\\.com.*'))
+        (request.auth.token.email != null && (
+          request.auth.token.email.lower() == 'tec.habiburrahman@gmail.com' ||
+          request.auth.token.email.lower() == 'mshabib471@gmail.com'
+        ))
       ); 
     }
 
@@ -114,6 +117,11 @@ service cloud.firestore {
         incoming().contact is string && incoming().contact.size() <= 100 &&
         incoming().message is string && incoming().message.size() <= 2000;
       allow update, delete: if isAdmin();
+    }
+
+    // Audit logs: Only admin read/write
+    match /audit_logs/{logId} {
+      allow read, write: if isAdmin();
     }
   }
 }

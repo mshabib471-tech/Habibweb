@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - Habib iFix .Tech</title>
+    
+    <!-- Google Search Favicons & App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+    <script>
+        tailwind = { darkMode: "class" };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="/js/theme.js"></script>
+    <script type="module" src="/js/site-auth.js"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-white">
+
+    <!-- Top Navigation -->
+    <header class="h-16 glass-nav border-b border-white/10 flex items-center justify-between px-4 sm:px-6 shrink-0 z-20">
+        <a href="index.html" class="flex items-center gap-3">
+            <img src="/logo.png" alt="Habib iFix Logo" class="w-9 h-9 rounded-xl object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.5)]">
+            <span class="font-extrabold text-sm sm:text-base text-white tracking-tight">Habib iFix <span class="text-cyan-400">.Tech</span></span>
+        </a>
+        <div class="flex items-center gap-3">
+            <a href="dashboard.html" class="text-xs font-bold text-slate-300 hover:text-white transition-colors">
+                <i class="fa-solid fa-gauge text-cyan-400"></i> <span class="hidden sm:inline">My Dashboard</span>
+            </a>
+            <a href="login.html" class="text-xs font-bold text-slate-300 hover:text-white transition-colors">
+                <i class="fa-solid fa-right-to-bracket text-indigo-400"></i> <span class="hidden sm:inline">Sign In</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-md bg-slate-900/90 border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl text-center relative overflow-hidden">
+            <div class="absolute -top-20 -right-20 w-44 h-44 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-20 w-44 h-44 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Icon Container -->
+            <div id="verifIconContainer" class="w-16 h-16 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center mx-auto text-2xl mb-4 border border-cyan-500/30">
+                <i id="verifIcon" class="fa-solid fa-envelope-circle-check"></i>
+            </div>
+
+            <!-- Title & Description -->
+            <h1 id="verifTitle" class="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
+                ইমেইল ভেরিফিকেশন
+            </h1>
+            <p id="verifSubtitle" class="text-xs text-slate-300 font-medium mb-6 leading-relaxed">
+                অনুগ্রহ করে অপেক্ষা করুন, আপনার ভেরিফিকেশন কোড যাচাই করা হচ্ছে...
+            </p>
+
+            <!-- Status Alert Box -->
+            <div id="verifAlert" class="hidden p-3.5 rounded-2xl text-xs font-bold mb-5 border leading-relaxed"></div>
+
+            <!-- Action Buttons -->
+            <div id="actionContainer" class="space-y-3">
+                <button id="resendBtn" onclick="handleResendEmail()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-extrabold text-xs shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span id="resendBtnText">পুনরায় ভেরিফিকেশন লিংক পাঠান (Resend Email)</span>
+                </button>
+
+                <button id="checkStatusBtn" onclick="handleCheckStatus()" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-rotate"></i>
+                    <span>ভেরিফিকেশন স্ট্যাটাস চেক করুন (Check Status)</span>
+                </button>
+
+                <a href="dashboard.html" id="dashboardBtn" class="hidden w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-gauge"></i>
+                    <span>ইউজার ড্যাশবোর্ডে প্রবেশ করুন &rarr;</span>
+                </a>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-center gap-2 text-[11px] text-slate-400">
+                <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                <span>Habib iFix Official Firebase Security Guard</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const oobCode = urlParams.get('oobCode');
+
+            const titleEl = document.getElementById('verifTitle');
+            const subtitleEl = document.getElementById('verifSubtitle');
+            const alertEl = document.getElementById('verifAlert');
+            const iconEl = document.getElementById('verifIcon');
+            const iconContainer = document.getElementById('verifIconContainer');
+            const dashboardBtn = document.getElementById('dashboardBtn');
+
+            // Scenario 1: User arrived via official Firebase Email Action Link
+            if (mode === 'verifyEmail' && oobCode) {
+                try {
+                    // Wait for auth library
+                    let attempts = 0;
+                    while ((!window.HabibAuth || !window.HabibAuth.verifyEmailActionCode) && attempts < 20) {
+                        await new Promise(r => setTimeout(r, 100));
+                        attempts++;
+                    }
+
+                    await window.HabibAuth.verifyEmailActionCode(oobCode);
+                    
+                    // Success UI
+                    iconContainer.className = "w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-3xl mb-4 border border-emerald-500/40";
+                    iconEl.className = "fa-solid fa-circle-check";
+                    titleEl.innerText = "ইমেইল সফলভাবে ভেরিফাই হয়েছে!";
+                    subtitleEl.innerText = "অভিনন্দন! আপনার Habib iFix একাউন্টের ইমেইল ভেরিফিকেশন সফল হয়েছে। এখন আপনি সকল ফিচার ও সার্ভিস ব্যবহার করতে পারবেন।";
+                    
+                    alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+                    alertEl.innerHTML = '<i class="fa-solid fa-check"></i> Email verified successfully! You are ready to go.';
+                    alertEl.classList.remove('hidden');
+
+                    document.getElementById('resendBtn').classList.add('hidden');
+                    document.getElementById('checkStatusBtn').classList.add('hidden');
+                    dashboardBtn.classList.remove('hidden');
+                } catch (err) {
+                    console.error("Action Code Error:", err);
+                    iconContainer.className = "w-16 h-16 rounded-2xl bg-red-500/20 text-red-400 flex items-center justify-center mx-auto text-3xl mb-4 border border-red-500/40";
+                    iconEl.className = "fa-solid fa-triangle-exclamation";
+                    titleEl.innerText = "ভেরিফিকেশন লিংকটি মেয়াদোত্তীর্ণ";
+                    subtitleEl.innerText = "লিংকটি ইতোমধ্যে ব্যবহার করা হয়েছে অথবা এর মেয়াদ শেষ হয়ে গেছে। নিচের বাটনে ক্লিক করে নতুন ভেরিফিকেশন লিংক গ্রহণ করুন।";
+
+                    alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-red-500/20 text-red-300 border-red-500/40";
+                    alertEl.innerText = err.message || "Invalid or expired verification link.";
+                    alertEl.classList.remove('hidden');
+                }
+            } else {
+                // Scenario 2: Normal page visit (e.g. redirected from dashboard to verify)
+                if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
+                    await window.HabibAuth.waitForAuthReady();
+                }
+                const user = window.HabibAuth ? window.HabibAuth.getCurrentUser() : null;
+                const email = user ? user.email : (localStorage.getItem('habib_user_email') || 'your email');
+
+                titleEl.innerText = "আপনার ইমেইল ভেরিফাই করুন";
+                subtitleEl.innerHTML = `আমরা <strong class="text-cyan-400 font-mono">${escapeHtml(email)}</strong> ঠিকানায় একটি ভেরিফিকেশন লিংক পাঠিয়েছি। আপনার ইনবক্স অথবা স্প্যাম (Spam) ফোল্ডার চেক করুন।`;
+            }
+        });
+
+        async function handleResendEmail() {
+            const btn = document.getElementById('resendBtn');
+            const btnText = document.getElementById('resendBtnText');
+            const alertEl = document.getElementById('verifAlert');
+
+            btn.disabled = true;
+            btnText.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> পাঠানো হচ্ছে...';
+            alertEl.classList.add('hidden');
+
+            try {
+                if (!window.HabibAuth || !window.HabibAuth.resendVerificationEmail) {
+                    throw new Error("Auth system is initializing. Please wait a moment.");
+                }
+                const res = await window.HabibAuth.resendVerificationEmail();
+                if (res.alreadyVerified) {
+                    alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+                    alertEl.innerHTML = '<i class="fa-solid fa-check"></i> আপনার ইমেইল ইতোমধ্যে ভেরিফাইড! আপনি ড্যাশবোর্ডে প্রবেশ করতে পারেন।';
+                    document.getElementById('dashboardBtn').classList.remove('hidden');
+                } else {
+                    alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+                    alertEl.innerHTML = '<i class="fa-solid fa-paper-plane"></i> নতুন ভেরিফিকেশন লিংক পাঠানো হয়েছে! ইনবক্স চেক করুন।';
+                }
+                alertEl.classList.remove('hidden');
+            } catch (err) {
+                alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-red-500/20 text-red-300 border-red-500/40";
+                alertEl.innerText = err.message || "Failed to resend verification email.";
+                alertEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btnText.innerText = "পুনরায় ভেরিফিকেশন লিংক পাঠান (Resend Email)";
+            }
+        }
+
+        async function handleCheckStatus() {
+            const alertEl = document.getElementById('verifAlert');
+            const dashboardBtn = document.getElementById('dashboardBtn');
+
+            alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-indigo-500/20 text-indigo-300 border-indigo-500/40";
+            alertEl.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> স্ট্যাটাস যাচাই করা হচ্ছে...';
+            alertEl.classList.remove('hidden');
+
+            try {
+                if (!window.HabibAuth || !window.HabibAuth.reloadAndCheckEmailVerified) {
+                    throw new Error("Auth system loading...");
+                }
+                const verified = await window.HabibAuth.reloadAndCheckEmailVerified();
+                if (verified) {
+                    alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+                    alertEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> আপনার ইমেইল সফলভাবে ভেরিফাই হয়েছে! এখন ড্যাশবোর্ড খুলুন।';
+                    dashboardBtn.classList.remove('hidden');
+                } else {
+                    alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-amber-500/20 text-amber-300 border-amber-500/40";
+                    alertEl.innerHTML = '<i class="fa-solid fa-clock"></i> এখনও ভেরিফাই করা হয়নি। অনুগ্রহ করে ইনবক্সের লিংকে ক্লিক করার পর আবার চেষ্টা করুন।';
+                }
+            } catch (err) {
+                alertEl.className = "p-3.5 rounded-2xl text-xs font-bold mb-5 border bg-red-500/20 text-red-300 border-red-500/40";
+                alertEl.innerText = err.message || "Could not check verification status.";
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+    </script>
+</body>
+</html>

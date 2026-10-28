@@ -237,6 +237,38 @@
                 </a>
             </div>
 
+            <!-- Email Verification Required Banner (Real Auth State) -->
+            <div id="emailVerificationBanner" class="hidden p-4 sm:p-5 rounded-2xl bg-amber-500/15 border border-amber-500/40 shadow-lg space-y-3">
+                <div class="flex items-start sm:items-center justify-between gap-4 flex-wrap">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-lg shrink-0">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                                <span>Email Verification Required</span>
+                                <span class="bg-amber-500/20 text-amber-700 dark:text-amber-300 text-[10px] font-mono px-2 py-0.5 rounded-full border border-amber-500/30 font-bold uppercase">Pending</span>
+                            </div>
+                            <div class="text-xs text-amber-800 dark:text-amber-200 mt-0.5">
+                                A confirmation link was sent to <strong id="verifyUserEmailSpan" class="font-mono">your email</strong>. Please check your inbox and verify your address to protect your warranty orders and certificates.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button id="resendVerificationBtn" onclick="handleResendVerification()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-sm">
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                            <span id="resendBtnText">Resend Verification Email</span>
+                        </button>
+                        <button onclick="handleCheckVerificationStatus()" class="px-3.5 py-2 rounded-xl border border-amber-500/40 hover:bg-amber-500/10 text-amber-800 dark:text-amber-300 font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-rotate text-xs"></i>
+                            <span>I've Verified (Check Status)</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="verifyFeedbackMsg" class="hidden text-xs font-bold pt-1 border-t border-amber-500/20"></div>
+            </div>
+
             <!-- User Welcome Hero Card -->
             <div class="glass-card rounded-[32px] p-6 sm:p-10 relative overflow-hidden border border-slate-200 dark:border-white/10 shadow-xl dark:bg-slate-900/90 bg-white">
                 <div class="absolute -right-10 -top-10 w-80 h-80 bg-gradient-to-br from-cyan-500/15 via-indigo-500/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
@@ -408,56 +440,16 @@
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Course 1 -->
-                    <div class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border border-indigo-500/30">Master Hardware</span>
-                            <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">80% Done</span>
+                <div id="userCoursesContainer">
+                    <div class="text-center py-12 rounded-2xl border border-dashed border-slate-300 dark:border-white/10 dark:bg-slate-900/40 bg-slate-50 p-6 space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-graduation-cap"></i>
                         </div>
-                        <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Advanced Mobile PMIC & Power IC Reballing</h3>
-                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Covers stencil alignment, low-temp solder paste handling, and motherboard short elimination.</p>
-                        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-indigo-600 h-full rounded-full" style="width: 80%"></div>
-                        </div>
-                        <div class="pt-2 flex items-center justify-between">
-                            <a href="courses.html" class="text-xs font-bold text-indigo-600 dark:text-cyan-400 hover:underline">Watch Lectures &rarr;</a>
-                            <a href="/public/assets/aistudio/IMG_20261022_013415_287_0564f47b.jpg" target="_blank" class="text-[11px] font-mono text-slate-500 dark:text-slate-400 hover:underline">PDF Schematics</a>
-                        </div>
-                    </div>
-
-                    <!-- Course 2 -->
-                    <div class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/15 text-cyan-700 dark:text-cyan-400 border border-cyan-500/30">Security Unlock</span>
-                            <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">100% Complete</span>
-                        </div>
-                        <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">FRP 2027 Android 14/15 Security Master</h3>
-                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">One-click APK tools, testpoint EDL flashing, and Qualcomm/MediaTek baseband repair.</p>
-                        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-cyan-500 h-full rounded-full" style="width: 100%"></div>
-                        </div>
-                        <div class="pt-2 flex items-center justify-between">
-                            <a href="frp.html" class="text-xs font-bold text-cyan-600 dark:text-cyan-400 hover:underline">Download Unlock Tools &rarr;</a>
-                            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Certificate Issued</span>
-                        </div>
-                    </div>
-
-                    <!-- Course 3 -->
-                    <div class="glass-card rounded-2xl p-5 border border-slate-200 dark:border-white/10 dark:bg-slate-900/80 bg-white space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/15 text-purple-700 dark:text-purple-400 border border-purple-500/30">Display Technology</span>
-                            <span class="text-xs font-mono font-bold text-amber-600 dark:text-amber-400">45% In Progress</span>
-                        </div>
-                        <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">AMOLED & Curved Glass OCA Lamination</h3>
-                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Machine bubble remover calibration, polaroid film replacement, and edge screen separation.</p>
-                        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-purple-600 h-full rounded-full" style="width: 45%"></div>
-                        </div>
-                        <div class="pt-2 flex items-center justify-between">
-                            <a href="courses.html" class="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline">Resume Course &rarr;</a>
-                            <span class="text-[11px] font-mono text-slate-500">Module 4 of 9</span>
-                        </div>
+                        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">No Enrolled Courses Yet</h3>
+                        <p class="text-xs text-slate-500 max-w-sm mx-auto">Master motherboard schematics, chip-level micro-soldering, and Android FRP unlocking with Habib iFix certifications.</p>
+                        <a href="courses.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md">
+                            <span>Browse Available Courses &rarr;</span>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -587,39 +579,50 @@
         });
 
         async function loadDashboardUser() {
-            // Check local user first
             try {
-                const stored = localStorage.getItem('habib_current_user');
-                if (stored) {
-                    currentUser = JSON.parse(stored);
+                // Wait for Firebase Auth persistence to resolve
+                let firebaseUser = null;
+                if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
+                    firebaseUser = await window.HabibAuth.waitForAuthReady();
                 }
-            } catch(e) {}
 
-            // Verify with server /api/user/me
-            try {
+                // Verify with backend session
                 const res = await fetch('/api/user/me');
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.loggedIn && data.user) {
                         currentUser = data.user;
+                        if (firebaseUser) {
+                            currentUser.emailVerified = firebaseUser.emailVerified;
+                            currentUser.uid = firebaseUser.uid;
+                        }
                         localStorage.setItem('habib_current_user', JSON.stringify(currentUser));
                     }
                 }
             } catch(err) {
-                console.warn("User status check:", err);
+                console.warn("User status check error:", err);
             }
 
+            // Fallback to local stored user if available
             if (!currentUser) {
-                // If not logged in, show demo friendly prompt or redirect to login
-                currentUser = {
-                    id: 0,
-                    userCode: 'HIFIX-GUEST',
-                    name: 'Guest Member',
-                    email: 'guest@habibifix.tech',
-                    phone: '',
-                    role: 'guest',
-                    avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Guest'
-                };
+                try {
+                    const stored = localStorage.getItem('habib_current_user');
+                    if (stored) currentUser = JSON.parse(stored);
+                } catch(e) {}
+            }
+
+            // If still not authenticated, redirect to login cleanly (DO NOT inject fake guest)
+            if (!currentUser || !currentUser.email) {
+                window.location.replace('login.html?redirect=dashboard.html');
+                return;
+            }
+
+            // Check if user account was suspended
+            if (currentUser.isBanned) {
+                alert('This account has been suspended by an administrator.');
+                if (window.doRealLogout) await window.doRealLogout();
+                window.location.replace('login.html?banned=true');
+                return;
             }
 
             if (new URLSearchParams(window.location.search).get('denied') === 'admin') {
@@ -637,7 +640,7 @@
 
             document.getElementById('userHeroName').textContent = currentUser.name || 'Member';
             document.getElementById('userHeroEmail').textContent = currentUser.email || '';
-            document.getElementById('userHeroCode').textContent = currentUser.userCode || `HIFIX-USR-${1000 + (currentUser.id || 1)}`;
+            document.getElementById('userHeroCode').textContent = currentUser.userCode || (currentUser.uid ? `UID: ${currentUser.uid.slice(0, 10)}...` : `HIFIX-USR-${1000 + (currentUser.id || 1)}`);
             document.getElementById('userHeroPhone').textContent = currentUser.phone || 'Not provided';
             
             if (currentUser.avatar) {
@@ -647,6 +650,8 @@
             const roleBadge = document.getElementById('userHeroRoleBadge');
             const adminNotice = document.getElementById('adminNoticeBanner');
             const sidebarAdminLink = document.getElementById('sidebarAdminLink');
+            const verificationBanner = document.getElementById('emailVerificationBanner');
+            const verifyEmailSpan = document.getElementById('verifyUserEmailSpan');
 
             const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
             const isAdmin = ADMIN_EMAILS.includes((currentUser.email || '').toLowerCase().trim());
@@ -662,6 +667,28 @@
                 if (sidebarAdminLink) sidebarAdminLink.classList.add('hidden');
             }
 
+            // Real email verification banner check
+            const isGoogleUser = currentUser.provider === 'google.com' || (window.HabibAuth?.auth?.currentUser?.providerData?.[0]?.providerId === 'google.com');
+            const isEmailVerified = Boolean(currentUser.emailVerified || isGoogleUser);
+
+            if (verificationBanner) {
+                if (!isEmailVerified) {
+                    verificationBanner.classList.remove('hidden');
+                    if (verifyEmailSpan) verifyEmailSpan.textContent = currentUser.email || '';
+                } else {
+                    verificationBanner.classList.add('hidden');
+                }
+            }
+
+            // Enrolled courses count (0 for new accounts)
+            const coursesCountEl = document.getElementById('statCoursesCount');
+            const enrolledList = Array.isArray(currentUser.enrolledCourses) ? currentUser.enrolledCourses : [];
+            if (coursesCountEl) coursesCountEl.textContent = enrolledList.length;
+
+            // Claimed perks count
+            const perksCountEl = document.getElementById('statPerksCount');
+            if (perksCountEl) perksCountEl.textContent = '1';
+
             // Populate form fields
             document.getElementById('settingFullName').value = currentUser.name || '';
             document.getElementById('settingEmail').value = currentUser.email || '';
@@ -671,6 +698,91 @@
             document.getElementById('modalFullName').value = currentUser.name || '';
             document.getElementById('modalPhone').value = currentUser.phone || '';
             document.getElementById('modalAddress').value = currentUser.address || '';
+        }
+
+        // Email Verification Handlers
+        let resendCooldownTimer = null;
+        async function handleResendVerification() {
+            const btn = document.getElementById('resendVerificationBtn');
+            const textSpan = document.getElementById('resendBtnText');
+            const feedbackEl = document.getElementById('verifyFeedbackMsg');
+
+            if (!window.HabibAuth || !window.HabibAuth.resendVerificationEmail) {
+                alert('Authentication system initializing. Please try again in 2 seconds.');
+                return;
+            }
+
+            btn.disabled = true;
+            textSpan.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Sending...';
+            feedbackEl.classList.add('hidden');
+
+            try {
+                const res = await window.HabibAuth.resendVerificationEmail();
+                feedbackEl.className = 'text-xs font-bold pt-2 border-t border-amber-500/20 text-emerald-400 flex items-center gap-1.5';
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> Verification email resent to ${escapeHtml(currentUser.email)}. Please check your inbox and spam folder.`;
+                feedbackEl.classList.remove('hidden');
+
+                // 60-second real cooldown
+                let timeLeft = 60;
+                btn.classList.add('opacity-60', 'cursor-not-allowed');
+                textSpan.innerText = `Resend in ${timeLeft}s`;
+
+                clearInterval(resendCooldownTimer);
+                resendCooldownTimer = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft <= 0) {
+                        clearInterval(resendCooldownTimer);
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-60', 'cursor-not-allowed');
+                        textSpan.innerText = 'Resend Verification Email';
+                    } else {
+                        textSpan.innerText = `Resend in ${timeLeft}s`;
+                    }
+                }, 1000);
+            } catch (err) {
+                feedbackEl.className = 'text-xs font-bold pt-2 border-t border-amber-500/20 text-red-400 flex items-center gap-1.5';
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${escapeHtml(err.message || 'Failed to send verification email.')}`;
+                feedbackEl.classList.remove('hidden');
+                btn.disabled = false;
+                textSpan.innerText = 'Resend Verification Email';
+            }
+        }
+
+        async function handleCheckVerificationStatus() {
+            const feedbackEl = document.getElementById('verifyFeedbackMsg');
+            feedbackEl.className = 'text-xs font-bold pt-2 border-t border-amber-500/20 text-cyan-400 flex items-center gap-1.5';
+            feedbackEl.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Checking Firebase verification status...`;
+            feedbackEl.classList.remove('hidden');
+
+            try {
+                if (!window.HabibAuth || !window.HabibAuth.reloadAndCheckEmailVerified) {
+                    throw new Error("Auth system loading. Please try again.");
+                }
+                const isVerified = await window.HabibAuth.reloadAndCheckEmailVerified();
+                if (isVerified) {
+                    currentUser.emailVerified = true;
+                    localStorage.setItem('habib_current_user', JSON.stringify(currentUser));
+                    feedbackEl.className = 'text-xs font-bold pt-2 border-t border-amber-500/20 text-emerald-400 flex items-center gap-1.5';
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> Email verified successfully! Unlocking verified member privileges...`;
+                    setTimeout(() => {
+                        const banner = document.getElementById('emailVerificationBanner');
+                        if (banner) banner.classList.add('hidden');
+                    }, 1200);
+                } else {
+                    feedbackEl.className = 'text-xs font-bold pt-2 border-t border-amber-500/20 text-amber-400 flex items-center gap-1.5';
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-clock"></i> Not verified yet. Please click the link sent to ${escapeHtml(currentUser.email)} in your email inbox, then click this button again.`;
+                }
+            } catch (err) {
+                feedbackEl.className = 'text-xs font-bold pt-2 border-t border-amber-500/20 text-red-400 flex items-center gap-1.5';
+                feedbackEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${escapeHtml(err.message || 'Could not verify state.')}`;
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
         }
 
         async function fetchUserBookings() {

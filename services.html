@@ -451,32 +451,64 @@
                                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                             </div>
                             <div>
-                                <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest">FREE SERVICE TOOL #5 🌟 HD</span>
+                                <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest">FREE SERVICE TOOL #5 🌟 AI BG REMOVER</span>
                                 <h3 class="text-lg font-black text-slate-900 dark:text-white">AI Background Remover (HD PNG)</h3>
                             </div>
                         </div>
                         <p class="text-xs text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">
-                            Upload any photo to instantly remove its background with AI and download the high-definition transparent PNG file.
+                            Upload or drag & drop any portrait or product photo to remove its background using 1-click AI and download transparent HD PNG.
                         </p>
 
-                        <div class="space-y-3 mb-5">
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Select Image File</label>
-                                <input type="file" id="bgRemoverFileInput" accept="image/*" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-white file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-500 file:text-white hover:file:bg-emerald-600 cursor-pointer">
+                        <!-- Upload Dropzone & File Input -->
+                        <div class="space-y-3 mb-4">
+                            <div id="bgDropzone" onclick="document.getElementById('bgRemoverFileInput').click()" class="border-2 border-dashed border-emerald-500/40 hover:border-emerald-500 bg-emerald-500/5 hover:bg-emerald-500/10 transition-all rounded-2xl p-4 text-center cursor-pointer">
+                                <i class="fa-solid fa-cloud-arrow-up text-emerald-500 text-2xl mb-1.5"></i>
+                                <p class="text-xs font-bold text-slate-800 dark:text-slate-200">Click or Drag & Drop Image Here</p>
+                                <p class="text-[10px] text-slate-500">Supports JPG, PNG, WebP format</p>
+                                <input type="file" id="bgRemoverFileInput" accept="image/*" class="hidden" onchange="handleBgFileSelected(this)">
                             </div>
-                            <button onclick="removeBgStandalone()" id="bgRemoverBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition-all shadow cursor-pointer">
-                                <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Remove Background & Get HD PNG
+
+                            <button onclick="removeBgStandalone()" id="bgRemoverBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition-all shadow cursor-pointer flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Remove Background & Get HD PNG
                             </button>
                         </div>
 
-                        <!-- Result Box -->
-                        <div id="bgRemoverResultContainer" class="hidden p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center">
-                            <div class="w-28 h-28 mx-auto mb-3 rounded-2xl overflow-hidden border-2 border-emerald-400 shadow-md bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px]">
-                                <img id="bgRemoverResultImg" src="" alt="Transparent PNG" class="w-full h-full object-contain">
+                        <!-- Animated Progress Container -->
+                        <div id="bgRemoverProgressContainer" class="hidden mb-4 p-3 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-emerald-500/30">
+                            <div class="flex items-center justify-between text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">
+                                <span id="bgRemoverStatusText">Uploading image...</span>
+                                <span id="bgRemoverPercentText">0%</span>
                             </div>
-                            <p class="text-xs font-bold text-emerald-500 mb-3">Background removed successfully!</p>
-                            <a id="bgRemoverDownloadLink" href="#" target="_blank" download="habib-ifix-transparent-hd.png" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow">
-                                <i class="fa-solid fa-cloud-arrow-down"></i> Download HD PNG
+                            <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div id="bgRemoverProgressBar" class="h-full bg-emerald-500 transition-all duration-300 w-0"></div>
+                            </div>
+                        </div>
+
+                        <!-- Error Banner -->
+                        <div id="bgRemoverErrorBanner" class="hidden mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span id="bgRemoverErrorMessage">An error occurred.</span>
+                        </div>
+
+                        <!-- Result & Comparison Box -->
+                        <div id="bgRemoverResultContainer" class="hidden p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center">
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <div>
+                                    <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Original Photo</span>
+                                    <div class="w-full h-28 rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700 bg-black/20">
+                                        <img id="bgRemoverOriginalImg" src="" alt="Original Image" class="w-full h-full object-contain">
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="block text-[10px] font-bold text-emerald-500 uppercase mb-1">Transparent PNG</span>
+                                    <div class="w-full h-28 rounded-xl overflow-hidden border-2 border-emerald-400 shadow-sm bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:12px_12px]">
+                                        <img id="bgRemoverResultImg" src="" alt="Transparent PNG" class="w-full h-full object-contain">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs font-bold text-emerald-500 mb-3"><i class="fa-solid fa-circle-check"></i> Background Removed Successfully!</p>
+                            <a id="bgRemoverDownloadLink" href="#" target="_blank" download="habib-ifix-transparent-hd.png" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow">
+                                <i class="fa-solid fa-cloud-arrow-down"></i> Download Transparent HD PNG
                             </a>
                         </div>
                     </div>
@@ -650,52 +682,113 @@
                     }
                 }
 
+                let selectedBgFile = null;
+
+                function handleBgFileSelected(input) {
+                    if (input.files && input.files[0]) {
+                        selectedBgFile = input.files[0];
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const origImg = document.getElementById('bgRemoverOriginalImg');
+                            if (origImg) origImg.src = e.target.result;
+                        };
+                        reader.readAsDataURL(selectedBgFile);
+                    }
+                }
+
+                // Drag & Drop event setup for AI Background Remover
+                document.addEventListener('DOMContentLoaded', () => {
+                    const dropzone = document.getElementById('bgDropzone');
+                    const fileInput = document.getElementById('bgRemoverFileInput');
+                    if (!dropzone) return;
+
+                    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                        dropzone.addEventListener(eventName, (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }, false);
+                    });
+
+                    ['dragenter', 'dragover'].forEach(eventName => {
+                        dropzone.addEventListener(eventName, () => {
+                            dropzone.classList.add('border-emerald-500', 'bg-emerald-500/20');
+                        }, false);
+                    });
+
+                    ['dragleave', 'drop'].forEach(eventName => {
+                        dropzone.addEventListener(eventName, () => {
+                            dropzone.classList.remove('border-emerald-500', 'bg-emerald-500/20');
+                        }, false);
+                    });
+
+                    dropzone.addEventListener('drop', (e) => {
+                        const dt = e.dataTransfer;
+                        const files = dt.files;
+                        if (files && files.length > 0) {
+                            fileInput.files = files;
+                            handleBgFileSelected(fileInput);
+                        }
+                    }, false);
+                });
+
                 async function removeBgStandalone() {
                     const fileInput = document.getElementById('bgRemoverFileInput');
                     const btn = document.getElementById('bgRemoverBtn');
-                    const container = document.getElementById('bgRemoverResultContainer');
-                    const img = document.getElementById('bgRemoverResultImg');
+                    const progressContainer = document.getElementById('bgRemoverProgressContainer');
+                    const progressBar = document.getElementById('bgRemoverProgressBar');
+                    const statusText = document.getElementById('bgRemoverStatusText');
+                    const percentText = document.getElementById('bgRemoverPercentText');
+                    const errorBanner = document.getElementById('bgRemoverErrorBanner');
+                    const errorMessage = document.getElementById('bgRemoverErrorMessage');
+                    const resultContainer = document.getElementById('bgRemoverResultContainer');
+                    const origImg = document.getElementById('bgRemoverOriginalImg');
+                    const resultImg = document.getElementById('bgRemoverResultImg');
                     const downloadLink = document.getElementById('bgRemoverDownloadLink');
 
-                    if (!fileInput.files || fileInput.files.length === 0) {
-                        alert('Please select an image file first.');
+                    const file = selectedBgFile || (fileInput.files ? fileInput.files[0] : null);
+                    if (!file) {
+                        alert('Please select or drop an image file first.');
                         return;
                     }
 
-                    const file = fileInput.files[0];
-                    const reader = new FileReader();
-                    reader.onload = async function(e) {
-                        const base64Image = e.target.result;
-                        btn.disabled = true;
-                        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Removing Background with AI...';
-                        container.classList.add('hidden');
+                    // Reset UI elements
+                    errorBanner.classList.add('hidden');
+                    resultContainer.classList.add('hidden');
+                    progressContainer.classList.remove('hidden');
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Background Removal...';
 
-                        try {
-                            const res = await fetch('/api/tools/remove-bg', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ image: base64Image })
-                            });
+                    // Ensure original image preview is shown
+                    if (origImg && !origImg.src) {
+                        const r = new FileReader();
+                        r.onload = (e) => { origImg.src = e.target.result; };
+                        r.readAsDataURL(file);
+                    }
 
-                            if (!res.ok) {
-                                const errJson = await res.json().catch(() => ({ message: 'Background removal failed' }));
-                                throw new Error(errJson.message || 'Background removal failed');
-                            }
+                    try {
+                        const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ provider: 'bgremovers' });
+                        const result = await sdk.removeBackground(file, (percent, text) => {
+                            progressBar.style.width = `${percent}%`;
+                            percentText.textContent = `${percent}%`;
+                            statusText.textContent = text;
+                        });
 
-                            const resultBlob = await res.blob();
-                            const blobUrl = URL.createObjectURL(resultBlob);
-                            img.src = blobUrl;
-                            downloadLink.href = blobUrl;
-                            container.classList.remove('hidden');
-                            alert('Background successfully removed! HD PNG is ready for download.');
-                        } catch (err) {
-                            alert('Error: ' + err.message);
-                        } finally {
-                            btn.disabled = false;
-                            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Remove Background & Get HD PNG';
+                        if (result && result.blobUrl) {
+                            resultImg.src = result.blobUrl;
+                            downloadLink.href = result.blobUrl;
+                            resultContainer.classList.remove('hidden');
+                            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         }
-                    };
-                    reader.readAsDataURL(file);
+                    } catch (err) {
+                        errorMessage.textContent = err.message || 'Failed to remove background.';
+                        errorBanner.classList.remove('hidden');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Remove Background & Get HD PNG';
+                        setTimeout(() => {
+                            progressContainer.classList.add('hidden');
+                        }, 1000);
+                    }
                 }
 
                 async function checkBirthCertificateInline() {
@@ -823,6 +916,7 @@
             closeBookingModal();
         }
     </script>
+    <script src="/js/bgRemoverService.js"></script>
     <script src="/js/ai-agent.js"></script>
     <script type="module" src="/js/site-auth.js"></script>
 </body>

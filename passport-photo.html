@@ -48,6 +48,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/theme.js"></script>
+    <script src="/js/bgRemoverService.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap');
 
@@ -466,31 +467,27 @@
 
         async function removeBg() {
             if (!userImage) return;
-            document.getElementById('loader').classList.remove('hidden');
-            document.getElementById('loader-text').textContent = "Removing Background with AI...";
+            const loader = document.getElementById('loader');
+            const loaderText = document.getElementById('loader-text');
+            loader.classList.remove('hidden');
+            loaderText.textContent = "Initializing AI Background Remover...";
+
             try {
-                const res = await fetch('/api/tools/remove-bg', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ image: userImage })
+                const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ provider: 'bgremovers' });
+                const result = await sdk.removeBackground(userImage, (percent, statusText) => {
+                    loaderText.textContent = `${statusText} (${percent}%)`;
                 });
-                if (!res.ok) {
-                    const errJson = await res.json().catch(() => ({ message: 'Failed to remove background' }));
-                    throw new Error(errJson.message || 'Background removal failed');
-                }
-                const resultBlob = await res.blob();
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    userImage = reader.result;
+
+                if (result && result.dataUrl) {
+                    userImage = result.dataUrl;
                     document.getElementById('preview-img').src = userImage;
                     setTimeout(autoAdjustPhoto, 50);
                     showToast("Background successfully removed!");
-                };
-                reader.readAsDataURL(resultBlob);
+                }
             } catch (err) {
-                alert("Error removing background: " + err.message);
+                alert("Background Removal Failed: " + err.message);
             } finally {
-                document.getElementById('loader').classList.add('hidden');
+                loader.classList.add('hidden');
             }
         }
 

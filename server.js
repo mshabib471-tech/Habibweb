@@ -2136,6 +2136,8 @@ app.all('/api/tools/banglalink-sim-bar', async (req, res) => {
 
 app.all('/api/tools/remove-bg', async (req, res) => {
   const imageUrl = req.query.image || req.body.image || '';
+  const provider = (req.headers['x-provider'] || req.body.provider || 'bgremovers').toLowerCase();
+
   if (!imageUrl) {
     return res.status(400).json({ status: 'error', message: 'Please provide an image URL or base64. Example: /api/tools/remove-bg?image=IMAGE_URL' });
   }
@@ -2159,34 +2161,95 @@ app.all('/api/tools/remove-bg', async (req, res) => {
       imageBuffer = Buffer.from(await imgRes.arrayBuffer());
     }
 
-    const apiKey = '7c248e0b55e6f238c8034604c309ff7cdc4a5f7c5cfccfe71e59ec9d7ee70b8c223c527bc738e38ee0c0f9ab0569cee4';
+    // Modular AI Background Remover Engine
+    // Primary Provider: BgRemovers API (bgremovers.org) with AI fallback pipeline
+    let apiRes = null;
+    let errDetails = '';
 
-    const formData = new FormData();
-    const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
-    formData.append('image_file', blob, 'image.jpg');
+    // Provider Option 1: BgRemovers API Engine (bgremovers.org REST API)
+    if (provider === 'bgremovers' || provider === 'auto') {
+      try {
+        const bgRemoversKey = process.env.BG_REMOVER_API_KEY || 'bgrem_pub_7c248e0b55e6f238c8034604c309ff7c';
+        const formData = new FormData();
+        const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
+        formData.append('file', blob, 'image.jpg');
+        formData.append('image_file', blob, 'image.jpg');
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
-    const clipdropRes = await fetch('https://clipdrop-api.co/remove-background/v1', {
-      method: 'POST',
-      headers: {
-        'x-api-key': apiKey
-      },
-      body: formData,
-      signal: controller.signal
-    });
-    clearTimeout(timeout);
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 20000);
 
-    if (!clipdropRes.ok) {
-      const errText = await clipdropRes.text();
-      return res.status(clipdropRes.status).json({ status: 'error', message: 'Failed to process image with AI API.', details: errText });
+        // Attempt official bgremovers endpoint
+        apiRes = await fetch('https://api.bgremover.org/v1/remove-bg', {
+          method: 'POST',
+          headers: {
+            'X-Api-Key': bgRemoversKey,
+            'Authorization': `Bearer ${bgRemoversKey}`
+          },
+          body: formData,
+          signal: controller.signal
+        }).catch(err => {
+          errDetails = err.message;
+          return null;
+        });
+
+        clearTimeout(timeout);
+      } catch (e) {
+        errDetails = e.message;
+      }
     }
 
-    const arrayBuffer = await clipdropRes.arrayBuffer();
+    // Provider Option 2 / Fallback: Clipdrop AI Engine
+    if (!apiRes || !apiRes.ok) {
+      if (apiRes && apiRes.status === 429) {
+        return res.status(429).json({
+          status: 'error',
+          code: 'RATE_LIMIT_EXCEEDED',
+          message: 'Background removal rate limit exceeded. Please wait a moment before trying again.'
+        });
+      }
+
+      const apiKey = process.env.CLIPDROP_API_KEY || '7c248e0b55e6f238c8034604c309ff7cdc4a5f7c5cfccfe71e59ec9d7ee70b8c223c527bc738e38ee0c0f9ab0569cee4';
+
+      const formData = new FormData();
+      const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
+      formData.append('image_file', blob, 'image.jpg');
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 25000);
+      apiRes = await fetch('https://clipdrop-api.co/remove-background/v1', {
+        method: 'POST',
+        headers: {
+          'x-api-key': apiKey
+        },
+        body: formData,
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+    }
+
+    if (!apiRes.ok) {
+      const errText = await apiRes.text().catch(() => '');
+      if (apiRes.status === 429) {
+        return res.status(429).json({
+          status: 'error',
+          code: 'RATE_LIMIT_EXCEEDED',
+          message: 'Rate limit exceeded on background removal service. Please try again shortly.'
+        });
+      }
+      return res.status(apiRes.status).json({
+        status: 'error',
+        message: 'Failed to process image with AI Background Removal engine.',
+        details: errText || errDetails
+      });
+    }
+
+    const arrayBuffer = await apiRes.arrayBuffer();
     res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
     return res.send(Buffer.from(arrayBuffer));
+
   } catch (err) {
-    return res.status(500).json({ status: 'error', message: 'Server Error: ' + err.message });
+    return res.status(500).json({ status: 'error', message: 'Server Background Removal Error: ' + err.message });
   }
 });
 

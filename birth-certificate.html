@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <!-- Chrome Extension Compatibility & Window Error Guard -->
+    <script>
+      (function() {
+        window.addEventListener("error", function(e) {
+          if ((e.filename && e.filename.indexOf("chrome-extension://") !== -1) ||
+              (e.message && e.message.indexOf("fetch of #<Window>") !== -1)) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+        try {
+          var _f = window.fetch;
+          Object.defineProperty(window, "fetch", {
+            get: function() { return _f; },
+            set: function(v) { _f = v; },
+            configurable: true,
+            enumerable: true
+          });
+          if (typeof Window !== "undefined" && Window.prototype) {
+            Object.defineProperty(Window.prototype, "fetch", {
+              get: function() { return _f; },
+              set: function(v) { _f = v; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch(err) {}
+      })();
+
+      // Force pure light mode
+      try {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('theme', 'light');
+      } catch(e) {}
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - Birth and Death Verification</title>
+    <meta name="description" content="Office of the Registrar General, Birth and Death Registration - Local Government Division, Bangladesh">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/bd_govt_seal.svg">
+    <link rel="shortcut icon" href="/assets/bd_govt_seal.svg">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            color-scheme: light !important;
+        }
+        body {
+            font-family: Arial, Helvetica, 'Hind Siliguri', sans-serif;
+            background-color: #f1f5f9;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .font-bangla {
+            font-family: 'Hind Siliguri', Arial, sans-serif;
+        }
+
+        /* The exact BDRIS government verification sheet */
+        .bdris-sheet {
+            background-color: #ffffff;
+            color: #000000;
+            width: 100%;
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 30px 45px 40px 45px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #d1d5db;
+            box-sizing: border-box;
+        }
+
+        /* Subtle borders matching official slip */
+        .bdris-table td, .bdris-table th {
+            padding-top: 7px;
+            padding-bottom: 7px;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+        .bdris-border-b {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .bdris-border-strong {
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        /* Print setup to match image_81aa3b3a.png 100% */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .bdris-sheet {
+                box-shadow: none !important;
+                border: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 10px 25px !important;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 0.8cm 1cm 0.8cm 1cm;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-black min-h-screen">
+
+    <!-- INTERACTIVE VERIFICATION & SEARCH TOOLBAR (NO-PRINT) -->
+    <header class="no-print bg-white border-b-2 border-slate-300 shadow-sm sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5">
+                    <img src="/assets/bd_govt_seal.svg" alt="BD Seal" class="w-8 h-8">
+                    <div>
+                        <div class="font-bold text-xs text-black uppercase tracking-tight">BDRIS Online Verification Portal</div>
+                        <div class="text-[10px] text-red-700 font-bold">Office of the Registrar General, Birth and Death Registration</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <a href="/services.html" class="px-3 py-1.5 rounded-lg border border-slate-300 text-black hover:bg-slate-50 font-bold text-xs flex items-center gap-1.5 transition-colors">
+                        <i class="fa-solid fa-arrow-left text-red-700"></i> Free Services
+                    </a>
+                    <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-black hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 shadow transition-colors cursor-pointer">
+                        <i class="fa-solid fa-print"></i> Print / Save PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- SEARCH INPUT FORM -->
+            <form id="verifyForm" onsubmit="handleVerifySubmit(event)" class="mt-3 pt-3 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs">
+                <div class="sm:col-span-5">
+                    <label class="block font-bold text-black mb-1">Birth Reg Number (১৭ ডিজিটের নম্বর):</label>
+                    <input type="text" id="brnInput" maxlength="17" placeholder="*****************" value="" required
+                           class="w-full px-3 py-2 border-2 border-slate-300 rounded-lg text-black font-mono font-bold focus:border-red-600 focus:outline-none bg-slate-50">
+                </div>
+                <div class="sm:col-span-4">
+                    <label class="block font-bold text-black mb-1">Date of Birth (জন্ম তারিখ):</label>
+                    <input type="date" id="dobInput" value="" required
+                           class="w-full px-3 py-2 border-2 border-slate-300 rounded-lg text-black font-mono font-bold focus:border-red-600 focus:outline-none bg-slate-50">
+                </div>
+                <div class="sm:col-span-3 flex items-end gap-1.5">
+                    <button type="submit" id="verifyBtn" class="flex-1 py-2 bg-red-700 hover:bg-red-800 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search
+                    </button>
+                    <button type="button" onclick="clearForm()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-black border border-slate-300 font-bold rounded-lg transition-colors cursor-pointer" title="Reset">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div id="statusAlertBox" class="mt-2 text-[11px] font-semibold text-black flex items-center gap-1.5">
+                <span id="statusDot" class="inline-block w-2 h-2 rounded-full bg-slate-400"></span>
+                <span id="statusMessage">১৭ সংখ্যার জন্ম নিবন্ধন নম্বর ও জন্ম তারিখ দিন এবং 'Search' বাটনে চাপ দিন।</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================== -->
+    <!-- EXACT OFFICIAL BDRIS GOVERNMENT VERIFICATION SHEET             -->
+    <!-- MATCHING IMAGE: image_81aa3b3a.png                             -->
+    <!-- ============================================================== -->
+    <main class="bdris-sheet">
+
+        <!-- Top Browser Print Header (Visible in print and exact replication of image) -->
+        <div class="flex items-center justify-between text-[11px] text-gray-800 mb-2 font-mono">
+            <span id="sheetPrintDate">8/27/2021</span>
+            <span>Search - Birth and Death Verification</span>
+        </div>
+
+        <!-- Government Seal & Department Titles -->
+        <div class="mt-3">
+            <div class="mb-2">
+                <img src="/assets/bd_govt_seal.svg" 
+                     alt="Government Seal of Bangladesh" 
+                     class="w-16 h-16 object-contain"
+                     onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg'">
+            </div>
+
+            <div class="font-bold text-[14px] text-black tracking-normal leading-tight uppercase" style="font-family: Arial, sans-serif;">
+                OFFICE OF THE REGISTRAR GENERAL, BIRTH AND DEATH REGISTRATION
+            </div>
+            <div class="text-[12px] text-black tracking-normal uppercase mt-0.5" style="font-family: Arial, sans-serif;">
+                LOCAL GOVERNMENT DIVISION
+            </div>
+            <div class="mt-2 text-[12px] text-black">
+                <a href="/" class="hover:underline text-black">Back to Previous Page (/)</a>
+            </div>
+        </div>
+
+        <!-- Horizontal Divider Line -->
+        <div class="w-full border-t border-gray-300 my-4"></div>
+
+        <!-- Main Heading -->
+        <div class="text-center my-3">
+            <h1 class="text-[16px] sm:text-[18px] font-bold text-black tracking-wide uppercase" style="font-family: Arial, sans-serif;">
+                BIRTH REGISTRATION RECORD VERIFICATION
+            </h1>
+        </div>
+
+        <!-- Top Details 3-Column Grid -->
+        <div class="mt-5 text-[11px] sm:text-[12px] text-black" style="font-family: Arial, sans-serif;">
+            
+            <!-- Row 1: Labels -->
+            <div class="grid grid-cols-3 text-black font-normal text-[11px] uppercase tracking-wider pb-1">
+                <div>REGISTRATION DATE</div>
+                <div class="text-center">REGISTRATION OFFICE</div>
+                <div class="text-right">ISSUANCE DATE</div>
+            </div>
+
+            <!-- Row 2: Values -->
+            <div class="grid grid-cols-3 text-black font-normal text-[12px] uppercase pb-2">
+                <div id="certRegDate">** ** ****</div>
+                <div class="text-center font-normal" id="certOffice">*********************</div>
+                <div class="text-right" id="certIssueDate">** ** ****</div>
+            </div>
+
+            <!-- Divider Line -->
+            <div class="w-full border-t border-gray-200 my-1"></div>
+
+            <!-- Row 3: Labels -->
+            <div class="grid grid-cols-3 text-black font-normal text-[11px] uppercase tracking-wider pt-1 pb-1">
+                <div>DATE OF BIRTH</div>
+                <div class="text-center">BIRTH REGISTRATION NUMBER</div>
+                <div class="text-right">SEX</div>
+            </div>
+
+            <!-- Row 4: Values -->
+            <div class="grid grid-cols-3 text-black text-[12px] uppercase pb-2">
+                <div id="certDob">** ** ****</div>
+                <div class="text-center font-bold text-[13px] tracking-normal" id="certBrn">*****************</div>
+                <div class="text-right uppercase" id="certSex">**</div>
+            </div>
+
+            <!-- Strong Divider Line -->
+            <div class="w-full border-t border-gray-300 my-2"></div>
+        </div>
+
+        <!-- Main Details Table with QR Code Side-by-Side -->
+        <div class="mt-4 flex flex-col md:flex-row items-start justify-between gap-6">
+            
+            <!-- Left Side Table (Exact columns: Bangla Label, Bangla Value, English Label, English Value) -->
+            <div class="flex-1 w-full overflow-x-auto">
+                <table class="w-full text-left text-[11px] sm:text-[12px] text-black bdris-table border-collapse">
+                    <tbody>
+                        <!-- Row 1: Registered Person Name -->
+                        <tr class="bdris-border-b">
+                            <td class="w-[22%] font-bangla font-normal pr-2">নিবন্ধনাধীন ব্যক্তির নাম</td>
+                            <td class="w-[28%] font-bangla font-normal pr-2 text-black" id="certNameBn">*****************</td>
+                            <td class="w-[28%] font-normal uppercase text-black pr-2">REGISTERED PERSON NAME</td>
+                            <td class="w-[22%] font-normal uppercase text-black" id="certNameEn">*****************</td>
+                        </tr>
+
+                        <!-- Row 2: Mother's Name -->
+                        <tr class="bdris-border-b">
+                            <td class="font-bangla font-normal pr-2">মাতার নাম</td>
+                            <td class="font-bangla font-normal pr-2 text-black" id="certMotherBn">*****************</td>
+                            <td class="font-normal uppercase text-black pr-2">MOTHER'S NAME</td>
+                            <td class="font-normal uppercase text-black" id="certMotherEn">*****************</td>
+                        </tr>
+
+                        <!-- Row 3: Mother's Nationality -->
+                        <tr class="bdris-border-b">
+                            <td class="font-bangla font-normal pr-2">মাতার জাতীয়তা</td>
+                            <td class="font-bangla font-normal pr-2 text-black" id="certMotherNatBn">বাংলাদেশী</td>
+                            <td class="font-normal uppercase text-black pr-2">MOTHER'S NATIONALITY</td>
+                            <td class="font-normal uppercase text-black" id="certMotherNatEn">BANGLADESHI</td>
+                        </tr>
+
+                        <!-- Row 4: Father's Name -->
+                        <tr class="bdris-border-b">
+                            <td class="font-bangla font-normal pr-2">পিতার নাম</td>
+                            <td class="font-bangla font-normal pr-2 text-black" id="certFatherBn">*****************</td>
+                            <td class="font-normal uppercase text-black pr-2">FATHER'S NAME</td>
+                            <td class="font-normal uppercase text-black" id="certFatherEn">*****************</td>
+                        </tr>
+
+                        <!-- Row 5: Father's Nationality -->
+                        <tr class="bdris-border-b">
+                            <td class="font-bangla font-normal pr-2">পিতার জাতীয়তা</td>
+                            <td class="font-bangla font-normal pr-2 text-black" id="certFatherNatBn">বাংলাদেশী</td>
+                            <td class="font-normal uppercase text-black pr-2">FATHER'S NATIONALITY</td>
+                            <td class="font-normal uppercase text-black" id="certFatherNatEn">BANGLADESHI</td>
+                        </tr>
+
+                        <!-- Row 6: Place of Birth -->
+                        <tr class="bdris-border-b">
+                            <td class="font-bangla font-normal pr-2">জন্ম স্থান</td>
+                            <td class="font-bangla font-normal pr-2 text-black" id="certPlaceBn">*****************</td>
+                            <td class="font-normal uppercase text-black pr-2">PLACE OF BIRTH</td>
+                            <td class="font-normal uppercase text-black" id="certPlaceEn">*****************</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Right Side: Authentic Large Sharp QR Code -->
+            <div class="w-full md:w-auto flex justify-center md:justify-end shrink-0 pt-1">
+                <div class="p-1 bg-white border border-gray-300">
+                    <img id="certQrImage" 
+                         src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://everify.bdris.gov.bd" 
+                         alt="QR Code" 
+                         class="w-[145px] h-[145px] sm:w-[165px] sm:h-[165px] object-contain">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- NB / Location Disclaimer Note -->
+        <div class="mt-8 text-[10px] sm:text-[11px] text-black leading-relaxed" style="font-family: Arial, sans-serif;">
+            <p>
+                <span class="font-normal">NB:This record is retrived from Birth and Death Registration Database . Location of the Register office : </span>
+                <span class="italic font-normal" id="certOfficeLocationNote">Bakai, Laksam, Cumilla</span>. 
+                <span class="font-normal">everify.bdris.gov.bd (</span><a href="https://everify.bdris.gov.bd/" class="underline text-black">https://everify.bdris.gov.bd/</a><span class="font-normal">) is the official website to verify the record</span>
+            </p>
+        </div>
+
+        <!-- Back Link -->
+        <div class="mt-3 text-[11px] text-black">
+            <a href="/" class="hover:underline text-black">Back to Previous Page (/)</a>
+        </div>
+
+        <!-- Copyright Footer -->
+        <div class="mt-8 text-center text-[10px] sm:text-[11px] text-black font-normal" style="font-family: Arial, sans-serif;">
+            © 2021 - Developed and maintained by Office of the Registrar General, Birth and Death Registration
+        </div>
+
+        <!-- Bottom Browser Print Footer (Exact replication of image_81aa3b3a.png) -->
+        <div class="mt-6 pt-2 border-t border-gray-200 flex items-center justify-between text-[10px] text-gray-700 font-mono">
+            <span>https://everify.bdris.gov.bd/UBRNVerification/Search</span>
+            <span>1/1</span>
+        </div>
+
+    </main>
+
+    <!-- TOAST NOTIFICATION (NO-PRINT) -->
+    <div id="toast" class="no-print fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-black text-white px-5 py-2.5 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-bold">
+            <i class="fa-solid fa-circle-check text-emerald-400" id="toastIcon"></i>
+            <span id="toastMsg">Action completed</span>
+        </div>
+    </div>
+
+    <!-- CLIENT SCRIPT -->
+    <script>
+        let currentCertData = null;
+
+        // Set live print date matching browser header
+        try {
+            const now = new Date();
+            const dateStr = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
+            document.getElementById('sheetPrintDate').textContent = dateStr;
+        } catch(e) {}
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toastMsg');
+            const icon = document.getElementById('toastIcon');
+            msg.textContent = message;
+            if (isError) {
+                icon.className = 'fa-solid fa-triangle-exclamation text-rose-400';
+            } else {
+                icon.className = 'fa-solid fa-circle-check text-emerald-400';
+            }
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        // Render masked placeholder state
+        function renderMaskedState() {
+            document.getElementById('certRegDate').textContent = '** ** ****';
+            document.getElementById('certIssueDate').textContent = '** ** ****';
+            document.getElementById('certOffice').textContent = '*********************';
+            document.getElementById('certDob').textContent = '** ** ****';
+            document.getElementById('certBrn').textContent = '*****************';
+            document.getElementById('certSex').textContent = '**';
+
+            document.getElementById('certNameBn').textContent = '*****************';
+            document.getElementById('certNameEn').textContent = '*****************';
+            document.getElementById('certMotherBn').textContent = '*****************';
+            document.getElementById('certMotherEn').textContent = '*****************';
+            document.getElementById('certFatherBn').textContent = '*****************';
+            document.getElementById('certFatherEn').textContent = '*****************';
+            document.getElementById('certPlaceBn').textContent = '*****************';
+            document.getElementById('certPlaceEn').textContent = '*****************';
+            document.getElementById('certOfficeLocationNote').textContent = 'Office Location';
+
+            document.getElementById('certQrImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://everify.bdris.gov.bd';
+            document.getElementById('statusDot').className = 'inline-block w-2 h-2 rounded-full bg-slate-400';
+            document.getElementById('statusMessage').textContent = '১৭ সংখ্যার জন্ম নিবন্ধন নম্বর ও জন্ম তারিখ দিন এবং \'Search\' বাটনে চাপ দিন।';
+        }
+
+        // Render verified live data from API
+        function renderCertificate(payload) {
+            currentCertData = payload;
+            const d = payload.data || {};
+
+            // 1. Top Details Grid
+            document.getElementById('certRegDate').textContent = (d.registrationDate || 'N/A').toUpperCase();
+            document.getElementById('certIssueDate').textContent = (d.issuanceDate || 'N/A').toUpperCase();
+            
+            const office = (d.registrationOffice || 'BDRIS OFFICE').toUpperCase();
+            document.getElementById('certOffice').textContent = office;
+
+            document.getElementById('certDob').textContent = (d.dateOfBirth || '').toUpperCase();
+            document.getElementById('certBrn').textContent = d.brn || '';
+            document.getElementById('certSex').textContent = (d.gender || 'N/A').toUpperCase();
+
+            // 2. Main Details Table
+            document.getElementById('certNameBn').textContent = d.nameBangla || 'তথ্য নেই';
+            document.getElementById('certNameEn').textContent = (d.nameEnglish || '').toUpperCase();
+
+            document.getElementById('certMotherBn').textContent = d.motherNameBangla || 'তথ্য নেই';
+            document.getElementById('certMotherEn').textContent = (d.motherNameEnglish || '').toUpperCase();
+            document.getElementById('certMotherNatBn').textContent = d.motherNationalityBangla || 'বাংলাদেশী';
+            document.getElementById('certMotherNatEn').textContent = (d.motherNationalityEnglish || 'BANGLADESHI').toUpperCase();
+
+            document.getElementById('certFatherBn').textContent = d.fatherNameBangla || 'তথ্য নেই';
+            document.getElementById('certFatherEn').textContent = (d.fatherNameEnglish || '').toUpperCase();
+            document.getElementById('certFatherNatBn').textContent = d.fatherNationalityBangla || 'বাংলাদেশী';
+            document.getElementById('certFatherNatEn').textContent = (d.fatherNationalityEnglish || 'BANGLADESHI').toUpperCase();
+
+            document.getElementById('certPlaceBn').textContent = d.birthPlaceBangla || 'তথ্য নেই';
+            document.getElementById('certPlaceEn').textContent = d.birthPlaceEnglish || '';
+
+            // 3. Location Note
+            const loc = d.registrationLocation;
+            if (loc && loc.unionOrOffice) {
+                document.getElementById('certOfficeLocationNote').textContent = `${loc.unionOrOffice}, ${loc.upazila}, ${loc.district}`;
+            } else {
+                document.getElementById('certOfficeLocationNote').textContent = office;
+            }
+
+            // 4. QR Code
+            const qrData = `https://everify.bdris.gov.bd/UBRNVerification/Search?brn=${encodeURIComponent(d.brn)}&dob=${encodeURIComponent(d.dateOfBirthISO || '')}`;
+            document.getElementById('certQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
+
+            // Status
+            document.getElementById('statusDot').className = 'inline-block w-2 h-2 rounded-full bg-emerald-600';
+            document.getElementById('statusMessage').innerHTML = `<span class="text-emerald-700 font-bold">✓ BDRIS Record Found:</span> ${d.nameBangla || ''} (${d.brn})`;
+        }
+
+        // Fetch Live BDRIS API
+        async function fetchBirthCertificate(brn, dob) {
+            const btn = document.getElementById('verifyBtn');
+            const statusMsg = document.getElementById('statusMessage');
+            const statusDot = document.getElementById('statusDot');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Searching...';
+            statusDot.className = 'inline-block w-2 h-2 rounded-full bg-amber-500 animate-ping';
+            statusMsg.textContent = 'Contacting BDRIS database (https://bangladesh.govt.hu)...';
+
+            try {
+                const res = await fetch(`/api/tools/birth-certificate-check?brn=${encodeURIComponent(brn)}&dob=${encodeURIComponent(dob)}`);
+                const data = await res.json();
+                
+                if (!res.ok || !data.success) {
+                    renderMaskedState();
+                    const errMsg = data.message || 'বিডিআরআইএস ডাটাবেজে এই জন্ম নিবন্ধন নম্বরের কোনো তথ্য পাওয়া যায়নি।';
+                    statusDot.className = 'inline-block w-2 h-2 rounded-full bg-rose-600';
+                    statusMsg.innerHTML = `<span class="text-rose-600 font-bold">Record Not Found:</span> ${errMsg}`;
+                    showToast(errMsg, true);
+                    return;
+                }
+
+                renderCertificate(data);
+                showToast('BDRIS তথ্য সফলভাবে পাওয়া গেছে!');
+            } catch (err) {
+                renderMaskedState();
+                statusDot.className = 'inline-block w-2 h-2 rounded-full bg-rose-600';
+                statusMsg.innerHTML = `<span class="text-rose-600 font-bold">Error:</span> ${err.message}`;
+                showToast('সার্ভার সমস্যা: ' + err.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Search';
+            }
+        }
+
+        // Form Submit
+        function handleVerifySubmit(e) {
+            e.preventDefault();
+            const brn = document.getElementById('brnInput').value.trim();
+            const dob = document.getElementById('dobInput').value.trim();
+
+            if (!brn || brn.length !== 17 || !/^\d{17}$/.test(brn)) {
+                alert('অনুগ্রহ করে সঠিক ১৭ সংখ্যার (Digits) জন্ম নিবন্ধন নম্বর দিন।');
+                document.getElementById('brnInput').focus();
+                return;
+            }
+
+            if (!dob) {
+                alert('অনুগ্রহ করে জন্ম তারিখ প্রদান করুন।');
+                document.getElementById('dobInput').focus();
+                return;
+            }
+
+            const newUrl = `${window.location.pathname}?brn=${encodeURIComponent(brn)}&dob=${encodeURIComponent(dob)}`;
+            window.history.replaceState({}, '', newUrl);
+
+            fetchBirthCertificate(brn, dob);
+        }
+
+        // Clear Form
+        function clearForm() {
+            document.getElementById('brnInput').value = '';
+            document.getElementById('dobInput').value = '';
+            document.getElementById('brnInput').focus();
+            renderMaskedState();
+            window.history.replaceState({}, '', window.location.pathname);
+            showToast('ফরম রিসেট করা হয়েছে');
+        }
+
+        // Initialize: do not auto-fill dummy numbers unless query params are provided
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMaskedState();
+            
+            const params = new URLSearchParams(window.location.search);
+            const brn = params.get('brn');
+            const dob = params.get('dob');
+
+            if (brn && brn.length === 17 && dob) {
+                document.getElementById('brnInput').value = brn;
+                document.getElementById('dobInput').value = dob;
+                fetchBirthCertificate(brn, dob);
+            }
+        });
+    </script>
+</body>
+</html>

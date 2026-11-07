@@ -1,22 +1,30 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper Functions
+    // Hardened Helper Functions
     function isSignedIn() { 
       return request.auth != null; 
     }
     
-    function isVerified() {
-      return isSignedIn() && (request.auth.token.email_verified == true || request.auth.token.firebase.sign_in_provider == 'google.com');
+    function isEmailVerified() {
+      return isSignedIn() && (
+        request.auth.token.email_verified == true || 
+        request.auth.token.firebase.sign_in_provider == 'google.com'
+      );
     }
 
+    // Strict Admin Authorization:
+    // Requires email verification AND matching authoritative admin allowlist or database admin document
     function isAdmin() { 
       return isSignedIn() && (
         exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
-        (request.auth.token.email != null && (
-          request.auth.token.email.lower() == 'tec.habiburrahman@gmail.com' ||
-          request.auth.token.email.lower() == 'mshabib471@gmail.com'
-        ))
+        (
+          isEmailVerified() && 
+          request.auth.token.email != null && (
+            request.auth.token.email.lower() == 'tec.habiburrahman@gmail.com' ||
+            request.auth.token.email.lower() == 'mshabib471@gmail.com'
+          )
+        )
       ); 
     }
 
@@ -32,18 +40,18 @@ service cloud.firestore {
       return resource.data; 
     }
 
-    // Default Deny Catch-all
+    // 1. Default Deny Catch-all
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // Admins Collection - RBAC
+    // 2. Admins Collection - Role Based Access Control
     match /admins/{userId} {
       allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
-      allow write: if false; // Managed by master admin
+      allow write: if false; // Only manageable server-side or via console
     }
 
-    // Users Collection
+    // 3. Users Collection (Customer profiles & permissions)
     match /users/{userId} {
       allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
       allow list: if isAdmin();
@@ -54,30 +62,35 @@ service cloud.firestore {
         (!('role' in incoming()) || incoming().role == 'customer' || isAdmin());
       allow update: if isSignedIn() && (
         isAdmin() || 
-        (request.auth.uid == userId && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'avatar', 'lastLogin']))
+        (
+          request.auth.uid == userId && 
+          incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'avatar', 'lastLogin']) &&
+          (!('role' in incoming()) || incoming().role == existing().role) &&
+          (!('isBanned' in incoming()) || incoming().isBanned == existing().isBanned)
+        )
       );
       allow delete: if isAdmin();
     }
 
-    // Offers: Public read, Admin write
+    // 4. Offers Collection: Public read, Admin write
     match /offers/{offerId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    // Services: Public read, Admin write
+    // 5. Services Collection: Public read, Admin write
     match /services/{serviceId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    // Courses: Public read, Admin write
+    // 6. Courses Collection: Public read, Admin write
     match /courses/{courseId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    // Blog / Posts: Public read, Admin write
+    // 7. Posts & Blog Articles: Public read, Admin write
     match /posts/{postId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
@@ -88,28 +101,31 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
-    // Repair Bookings: User can create & read own bookings; Admin full access
+    // 8. Repair Bookings: Users can create and read own bookings; Admin full control
     match /bookings/{bookingId} {
       allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
       allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
-      allow create: if isSignedIn() && incoming().keys().hasAll(['customerName', 'phone']) &&
+      allow create: if incoming().keys().hasAll(['customerName', 'phone']) &&
         incoming().customerName is string && incoming().customerName.size() <= 100 &&
-        incoming().phone is string && incoming().phone.size() <= 30;
+        incoming().phone is string && incoming().phone.size() <= 30 &&
+        (!isSignedIn() || !('userId' in incoming()) || incoming().userId == request.auth.uid);
       allow update, delete: if isAdmin();
     }
 
-    // Shop Orders: Customer can create & read own orders; Admin full access
+    // 9. Shop Orders: Users can create and read own orders; Admin full control
+    // Users CANNOT approve or modify status (prevents fraud & self-approval)
     match /orders/{orderId} {
       allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
       allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
       allow create: if incoming().keys().hasAll(['customerName', 'phone', 'address']) &&
         incoming().customerName is string && incoming().customerName.size() <= 100 &&
         incoming().phone is string && incoming().phone.size() <= 30 &&
-        incoming().address is string && incoming().address.size() <= 300;
+        incoming().address is string && incoming().address.size() <= 300 &&
+        (!isSignedIn() || !('userId' in incoming()) || incoming().userId == request.auth.uid);
       allow update, delete: if isAdmin();
     }
 
-    // Contact Inquiries: Anyone can create; Admin can read & reply
+    // 10. Contact Inquiries & Repair Tickets: Public create, Admin view/reply
     match /contacts/{contactId} {
       allow get, list: if isAdmin();
       allow create: if incoming().keys().hasAll(['name', 'contact', 'message']) &&
@@ -119,7 +135,7 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
-    // Audit logs: Only admin read/write
+    // 11. Audit Logs: Strictly Admin access
     match /audit_logs/{logId} {
       allow read, write: if isAdmin();
     }

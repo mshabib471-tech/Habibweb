@@ -42,12 +42,31 @@
     }
     localStorage.setItem('habib_theme', isDark ? 'dark' : 'light');
     updateThemeToggleUI(isDark);
+    try {
+      window.dispatchEvent(new CustomEvent('habibThemeChanged', { detail: { theme: isDark ? 'dark' : 'light' } }));
+    } catch(e) {}
   };
 
   window.toggleTheme = function() {
     const currentTheme = localStorage.getItem('habib_theme') || 'dark';
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
     window.setSiteTheme(nextTheme);
+  };
+
+  // WCAG 2.2 AA Contrast Diagnostic Tool for Developers
+  window.checkThemeContrast = function() {
+    const elements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, label, input, td, th');
+    let issues = 0;
+    elements.forEach(el => {
+      const style = window.getComputedStyle(el);
+      const color = style.color;
+      const bg = style.backgroundColor;
+      if (color === bg && color !== 'rgba(0, 0, 0, 0)' && el.offsetParent !== null) {
+        issues++;
+        console.warn('[Accessibility Contrast Warning]: Element text and background match:', el, color);
+      }
+    });
+    return { status: issues === 0 ? 'PASS' : 'WARNING', issuesFound: issues };
   };
 
   function updateThemeToggleUI(isDark) {

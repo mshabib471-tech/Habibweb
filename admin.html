@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
+    <!-- Chrome Extension Compatibility & Window Error Guard -->
+    <script>
+      (function() {
+        window.addEventListener("error", function(e) {
+          if ((e.filename && e.filename.indexOf("chrome-extension://") !== -1) ||
+              (e.message && e.message.indexOf("fetch of #<Window>") !== -1)) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+        try {
+          var _f = window.fetch;
+          Object.defineProperty(window, "fetch", {
+            get: function() { return _f; },
+            set: function(v) { _f = v; },
+            configurable: true,
+            enumerable: true
+          });
+          if (typeof Window !== "undefined" && Window.prototype) {
+            Object.defineProperty(Window.prototype, "fetch", {
+              get: function() { return _f; },
+              set: function(v) { _f = v; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch(err) {}
+      })();
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL7V4KQXC1"></script>
     <script>
@@ -51,6 +82,7 @@
         }
     </style>
     
+    <link rel="stylesheet" href="/css/style.css">
     <script src="/js/theme.js"></script>
     <script>
         // Immediate client-side security guard for Admin Panel
@@ -1149,29 +1181,59 @@
             }
         }
 
+        // Centralized Authorized Admin Fetch with Firebase ID Token Injection
+        async function adminFetch(url, options = {}) {
+            options = Object.assign({}, options);
+            const headers = new Headers(options.headers || {});
+            
+            try {
+                if (window.HabibAuth && window.HabibAuth.auth && window.HabibAuth.auth.currentUser) {
+                    const token = await window.HabibAuth.auth.currentUser.getIdToken();
+                    if (token) {
+                        headers.set('Authorization', 'Bearer ' + token);
+                    }
+                }
+            } catch (e) {
+                console.warn('[Admin Auth Token Error]:', e);
+            }
+            
+            options.headers = headers;
+            options.credentials = 'same-origin';
+            return fetch(url, options);
+        }
+
         // Authoritative Check Auth with Firebase Persistence & Server Whitelist
         async function initAdminAuth() {
             try {
+                const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
                 let firebaseUser = null;
                 if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
                     firebaseUser = await window.HabibAuth.waitForAuthReady();
                 }
 
-                const res = await fetch('/api/check-admin');
+                if (!firebaseUser || !firebaseUser.email) {
+                    window.location.replace('login.html?redirect=admin.html');
+                    return;
+                }
+
+                const userEmail = (firebaseUser.email || '').toLowerCase().trim();
+                if (!ADMIN_EMAILS.includes(userEmail)) {
+                    // Regular customer signed in -> send to customer dashboard
+                    window.location.replace('dashboard.html?denied=admin');
+                    return;
+                }
+
+                const res = await adminFetch('/api/check-admin');
                 const data = await res.json().catch(() => ({ isAdmin: false }));
 
-                const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
-                const currentEmail = (firebaseUser?.email || data?.email || localStorage.getItem('habib_user_email') || '').toLowerCase().trim();
-                const isAdmin = ADMIN_EMAILS.includes(currentEmail) || Boolean(data.isAdmin);
-
-                if (isAdmin) {
+                if (data.isAdmin === true) {
                     document.body.style.display = 'flex';
-                    const name = firebaseUser?.displayName || (currentEmail.includes('habibur') ? 'Habibur Rahman' : 'Master Admin');
+                    const name = firebaseUser.displayName || (userEmail.includes('habibur') ? 'Habibur Rahman' : 'Master Admin');
                     document.getElementById('topAdminName').innerText = name;
                     document.getElementById('welcomeAdminName').innerText = name.split(' ')[0] || 'Habib';
-                    document.getElementById('topAdminEmail').innerText = currentEmail;
+                    document.getElementById('topAdminEmail').innerText = userEmail;
                     
-                    if (firebaseUser?.photoURL) {
+                    if (firebaseUser.photoURL) {
                         document.getElementById('topAdminAvatar').src = firebaseUser.photoURL;
                     }
 
@@ -1182,12 +1244,8 @@
                     loadAdminContacts();
                     loadAdminBookings();
                     loadAdminAuditLogs();
-                } else if (firebaseUser || data.email || localStorage.getItem('habib_current_user')) {
-                    // Regular customer -> redirect to User Dashboard
-                    window.location.replace('dashboard.html?denied=admin');
                 } else {
-                    // Not signed in
-                    window.location.replace('login.html?redirect=admin.html');
+                    window.location.replace('dashboard.html?denied=admin');
                 }
             } catch (err) {
                 console.error("Admin auth check error:", err);
@@ -1212,7 +1270,7 @@
         // Stats & Visitor Logs
         async function loadAdminStats() {
             try {
-                const res = await fetch('/api/site-stats');
+                const res = await adminFetch('/api/site-stats');
                 const data = await res.json();
 
                 if (data.totalVisits) {
@@ -1243,7 +1301,7 @@
         // Orders & Recent Orders Table
         async function loadAdminOrders() {
             try {
-                const res = await fetch('/api/orders');
+                const res = await adminFetch('/api/orders');
                 cachedOrders = await res.json();
                 
                 document.getElementById('badgeOrdersCount').innerText = cachedOrders.length;
@@ -1336,7 +1394,7 @@
         }
 
         async function updateOrderStatus(id, status) {
-            await fetch(`/api/orders/${id}/status`, {
+            await adminFetch(`/api/orders/${id}/status`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -1347,7 +1405,7 @@
         // Repair Bookings
         async function loadAdminBookings() {
             try {
-                const res = await fetch('/api/bookings');
+                const res = await adminFetch('/api/bookings');
                 cachedBookings = await res.json();
                 const grid = document.getElementById('ordersSubPane-repairs');
                 if (!grid) return;
@@ -1388,7 +1446,7 @@
         // Customers / Users Management
         async function loadAdminUsers() {
             try {
-                const res = await fetch('/api/admin/users');
+                const res = await adminFetch('/api/admin/users');
                 const data = await res.json();
                 cachedUsers = data.users || [];
 
@@ -1540,7 +1598,7 @@
             }
 
             try {
-                const res = await fetch(`/api/admin/users/${id}/ban`, {
+                const res = await adminFetch(`/api/admin/users/${id}/ban`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ isBanned: shouldBan, reason })
@@ -1559,7 +1617,7 @@
         }
 
         async function updateUserRole(id, role) {
-            await fetch(`/api/admin/users/${id}`, {
+            await adminFetch(`/api/admin/users/${id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ role })
@@ -1570,7 +1628,7 @@
         // Messages & Contacts
         async function loadAdminContacts() {
             try {
-                const res = await fetch('/api/contacts');
+                const res = await adminFetch('/api/contacts');
                 cachedContacts = await res.json();
                 document.getElementById('badgeMessagesCount').innerText = cachedContacts.length;
 
@@ -1638,7 +1696,7 @@
             const id = document.getElementById('replyContactId').value;
             const reply = document.getElementById('replyMessageText').value;
 
-            await fetch(`/api/contacts/${id}/reply`, {
+            await adminFetch(`/api/contacts/${id}/reply`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ reply })
@@ -1695,7 +1753,7 @@
         // Audit Logs
         async function loadAdminAuditLogs() {
             try {
-                const res = await fetch('/api/admin/audit-logs');
+                const res = await adminFetch('/api/admin/audit-logs');
                 const data = await res.json();
                 cachedAuditLogs = Array.isArray(data) ? data : (data.logs || []);
 

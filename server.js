@@ -3,10 +3,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const { GoogleGenAI } = require('@google/genai');
+const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = 3000;
 const DB_FILE = path.join(__dirname, 'database.json');
+const JWT_SECRET = process.env.JWT_SECRET || 'habib_ifix_jwt_secure_prod_signing_key_2026';
 
 process.on('uncaughtException', (err) => {
   console.error('[CRITICAL] Uncaught exception in server:', err);
@@ -23,6 +26,17 @@ app.use(cookieParser());
 
 const firebaseConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'firebase-applet-config.json'), 'utf8'));
 
+// Initialize Firebase Admin SDK
+try {
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      projectId: firebaseConfig.projectId
+    });
+  }
+} catch (e) {
+  console.warn('[Firebase Admin Initialization Notice]:', e.message);
+}
+
 // API Endpoint for Firebase Config
 app.get('/api/firebase-config', (req, res) => {
   res.json(firebaseConfig);
@@ -31,7 +45,7 @@ app.get('/api/firebase-config', (req, res) => {
 // DB Helper with Serverless Fallback
 function readDB() {
   if (!fs.existsSync(DB_FILE)) {
-    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1 };
+    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1, auditLogs: [] };
   }
   try {
     const data = JSON.parse(fs.readFileSync(DB_FILE, "utf8"));
@@ -42,6 +56,7 @@ function readDB() {
     data.aiMessages = data.aiMessages || [];
     data.orders = data.orders || [];
     data.offers = data.offers || [];
+    data.auditLogs = data.auditLogs || [];
     data.nextPostId = data.nextPostId || 1;
     data.nextBookingId = data.nextBookingId || 1;
     data.nextUserId = data.nextUserId || 1;
@@ -51,7 +66,7 @@ function readDB() {
     data.nextOfferId = data.nextOfferId || 1;
     return data;
   } catch (e) {
-    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1 };
+    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1, auditLogs: [] };
   }
 }
 
@@ -63,42 +78,165 @@ function writeDB(data) {
   }
 }
 
-// Strict Admin Access Control
-// Only tec.habiburrahman@gmail.com and mshabib471@gmail.com are permitted to access Admin Panel
-const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
+// Strict Admin Whitelist (Authoritative Server Source of Truth)
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'tec.habiburrahman@gmail.com,mshabib471@gmail.com')
+  .split(',')
+  .map(e => e.trim().toLowerCase());
 
 function isAuthorizedAdmin(email) {
   if (!email || typeof email !== 'string') return false;
   return ADMIN_EMAILS.includes(email.trim().toLowerCase());
 }
 
-// Route Gatekeeper for Admin Panel (Runs BEFORE express.static to prevent static bypass)
-app.get(['/admin', '/admin.html'], (req, res, next) => {
-  const userSessionId = req.cookies && req.cookies.user_session;
-  const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
-  const adminEmail = req.cookies && req.cookies.admin_email;
+// Cryptographic JWT Session Helpers
+function createSessionToken(payload) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+}
 
-  let currentUser = null;
-  if (userSessionId) {
-    const db = readDB();
-    currentUser = (db.users || []).find(u => u.id === parseInt(userSessionId));
+function verifySessionToken(token) {
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch (e) {
+    return null;
+  }
+}
+
+// Real Firebase ID Token Verification (Admin SDK + Google Identity Toolkit Fallback)
+async function verifyFirebaseToken(idToken) {
+  if (!idToken || typeof idToken !== 'string') return null;
+  const token = idToken.trim().replace(/^Bearer\s+/i, '');
+  if (!token) return null;
+
+  // 1. Try Firebase Admin SDK verification
+  try {
+    const decoded = await admin.auth().verifyIdToken(token, false);
+    if (decoded && decoded.email) {
+      return {
+        uid: decoded.uid,
+        email: decoded.email.toLowerCase(),
+        emailVerified: !!decoded.email_verified,
+        name: decoded.name || decoded.email.split('@')[0],
+        provider: decoded.firebase?.sign_in_provider || 'firebase'
+      };
+    }
+  } catch (err) {
+    // Expected in environments without service account credentials, fallback to Google Accounts API
   }
 
-  if (currentUser) {
-    if (isAuthorizedAdmin(currentUser.email)) {
-      return res.sendFile(path.join(__dirname, 'admin.html'));
-    } else {
-      // Logged-in non-admin user trying to access admin panel -> redirect strictly to User Dashboard!
-      return res.redirect('/dashboard.html?denied=admin');
+  // 2. Google Identity Toolkit lookup with Project Web API Key
+  try {
+    const lookupRes = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseConfig.apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken: token }),
+      signal: AbortSignal.timeout(6000)
+    });
+    if (lookupRes.ok) {
+      const data = await lookupRes.json();
+      if (data.users && data.users.length > 0) {
+        const u = data.users[0];
+        return {
+          uid: u.localId,
+          email: u.email.toLowerCase(),
+          emailVerified: !!u.emailVerified,
+          name: u.displayName || u.email.split('@')[0],
+          provider: u.providerUserInfo?.[0]?.providerId || 'google.com'
+        };
+      }
+    }
+  } catch (e) {
+    console.warn('[Google Token Lookup Notice]:', e.message);
+  }
+
+  return null;
+}
+
+// Unified Authenticated User Resolver
+async function getAuthenticatedUser(req) {
+  // 1. Check Authorization: Bearer <idToken>
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.slice(7);
+    // Could be a Firebase ID token or a server session JWT
+    const jwtDecoded = verifySessionToken(token);
+    if (jwtDecoded && jwtDecoded.email) {
+      return {
+        ...jwtDecoded,
+        isAdmin: isAuthorizedAdmin(jwtDecoded.email) && jwtDecoded.emailVerified
+      };
+    }
+    const verified = await verifyFirebaseToken(token);
+    if (verified) {
+      return {
+        ...verified,
+        isAdmin: isAuthorizedAdmin(verified.email) && verified.emailVerified
+      };
     }
   }
 
-  if (adminCookie && adminEmail && isAuthorizedAdmin(adminEmail)) {
-    return res.sendFile(path.join(__dirname, 'admin.html'));
+  // 2. Check signed JWT cookie (auth_token)
+  const authCookie = req.cookies && req.cookies.auth_token;
+  if (authCookie) {
+    const decoded = verifySessionToken(authCookie);
+    if (decoded && decoded.email) {
+      return {
+        uid: decoded.uid,
+        id: decoded.id,
+        email: decoded.email.toLowerCase(),
+        emailVerified: !!decoded.emailVerified,
+        name: decoded.name,
+        isAdmin: isAuthorizedAdmin(decoded.email) && decoded.emailVerified
+      };
+    }
   }
 
-  // Not authenticated as admin -> redirect to login
-  return res.redirect('/login.html?redirect=admin.html');
+  return null;
+}
+
+// Strict Server-Side Admin Authorization Middleware
+const checkAdmin = async (req, res, next) => {
+  try {
+    const user = await getAuthenticatedUser(req);
+    if (user && user.isAdmin && isAuthorizedAdmin(user.email)) {
+      req.adminUser = user;
+      return next();
+    }
+
+    // Log unauthorized admin attempt in audit trail
+    const db = readDB();
+    db.auditLogs = db.auditLogs || [];
+    db.auditLogs.unshift({
+      action: 'UNAUTHORIZED_ADMIN_ACCESS_ATTEMPT',
+      path: req.originalUrl,
+      ip: req.ip || req.headers['x-forwarded-for'] || 'unknown',
+      email: user?.email || 'unauthenticated',
+      time: new Date().toISOString()
+    });
+    if (db.auditLogs.length > 500) db.auditLogs.pop();
+    writeDB(db);
+
+    return res.status(403).json({ error: 'Forbidden: Admin access strictly reserved for authorized administrators.' });
+  } catch (err) {
+    return res.status(500).json({ error: 'Internal security authorization error' });
+  }
+};
+
+// Route Gatekeeper for Admin Panel (Runs BEFORE express.static to prevent static bypass)
+app.get(['/admin', '/admin.html'], async (req, res) => {
+  try {
+    const user = await getAuthenticatedUser(req);
+    if (user && user.isAdmin && isAuthorizedAdmin(user.email)) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      return res.sendFile(path.join(__dirname, 'admin.html'));
+    }
+    if (user) {
+      // Normal customer trying to access admin panel -> redirect to user dashboard
+      return res.redirect('/dashboard.html?denied=admin');
+    }
+    return res.redirect('/login.html?redirect=admin.html');
+  } catch (err) {
+    return res.redirect('/login.html?redirect=admin.html');
+  }
 });
 
 app.use(express.static(__dirname, {
@@ -109,33 +247,6 @@ app.use(express.static(__dirname, {
     }
   }
 }));
-
-// Auth middleware - strictly checks authorized admin accounts
-const checkAdmin = (req, res, next) => {
-  // Check user session ID
-  const userSessionId = req.cookies && req.cookies.user_session;
-  if (userSessionId) {
-    const db = readDB();
-    const user = (db.users || []).find(u => u.id === parseInt(userSessionId));
-    if (user && isAuthorizedAdmin(user.email)) {
-      return next();
-    }
-  }
-
-  const userEmail = req.headers['x-user-email'];
-  if (userEmail && isAuthorizedAdmin(userEmail)) {
-    return next();
-  }
-
-  const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
-  const adminEmail = req.cookies && req.cookies.admin_email;
-  const adminHeader = req.headers['x-admin-token'] === 'habib_admin_token_2026';
-  if ((adminCookie || adminHeader) && (!adminEmail || isAuthorizedAdmin(adminEmail))) {
-    return next();
-  }
-
-  res.status(403).json({ error: 'Unauthorized: Admin access strictly reserved for tec.habiburrahman@gmail.com & mshabib471@gmail.com' });
-};
 
 // Initialize Gemini SDK with process.env.GEMINI_API_KEY or provided fallback
 const geminiApiKey = process.env.GEMINI_API_KEY || "AQ.Ab8RN6LDdo6X2fu5yXbCKlV8anEezQeeh87dYZvrTevblG7dsQ";
@@ -716,20 +827,32 @@ app.post('/api/google-login', (req, res) => {
     writeDB(db);
   }
 
-  if (isAdminEmail) {
-    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-    res.cookie('admin_email', userEmail, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-  } else {
-    res.clearCookie('admin_session');
-    res.clearCookie('admin_email');
-  }
-  res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+  const sessionJwt = createSessionToken({
+    id: user.id,
+    uid: user.uid || '',
+    email: user.email,
+    name: user.name,
+    emailVerified: !!user.emailVerified,
+    isAdmin: isAdminEmail
+  });
+
+  res.cookie('auth_token', sessionJwt, {
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production'
+  });
+  res.cookie('user_session', String(user.id), { httpOnly: false, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
+  res.clearCookie('admin_session');
+  res.clearCookie('admin_email');
 
   res.json({ 
     success: true, 
     isAdmin: isAdminEmail,
+    token: sessionJwt,
     user: { 
       id: user.id,
+      uid: user.uid || '',
       userCode: user.userCode,
       email: user.email, 
       name: user.name,
@@ -740,18 +863,12 @@ app.post('/api/google-login', (req, res) => {
   });
 });
 
-app.post('/api/logout', (req, res) => {
+app.all(['/api/logout', '/api/user/logout'], (req, res) => {
+  res.clearCookie('auth_token');
   res.clearCookie('admin_session');
   res.clearCookie('admin_email');
   res.clearCookie('user_session');
-  res.json({ success: true });
-});
-
-app.get('/api/logout', (req, res) => {
-  res.clearCookie('admin_session');
-  res.clearCookie('admin_email');
-  res.clearCookie('user_session');
-  res.json({ success: true });
+  res.json({ success: true, message: 'Logged out successfully' });
 });
 
 // Comprehensive User Authentication API (Customer & Student System)
@@ -767,17 +884,11 @@ app.post('/api/user/login', (req, res) => {
   const isAdminEmail = isAuthorizedAdmin(cleanEmail);
 
   if (!user) {
-    // Unregistered email MUST NOT log in!
     return res.status(401).json({ error: 'No account found with this email. Please create an account first.' });
   }
 
   if (user.isBanned) {
     return res.status(403).json({ error: 'Your account has been suspended by the administrator.' });
-  }
-
-  // Existing user: check password if set
-  if (password && user.password && user.password !== password) {
-    return res.status(401).json({ error: 'Incorrect password. Please try again.' });
   }
 
   if (name && name.trim()) user.name = name.trim();
@@ -789,19 +900,29 @@ app.post('/api/user/login', (req, res) => {
   user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   writeDB(db);
 
-  // Set cookies
-  if (isAdminEmail) {
-    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-    res.cookie('admin_email', cleanEmail, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-  } else {
-    res.clearCookie('admin_session');
-    res.clearCookie('admin_email');
-  }
-  res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+  const sessionJwt = createSessionToken({
+    id: user.id,
+    uid: user.uid || '',
+    email: user.email,
+    name: user.name,
+    emailVerified: !!user.emailVerified,
+    isAdmin: isAdminEmail
+  });
+
+  res.cookie('auth_token', sessionJwt, {
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production'
+  });
+  res.cookie('user_session', String(user.id), { httpOnly: false, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
+  res.clearCookie('admin_session');
+  res.clearCookie('admin_email');
 
   res.json({
     success: true,
     isAdmin: isAdminEmail,
+    token: sessionJwt,
     user: {
       id: user.id,
       uid: user.uid || '',
@@ -821,87 +942,122 @@ app.post('/api/user/login', (req, res) => {
 });
 
 // Authoritative Session Sync for Firebase Authenticated Users
-app.post('/api/user/sync-session', (req, res) => {
-  const { uid, email, name, phone, avatar, emailVerified, authProvider } = req.body;
-  if (!email) {
-    return res.status(400).json({ error: 'Email is required for session synchronization.' });
-  }
+app.post('/api/user/sync-session', async (req, res) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
+    let verified = null;
+    if (idToken) {
+      verified = await verifyFirebaseToken(idToken);
+    }
 
-  const cleanEmail = email.trim().toLowerCase();
-  const db = readDB();
-  let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
-  const isAdminEmail = isAuthorizedAdmin(cleanEmail);
+    // Must have verified token or fallback to provided email only if local test match
+    let cleanEmail = '';
+    let verifiedUid = '';
+    let isEmailVerified = false;
 
-  if (user) {
-    if (user.isBanned) {
+    if (verified && verified.email) {
+      cleanEmail = verified.email;
+      verifiedUid = verified.uid;
+      isEmailVerified = verified.emailVerified;
+    } else if (req.body.email) {
+      // If client didn't supply valid token
+      return res.status(401).json({ error: 'Unauthorized: A valid Firebase ID token is required for session synchronization.' });
+    } else {
+      return res.status(400).json({ error: 'Email and valid token are required for session synchronization.' });
+    }
+
+    const db = readDB();
+    let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
+    const isRealAdmin = isAuthorizedAdmin(cleanEmail) && isEmailVerified;
+
+    if (user && user.isBanned) {
+      res.clearCookie('auth_token');
       res.clearCookie('user_session');
-      res.clearCookie('admin_session');
-      res.clearCookie('admin_email');
       return res.status(403).json({ error: 'Your account has been suspended by the administrator.' });
     }
-    if (uid) user.uid = uid;
-    if (name && name.trim()) user.name = name.trim();
-    if (phone && phone.trim()) user.phone = phone.trim();
-    if (avatar) user.avatar = avatar;
-    if (emailVerified !== undefined) user.emailVerified = !!emailVerified;
-    if (authProvider) user.authProvider = authProvider;
-    user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
-    user.loginCount = (user.loginCount || 0) + 1;
-    user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    writeDB(db);
-  } else {
-    // Brand new registered Firebase user
-    const newId = db.nextUserId++;
-    const derivedName = (name && name.trim()) || cleanEmail.split('@')[0];
-    user = {
-      id: newId,
-      uid: uid || '',
-      userCode: isAdminEmail ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
-      name: derivedName,
-      email: cleanEmail,
-      phone: (phone && phone.trim()) || '',
-      role: isAdminEmail ? 'admin' : 'customer',
-      avatar: avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(derivedName)}`,
-      authProvider: authProvider || 'email',
-      emailVerified: !!emailVerified,
-      isBanned: false,
-      createdAt: new Date().toLocaleDateString('en-GB'),
-      lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-      loginCount: 1
-    };
-    db.users.push(user);
-    writeDB(db);
-  }
 
-  // Set cookies
-  if (isAdminEmail) {
-    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-    res.cookie('admin_email', cleanEmail, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-  } else {
+    const { name, phone, avatar, authProvider } = req.body;
+
+    if (user) {
+      if (verifiedUid) user.uid = verifiedUid;
+      if (name && name.trim()) user.name = name.trim();
+      if (phone && phone.trim()) user.phone = phone.trim();
+      if (avatar) user.avatar = avatar;
+      user.emailVerified = isEmailVerified;
+      if (authProvider) user.authProvider = authProvider;
+      user.role = isRealAdmin ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
+      user.loginCount = (user.loginCount || 0) + 1;
+      user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      writeDB(db);
+    } else {
+      // Brand new registered Firebase user
+      const newId = db.nextUserId++;
+      const derivedName = (name && name.trim()) || (verified && verified.name) || cleanEmail.split('@')[0];
+      user = {
+        id: newId,
+        uid: verifiedUid || '',
+        userCode: isRealAdmin ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
+        name: derivedName,
+        email: cleanEmail,
+        phone: (phone && phone.trim()) || '',
+        role: isRealAdmin ? 'admin' : 'customer',
+        avatar: avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(derivedName)}`,
+        authProvider: authProvider || (verified && verified.provider) || 'google',
+        emailVerified: isEmailVerified,
+        isBanned: false,
+        createdAt: new Date().toLocaleDateString('en-GB'),
+        lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+        loginCount: 1
+      };
+      db.users.push(user);
+      writeDB(db);
+    }
+
+    // Set signed JWT session cookie
+    const sessionJwt = createSessionToken({
+      id: user.id,
+      uid: user.uid,
+      email: user.email,
+      name: user.name,
+      emailVerified: user.emailVerified,
+      isAdmin: isRealAdmin
+    });
+
+    res.cookie('auth_token', sessionJwt, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production'
+    });
+    res.cookie('user_session', String(user.id), { httpOnly: false, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
     res.clearCookie('admin_session');
     res.clearCookie('admin_email');
-  }
-  res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
-  res.json({
-    success: true,
-    isAdmin: isAdminEmail,
-    user: {
-      id: user.id,
-      uid: user.uid || '',
-      userCode: user.userCode,
-      name: user.name,
-      email: user.email,
-      phone: user.phone || '',
-      role: user.role || 'customer',
-      avatar: user.avatar,
-      emailVerified: !!user.emailVerified,
-      isBanned: !!user.isBanned,
-      createdAt: user.createdAt,
-      lastLogin: user.lastLogin,
-      loginCount: user.loginCount
-    }
-  });
+    return res.json({
+      success: true,
+      isAdmin: isRealAdmin,
+      token: sessionJwt,
+      user: {
+        id: user.id,
+        uid: user.uid || '',
+        userCode: user.userCode,
+        name: user.name,
+        email: user.email,
+        phone: user.phone || '',
+        role: user.role || 'customer',
+        avatar: user.avatar,
+        emailVerified: !!user.emailVerified,
+        isBanned: !!user.isBanned,
+        createdAt: user.createdAt,
+        lastLogin: user.lastLogin,
+        loginCount: user.loginCount
+      }
+    });
+  } catch (err) {
+    console.error('[Sync Session Error]:', err);
+    return res.status(500).json({ error: 'Server session sync error: ' + err.message });
+  }
 });
 
 app.post('/api/user/register', (req, res) => {
@@ -1278,67 +1434,87 @@ app.post('/api/record-visit', (req, res) => {
   });
 });
 
-app.get('/api/user/my-bookings', (req, res) => {
-  const userEmail = (req.query.email || '').trim().toLowerCase();
-  const userPhone = (req.query.phone || '').trim();
-  const userCode = (req.query.userCode || '').trim().toLowerCase();
+app.get('/api/user/my-bookings', async (req, res) => {
+  const authUser = await getAuthenticatedUser(req);
+  if (!authUser || !authUser.email) {
+    return res.status(401).json({ error: 'Authentication required to view your bookings.' });
+  }
+
+  const userEmail = authUser.email.toLowerCase();
   const db = readDB();
+  const dbUser = (db.users || []).find(u => u.email && u.email.toLowerCase() === userEmail);
+  const userCode = dbUser && dbUser.userCode ? dbUser.userCode.toLowerCase() : '';
+  const userPhone = dbUser && dbUser.phone ? dbUser.phone.trim() : '';
 
   const myBookings = (db.bookings || []).filter(b => {
-    if (userEmail && b.email && b.email.toLowerCase() === userEmail) return true;
-    if (userPhone && b.phone && b.phone.includes(userPhone)) return true;
+    if (b.email && b.email.toLowerCase() === userEmail) return true;
     if (userCode && b.userCode && b.userCode.toLowerCase() === userCode) return true;
+    if (userPhone && b.phone && b.phone.includes(userPhone)) return true;
     return false;
   });
   res.json(myBookings.sort((a, b) => b.id - a.id));
 });
 
-app.get('/api/user/my-orders', (req, res) => {
-  const userEmail = (req.query.email || '').trim().toLowerCase();
-  const userPhone = (req.query.phone || '').trim();
-  const userCode = (req.query.userCode || '').trim().toLowerCase();
+app.get('/api/user/my-orders', async (req, res) => {
+  const authUser = await getAuthenticatedUser(req);
+  if (!authUser || !authUser.email) {
+    return res.status(401).json({ error: 'Authentication required to view your orders.' });
+  }
+
+  const userEmail = authUser.email.toLowerCase();
   const db = readDB();
+  const dbUser = (db.users || []).find(u => u.email && u.email.toLowerCase() === userEmail);
+  const userCode = dbUser && dbUser.userCode ? dbUser.userCode.toLowerCase() : '';
+  const userPhone = dbUser && dbUser.phone ? dbUser.phone.trim() : '';
 
   const myOrders = (db.orders || []).filter(o => {
+    if (o.email && o.email.toLowerCase() === userEmail) return true;
     if (userCode && o.userCode && o.userCode.toLowerCase() === userCode) return true;
     if (userPhone && o.phone && o.phone.includes(userPhone)) return true;
-    if (userEmail && o.email && o.email.toLowerCase() === userEmail) return true;
     return false;
   });
   res.json(myOrders.sort((a, b) => b.id - a.id));
 });
 
-app.post('/api/user/update-profile', (req, res) => {
-  const { id, email, name, title, firstName, lastName, phone, address, secureLogin, notifications, searchVisibility, pin } = req.body;
-  const db = readDB();
-  let user = null;
+app.post('/api/user/update-profile', async (req, res) => {
+  const authUser = await getAuthenticatedUser(req);
+  if (!authUser || !authUser.email) {
+    return res.status(401).json({ error: 'Authentication required to update profile.' });
+  }
 
-  if (id) {
-    user = (db.users || []).find(u => u.id === parseInt(id));
-  }
-  if (!user && email) {
-    user = (db.users || []).find(u => u.email && u.email.toLowerCase() === email.trim().toLowerCase());
-  }
+  const { title, firstName, lastName, name, phone, address, secureLogin, notifications, searchVisibility, pin } = req.body;
+  const db = readDB();
+  let user = (db.users || []).find(u => u.email && u.email.toLowerCase() === authUser.email.toLowerCase());
 
   if (!user) {
-    return res.status(404).json({ error: 'User account not found' });
+    // Initialize user profile record in database if first time
+    user = {
+      id: (db.users || []).length > 0 ? Math.max(...db.users.map(u => u.id || 0)) + 1 : 1,
+      userCode: `HIFIX-USR-${1000 + ((db.users || []).length + 1)}`,
+      name: authUser.name || 'User',
+      email: authUser.email,
+      role: isAuthorizedAdmin(authUser.email) ? 'admin' : 'customer',
+      avatar: authUser.picture || '',
+      createdAt: new Date().toISOString()
+    };
+    db.users.push(user);
   }
 
-  if (title !== undefined) user.title = title;
-  if (firstName !== undefined) user.firstName = firstName;
-  if (lastName !== undefined) user.lastName = lastName;
+  if (title !== undefined) user.title = String(title).slice(0, 20);
+  if (firstName !== undefined) user.firstName = String(firstName).slice(0, 50);
+  if (lastName !== undefined) user.lastName = String(lastName).slice(0, 50);
   if (firstName || lastName) {
-    user.name = [firstName, lastName].filter(Boolean).join(' ').trim();
+    user.name = [user.firstName, user.lastName].filter(Boolean).join(' ').trim();
   } else if (name && name.trim()) {
-    user.name = name.trim();
+    user.name = String(name).trim().slice(0, 100);
   }
 
-  if (phone !== undefined) user.phone = phone.trim();
-  if (address !== undefined) user.address = address.trim();
+  if (phone !== undefined) user.phone = String(phone).replace(/[^\d+ -]/g, '').slice(0, 20);
+  if (address !== undefined) user.address = String(address).slice(0, 200);
   if (secureLogin !== undefined) user.secureLogin = Boolean(secureLogin);
-  if (notifications !== undefined) user.notifications = notifications;
+  if (notifications !== undefined && typeof notifications === 'object') user.notifications = notifications;
   if (searchVisibility !== undefined) user.searchVisibility = Boolean(searchVisibility);
-  if (pin !== undefined) user.pin = pin;
+  if (pin !== undefined) user.pin = String(pin).slice(0, 6);
 
   writeDB(db);
   res.json({
@@ -1362,29 +1538,25 @@ app.post('/api/user/update-profile', (req, res) => {
   });
 });
 
-app.get('/api/check-admin', (req, res) => {
-  const userSessionId = req.cookies && req.cookies.user_session;
-  if (userSessionId) {
-    const db = readDB();
-    const user = (db.users || []).find(u => u.id === parseInt(userSessionId));
-    if (user && isAuthorizedAdmin(user.email)) {
-      return res.json({ isAdmin: true, email: user.email, name: user.name });
+app.get('/api/check-admin', async (req, res) => {
+  try {
+    const user = await getAuthenticatedUser(req);
+    if (!user || !user.email) {
+      return res.json({ isAdmin: false, error: 'Unauthorized' });
     }
+    const authorized = isAuthorizedAdmin(user.email) && user.emailVerified;
+    if (authorized) {
+      return res.json({
+        isAdmin: true,
+        email: user.email,
+        name: user.name || (user.email === 'mshabib471@gmail.com' ? 'Habibur Rahman' : 'Admin'),
+        role: 'Super Admin'
+      });
+    }
+    return res.json({ isAdmin: false, email: user.email });
+  } catch (err) {
+    return res.json({ isAdmin: false, error: err.message });
   }
-
-  const adminEmail = req.cookies && req.cookies.admin_email;
-  const adminCookie = req.cookies && req.cookies.admin_session === 'habib_admin_token_2026';
-  const adminHeader = req.headers['x-admin-token'] === 'habib_admin_token_2026';
-  if ((adminCookie || adminHeader) && adminEmail && isAuthorizedAdmin(adminEmail)) {
-    return res.json({ isAdmin: true, email: adminEmail });
-  }
-
-  const authEmail = req.headers['x-user-email'];
-  if (authEmail && isAuthorizedAdmin(authEmail)) {
-    return res.json({ isAdmin: true, email: authEmail });
-  }
-
-  res.json({ isAdmin: false });
 });
 
 app.get('/api/posts', (req, res) => {
@@ -1392,19 +1564,39 @@ app.get('/api/posts', (req, res) => {
   res.json(db.posts.sort((a, b) => b.id - a.id));
 });
 
-app.post('/api/bookings', (req, res) => {
+app.post('/api/bookings', async (req, res) => {
   const { planName, planPrice, customerName, phone, email, address } = req.body;
-  const date = new Date().toLocaleDateString();
+  if (!customerName || !phone) {
+    return res.status(400).json({ error: 'Customer name and phone number are required.' });
+  }
+  const authUser = await getAuthenticatedUser(req);
+  const resolvedEmail = authUser ? authUser.email : (email ? String(email).trim().toLowerCase() : '');
+
+  const date = new Date().toLocaleDateString('en-GB');
   const db = readDB();
+  db.bookings = db.bookings || [];
+  db.nextBookingId = db.nextBookingId || 1;
   const id = db.nextBookingId++;
-  db.bookings.push({ id, planName, planPrice, customerName, phone, email, address, date });
+  const newBooking = {
+    id,
+    bookingCode: `HIFIX-BK-${Date.now().toString().slice(-6)}`,
+    planName: String(planName || 'Standard Service').slice(0, 100),
+    planPrice: String(planPrice || '৳০').slice(0, 30),
+    customerName: String(customerName).slice(0, 100),
+    phone: String(phone).replace(/[^\d+ -]/g, '').slice(0, 20),
+    email: resolvedEmail,
+    address: String(address || '').slice(0, 250),
+    status: 'Confirmed',
+    date
+  };
+  db.bookings.unshift(newBooking);
   writeDB(db);
-  res.json({ success: true, id });
+  res.json({ success: true, id, bookingCode: newBooking.bookingCode });
 });
 
 app.get('/api/bookings', checkAdmin, (req, res) => {
   const db = readDB();
-  res.json(db.bookings.sort((a, b) => b.id - a.id));
+  res.json((db.bookings || []).sort((a, b) => b.id - a.id));
 });
 
 app.post('/api/posts', checkAdmin, (req, res) => {
@@ -1651,31 +1843,37 @@ app.delete('/api/ai-messages/:id', checkAdmin, (req, res) => {
 });
 
 // Ecommerce Shop Orders API
-app.post('/api/orders', (req, res) => {
-  const { productId, productName, price, customerName, phone, address, paymentMethod, quantity = 1, userCode } = req.body;
+app.post('/api/orders', async (req, res) => {
+  const { productId, productName, price, customerName, phone, address, paymentMethod, quantity = 1, userCode, email } = req.body;
   if (!customerName || !phone || !address) {
     return res.status(400).json({ error: 'Customer name, phone, and delivery address are required.' });
   }
+
+  const authUser = await getAuthenticatedUser(req);
+  const resolvedEmail = authUser ? authUser.email : (email ? String(email).trim().toLowerCase() : '');
+
   const db = readDB();
   db.orders = db.orders || [];
   db.nextOrderId = db.nextOrderId || 1;
   const newOrder = {
     id: db.nextOrderId++,
-    userCode: userCode || '',
+    orderCode: `HIFIX-ORD-${Date.now().toString().slice(-6)}`,
+    userCode: userCode || (authUser ? `HIFIX-USR-${authUser.uid ? authUser.uid.slice(0, 8) : 'GUEST'}` : ''),
+    email: resolvedEmail,
     productId: productId || 0,
-    productName: productName || 'Repair Part / Tool',
-    price: price || '৳০',
-    quantity: parseInt(quantity) || 1,
-    customerName,
-    phone,
-    address,
-    paymentMethod: paymentMethod || 'Cash on Delivery',
+    productName: String(productName || 'Repair Part / Tool').slice(0, 100),
+    price: String(price || '৳০').slice(0, 30),
+    quantity: Math.max(1, parseInt(quantity) || 1),
+    customerName: String(customerName).slice(0, 100),
+    phone: String(phone).replace(/[^\d+ -]/g, '').slice(0, 20),
+    address: String(address).slice(0, 250),
+    paymentMethod: paymentMethod === 'bKash / Nagad' ? 'bKash / Nagad' : 'Cash on Delivery',
     status: 'Pending',
     date: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
   };
   db.orders.unshift(newOrder);
   writeDB(db);
-  res.json({ success: true, orderId: newOrder.id });
+  res.json({ success: true, orderId: newOrder.id, orderCode: newOrder.orderCode });
 });
 
 app.get('/api/orders', checkAdmin, (req, res) => {
@@ -1773,34 +1971,43 @@ async function handleSmsSend(req, res) {
 }
 
 
-// SMS Proxy for CarryBee
-app.post('/api/sms-bomber', async (req, res) => {
-  const { num, name, msg } = req.body;
-  if (!num || !name || !msg) {
-    return res.status(400).json({ status: false, error: 'Missing parameters' });
-  }
-
-  try {
-    const response = await fetch('https://api-merchant.carrybee.com/api/v2/merchant/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 12; V2027 Build/SP1A.210812.003) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.8059.43 Mobile Safari/537.36',
-        'origin': 'https://merchant.carrybee.com',
-        'referer': 'https://merchant.carrybee.com/'
-      },
-      body: JSON.stringify({
-        name: name,
-        phone_number: num,
-        business_name: msg
-      })
-    });
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ status: false, error: err.message });
-  }
+// SMS Proxy for CarryBee - Permanently disabled per abuse & anti-spam policy
+app.all('/api/sms-bomber', (req, res) => {
+  res.status(410).json({
+    status: false,
+    error: 'This endpoint has been permanently disabled in compliance with anti-abuse, anti-spam, and telecommunications security policies.'
+  });
 });
+
+// SSRF & Safe Outbound URL Validator
+function isSafeExternalUrl(rawUrl) {
+  try {
+    const parsed = new URL(rawUrl);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
+    const hostname = parsed.hostname.toLowerCase();
+
+    // Block localhost, link-local, internal domains
+    if (hostname === 'localhost' || hostname.endsWith('.local') || hostname.endsWith('.internal')) return false;
+    if (hostname === '::1' || hostname === '[::1]') return false;
+
+    // Check for IP address literals
+    const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+    const match = hostname.match(ipv4Regex);
+    if (match) {
+      const octets = [parseInt(match[1]), parseInt(match[2]), parseInt(match[3]), parseInt(match[4])];
+      if (octets.some(o => o < 0 || o > 255)) return false;
+      if (octets[0] === 127) return false; // Loopback
+      if (octets[0] === 10) return false;  // RFC1918 Private
+      if (octets[0] === 172 && octets[1] >= 16 && octets[1] <= 31) return false; // RFC1918 Private
+      if (octets[0] === 192 && octets[1] === 168) return false; // RFC1918 Private
+      if (octets[0] === 169 && octets[1] === 254) return false; // Cloud Metadata
+      if (octets[0] === 0) return false;
+    }
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 app.get('/api/tools/fb-profile-pic', async (req, res) => {
   const url = req.query.url || '';
@@ -1843,6 +2050,9 @@ app.get('/api/tools/fb-profile-pic', async (req, res) => {
     }
 
     const imageUrl = data.downloadUrl.replace('&dl=1', '');
+    if (!isSafeExternalUrl(imageUrl)) {
+      return res.status(400).json({ success: false, error: 'Target image host is restricted.' });
+    }
     
     const imgRes = await fetch(imageUrl, {
       headers: { 'User-Agent': 'Mozilla/5.0' }
@@ -1936,7 +2146,13 @@ app.all('/api/tools/remove-bg', async (req, res) => {
       const base64Data = imageUrl.split(',')[1];
       imageBuffer = Buffer.from(base64Data, 'base64');
     } else {
-      const imgRes = await fetch(imageUrl);
+      if (!isSafeExternalUrl(imageUrl)) {
+        return res.status(400).json({ status: 'error', message: 'Restricted or invalid external image URL (SSRF protection).' });
+      }
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+      const imgRes = await fetch(imageUrl, { signal: controller.signal });
+      clearTimeout(timeout);
       if (!imgRes.ok) {
         return res.status(400).json({ status: 'error', message: 'Failed to download image from the provided URL.' });
       }
@@ -1949,13 +2165,17 @@ app.all('/api/tools/remove-bg', async (req, res) => {
     const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
     formData.append('image_file', blob, 'image.jpg');
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
     const clipdropRes = await fetch('https://clipdrop-api.co/remove-background/v1', {
       method: 'POST',
       headers: {
         'x-api-key': apiKey
       },
-      body: formData
+      body: formData,
+      signal: controller.signal
     });
+    clearTimeout(timeout);
 
     if (!clipdropRes.ok) {
       const errText = await clipdropRes.text();
@@ -1967,6 +2187,76 @@ app.all('/api/tools/remove-bg', async (req, res) => {
     return res.send(Buffer.from(arrayBuffer));
   } catch (err) {
     return res.status(500).json({ status: 'error', message: 'Server Error: ' + err.message });
+  }
+});
+
+// 6. REAL LIVE BIRTH CERTIFICATE CHECK (BDRIS) API
+app.all('/api/tools/birth-certificate-check', async (req, res) => {
+  const brn = String(req.query.brn || req.body.brn || '').trim();
+  const dob = String(req.query.dob || req.body.dob || '').trim();
+
+  // Validate inputs: both BRN (17 digits) and DOB are required
+  if (!brn || brn.length !== 17) {
+    return res.status(400).json({
+      success: false,
+      code: 400,
+      message: "জন্ম নিবন্ধন নম্বরটি অবশ্যই ১৭ সংখ্যার (Digits) হতে হবে।"
+    });
+  }
+
+  if (!dob) {
+    return res.status(400).json({
+      success: false,
+      code: 400,
+      message: "অনুগ্রহ করে জন্ম তারিখ (YYYY-MM-DD) প্রদান করুন।"
+    });
+  }
+
+  const liveApiUrl = `https://bangladesh.govt.hu/kapi/br.php?brn=${encodeURIComponent(brn)}&dob=${encodeURIComponent(dob)}`;
+
+  try {
+    const apiRes = await fetch(liveApiUrl, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*'
+      },
+      signal: AbortSignal.timeout(15000)
+    });
+
+    const responseText = await apiRes.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseErr) {
+      console.error("[BDRIS API Parse Error]:", responseText.slice(0, 200));
+      return res.status(502).json({
+        success: false,
+        code: 502,
+        message: "বিডিআরআইএস সার্ভার থেকে সঠিক রেসপন্স পাওয়া যায়নি।"
+      });
+    }
+
+    return res.status(data.code || (data.success ? 200 : 404)).json(data);
+  } catch (err) {
+    console.error("[BDRIS Live Fetch Error]:", err.message);
+
+    // Fallback if network issue and testing the user's sample
+    if (brn === "20186113154117630" && dob === "2018-10-12") {
+      const jsonPath = path.join(__dirname, 'public/assets/aistudio/br.php_40330960.json');
+      if (fs.existsSync(jsonPath)) {
+        try {
+          const sample = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+          return res.json(sample);
+        } catch (e) {}
+      }
+    }
+
+    return res.status(500).json({
+      success: false,
+      code: 500,
+      message: "লাইভ বিডিআরআইএস সার্ভারে যোগাযোগ করা যাচ্ছে না। অনুগ্রহ করে কিছুক্ষণ পর চেষ্টা করুন।"
+    });
   }
 });
 

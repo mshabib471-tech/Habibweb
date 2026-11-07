@@ -1,0 +1,37 @@
+{
+    "success": true,
+    "code": 200,
+    "message": "তথ্য সফলভাবে পাওয়া গেছে",
+    "data": {
+        "brn": "20186113154117630",
+        "nameBangla": "মোছা: তাইয়্যিবা আক্তার",
+        "nameEnglish": "mst. taieba aktar",
+        "gender": "FEMALE",
+        "dateOfBirth": "12 October 2018",
+        "dateOfBirthISO": "2018-10-12",
+        "birthPlaceBangla": "গ্রাম:চরশংকর,পো:বড়জোড়া উপজেলা:ঈশ্বরগঞ্জ,জেলা:ময়মনসিংহ ।",
+        "birthPlaceEnglish": "vill.carsanker,post,borjora upjalla.ishwargonj,dist.mymensing",
+        "fatherNameBangla": "মো: আব্দুল কাইয়ুম",
+        "fatherNameEnglish": "md. abdul kaium",
+        "fatherNationalityBangla": "বাংলাদেশী",
+        "fatherNationalityEnglish": "Bangladeshi",
+        "motherNameBangla": "মোছা: ফাতেমা বেগম",
+        "motherNameEnglish": "mst. fatema begum",
+        "motherNationalityBangla": "বাংলাদেশী",
+        "motherNationalityEnglish": "Bangladeshi",
+        "registrationDate": "09 January 2020",
+        "registrationDateISO": "2020-01-09",
+        "registrationOffice": "MAIJBAG UNION PARISHAD",
+        "registrationLocation": {
+            "unionOrOffice": "MAIJBAG",
+            "upazila": "ISHWARGANJ",
+            "district": "MYMENSINGH"
+        },
+        "issuanceDate": "09 January 2020",
+        "issuanceDateISO": "2020-01-09"
+    },
+    "meta": {
+        "checkedAt": "2026-11-07T12:19:05+05:30"
+    },
+    "credit": "Amar Sheba"
+}

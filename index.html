@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <!-- Chrome Extension Compatibility & Window Error Guard -->
+    <script>
+      (function() {
+        window.addEventListener("error", function(e) {
+          if ((e.filename && e.filename.indexOf("chrome-extension://") !== -1) ||
+              (e.message && e.message.indexOf("fetch of #<Window>") !== -1)) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+        try {
+          var _f = window.fetch;
+          Object.defineProperty(window, "fetch", {
+            get: function() { return _f; },
+            set: function(v) { _f = v; },
+            configurable: true,
+            enumerable: true
+          });
+          if (typeof Window !== "undefined" && Window.prototype) {
+            Object.defineProperty(Window.prototype, "fetch", {
+              get: function() { return _f; },
+              set: function(v) { _f = v; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch(err) {}
+      })();
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL7V4KQXC1"></script>
     <script>
@@ -1525,8 +1556,10 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Diagnostic Tools</h4>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">Diagnostic & Free Tools</h4>
                     <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="birth-certificate.html" class="hover:text-emerald-400 transition-colors font-medium">🇧🇩 জন্ম নিবন্ধন যাচাই (BDRIS)</a></li>
+                        <li><a href="passport-photo.html" class="hover:text-teal-400 transition-colors">Passport Photo Maker HD</a></li>
                         <li><a href="#aiTerminalSection" class="hover:text-white transition-colors">AI Terminal</a></li>
                         <li><button onclick="window.openHabibAI('Display change cost?')" class="hover:text-white transition-colors text-left">Screen Cost Estimator</button></li>
                         <li><button onclick="window.openHabibAI('Dead boot repair?')" class="hover:text-white transition-colors text-left">Dead Boot Diagnostic</button></li>

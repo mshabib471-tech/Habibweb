@@ -6,4 +6,10 @@ Allow: /logo.png
 Allow: /*.png
 Allow: /*.svg
 
-Sitemap: https://www.habibifix.tech/sitemap.xml
+# Protect Administrative Panels & APIs from indexing
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /api/admin/
+Disallow: /api/site-stats
+
+Sitemap: https://habibifix.tech/sitemap.xml

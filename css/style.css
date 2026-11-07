@@ -10,22 +10,19 @@
 html:not(.dark),
 body.light-mode,
 html[data-theme="light"] {
-  /* ========================================================
-     1. LIGHT MODE SPECIFICATION (STRICT RULES)
-     - Page background: #F8FAFC / #FFFFFF
-     - Card / panel background: #FFFFFF
-     - Main text & headings: #111827
-     - Secondary text: #374151
-     - Muted text: #4B5563
-     - Input values: #111827
-     - Input bg: #FFFFFF
-     - Input border: #D1D5DB
-     - Placeholder text: #6B7280
-     - Navigation & sidebar text: #111827
-     - Footer text: #374151
-     ======================================================== */
-  --bg-page: #f8fafc;
+  color-scheme: light;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f7fb;
   --bg-card: #ffffff;
+  --text-primary: #172033;
+  --text-secondary: #526078;
+  --text-muted: #68758b;
+  --border-color: #dce3ed;
+  --input-bg: #ffffff;
+  --input-text: #172033;
+  --button-text: #ffffff;
+
+  --bg-page: #f8fafc;
   --bg-card-elevated: #ffffff;
   --bg-subtle: #f1f5f9;
   --border-card: #e2e8f0;
@@ -34,13 +31,10 @@ html[data-theme="light"] {
   --shadow-hover: 0 12px 30px -4px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
 
   --text-headings: #111827;
-  --text-primary: #111827;
-  --text-secondary: #374151;
-  --text-muted: #4b5563;
-  --text-input: #111827;
+  --text-input: #172033;
   --bg-input: #ffffff;
   --border-input: #d1d5db;
-  --text-placeholder: #6b7280;
+  --text-placeholder: #68758b;
 
   --nav-bg: rgba(255, 255, 255, 0.96);
   --sidebar-bg: #ffffff;
@@ -61,22 +55,19 @@ html[data-theme="light"] {
 html.dark, 
 body.dark-mode,
 html[data-theme="dark"] {
-  /* ========================================================
-     2. DARK MODE SPECIFICATION (STRICT RULES)
-     - Page background: #0F172A
-     - Card / panel background: #1E293B
-     - Main text & headings: #F8FAFC
-     - Secondary text: #E2E8F0
-     - Muted text: #CBD5E1
-     - Input values: #F8FAFC
-     - Input bg: #0F172A
-     - Input border: rgba(255, 255, 255, 0.2)
-     - Placeholder text: #94A3B8
-     - Navigation & sidebar text: #F8FAFC
-     - Footer text: #CBD5E1
-     ======================================================== */
-  --bg-page: #0f172a;
+  color-scheme: dark;
+  --bg-primary: #101827;
+  --bg-secondary: #172235;
   --bg-card: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #d1d9e6;
+  --text-muted: #aab7c9;
+  --border-color: #334155;
+  --input-bg: #1e293b;
+  --input-text: #f8fafc;
+  --button-text: #ffffff;
+
+  --bg-page: #0f172a;
   --bg-card-elevated: #1e293b;
   --bg-subtle: rgba(255, 255, 255, 0.05);
   --border-card: rgba(255, 255, 255, 0.1);
@@ -85,11 +76,8 @@ html[data-theme="dark"] {
   --shadow-hover: 0 16px 36px -5px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
   --text-headings: #f8fafc;
-  --text-primary: #f8fafc;
-  --text-secondary: #e2e8f0;
-  --text-muted: #cbd5e1;
   --text-input: #f8fafc;
-  --bg-input: #0f172a;
+  --bg-input: #1e293b;
   --border-input: rgba(255, 255, 255, 0.2);
   --text-placeholder: #94a3b8;
 

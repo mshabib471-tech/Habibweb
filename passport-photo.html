@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <!-- Chrome Extension Compatibility & Window Error Guard -->
+    <script>
+      (function() {
+        window.addEventListener("error", function(e) {
+          if ((e.filename && e.filename.indexOf("chrome-extension://") !== -1) ||
+              (e.message && e.message.indexOf("fetch of #<Window>") !== -1)) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+        try {
+          var _f = window.fetch;
+          Object.defineProperty(window, "fetch", {
+            get: function() { return _f; },
+            set: function(v) { _f = v; },
+            configurable: true,
+            enumerable: true
+          });
+          if (typeof Window !== "undefined" && Window.prototype) {
+            Object.defineProperty(Window.prototype, "fetch", {
+              get: function() { return _f; },
+              set: function(v) { _f = v; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch(err) {}
+      })();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passport Size Photo Maker | Habib iFix .Tech</title>

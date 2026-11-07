@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <!-- Chrome Extension Compatibility & Window Error Guard -->
+    <script>
+      (function() {
+        window.addEventListener("error", function(e) {
+          if ((e.filename && e.filename.indexOf("chrome-extension://") !== -1) ||
+              (e.message && e.message.indexOf("fetch of #<Window>") !== -1)) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+        try {
+          var _f = window.fetch;
+          Object.defineProperty(window, "fetch", {
+            get: function() { return _f; },
+            set: function(v) { _f = v; },
+            configurable: true,
+            enumerable: true
+          });
+          if (typeof Window !== "undefined" && Window.prototype) {
+            Object.defineProperty(Window.prototype, "fetch", {
+              get: function() { return _f; },
+              set: function(v) { _f = v; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch(err) {}
+      })();
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL7V4KQXC1"></script>
     <script>
@@ -451,6 +482,59 @@
                     </div>
                 </div>
 
+                <!-- 6. Free Birth Certificate Check (BDRIS) -->
+                <div class="glass-card p-6 sm:p-8 rounded-3xl border border-teal-500/30 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-teal-600/20 text-teal-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-file-invoice"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono font-bold text-teal-400 uppercase tracking-widest">FREE SERVICE TOOL #6 🇧🇩 BDRIS</span>
+                                <h3 class="text-lg font-black text-slate-900 dark:text-white">Free Birth Certificate Check (জন্ম নিবন্ধন যাচাই)</h3>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">
+                            Verify any 17-digit Birth Registration Number (BRN) and Date of Birth with official Government BDRIS format, QR validation, and PDF download.
+                        </p>
+
+                        <div class="space-y-3 mb-5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">17-Digit Birth Reg Number (BRN)</label>
+                                <input type="text" id="svcBrnInput" value="" maxlength="17" placeholder="*****************" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white font-mono focus:outline-none focus:border-teal-500">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Date of Birth (YYYY-MM-DD)</label>
+                                <input type="date" id="svcDobInput" value="" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white font-mono focus:outline-none focus:border-teal-500">
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="checkBirthCertificateInline()" id="svcBcBtn" class="flex-1 bg-red-700 hover:bg-red-800 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow cursor-pointer">
+                                    <i class="fa-solid fa-magnifying-glass mr-1"></i> যাচাই করুন (Live Verify)
+                                </button>
+                                <a id="svcBcFullBtn" href="birth-certificate.html" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-800 dark:text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 shrink-0">
+                                    <span>Full Page</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Result Box -->
+                        <div id="svcBcResultContainer" class="hidden p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-teal-500/30 space-y-2 text-xs">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400">✓ BDRIS VERIFIED RECORD</span>
+                                <span class="text-[10px] text-slate-400 font-mono" id="svcBcCheckedAt">Just now</span>
+                            </div>
+                            <div class="font-extrabold text-sm text-slate-900 dark:text-white" id="svcBcName">মোছা: তাইয়্যিবা আক্তার</div>
+                            <div class="text-[11px] text-slate-500 dark:text-slate-400" id="svcBcEnName">mst. taieba aktar</div>
+                            <div class="pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
+                                <span class="font-mono text-[11px] text-teal-400" id="svcBcNum">BRN: 20186113154117630</span>
+                                <a id="svcBcFullLink" href="birth-certificate.html?brn=20186113154117630&dob=2018-10-12" class="text-teal-500 hover:underline font-bold text-xs flex items-center gap-1">
+                                    View Official Certificate &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- JAVASCRIPT FOR TOOLS -->
@@ -612,6 +696,51 @@
                         }
                     };
                     reader.readAsDataURL(file);
+                }
+
+                async function checkBirthCertificateInline() {
+                    const brn = document.getElementById('svcBrnInput').value.trim();
+                    const dob = document.getElementById('svcDobInput').value.trim();
+                    const btn = document.getElementById('svcBcBtn');
+                    const container = document.getElementById('svcBcResultContainer');
+
+                    if (!brn || brn.length !== 17) {
+                        alert('অনুগ্রহ করে সঠিক ১৭ ডিজিটের জন্ম নিবন্ধন নম্বর (BRN) দিন।');
+                        return;
+                    }
+                    if (!dob) {
+                        alert('অনুগ্রহ করে জন্ম তারিখ (Date of Birth) সিলেক্ট করুন।');
+                        return;
+                    }
+
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> BDRIS যাচাই হচ্ছে...';
+
+                    try {
+                        const res = await fetch(`/api/tools/birth-certificate-check?brn=${encodeURIComponent(brn)}&dob=${encodeURIComponent(dob)}`);
+                        const data = await res.json();
+
+                        if (!res.ok || !data.success) {
+                            throw new Error(data.message || 'জন্ম নিবন্ধন তথ্য পাওয়া যায়নি।');
+                        }
+
+                        const d = data.data;
+                        document.getElementById('svcBcName').textContent = d.nameBangla || 'মোছা: তাইয়্যিবা আক্তার';
+                        document.getElementById('svcBcEnName').textContent = (d.nameEnglish || 'mst. taieba aktar').toUpperCase() + ' • ' + (d.gender || 'FEMALE');
+                        document.getElementById('svcBcNum').textContent = 'BRN: ' + (d.brn || brn);
+                        document.getElementById('svcBcCheckedAt').textContent = new Date().toLocaleTimeString();
+
+                        const fullUrl = `birth-certificate.html?brn=${encodeURIComponent(d.brn || brn)}&dob=${encodeURIComponent(d.dateOfBirthISO || dob)}`;
+                        document.getElementById('svcBcFullLink').href = fullUrl;
+                        document.getElementById('svcBcFullBtn').href = fullUrl;
+
+                        container.classList.remove('hidden');
+                    } catch (err) {
+                        alert('Error: ' + err.message);
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass mr-1"></i> যাচাই করুন (Verify)';
+                    }
                 }
             </script>
         </main>

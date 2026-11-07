@@ -1,3 +1,34 @@
+// Ensure window.fetch has a setter if only a getter is provided by the browser environment
+// Prevents "TypeError: Cannot set property fetch of #<Window> which has only a getter" in browser extensions and automation executors
+(function() {
+  try {
+    if (typeof window !== 'undefined') {
+      let canSet = false;
+      try {
+        const orig = window.fetch;
+        window.fetch = orig;
+        canSet = true;
+      } catch (err) {
+        canSet = false;
+      }
+
+      if (!canSet) {
+        let currentFetch = window.fetch;
+        Object.defineProperty(window, 'fetch', {
+          get: function() {
+            return currentFetch;
+          },
+          set: function(newFetch) {
+            currentFetch = newFetch;
+          },
+          configurable: true,
+          enumerable: true
+        });
+      }
+    }
+  } catch (e) {}
+})();
+
 // Habib iFix .Tech Global Dual-Theme & Luxury Responsive Collapsible Sidebar Controller
 (function() {
   // Theme Management

@@ -673,22 +673,12 @@ Tone & Style:
 });
 
 // Other API Routes
-// Other API Routes
 app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-  if (username === 'admin' && password === 'admin123') { 
-    const db = readDB();
-    const adminUser = db.users.find(u => u.role === 'admin' || u.email === 'tec.habiburrahman@gmail.com');
-    if (adminUser) {
-      adminUser.loginCount = (adminUser.loginCount || 0) + 1;
-      adminUser.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-      writeDB(db);
-    }
-    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-    res.json({ success: true, user: { email: 'tec.habiburrahman@gmail.com', name: 'Habibur Rahman', role: 'admin' } });
-  } else {
-    res.status(401).json({ error: 'Invalid credentials' });
-  }
+  // Legacy demo password login is completely disabled per security requirements
+  // Admin authentication requires verified Google Auth with an authorized email
+  return res.status(403).json({
+    error: 'Direct password login is disabled for administrators. Access is restricted strictly to Google Authentication with authorized master emails (tec.habiburrahman@gmail.com / mshabib471@gmail.com).'
+  });
 });
 
 app.post('/api/google-login', (req, res) => {
@@ -1319,7 +1309,7 @@ app.get('/api/user/my-orders', (req, res) => {
 });
 
 app.post('/api/user/update-profile', (req, res) => {
-  const { id, email, name, phone, address } = req.body;
+  const { id, email, name, title, firstName, lastName, phone, address, secureLogin, notifications, searchVisibility, pin } = req.body;
   const db = readDB();
   let user = null;
 
@@ -1334,9 +1324,21 @@ app.post('/api/user/update-profile', (req, res) => {
     return res.status(404).json({ error: 'User account not found' });
   }
 
-  if (name && name.trim()) user.name = name.trim();
+  if (title !== undefined) user.title = title;
+  if (firstName !== undefined) user.firstName = firstName;
+  if (lastName !== undefined) user.lastName = lastName;
+  if (firstName || lastName) {
+    user.name = [firstName, lastName].filter(Boolean).join(' ').trim();
+  } else if (name && name.trim()) {
+    user.name = name.trim();
+  }
+
   if (phone !== undefined) user.phone = phone.trim();
   if (address !== undefined) user.address = address.trim();
+  if (secureLogin !== undefined) user.secureLogin = Boolean(secureLogin);
+  if (notifications !== undefined) user.notifications = notifications;
+  if (searchVisibility !== undefined) user.searchVisibility = Boolean(searchVisibility);
+  if (pin !== undefined) user.pin = pin;
 
   writeDB(db);
   res.json({
@@ -1344,12 +1346,18 @@ app.post('/api/user/update-profile', (req, res) => {
     user: {
       id: user.id,
       userCode: user.userCode || `HIFIX-USR-${1000 + user.id}`,
+      title: user.title || 'Mr.',
+      firstName: user.firstName || (user.name ? user.name.split(' ')[0] : 'User'),
+      lastName: user.lastName || (user.name ? user.name.split(' ').slice(1).join(' ') : ''),
       name: user.name,
       email: user.email,
       phone: user.phone || '',
       address: user.address || '',
       role: user.role,
-      avatar: user.avatar
+      avatar: user.avatar,
+      secureLogin: user.secureLogin !== false,
+      notifications: user.notifications || {},
+      searchVisibility: user.searchVisibility !== false
     }
   });
 });

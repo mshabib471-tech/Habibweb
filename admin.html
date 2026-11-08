@@ -109,88 +109,113 @@
 <body class="bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-800 dark:text-slate-100 min-h-screen flex selection:bg-blue-600 selection:text-white" style="display: none;">
 
     <!-- Left Sidebar (Nexora Style) -->
-    <aside id="adminSidebar" class="w-64 bg-white dark:bg-[#111827] border-r border-slate-200/80 dark:border-slate-800/80 flex flex-col justify-between shrink-0 transition-all duration-300 z-30 fixed lg:static inset-y-0 left-0 transform -translate-x-full lg:translate-x-0">
+    <aside id="adminSidebar" class="w-64 bg-white border-r border-slate-200/90 flex flex-col justify-between shrink-0 transition-all duration-300 z-30 fixed lg:static inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 shadow-sm">
         <div>
             <!-- Sidebar Header: Brand & Collapse -->
-            <div class="h-20 px-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60">
-                <a href="admin.html" class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white text-lg shadow-md shadow-blue-500/30">
-                        <i class="fa-solid fa-cube"></i>
-                    </div>
+            <div class="h-20 px-5 flex items-center justify-between border-b border-slate-100 bg-white">
+                <a href="admin.html" class="flex items-center gap-2.5">
+                    <img src="/logo.png" alt="Habib iFix" class="w-9 h-9 rounded-xl object-contain shadow-sm shrink-0">
                     <div class="flex flex-col">
-                        <span class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">Nexora</span>
-                        <span class="text-[10px] text-blue-600 dark:text-blue-400 font-bold tracking-wider uppercase font-mono-code">Habib iFix Lab</span>
+                        <span class="text-sm font-black tracking-tight text-slate-900">Habib iFix <span class="text-blue-600">.Tech</span></span>
+                        <span class="text-[10px] text-emerald-600 font-bold tracking-wider uppercase font-mono-code">Master Admin CMS</span>
                     </div>
                 </a>
-                <button onclick="toggleSidebarCollapse()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-1 rounded-lg text-sm transition-colors cursor-pointer" title="Toggle Sidebar">
+                <button onclick="toggleSidebarCollapse()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg text-sm transition-colors cursor-pointer" title="Toggle Sidebar">
                     <i class="fa-solid fa-angles-left"></i>
                 </button>
             </div>
 
             <!-- Navigation Links -->
-            <div class="p-4 space-y-1">
+            <div class="p-3.5 space-y-1">
+                <!-- Back to Home -->
+                <a href="index.html" class="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-black transition-all bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 shadow-xs cursor-pointer mb-2">
+                    <i class="fa-solid fa-house text-emerald-600 w-4 text-center text-sm"></i>
+                    <span>Back to Home (হোম পেজ)</span>
+                </a>
+
                 <!-- 1. Dashboard -->
-                <button onclick="switchNexoraTab('dashboard')" id="navBtn-dashboard" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 cursor-pointer">
-                    <i class="fa-solid fa-house w-4 text-center text-sm"></i>
+                <button onclick="switchNexoraTab('dashboard')" id="navBtn-dashboard" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all bg-blue-50 text-blue-700 cursor-pointer">
+                    <i class="fa-solid fa-gauge w-4 text-center text-sm"></i>
                     <span>Dashboard</span>
                 </button>
 
                 <!-- 2. Analytics -->
-                <button onclick="switchNexoraTab('analytics')" id="navBtn-analytics" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <button onclick="switchNexoraTab('analytics')" id="navBtn-analytics" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
                     <i class="fa-solid fa-chart-line w-4 text-center text-sm"></i>
                     <span>Analytics</span>
                 </button>
 
-                <!-- 3. Orders -->
-                <button onclick="switchNexoraTab('orders')" id="navBtn-orders" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <!-- 3. Orders & Bookings -->
+                <button onclick="switchNexoraTab('orders')" id="navBtn-orders" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
                     <span class="flex items-center gap-3.5">
                         <i class="fa-solid fa-bag-shopping w-4 text-center text-sm"></i>
-                        <span>Orders</span>
+                        <span>Orders & Bookings</span>
                     </span>
-                    <span id="badgeOrdersCount" class="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-[10px] font-mono px-2 py-0.5 rounded-full">0</span>
+                    <span id="badgeOrdersCount" class="bg-blue-100 text-blue-700 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">0</span>
                 </button>
 
                 <!-- 4. Customers (Users) -->
-                <button onclick="switchNexoraTab('customers')" id="navBtn-customers" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <button onclick="switchNexoraTab('customers')" id="navBtn-customers" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
                     <span class="flex items-center gap-3.5">
                         <i class="fa-solid fa-users w-4 text-center text-sm"></i>
                         <span>Customers</span>
                     </span>
-                    <span id="badgeUsersCount" class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-mono px-2 py-0.5 rounded-full">0</span>
+                    <span id="badgeUsersCount" class="bg-slate-100 text-slate-700 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">0</span>
                 </button>
 
-                <!-- 5. Products -->
-                <button onclick="switchNexoraTab('products')" id="navBtn-products" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <!-- 5. Products Inventory -->
+                <button onclick="switchNexoraTab('products')" id="navBtn-products" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
                     <i class="fa-solid fa-box-open w-4 text-center text-sm"></i>
                     <span>Products</span>
                 </button>
 
-                <!-- 6. Messages -->
-                <button onclick="switchNexoraTab('messages')" id="navBtn-messages" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <!-- 6. Courses & Training Management -->
+                <button onclick="switchNexoraTab('courses')" id="navBtn-courses" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 cursor-pointer">
+                    <span class="flex items-center gap-3.5">
+                        <i class="fa-solid fa-graduation-cap w-4 text-center text-sm text-indigo-600"></i>
+                        <span>Courses (কোর্স ও ট্রেনিং)</span>
+                    </span>
+                    <span class="bg-indigo-100 text-indigo-700 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full">12</span>
+                </button>
+
+                <!-- 7. Messages -->
+                <button onclick="switchNexoraTab('messages')" id="navBtn-messages" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
                     <span class="flex items-center gap-3.5">
                         <i class="fa-solid fa-message w-4 text-center text-sm"></i>
                         <span>Messages</span>
                     </span>
-                    <span id="badgeMessagesCount" class="bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
+                    <span id="badgeMessagesCount" class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
                 </button>
 
-                <!-- 7. Finance -->
-                <button onclick="switchNexoraTab('finance')" id="navBtn-finance" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <!-- 8. Finance -->
+                <button onclick="switchNexoraTab('finance')" id="navBtn-finance" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
                     <i class="fa-solid fa-circle-dollar-to-slot w-4 text-center text-sm"></i>
                     <span>Finance</span>
                 </button>
 
-                <!-- 8. Reports (Audit Logs) -->
-                <button onclick="switchNexoraTab('reports')" id="navBtn-reports" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <!-- 9. Reports (Audit Logs) -->
+                <button onclick="switchNexoraTab('reports')" id="navBtn-reports" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
                     <i class="fa-solid fa-file-shield w-4 text-center text-sm"></i>
                     <span>Reports & Audits</span>
                 </button>
 
-                <!-- 9. Settings -->
-                <button onclick="switchNexoraTab('settings')" id="navBtn-settings" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <!-- 10. Settings -->
+                <button onclick="switchNexoraTab('settings')" id="navBtn-settings" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
                     <i class="fa-solid fa-gear w-4 text-center text-sm"></i>
                     <span>Settings</span>
                 </button>
+
+                <!-- Quick External Links -->
+                <div class="pt-2 border-t border-slate-100 space-y-1">
+                    <a href="services.html" class="w-full flex items-center gap-3.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer">
+                        <i class="fa-solid fa-screwdriver-wrench w-4 text-center text-xs text-cyan-600"></i>
+                        <span>Services (সার্ভিস পেজ)</span>
+                    </a>
+                    <a href="free-offer.html" class="w-full flex items-center gap-3.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer">
+                        <i class="fa-solid fa-gift w-4 text-center text-xs text-purple-600"></i>
+                        <span>Free Offers (ফ্রি অফার)</span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -954,15 +979,35 @@
                 </div>
             </div>
 
+            <!-- TAB: COURSES MANAGEMENT -->
+            <div id="tabPane-courses" class="nexora-tab-pane hidden space-y-6">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-indigo-600"></i>
+                            <span>Courses & Professional Training Management (১২+ কোর্স)</span>
+                        </h2>
+                        <p class="text-xs text-slate-600">Master syllabus, student enrollments, course fee structures, and batch scheduling.</p>
+                    </div>
+                    <a href="courses.html" target="_blank" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> View Public Courses Page
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="nexoraCoursesGrid">
+                    <!-- Populated dynamically via loadAdminCourses() -->
+                </div>
+            </div>
+
             <!-- TAB 6: MESSAGES (Customer Inquiries & Direct Reply) -->
             <div id="tabPane-messages" class="nexora-tab-pane hidden space-y-6">
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div>
-                        <h2 class="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                        <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
                             <span>Customer Messages & Direct Reply System</span>
-                            <span class="bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 text-xs px-2.5 py-0.5 rounded-full font-bold">Inbox</span>
+                            <span class="bg-purple-100 text-purple-700 text-xs px-2.5 py-0.5 rounded-full font-bold">Inbox</span>
                         </h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Read inquiries submitted via contact forms, send instant answers, and contact clients via WhatsApp or Email.</p>
+                        <p class="text-xs text-slate-600">Read inquiries submitted via contact forms, send instant answers, and contact clients via WhatsApp or Email.</p>
                     </div>
                     <button onclick="loadAdminContacts()" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer">
                         <i class="fa-solid fa-rotate"></i> Refresh Messages
@@ -977,25 +1022,31 @@
             <!-- TAB 7: FINANCE -->
             <div id="tabPane-finance" class="nexora-tab-pane hidden space-y-6">
                 <div>
-                    <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Finance & Payment Summaries</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Cash on delivery settlements, bKash/Nagad transactions, and workshop service profit margins.</p>
+                    <h2 class="text-xl font-extrabold text-slate-900">Finance & Payment Summaries</h2>
+                    <p class="text-xs text-slate-600">Cash on delivery settlements, bKash/Nagad transactions, and workshop service profit margins.</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                    <div class="bg-white dark:bg-[#111827] rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800/80 space-y-1 shadow-xs">
-                        <span class="text-xs font-semibold text-slate-400">Total Gross Lab Revenue</span>
-                        <div class="text-2xl font-black text-slate-900 dark:text-white font-mono-code">৳1,28,430.50</div>
-                        <span class="text-[11px] text-emerald-500 font-bold">↑ 12.5% increase</span>
+                    <div class="bg-white rounded-2xl p-6 border-2 border-emerald-500 shadow-md space-y-1.5">
+                        <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Total Gross Lab Revenue</span>
+                        <div class="text-3xl font-black text-slate-900 font-mono-code">৳1,28,430.50</div>
+                        <span class="inline-flex items-center gap-1 text-xs text-emerald-700 font-extrabold bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                            <i class="fa-solid fa-arrow-trend-up"></i> ↑ 12.5% increase
+                        </span>
                     </div>
-                    <div class="bg-white dark:bg-[#111827] rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800/80 space-y-1 shadow-xs">
-                        <span class="text-xs font-semibold text-slate-400">Settled Payments</span>
-                        <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono-code">৳1,14,200.00</div>
-                        <span class="text-[11px] text-slate-400">Verified by bank/cash</span>
+                    <div class="bg-white rounded-2xl p-6 border-2 border-blue-500 shadow-md space-y-1.5">
+                        <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Settled Payments</span>
+                        <div class="text-3xl font-black text-emerald-700 font-mono-code">৳1,14,200.00</div>
+                        <span class="inline-flex items-center gap-1 text-xs text-blue-700 font-bold bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200">
+                            <i class="fa-solid fa-check-double"></i> Verified by bank/cash
+                        </span>
                     </div>
-                    <div class="bg-white dark:bg-[#111827] rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800/80 space-y-1 shadow-xs">
-                        <span class="text-xs font-semibold text-slate-400">Pending COD Deliveries</span>
-                        <div class="text-2xl font-black text-amber-500 font-mono-code">৳14,230.50</div>
-                        <span class="text-[11px] text-amber-500 font-bold">In transit across Bangladesh</span>
+                    <div class="bg-white rounded-2xl p-6 border-2 border-amber-500 shadow-md space-y-1.5">
+                        <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Pending COD Deliveries</span>
+                        <div class="text-3xl font-black text-amber-600 font-mono-code">৳14,230.50</div>
+                        <span class="inline-flex items-center gap-1 text-xs text-amber-800 font-bold bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+                            <i class="fa-solid fa-truck-fast"></i> In transit across Bangladesh
+                        </span>
                     </div>
                 </div>
             </div>
@@ -1128,7 +1179,7 @@
 
     <!-- Script to wire real data and authentication -->
     <script>
-        const nexoraTabs = ['dashboard', 'analytics', 'orders', 'customers', 'products', 'messages', 'finance', 'reports', 'settings'];
+        const nexoraTabs = ['dashboard', 'analytics', 'orders', 'customers', 'products', 'courses', 'messages', 'finance', 'reports', 'settings'];
         let cachedUsers = [];
         let cachedContacts = [];
         let cachedOrders = [];
@@ -1142,7 +1193,7 @@
                 const btn = document.getElementById('navBtn-' + t);
                 if (pane) pane.classList.add('hidden');
                 if (btn) {
-                    btn.className = "nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer";
+                    btn.className = "nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer";
                 }
             });
 
@@ -1150,7 +1201,7 @@
             const targetBtn = document.getElementById('navBtn-' + activeTab);
             if (targetPane) targetPane.classList.remove('hidden');
             if (targetBtn) {
-                targetBtn.className = "nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 cursor-pointer";
+                targetBtn.className = "nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all bg-blue-50 text-blue-700 font-extrabold cursor-pointer";
             }
 
             if (activeTab === 'dashboard') { loadAdminStats(); loadAdminOrders(); }
@@ -1158,8 +1209,55 @@
             if (activeTab === 'orders') { loadAdminOrders(); loadAdminBookings(); }
             if (activeTab === 'customers') loadAdminUsers();
             if (activeTab === 'products') loadAdminProducts();
+            if (activeTab === 'courses') loadAdminCourses();
             if (activeTab === 'messages') loadAdminContacts();
             if (activeTab === 'reports') loadAdminAuditLogs();
+        }
+
+        function loadAdminCourses() {
+            const grid = document.getElementById('nexoraCoursesGrid');
+            if (!grid) return;
+            const coursesList = [
+                { id: 1, title: 'Website Make & Web Development', fee: '৳২,৫০০', students: '640+ Students', cat: 'Web Development', duration: '৩ মাস', badge: 'Best Seller' },
+                { id: 2, title: 'Professional Logo Design Mastery', fee: '৳১,৫০০', students: '820+ Students', cat: 'Branding & Graphics', duration: '১.৫ মাস', badge: 'High Demand' },
+                { id: 3, title: 'Complete Graphic Design Masterclass', fee: '৳১,৮০০', students: '1,200+ Students', cat: 'Graphic Design', duration: '২ মাস', badge: 'Popular' },
+                { id: 4, title: 'FRP 2026/2027 Advanced Mobile Unlock', fee: '৳৩,০০০', students: '950+ Technicians', cat: 'Hardware & Flashing', duration: '১ মাস', badge: 'Lab Special' },
+                { id: 5, title: 'Motherboard IC & CPU Reballing Masterclass', fee: '৳৩,৫০০', students: '410+ Technicians', cat: 'Micro-Soldering', duration: '২ মাস', badge: 'Advanced Lab' },
+                { id: 6, title: 'Digital Marketing & Social Media Boost', fee: '৳১,২০০', students: '530+ Marketers', cat: 'Digital Marketing', duration: '১ মাস', badge: 'Career' },
+                { id: 7, title: 'WordPress & E-Commerce Mastery', fee: '৳২,০০০', students: '380+ Students', cat: 'Web Dev', duration: '১.৫ মাস', badge: 'Freelancing' },
+                { id: 8, title: 'UI/UX Design in Figma & Tailwind', fee: '৳২,২০০', students: '290+ Designers', cat: 'UI/UX Design', duration: '২ মাস', badge: 'Modern' },
+                { id: 9, title: 'Mobile Hardware Diagnostics & Repair', fee: '৳২,৮০০', students: '720+ Technicians', cat: 'Hardware Repair', duration: '২.৫ মাস', badge: 'Hands-on' },
+                { id: 10, title: 'SEO & Content Writing for High Rank', fee: '৳১,০০০', students: '310+ Bloggers', cat: 'SEO & Content', duration: '১ মাস', badge: 'Passive Income' },
+                { id: 11, title: 'Video Editing in Premiere Pro & CapCut', fee: '৳১,৫০০', students: '670+ Creators', cat: 'Video Editing', duration: '১.৫ মাস', badge: 'Content Creation' },
+                { id: 12, title: 'Cyber Security & Ethical Hacking Basics', fee: '৳২,৫০০', students: '450+ Learners', cat: 'Cyber Security', duration: '২ মাস', badge: 'Certified' }
+            ];
+
+            grid.innerHTML = coursesList.map(c => `
+                <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm flex flex-col justify-between space-y-3 hover:border-indigo-400 hover:shadow-md transition-all">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-full">${escapeHtml(c.cat)}</span>
+                            <span class="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">${escapeHtml(c.badge)}</span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-900 text-sm leading-snug">${escapeHtml(c.title)}</h4>
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="text-base font-black font-mono-code text-indigo-700">${escapeHtml(c.fee)}</div>
+                            <span class="text-xs text-slate-600 font-bold"><i class="fa-regular fa-clock text-indigo-500"></i> ${escapeHtml(c.duration)}</span>
+                        </div>
+                        <div class="text-xs text-slate-500 font-medium">
+                            <i class="fa-solid fa-user-graduate text-slate-400"></i> ${escapeHtml(c.students)}
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-emerald-600 font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-circle-check text-[10px]"></i> Admissions Open
+                        </span>
+                        <a href="courses.html" target="_blank" class="text-indigo-600 font-bold hover:underline flex items-center gap-1">
+                            Syllabus &rarr;
+                        </a>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function toggleOrdersSubTab(sub) {

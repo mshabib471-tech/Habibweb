@@ -1,109 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 /* ========================================================
-   HABIB IFIX .TECH - ROOT-CAUSE THEME & CONTRAST ENGINE
-   Compliant with WCAG AA Accessibility Contrast Standards
-   High-Visibility Light Mode & Dark Mode Typography
+   HABIB IFIX .TECH - PREMIUM WHITE GLASSMORPHISM DESIGN SYSTEM
+   Single Light Theme Architecture with Scenic Backdrop
    ======================================================== */
 
-:root,
-html:not(.dark),
-body.light-mode,
-html[data-theme="light"] {
+:root {
   color-scheme: light;
   --bg-primary: #ffffff;
-  --bg-secondary: #f4f7fb;
-  --bg-card: #ffffff;
-  --text-primary: #172033;
-  --text-secondary: #526078;
-  --text-muted: #68758b;
-  --border-color: #dce3ed;
-  --input-bg: #ffffff;
-  --input-text: #172033;
-  --button-text: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --text-primary: #171717;
+  --text-secondary: #555555;
+  --text-muted: #64748b;
+  --border-color: rgba(255, 255, 255, 0.75);
+  --input-bg: rgba(255, 255, 255, 0.95);
+  --input-text: #171717;
 
-  --bg-page: #f8fafc;
-  --bg-card-elevated: #ffffff;
-  --bg-subtle: #f1f5f9;
-  --border-card: #e2e8f0;
-  --border-subtle: #f1f5f9;
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
-  --shadow-hover: 0 12px 30px -4px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
-
-  --text-headings: #111827;
-  --text-input: #172033;
-  --bg-input: #ffffff;
-  --border-input: #d1d5db;
-  --text-placeholder: #68758b;
-
-  --nav-bg: rgba(255, 255, 255, 0.96);
-  --sidebar-bg: #ffffff;
-  --sidebar-border: #e2e8f0;
-  --footer-bg: #f8fafc;
-  --modal-bg: #ffffff;
-  --dropdown-bg: #ffffff;
-
-  /* Accessible Light Mode Accents (WCAG AA) */
-  --accent-cyan: #0369a1;
+  --accent-cyan: #0284c7;
   --accent-indigo: #4338ca;
-  --accent-emerald: #047857;
-  --accent-amber: #b45309;
-  --accent-purple: #6d28d9;
-  --accent-red: #b91c1c;
-}
-
-html.dark, 
-body.dark-mode,
-html[data-theme="dark"] {
-  color-scheme: dark;
-  --bg-primary: #101827;
-  --bg-secondary: #172235;
-  --bg-card: #1e293b;
-  --text-primary: #f8fafc;
-  --text-secondary: #d1d9e6;
-  --text-muted: #aab7c9;
-  --border-color: #334155;
-  --input-bg: #1e293b;
-  --input-text: #f8fafc;
-  --button-text: #ffffff;
-
-  --bg-page: #0f172a;
-  --bg-card-elevated: #1e293b;
-  --bg-subtle: rgba(255, 255, 255, 0.05);
-  --border-card: rgba(255, 255, 255, 0.1);
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --shadow-hover: 0 16px 36px -5px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-
-  --text-headings: #f8fafc;
-  --text-input: #f8fafc;
-  --bg-input: #1e293b;
-  --border-input: rgba(255, 255, 255, 0.2);
-  --text-placeholder: #94a3b8;
-
-  --nav-bg: rgba(15, 23, 42, 0.95);
-  --sidebar-bg: #181b24;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
-  --footer-bg: #090d16;
-  --modal-bg: #1e293b;
-  --dropdown-bg: #1e293b;
-
-  /* Luminous Dark Mode Accents */
-  --accent-cyan: #38bdf8;
-  --accent-indigo: #818cf8;
-  --accent-emerald: #34d399;
-  --accent-amber: #fbbf24;
-  --accent-purple: #c084fc;
-  --accent-red: #f87171;
+  --accent-emerald: #059669;
+  --accent-amber: #d97706;
+  --accent-yellow: #eab308;
+  --accent-purple: #7c3aed;
+  --accent-red: #dc2626;
 }
 
 /* ========================================================
-   GLOBAL BASE & SMOOTH RESET
+   GLOBAL BASE & SCENIC GLASSMORPHISM BACKDROP
    ======================================================== */
 html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
 }
 
 body {
@@ -112,6 +42,9 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.85) 0%, rgba(241, 245, 249, 0.92) 100%), url('/assets/scenic_glass_bg.jpg') center/cover no-repeat fixed;
+  color: #171717;
 }
 
 .font-mono-code {
@@ -119,1042 +52,335 @@ body {
 }
 
 /* ========================================================
-   LIGHT MODE: UNIVERSAL TEXT VISIBILITY & CONTRAST
-   Never allow white or near-white text on light background
+   TYPOGRAPHY & READABLE CONTRAST COLOR SYSTEM
    ======================================================== */
-
-html:not(.dark),
-html:not(.dark) body,
-body.light-mode {
-  background-color: var(--bg-page) !important;
-  color: var(--text-primary) !important;
-  background-image: 
-    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.04) 0%, transparent 40%),
-    radial-gradient(circle at 90% 25%, rgba(14, 165, 233, 0.04) 0%, transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 45%) !important;
-}
-
-/* Light Mode Headings (#111827) */
-html:not(.dark) h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) h4:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) h5:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) h6:not([class*="text-transparent"]):not([class*="bg-clip-text"]) {
-  color: #111827 !important;
+h1, h2, h3, h4, h5, h6 {
+  color: #171717 !important;
   font-weight: 800 !important;
   letter-spacing: -0.02em;
 }
 
-/* Light Mode Paragraphs & Descriptions (#374151) */
-html:not(.dark) p:not(#topPromoBanner *):not(.banner-text):not(button[class*="bg-"] *):not(a[class*="bg-"] *) {
-  color: #374151 !important;
+p:not(#topPromoBanner *):not(.banner-text):not(button[class*="bg-"] *):not(a[class*="bg-"] *) {
+  color: #555555 !important;
   line-height: 1.65;
 }
 
-/* Light Mode Labels, Bold, Strong, Term titles (#111827) */
-html:not(.dark) label,
-html:not(.dark) dt,
-html:not(.dark) summary,
-html:not(.dark) strong:not(#topPromoBanner *):not(button[class*="bg-"] *):not(a[class*="bg-"] *),
-html:not(.dark) b:not(#topPromoBanner *):not(button[class*="bg-"] *):not(a[class*="bg-"] *) {
-  color: #111827 !important;
+label,
+dt,
+summary,
+strong:not(#topPromoBanner *):not(button[class*="bg-"] *):not(a[class*="bg-"] *),
+b:not(#topPromoBanner *):not(button[class*="bg-"] *):not(a[class*="bg-"] *) {
+  color: #171717 !important;
 }
 
-/* Light Mode Text Utilities Mapping to Prevent Invisible Text */
-html:not(.dark) .text-white,
-html:not(.dark) .text-slate-100,
-html:not(.dark) .text-slate-200,
-html:not(.dark) .text-gray-100,
-html:not(.dark) .text-gray-200,
-html:not(.dark) .text-zinc-100,
-html:not(.dark) .text-zinc-200 {
-  color: #111827 !important;
+/* Dark color utility overrides for high contrast light mode */
+.text-slate-900,
+.text-slate-800,
+.text-gray-900,
+.text-gray-800,
+.text-zinc-900,
+.dark\:text-white,
+.dark\:text-slate-100,
+.dark\:text-slate-200 {
+  color: #171717 !important;
 }
 
-html:not(.dark) .text-slate-300,
-html:not(.dark) .text-gray-300,
-html:not(.dark) .text-zinc-300 {
-  color: #374151 !important;
+.text-slate-700,
+.text-slate-600,
+.text-gray-700,
+.text-gray-600,
+.dark\:text-slate-300,
+.dark\:text-slate-400 {
+  color: #555555 !important;
 }
 
-html:not(.dark) .text-slate-400,
-html:not(.dark) .text-slate-500,
-html:not(.dark) .text-gray-400,
-html:not(.dark) .text-gray-500,
-html:not(.dark) .text-zinc-400,
-html:not(.dark) .text-zinc-500 {
-  color: #4b5563 !important;
+.text-slate-500,
+.text-gray-500 {
+  color: #64748b !important;
   font-weight: 500;
 }
 
-/* Light Mode: Links that are NOT colored buttons must use dark text */
-html:not(.dark) a:not([class*="bg-indigo"]):not([class*="bg-cyan"]):not([class*="bg-emerald"]):not([class*="bg-purple"]):not([class*="bg-blue"]):not([class*="bg-red"]):not([class*="bg-amber"]):not([class*="bg-slate-900"]):not([class*="bg-black"]):not([class*="bg-gradient-to"]):not(.btn-primary):not(.btn-colored):not(.top-promo-banner *):not(#topPromoBanner *) {
-  color: #111827;
+/* High Visibility Accent Overrides */
+.text-red-600,
+.text-red-500,
+.text-rose-600,
+.text-rose-500 {
+  color: #dc2626 !important;
+}
+
+.text-amber-500,
+.text-amber-600,
+.text-yellow-500,
+.text-yellow-600 {
+  color: #d97706 !important;
+}
+
+.text-cyan-600,
+.text-cyan-500,
+.dark\:text-cyan-400 {
+  color: #0284c7 !important;
+}
+
+/* Links (not solid buttons) */
+a:not([class*="bg-indigo"]):not([class*="bg-cyan"]):not([class*="bg-emerald"]):not([class*="bg-purple"]):not([class*="bg-blue"]):not([class*="bg-red"]):not([class*="bg-amber"]):not([class*="bg-slate-900"]):not([class*="bg-black"]):not([class*="bg-gradient-to"]):not(.btn-colored):not(#topPromoBanner *) {
+  color: #171717;
 }
 
 /* ========================================================
-   LIGHT MODE INTENTIONAL EXCEPTIONS:
-   Preserve crisp white text on colored buttons & gradient elements!
+   BUTTONS & SOLID BADGES (WHITE TEXT ON COLORED BUTTONS)
    ======================================================== */
-html:not(.dark) button[class*="bg-indigo"],
-html:not(.dark) button[class*="bg-cyan"],
-html:not(.dark) button[class*="bg-emerald"],
-html:not(.dark) button[class*="bg-purple"],
-html:not(.dark) button[class*="bg-blue"],
-html:not(.dark) button[class*="bg-red"],
-html:not(.dark) button[class*="bg-amber"],
-html:not(.dark) button[class*="bg-slate-900"],
-html:not(.dark) button[class*="bg-black"],
-html:not(.dark) button[class*="bg-gradient-to"],
-html:not(.dark) a[class*="bg-indigo"],
-html:not(.dark) a[class*="bg-cyan"],
-html:not(.dark) a[class*="bg-emerald"],
-html:not(.dark) a[class*="bg-purple"],
-html:not(.dark) a[class*="bg-blue"],
-html:not(.dark) a[class*="bg-red"],
-html:not(.dark) a[class*="bg-amber"],
-html:not(.dark) a[class*="bg-slate-900"],
-html:not(.dark) a[class*="bg-black"],
-html:not(.dark) a[class*="bg-gradient-to"],
-html:not(.dark) .btn-primary,
-html:not(.dark) .btn-colored,
-html:not(.dark) .badge-colored,
-html:not(.dark) .filter-btn.active,
-html:not(.dark) .cat-btn.active,
-html:not(.dark) .cat-filter-btn.active,
-html:not(.dark) [class*="bg-indigo-600"],
-html:not(.dark) [class*="bg-cyan-600"],
-html:not(.dark) [class*="bg-emerald-600"],
-html:not(.dark) [class*="bg-purple-600"],
-html:not(.dark) [class*="bg-red-600"],
-html:not(.dark) [class*="bg-blue-600"],
-html:not(.dark) [class*="bg-amber-600"],
-html:not(.dark) .top-promo-banner,
-html:not(.dark) #topPromoBanner {
+button[class*="bg-indigo"],
+button[class*="bg-cyan"],
+button[class*="bg-emerald"],
+button[class*="bg-purple"],
+button[class*="bg-blue"],
+button[class*="bg-red"],
+button[class*="bg-amber"],
+button[class*="bg-slate-900"],
+button[class*="bg-black"],
+button[class*="bg-gradient-to"],
+a[class*="bg-indigo"],
+a[class*="bg-cyan"],
+a[class*="bg-emerald"],
+a[class*="bg-purple"],
+a[class*="bg-blue"],
+a[class*="bg-red"],
+a[class*="bg-amber"],
+a[class*="bg-slate-900"],
+a[class*="bg-black"],
+a[class*="bg-gradient-to"],
+.btn-primary,
+.btn-colored,
+.badge-colored,
+.top-promo-banner,
+#topPromoBanner {
   color: #ffffff !important;
 }
 
-/* Ensure ALL child elements (spans, icons, b, strong) inside colored buttons stay crisp white */
-html:not(.dark) button[class*="bg-indigo"] *,
-html:not(.dark) button[class*="bg-cyan"] *,
-html:not(.dark) button[class*="bg-emerald"] *,
-html:not(.dark) button[class*="bg-purple"] *,
-html:not(.dark) button[class*="bg-blue"] *,
-html:not(.dark) button[class*="bg-red"] *,
-html:not(.dark) button[class*="bg-amber"] *,
-html:not(.dark) button[class*="bg-slate-900"] *,
-html:not(.dark) button[class*="bg-black"] *,
-html:not(.dark) button[class*="bg-gradient-to"] *,
-html:not(.dark) a[class*="bg-indigo"] *,
-html:not(.dark) a[class*="bg-cyan"] *,
-html:not(.dark) a[class*="bg-emerald"] *,
-html:not(.dark) a[class*="bg-purple"] *,
-html:not(.dark) a[class*="bg-blue"] *,
-html:not(.dark) a[class*="bg-red"] *,
-html:not(.dark) a[class*="bg-amber"] *,
-html:not(.dark) a[class*="bg-slate-900"] *,
-html:not(.dark) a[class*="bg-black"] *,
-html:not(.dark) a[class*="bg-gradient-to"] *,
-html:not(.dark) .btn-primary *,
-html:not(.dark) .btn-colored *,
-html:not(.dark) .badge-colored *,
-html:not(.dark) .filter-btn.active *,
-html:not(.dark) .cat-btn.active *,
-html:not(.dark) .cat-filter-btn.active *,
-html:not(.dark) [class*="bg-indigo-600"] *,
-html:not(.dark) [class*="bg-cyan-600"] *,
-html:not(.dark) [class*="bg-emerald-600"] *,
-html:not(.dark) [class*="bg-purple-600"] *,
-html:not(.dark) [class*="bg-red-600"] *,
-html:not(.dark) [class*="bg-blue-600"] *,
-html:not(.dark) [class*="bg-amber-600"] *,
-html:not(.dark) .top-promo-banner *,
-html:not(.dark) #topPromoBanner * {
+button[class*="bg-indigo"] *,
+button[class*="bg-cyan"] *,
+button[class*="bg-emerald"] *,
+button[class*="bg-purple"] *,
+button[class*="bg-blue"] *,
+button[class*="bg-red"] *,
+button[class*="bg-amber"] *,
+button[class*="bg-slate-900"] *,
+button[class*="bg-black"] *,
+button[class*="bg-gradient-to"] *,
+a[class*="bg-indigo"] *,
+a[class*="bg-cyan"] *,
+a[class*="bg-emerald"] *,
+a[class*="bg-purple"] *,
+a[class*="bg-blue"] *,
+a[class*="bg-red"] *,
+a[class*="bg-amber"] *,
+a[class*="bg-slate-900"] *,
+a[class*="bg-black"] *,
+a[class*="bg-gradient-to"] *,
+.btn-primary *,
+.btn-colored *,
+.top-promo-banner *,
+#topPromoBanner * {
   color: #ffffff !important;
+}
+
+/* Secondary Frosted Glass Buttons */
+button[class*="bg-white\/"],
+a[class*="bg-white\/"]:not([class*="bg-gradient"]),
+button.bg-white\/5,
+button.bg-white\/10,
+button.bg-white\/20,
+a.bg-white\/5,
+a.bg-white\/10,
+a.bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(203, 213, 225, 0.8) !important;
+  color: #171717 !important;
+}
+
+button[class*="bg-white\/"]:hover,
+a[class*="bg-white\/"]:hover {
+  background-color: #ffffff !important;
+  color: #171717 !important;
 }
 
 /* ========================================================
-   LIGHT MODE: PRESERVE CRISP LUMINOUS TEXT ON INTENTIONAL DARK CONTAINERS
-   Ensures text on dark cards, promotional banners, and gradient boxes
-   never turns black or dark gray!
+   REQUIREMENT 1: WHITE GLASS UI FOR ALL BOXES & CARDS
    ======================================================== */
-html:not(.dark) [class*="from-slate-900"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-slate-900"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-slate-900"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-slate-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-slate-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-slate-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-purple-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-purple-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-purple-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-indigo-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-indigo-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-indigo-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-cyan-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-cyan-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="from-cyan-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="via-slate-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="via-slate-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="via-slate-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="via-slate-900"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="via-slate-900"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="via-slate-900"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="bg-slate-950"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="bg-slate-950"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="bg-slate-950"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="bg-slate-900"] h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="bg-slate-900"] h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) [class*="bg-slate-900"] h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html:not(.dark) .frp-highlight-box h1,
-html:not(.dark) .frp-highlight-box h2,
-html:not(.dark) .frp-highlight-box h3,
-html:not(.dark) .frp-highlight-box h4 {
-  color: #ffffff !important;
+.glass-card,
+.glass-3d,
+.glass-panel,
+.card,
+.white-glass-box,
+details.group,
+.bg-slate-900:not(button):not(a):not(input):not(textarea),
+.bg-slate-950:not(button):not(a):not(input):not(textarea),
+.bg-slate-800:not(button):not(a):not(input):not(textarea),
+.bg-\[\#111827\]:not(button):not(a):not(input):not(textarea),
+.bg-\[\#0B0F19\]:not(button):not(a):not(input):not(textarea),
+.dark\:bg-slate-900:not(button):not(a):not(input):not(textarea),
+.dark\:bg-slate-950:not(button):not(a):not(input):not(textarea),
+.dark\:bg-[#111827]:not(button):not(a):not(input):not(textarea),
+.dark\:bg-[#0B0F19]:not(button):not(a):not(input):not(textarea) {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(18px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 18px !important;
+  color: #171717 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html:not(.dark) [class*="from-slate-900"] p,
-html:not(.dark) [class*="from-slate-950"] p,
-html:not(.dark) [class*="from-purple-950"] p,
-html:not(.dark) [class*="from-indigo-950"] p,
-html:not(.dark) [class*="from-cyan-950"] p,
-html:not(.dark) [class*="via-slate-950"] p,
-html:not(.dark) [class*="via-slate-900"] p,
-html:not(.dark) [class*="bg-slate-950"] p,
-html:not(.dark) [class*="bg-slate-900"] p,
-html:not(.dark) .frp-highlight-box p {
-  color: #e2e8f0 !important;
-}
-
-html:not(.dark) [class*="from-slate-900"] .text-white,
-html:not(.dark) [class*="from-slate-950"] .text-white,
-html:not(.dark) [class*="from-purple-950"] .text-white,
-html:not(.dark) [class*="from-indigo-950"] .text-white,
-html:not(.dark) [class*="from-cyan-950"] .text-white,
-html:not(.dark) [class*="via-slate-950"] .text-white,
-html:not(.dark) [class*="via-slate-900"] .text-white,
-html:not(.dark) [class*="bg-slate-950"] .text-white,
-html:not(.dark) [class*="bg-slate-900"] .text-white,
-html:not(.dark) .frp-highlight-box .text-white {
-  color: #ffffff !important;
-}
-
-html:not(.dark) [class*="from-slate-900"] .text-slate-300,
-html:not(.dark) [class*="from-slate-950"] .text-slate-300,
-html:not(.dark) [class*="from-purple-950"] .text-slate-300,
-html:not(.dark) [class*="from-indigo-950"] .text-slate-300,
-html:not(.dark) [class*="from-cyan-950"] .text-slate-300,
-html:not(.dark) [class*="via-slate-950"] .text-slate-300,
-html:not(.dark) [class*="via-slate-900"] .text-slate-300,
-html:not(.dark) [class*="bg-slate-950"] .text-slate-300,
-html:not(.dark) [class*="bg-slate-900"] .text-slate-300,
-html:not(.dark) .frp-highlight-box .text-slate-300 {
-  color: #cbd5e1 !important;
-}
-
-html:not(.dark) [class*="from-slate-900"] .text-slate-400,
-html:not(.dark) [class*="from-slate-950"] .text-slate-400,
-html:not(.dark) [class*="from-purple-950"] .text-slate-400,
-html:not(.dark) [class*="from-indigo-950"] .text-slate-400,
-html:not(.dark) [class*="from-cyan-950"] .text-slate-400,
-html:not(.dark) [class*="via-slate-950"] .text-slate-400,
-html:not(.dark) [class*="via-slate-900"] .text-slate-400,
-html:not(.dark) [class*="bg-slate-950"] .text-slate-400,
-html:not(.dark) [class*="bg-slate-900"] .text-slate-400,
-html:not(.dark) .frp-highlight-box .text-slate-400 {
-  color: #94a3b8 !important;
-}
-
-/* Light mode secondary / frosted buttons & chips */
-html:not(.dark) button[class*="bg-white\/"],
-html:not(.dark) a[class*="bg-white\/"]:not([class*="bg-gradient"]),
-html:not(.dark) button.bg-white\/5,
-html:not(.dark) button.bg-white\/10,
-html:not(.dark) button.bg-white\/20,
-html:not(.dark) a.bg-white\/5,
-html:not(.dark) a.bg-white\/10,
-html:not(.dark) a.bg-white\/20 {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-  color: #111827 !important;
-}
-
-html:not(.dark) button[class*="bg-white\/"]:hover,
-html:not(.dark) a[class*="bg-white\/"]:hover,
-html:not(.dark) button.bg-white\/5:hover,
-html:not(.dark) button.bg-white\/10:hover,
-html:not(.dark) a.bg-white\/5:hover,
-html:not(.dark) a.bg-white\/10:hover {
-  background-color: #e2e8f0 !important;
-  color: #111827 !important;
-}
-
-html:not(.dark) [class*="border-white\/"] {
-  border-color: rgba(15, 23, 42, 0.12) !important;
+.glass-card:hover,
+.glass-3d:hover,
+.white-glass-box:hover {
+  background: rgba(255, 255, 255, 0.94) !important;
+  transform: translateY(-2px);
+  border-color: rgba(2, 132, 199, 0.4) !important;
+  box-shadow: 0 16px 35px -5px rgba(2, 132, 199, 0.12), 0 2px 6px rgba(0, 0, 0, 0.03) !important;
 }
 
 /* ========================================================
-   DARK MODE: UNIVERSAL TEXT VISIBILITY & CONTRAST
-   Never allow black or near-black text on dark background
+   FORM CONTROLS & INPUTS
    ======================================================== */
-
-html.dark,
-html.dark body,
-body.dark-mode {
-  background-color: var(--bg-page) !important;
-  color: var(--text-primary) !important;
-  background-image: 
-    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 90% 25%, rgba(14, 165, 233, 0.08) 0%, transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 45%) !important;
-}
-
-/* Dark Mode Headings (#F8FAFC) */
-html.dark h1:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html.dark h2:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html.dark h3:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html.dark h4:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html.dark h5:not([class*="text-transparent"]):not([class*="bg-clip-text"]),
-html.dark h6:not([class*="text-transparent"]):not([class*="bg-clip-text"]) {
-  color: #f8fafc !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em;
-}
-
-/* Dark Mode Paragraphs (#E2E8F0) */
-html.dark p:not(.banner-text) {
-  color: #e2e8f0 !important;
-  line-height: 1.65;
-}
-
-/* Dark Mode Labels, Bold, Strong, Term titles (#F8FAFC) */
-html.dark label,
-html.dark dt,
-html.dark summary,
-html.dark strong,
-html.dark b {
-  color: #f8fafc !important;
-}
-
-/* ========================================================
-   CRITICAL DARK MODE FIX: ELIMINATE BLACK/DARK TEXT ON DARK SURFACES
-   Remap all dark text utility classes to high-visibility light colors!
-   ======================================================== */
-/* Dark Mode Intentional Exception: White buttons keep dark text in dark mode */
-html.dark button.bg-white,
-html.dark button.bg-white *,
-html.dark a.bg-white,
-html.dark a.bg-white * {
-  color: #0f172a !important;
-}
-
-html.dark .text-slate-900:not(button.bg-white):not(button.bg-white *):not(a.bg-white):not(a.bg-white *),
-html.dark .text-slate-800:not(button.bg-white):not(button.bg-white *):not(a.bg-white):not(a.bg-white *),
-html.dark .text-gray-900:not(button.bg-white):not(button.bg-white *):not(a.bg-white):not(a.bg-white *),
-html.dark .text-gray-800:not(button.bg-white):not(button.bg-white *):not(a.bg-white):not(a.bg-white *),
-html.dark .text-zinc-900:not(button.bg-white):not(button.bg-white *):not(a.bg-white):not(a.bg-white *),
-html.dark .text-zinc-800:not(button.bg-white):not(button.bg-white *):not(a.bg-white):not(a.bg-white *),
-html.dark .text-black:not(button.bg-white):not(button.bg-white *):not(a.bg-white):not(a.bg-white *) {
-  color: #f8fafc !important;
-}
-
-/* Category & filter buttons state management */
-html:not(.dark) .cat-btn:not(.active),
-html:not(.dark) .filter-btn:not(.active),
-html:not(.dark) .cat-filter-btn:not(.active) {
-  background-color: #f1f5f9 !important;
-  color: #374151 !important;
-  border: 1px solid #e2e8f0 !important;
-}
-
-html:not(.dark) .cat-btn:not(.active):hover,
-html:not(.dark) .filter-btn:not(.active):hover,
-html:not(.dark) .cat-filter-btn:not(.active):hover {
-  background-color: #e2e8f0 !important;
-  color: #111827 !important;
-}
-
-html.dark .cat-btn:not(.active),
-html.dark .filter-btn:not(.active),
-html.dark .cat-filter-btn:not(.active) {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  color: #cbd5e1 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-html.dark .cat-btn:not(.active):hover,
-html.dark .filter-btn:not(.active):hover,
-html.dark .cat-filter-btn:not(.active):hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: #f8fafc !important;
-}
-
-/* Hover contrast security */
-html:not(.dark) [class*="hover:text-white"]:hover:not(button[class*="bg-"]):not(a[class*="bg-"]):not(.btn-colored):not(#topPromoBanner *) {
-  color: #111827 !important;
-}
-
-html.dark [class*="hover:text-slate-900"]:hover:not(button.bg-white):not(a.bg-white) {
-  color: #f8fafc !important;
-}
-
-html.dark [class*="hover:text-slate-800"]:hover:not(button.bg-white):not(a.bg-white) {
-  color: #f8fafc !important;
-}
-
-html.dark .text-slate-700,
-html.dark .text-slate-600,
-html.dark .text-gray-700,
-html.dark .text-gray-600,
-html.dark .text-zinc-700,
-html.dark .text-zinc-600 {
-  color: #e2e8f0 !important;
-}
-
-html.dark .text-slate-500,
-html.dark .text-slate-400,
-html.dark .text-gray-500,
-html.dark .text-gray-400,
-html.dark .text-zinc-500,
-html.dark .text-zinc-400 {
-  color: #cbd5e1 !important;
+input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
+select,
+textarea {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #171717 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 0.75rem !important;
   font-weight: 500;
 }
 
-html.dark .text-slate-300,
-html.dark .text-gray-300,
-html.dark .text-zinc-300 {
-  color: #e2e8f0 !important;
-}
-
-html.dark .text-slate-200,
-html.dark .text-slate-100,
-html.dark .text-gray-200,
-html.dark .text-gray-100,
-html.dark .text-white {
-  color: #f8fafc !important;
-}
-
-/* ========================================================
-   CONTAINERS, CARDS & SURFACES COMPATIBILITY
-   ======================================================== */
-
-/* LIGHT MODE CARDS: Pure clean white with subtle border & shadow */
-html:not(.dark) .glass-card, 
-html:not(.dark) .glass-3d, 
-html:not(.dark) .glass-panel,
-html:not(.dark) .card,
-html:not(.dark) [class*="bg-slate-900"]:not(button):not(a[class*="bg-"]):not(#sidebar):not([id*="Backdrop"]):not(.fixed):not(.top-promo-banner):not(#diagTerminalBody),
-html:not(.dark) [class*="bg-slate-950"]:not(button):not(a[class*="bg-"]):not(#sidebar):not([id*="Backdrop"]):not(.fixed):not(.top-promo-banner):not(#diagTerminalBody),
-html:not(.dark) [class*="bg-slate-800"]:not(button):not(a[class*="bg-"]):not(#sidebar):not([id*="Backdrop"]):not(.fixed):not(.top-promo-banner):not(#diagTerminalBody),
-html:not(.dark) details.group {
-  background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
-  color: #111827 !important;
-}
-
-html:not(.dark) .glass-card:hover, 
-html:not(.dark) .glass-3d:hover {
-  background-color: #ffffff !important;
-  border-color: rgba(99, 102, 241, 0.35) !important;
-  box-shadow: 0 12px 30px -4px rgba(99, 102, 241, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
-}
-
-/* DARK MODE CARDS: Deep slate (#1e293b) with glowing borders */
-html.dark .glass-card, 
-html.dark .glass-3d, 
-html.dark .glass-panel,
-html.dark .card,
-html.dark [class*="bg-slate-900"]:not(.top-promo-banner),
-html.dark [class*="bg-slate-950"]:not(.top-promo-banner),
-html.dark [class*="bg-slate-800"]:not(.top-promo-banner),
-html.dark details.group {
-  background-color: #1e293b !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-  color: #f8fafc !important;
-}
-
-html.dark .glass-card:hover, 
-html.dark .glass-3d:hover {
-  background-color: #243048 !important;
-  border-color: rgba(99, 102, 241, 0.5) !important;
-  box-shadow: 0 16px 36px -5px rgba(99, 102, 241, 0.25) !important;
-}
-
-/* ========================================================
-   FORM CONTROLS, INPUTS & PLACEHOLDERS
-   ======================================================== */
-
-/* LIGHT MODE INPUTS */
-html:not(.dark) input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]), 
-html:not(.dark) select, 
-html:not(.dark) textarea {
-  background-color: #ffffff !important;
-  color: #111827 !important;
-  border: 1px solid #d1d5db !important;
-  font-weight: 500;
-}
-
-html:not(.dark) input:focus, 
-html:not(.dark) select:focus, 
-html:not(.dark) textarea:focus {
-  border-color: #4f46e5 !important;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15) !important;
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
   outline: none;
 }
 
-html:not(.dark) input::placeholder, 
-html:not(.dark) textarea::placeholder {
-  color: #6b7280 !important;
-  font-weight: 400;
-  opacity: 1 !important;
-}
-
-/* DARK MODE INPUTS */
-html.dark input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]), 
-html.dark select, 
-html.dark textarea {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  font-weight: 500;
-}
-
-html.dark input:focus, 
-html.dark select:focus, 
-html.dark textarea:focus {
-  border-color: #6366f1 !important;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
-  outline: none;
-}
-
-html.dark input::placeholder, 
-html.dark textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: #94a3b8 !important;
-  font-weight: 400;
   opacity: 1 !important;
 }
 
 /* ========================================================
-   TABLES, LISTS & DETAILS/FAQ
+   TABLES, MODALS & DROPDOWNS
    ======================================================== */
-
-/* LIGHT MODE TABLES */
-html:not(.dark) table {
-  background-color: #ffffff;
-  color: #111827;
+table {
+  background-color: rgba(255, 255, 255, 0.92);
+  color: #171717;
 }
 
-html:not(.dark) thead th {
-  background-color: #f1f5f9 !important;
-  color: #111827 !important;
+thead th {
+  background-color: rgba(241, 245, 249, 0.95) !important;
+  color: #171717 !important;
   font-weight: 700 !important;
   border-bottom: 2px solid #e2e8f0 !important;
 }
 
-html:not(.dark) tbody td {
-  color: #374151 !important;
+tbody td {
+  color: #555555 !important;
   border-bottom: 1px solid #f1f5f9 !important;
 }
 
-html:not(.dark) tbody tr:hover {
-  background-color: #f8fafc !important;
+tbody tr:hover {
+  background-color: rgba(248, 250, 252, 0.95) !important;
 }
 
-/* DARK MODE TABLES */
-html.dark table {
-  background-color: transparent;
-  color: #f8fafc;
+#userDropdownPanel,
+#sidebarUserPopup,
+.dropdown-menu,
+.modal-content,
+[id$="Modal"] > div:not([class*="bg-slate-950/"]):not([class*="bg-black/"]):not(.fixed) {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  color: #171717 !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12) !important;
+  border-radius: 1.25rem !important;
 }
 
-html.dark thead th {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  color: #f8fafc !important;
-  font-weight: 700 !important;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-html.dark tbody td {
-  color: #e2e8f0 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-}
-
-html.dark tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.04) !important;
-}
-
-/* FAQ Details Accordion */
-html:not(.dark) details summary {
-  color: #111827 !important;
-  font-weight: 700 !important;
-}
-
-html.dark details summary {
-  color: #f8fafc !important;
-  font-weight: 700 !important;
-}
-
-/* ========================================================
-   MODALS, DROPDOWNS & POPOVERS
-   ======================================================== */
-
-/* LIGHT MODE MODALS & DROPDOWNS */
-html:not(.dark) #userDropdownPanel,
-html:not(.dark) #sidebarUserPopup,
-html:not(.dark) .dropdown-menu,
-html:not(.dark) .modal-content,
-html:not(.dark) [id$="Modal"] > div:not([class*="bg-slate-950/"]):not([class*="bg-black/"]):not(.fixed) {
-  background-color: #ffffff !important;
-  color: #111827 !important;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* DARK MODE MODALS & DROPDOWNS */
-html.dark #userDropdownPanel,
-html.dark #sidebarUserPopup,
-html.dark .dropdown-menu,
-html.dark .modal-content,
-html.dark [id$="Modal"] > div:not([class*="bg-slate-950/"]):not([class*="bg-black/"]):not(.fixed) {
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8) !important;
-}
-
-/* Modal Backdrops remain translucent dark across both modes */
 [id$="Modal"].fixed,
 #sidebarBackdrop {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  backdrop-filter: blur(8px) !important;
+  background-color: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
 }
 
 /* ========================================================
-   NAVIGATION & LUXURY SIDEBAR
+   NAVIGATION & CHATGPT-STYLE COLLAPSIBLE SIDEBAR
    ======================================================== */
-
-/* NAVBAR */
-html:not(.dark) .glass-nav {
-  background-color: rgba(255, 255, 255, 0.96) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid #e2e8f0 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+.glass-nav {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03) !important;
 }
 
-html.dark .glass-nav {
-  background-color: rgba(15, 23, 42, 0.95) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* SIDEBAR LIGHT MODE */
-html:not(.dark) #sidebar,
-html:not(.dark) .sidebar-luxury {
-  background-color: #ffffff !important;
-  border-right: 1px solid #e2e8f0 !important;
-  color: #111827 !important;
+#sidebar,
+.sidebar-luxury {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-right: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #171717 !important;
   box-shadow: 4px 0 25px rgba(0, 0, 0, 0.03);
 }
 
-html:not(.dark) #sidebar .sidebar-user-name {
-  color: #111827 !important;
+#sidebar .sidebar-user-name {
+  color: #171717 !important;
   font-weight: 800 !important;
 }
 
-html:not(.dark) #sidebar .sidebar-user-email {
-  color: #4b5563 !important;
-}
-
-html:not(.dark) #sidebar .sidebar-link {
-  color: #111827 !important;
-  font-weight: 600;
-}
-
-html:not(.dark) #sidebar .sidebar-link:hover {
-  background-color: #f1f5f9 !important;
-  color: #111827 !important;
-}
-
-html:not(.dark) #sidebar .sidebar-link i {
-  color: #4b5563 !important;
-}
-
-html:not(.dark) #sidebar .sidebar-link:hover i {
+#sidebar .sidebar-user-email {
   color: #0284c7 !important;
 }
 
-html:not(.dark) #sidebar .sidebar-divider {
-  border-color: #e2e8f0 !important;
-}
-
-/* SIDEBAR DARK MODE */
-html.dark #sidebar,
-html.dark .sidebar-luxury {
-  background-color: #181b24 !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #f8fafc !important;
-}
-
-html.dark #sidebar .sidebar-user-name {
-  color: #f8fafc !important;
-  font-weight: 800 !important;
-}
-
-html.dark #sidebar .sidebar-user-email {
-  color: #cbd5e1 !important;
-}
-
-html.dark #sidebar .sidebar-link {
-  color: #f8fafc !important;
+#sidebar .sidebar-link {
+  color: #555555 !important;
   font-weight: 600;
+  transition: all 0.2s ease;
 }
 
-html.dark #sidebar .sidebar-link:hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  color: #f8fafc !important;
+#sidebar .sidebar-link:hover {
+  background-color: rgba(241, 245, 249, 0.95) !important;
+  color: #171717 !important;
 }
 
-html.dark #sidebar .sidebar-link i {
-  color: #cbd5e1 !important;
+#sidebar .sidebar-link i {
+  color: #64748b !important;
 }
 
-html.dark #sidebar .sidebar-link:hover i {
-  color: #38bdf8 !important;
-}
-
-html.dark #sidebar .sidebar-divider {
-  border-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-/* THEME SWITCH PILL */
-html:not(.dark) .theme-switch-pill {
-  background-color: #f1f5f9 !important;
-  border: 1px solid #e2e8f0 !important;
-}
-
-html:not(.dark) .theme-switch-pill #themeBtnLight,
-html:not(.dark) .theme-switch-pill .btn-theme-light {
-  background-color: #ffffff !important;
-  color: #111827 !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
-}
-
-html:not(.dark) .theme-switch-pill #themeBtnDark,
-html:not(.dark) .theme-switch-pill .btn-theme-dark {
-  color: #4b5563 !important;
-  background: transparent !important;
-}
-
-html.dark .theme-switch-pill {
-  background-color: #12141a !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-html.dark .theme-switch-pill #themeBtnDark,
-html.dark .theme-switch-pill .btn-theme-dark {
-  background-color: #282d3c !important;
-  color: #f8fafc !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
-}
-
-html.dark .theme-switch-pill #themeBtnLight,
-html.dark .theme-switch-pill .btn-theme-light {
-  color: #94a3b8 !important;
-  background: transparent !important;
-}
-
-/* FOOTER */
-html:not(.dark) footer {
-  background-color: #f8fafc !important;
-  border-top: 1px solid #e2e8f0 !important;
-  color: #374151 !important;
-}
-
-html:not(.dark) footer h1,
-html:not(.dark) footer h2,
-html:not(.dark) footer h3,
-html:not(.dark) footer h4,
-html:not(.dark) footer strong,
-html:not(.dark) footer b {
-  color: #111827 !important;
-}
-
-html:not(.dark) footer p,
-html:not(.dark) footer li,
-html:not(.dark) footer a {
-  color: #374151 !important;
-}
-
-html:not(.dark) footer a:hover {
-  color: #111827 !important;
-}
-
-html.dark footer {
-  background-color: #090d16 !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #cbd5e1 !important;
-}
-
-html.dark footer h1,
-html.dark footer h2,
-html.dark footer h3,
-html.dark footer h4,
-html.dark footer strong,
-html.dark footer b {
-  color: #f8fafc !important;
-}
-
-html.dark footer p,
-html.dark footer li,
-html.dark footer a {
-  color: #cbd5e1 !important;
-}
-
-html.dark footer a:hover {
-  color: #f8fafc !important;
-}
-
-/* ========================================================
-   ACCESSIBLE COLOR ACCENTS (WCAG AA COMPLIANT)
-   ======================================================== */
-
-/* Cyan / Sky */
-html:not(.dark) .text-cyan-400,
-html:not(.dark) .text-cyan-300,
-html:not(.dark) .text-cyan-500 {
-  color: #0369a1 !important;
-  font-weight: 700;
-}
-
-html.dark .text-cyan-400,
-html.dark .text-cyan-300,
-html.dark .text-cyan-500 {
-  color: #38bdf8 !important;
-  font-weight: 700;
-}
-
-/* Indigo */
-html:not(.dark) .text-indigo-400,
-html:not(.dark) .text-indigo-300,
-html:not(.dark) .text-indigo-500 {
-  color: #4338ca !important;
-  font-weight: 700;
-}
-
-html.dark .text-indigo-400,
-html.dark .text-indigo-300,
-html.dark .text-indigo-500 {
-  color: #818cf8 !important;
-  font-weight: 700;
-}
-
-/* Emerald */
-html:not(.dark) .text-emerald-400,
-html:not(.dark) .text-emerald-300,
-html:not(.dark) .text-emerald-500 {
-  color: #047857 !important;
-  font-weight: 700;
-}
-
-html.dark .text-emerald-400,
-html.dark .text-emerald-300,
-html.dark .text-emerald-500 {
-  color: #34d399 !important;
-  font-weight: 700;
-}
-
-/* Amber / Gold */
-html:not(.dark) .text-amber-400,
-html:not(.dark) .text-amber-300,
-html:not(.dark) .text-amber-500 {
-  color: #b45309 !important;
-  font-weight: 700;
-}
-
-html.dark .text-amber-400,
-html.dark .text-amber-300,
-html.dark .text-amber-500 {
-  color: #fbbf24 !important;
-  font-weight: 700;
-}
-
-/* Purple */
-html:not(.dark) .text-purple-400,
-html:not(.dark) .text-purple-300,
-html:not(.dark) .text-purple-500 {
-  color: #6d28d9 !important;
-  font-weight: 700;
-}
-
-html.dark .text-purple-400,
-html.dark .text-purple-300,
-html.dark .text-purple-500 {
-  color: #c084fc !important;
-  font-weight: 700;
-}
-
-/* Red / Coral */
-html:not(.dark) .text-red-400,
-html:not(.dark) .text-red-300,
-html:not(.dark) .text-red-500 {
-  color: #b91c1c !important;
-  font-weight: 700;
-}
-
-html.dark .text-red-400,
-html.dark .text-red-300,
-html.dark .text-red-500 {
-  color: #f87171 !important;
-  font-weight: 700;
-}
-
-/* Brand Name Text */
-.brand-name-habib {
-  font-weight: 900 !important;
-  font-size: 1.35rem !important;
-  letter-spacing: -0.02em !important;
-  display: inline-block !important;
-  line-height: 1.2 !important;
-}
-
-html:not(.dark) .brand-name-habib {
-  color: #111827 !important;
-}
-
-html.dark .brand-name-habib {
-  color: #f8fafc !important;
-  text-shadow: 0 0 16px rgba(255, 255, 255, 0.4) !important;
-}
-
-.brand-name-ifix {
-  background: linear-gradient(135deg, #0284c7 0%, #4338ca 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  font-weight: 900 !important;
-  font-size: 1.3rem !important;
-  letter-spacing: -0.02em !important;
-  display: inline-block !important;
-}
-
-html.dark .brand-name-ifix {
-  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-.brand-name-tech {
-  border-radius: 6px !important;
-  font-family: 'JetBrains Mono', monospace !important;
-  font-weight: 800 !important;
-  font-size: 11px !important;
-  display: inline-block !important;
-  margin-left: 5px !important;
-  padding: 2px 7px !important;
-  vertical-align: middle !important;
-}
-
-html:not(.dark) .brand-name-tech {
-  background: rgba(2, 132, 199, 0.1) !important;
+#sidebar .sidebar-link:hover i {
   color: #0284c7 !important;
-  border: 1px solid rgba(2, 132, 199, 0.3) !important;
 }
 
-html.dark .brand-name-tech {
-  background: rgba(6, 182, 212, 0.15) !important;
-  color: #38bdf8 !important;
-  border: 1px solid rgba(6, 182, 212, 0.45) !important;
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3) !important;
+#sidebar .sidebar-divider {
+  border-color: rgba(226, 232, 240, 0.8) !important;
 }
 
-/* Brand Logo H-Icon Box */
-.brand-logo-box {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  min-width: 2.5rem !important;
-  min-height: 2.5rem !important;
-  flex-shrink: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 0.875rem !important;
-  position: relative !important;
-  padding: 1.5px !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
+.sidebar-active-page {
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.12), rgba(67, 56, 202, 0.12)) !important;
+  border-left: 3px solid #0284c7 !important;
+  color: #0284c7 !important;
+  font-weight: 800 !important;
 }
 
-.brand-logo-box > div {
-  width: 100% !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 0.75rem !important;
+.sidebar-active-page i {
+  color: #0284c7 !important;
 }
-
-html:not(.dark) .brand-logo-box > div {
-  background-color: #ffffff !important;
-}
-
-html.dark .brand-logo-box > div {
-  background-color: #0f172a !important;
-}
-
-/* Top Announcement Banner */
-.top-promo-banner,
-#topPromoBanner {
-  background: linear-gradient(90deg, #090d1a 0%, #17153b 50%, #061d2d 100%) !important;
-  border-bottom: 1px solid rgba(99, 102, 241, 0.3) !important;
-  color: #ffffff !important;
-  font-weight: 600;
-}
-
-.top-promo-banner * {
-  color: #ffffff !important;
-}
-
-/* Diagnostic Terminal */
-#diagTerminalBody {
-  background-color: #050914 !important;
-  color: #38bdf8 !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  font-family: 'JetBrains Mono', monospace !important;
-}
-
-#diagTerminalBody span {
-  font-family: 'JetBrains Mono', monospace !important;
-}
-
-/* Scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-html.dark ::-webkit-scrollbar-track {
-  background: #0f172a;
-}
-
-html:not(.dark) ::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #6366f1;
-  border-radius: 4px;
-}
-
 
 /* ========================================================
-   RESPONSIVE COLLAPSIBLE SIDEBAR ENGINE (DESKTOP & MOBILE)
+   RESPONSIVE COLLAPSIBLE ENGINE (DESKTOP)
    ======================================================== */
 @media (min-width: 1024px) {
-  /* When sidebar is collapsed */
   html.sidebar-collapsed-mode #sidebar,
   body.sidebar-collapsed-mode #sidebar {
     width: 72px !important;
@@ -1169,12 +395,10 @@ html:not(.dark) ::-webkit-scrollbar-track {
   html.sidebar-collapsed-mode .sidebar-brand-text,
   html.sidebar-collapsed-mode .sidebar-user-info,
   html.sidebar-collapsed-mode .sidebar-user-chevron,
-  html.sidebar-collapsed-mode .theme-btn-label,
   body.sidebar-collapsed-mode .sidebar-label,
   body.sidebar-collapsed-mode .sidebar-brand-text,
   body.sidebar-collapsed-mode .sidebar-user-info,
-  body.sidebar-collapsed-mode .sidebar-user-chevron,
-  body.sidebar-collapsed-mode .theme-btn-label {
+  body.sidebar-collapsed-mode .sidebar-user-chevron {
     display: none !important;
   }
 
@@ -1191,23 +415,6 @@ html:not(.dark) ::-webkit-scrollbar-track {
     padding: 0.25rem !important;
   }
 
-  html.sidebar-collapsed-mode #sidebarCollapseBtn i,
-  body.sidebar-collapsed-mode #sidebarCollapseBtn i {
-    transform: rotate(180deg);
-  }
-
-  html.sidebar-collapsed-mode .theme-switch-pill,
-  body.sidebar-collapsed-mode .theme-switch-pill {
-    flex-direction: column !important;
-    padding: 2px !important;
-  }
-
-  html.sidebar-collapsed-mode .theme-btn-option,
-  body.sidebar-collapsed-mode .theme-btn-option {
-    padding: 6px 0 !important;
-  }
-
-  /* Tooltip on hover in collapsed mode */
   html.sidebar-collapsed-mode .sidebar-link {
     position: relative;
   }
@@ -1217,69 +424,85 @@ html:not(.dark) ::-webkit-scrollbar-track {
     position: absolute;
     left: 100%;
     margin-left: 12px;
-    background-color: #0f172a;
-    color: #f8fafc;
+    background-color: #171717;
+    color: #ffffff;
     padding: 6px 12px;
     font-size: 11px;
     font-weight: 700;
     white-space: nowrap;
     border-radius: 8px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     z-index: 1000;
     pointer-events: none;
   }
-
-  html:not(.dark).sidebar-collapsed-mode .sidebar-link:hover::after {
-    background-color: #111827;
-    color: #ffffff;
-    border: 1px solid #374151;
-  }
 }
 
-/* Active Sidebar Page Indicator */
-.sidebar-active-page {
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(99, 102, 241, 0.12)) !important;
-  border-left: 3px solid #06b6d4 !important;
+/* Footer */
+footer {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.8) !important;
+  color: #555555 !important;
+}
+
+footer h1, footer h2, footer h3, footer h4, footer strong, footer b {
+  color: #171717 !important;
+}
+
+footer p, footer li, footer a {
+  color: #555555 !important;
+}
+
+footer a:hover {
   color: #0284c7 !important;
-  font-weight: 800 !important;
 }
 
-.sidebar-active-page i {
+/* Brand Name Styling */
+.brand-name-habib {
+  font-weight: 900 !important;
+  font-size: 1.35rem !important;
+  letter-spacing: -0.02em !important;
+  color: #171717 !important;
+  display: inline-block !important;
+  line-height: 1.2 !important;
+}
+
+.brand-name-ifix {
+  background: linear-gradient(135deg, #0284c7 0%, #4338ca 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  font-weight: 900 !important;
+  font-size: 1.3rem !important;
+  letter-spacing: -0.02em !important;
+  display: inline-block !important;
+}
+
+.brand-name-tech {
+  background: rgba(2, 132, 199, 0.1) !important;
   color: #0284c7 !important;
-}
-
-html.dark .sidebar-active-page {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(99, 102, 241, 0.18)) !important;
-  border-left: 3px solid #38bdf8 !important;
-  color: #38bdf8 !important;
+  border: 1px solid rgba(2, 132, 199, 0.3) !important;
+  border-radius: 6px !important;
+  font-family: 'JetBrains Mono', monospace !important;
   font-weight: 800 !important;
+  font-size: 11px !important;
+  display: inline-block !important;
+  margin-left: 5px !important;
+  padding: 2px 7px !important;
+  vertical-align: middle !important;
 }
 
-html.dark .sidebar-active-page i {
-  color: #38bdf8 !important;
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-/* Admin Panel Sidebar & Elements Light Mode Compatibility */
-html:not(.dark) aside.glass-nav {
-  background-color: #ffffff !important;
-  border-right: 1px solid #e2e8f0 !important;
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
 }
 
-html:not(.dark) aside.glass-nav button:not(.bg-indigo-600) {
-  color: #374151 !important;
-}
-
-html:not(.dark) aside.glass-nav button:not(.bg-indigo-600):hover {
-  background-color: #f1f5f9 !important;
-  color: #111827 !important;
-}
-
-html:not(.dark) aside.glass-nav a {
-  color: #374151 !important;
-}
-
-html:not(.dark) aside.glass-nav a:hover {
-  background-color: #f1f5f9 !important;
-  color: #111827 !important;
+::-webkit-scrollbar-thumb {
+  background: #0284c7;
+  border-radius: 4px;
 }

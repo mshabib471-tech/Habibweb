@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
 <head>
     <!-- Chrome Extension Compatibility & Window Error Guard -->
     <script>
@@ -68,20 +68,20 @@
     <script src="/js/theme.js"></script>
     <script type="module" src="/js/site-auth.js"></script>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white dark-mode">
+<body class="min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
 
     <!-- TOP PROMO BANNER -->
     <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all">
         <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
-            <span class="inline-flex items-center gap-1.5 bg-indigo-500/20 text-cyan-300 border border-indigo-500/40 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
-                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+            <span class="inline-flex items-center gap-1.5 bg-indigo-500/20 text-indigo-700 border border-indigo-500/40 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-ping"></span>
                 ACTIVE
             </span>
-            <span class="font-bold text-white" data-en="Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds." data-bn="হাবিব আইফিক্স এআই টেকনিক্যাল অ্যাসিস্ট্যান্ট অ্যাক্টিভ! সেকেন্ডেই মোবাইল ডায়াগনসিস করুন।">
+            <span class="font-bold text-slate-800">
                 Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds.
             </span>
-            <button onclick="window.openHabibAI()" class="font-extrabold underline underline-offset-2 ml-1 cursor-pointer text-cyan-400 hover:text-cyan-300">
-                <span data-en="Try AI Now &rarr;" data-bn="এখনই এআই ট্রাই করুন &rarr;">Try AI Now &rarr;</span>
+            <button onclick="window.openHabibAI()" class="font-extrabold underline underline-offset-2 ml-1 cursor-pointer text-indigo-600 hover:text-indigo-700">
+                <span>Try AI Now &rarr;</span>
             </button>
         </div>
         <button onclick="closePromoBanner()" class="close-promo-btn p-1 rounded-full ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
@@ -101,14 +101,14 @@
                     <img src="/logo.png" class="w-8 h-8 rounded-lg object-contain shadow-sm shrink-0" alt="Habib iFix">
                     <div class="sidebar-brand-text flex flex-col">
                         <span class="text-xs font-black tracking-wider uppercase brand-name-habib">Habib iFix</span>
-                        <span class="text-[9px] text-cyan-500 font-mono font-bold tracking-tight">MASTER LAB</span>
+                        <span class="text-[9px] text-indigo-600 font-mono font-bold tracking-tight">MASTER LAB</span>
                     </div>
                 </a>
                 <div class="flex items-center gap-1">
-                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer" title="Collapse / Expand Sidebar">
+                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-black/5 transition-colors cursor-pointer" title="Collapse / Expand Sidebar">
                         <i class="fa-solid fa-angles-left text-xs transition-transform duration-300"></i>
                     </button>
-                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-900 p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
                         <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
                 </div>
@@ -116,13 +116,13 @@
 
             <!-- Profile Widget Container (Populated dynamically by site-auth.js) -->
             <div id="sidebarProfileSection" class="pt-2 border-t sidebar-divider">
-                <a href="dashboard.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left" title="My Dashboard">
-                    <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+                <a href="dashboard.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 transition-all text-left" title="My Dashboard">
+                    <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
                         <i class="fa-solid fa-user text-base"></i>
                     </div>
                     <div class="sidebar-user-info flex-1 min-w-0">
-                        <div class="sidebar-user-name text-sm font-black text-slate-900 dark:text-white">Account</div>
-                        <div class="sidebar-user-email text-xs text-indigo-600 dark:text-cyan-400 font-bold">Sign In / Register &rarr;</div>
+                        <div class="sidebar-user-name text-sm font-black text-slate-900">Account</div>
+                        <div class="sidebar-user-email text-xs text-indigo-600 font-bold">Sign In / Register &rarr;</div>
                     </div>
                 </a>
             </div>
@@ -184,17 +184,10 @@
             </button>
         </div>
         
-        <!-- Bottom Section: Segmented Light / Dark Toggle -->
+        <!-- Bottom Section -->
         <div class="p-3 border-t sidebar-divider">
-            <div class="theme-switch-pill flex items-center p-1 rounded-xl">
-                <button onclick="setSiteTheme('light')" id="themeBtnLight" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Light Theme">
-                    <i class="fa-regular fa-sun text-sm shrink-0"></i>
-                    <span class="theme-btn-label">Light</span>
-                </button>
-                <button onclick="setSiteTheme('dark')" id="themeBtnDark" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Dark Theme">
-                    <i class="fa-regular fa-moon text-sm shrink-0"></i>
-                    <span class="theme-btn-label">Dark</span>
-                </button>
+            <div class="text-[11px] text-slate-500 text-center font-bold font-mono">
+                Habib iFix Tech &copy; 2026
             </div>
         </div>
     </nav>
@@ -206,28 +199,32 @@
         <header class="sticky top-0 left-0 w-full z-40 glass-nav">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">
-                        <i class="fa-solid fa-bars text-lg text-slate-800 dark:text-white"></i>
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 cursor-pointer flex items-center justify-center text-slate-800" aria-label="Toggle Sidebar Navigation">
+                        <svg class="w-5 h-5 text-slate-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
+                            <path d="M9 3v18"></path>
+                            <path d="m14 9 3 3-3 3"></path>
+                        </svg>
                     </button>
                     <a href="index.html" class="lg:hidden flex items-center gap-2">
                         <img src="/logo.png" class="w-7 h-7 rounded-lg object-contain" alt="Habib iFix">
                         <span class="text-xs font-black uppercase brand-name-habib">Habib iFix</span>
                     </a>
-                    <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
+                    <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-500">
                         <span>Portal</span>
                         <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                        <span class="text-slate-900 dark:text-white">Customer & Student Dashboard</span>
+                        <span class="text-slate-900">Customer & Student Dashboard</span>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-2 sm:gap-3">
                     <!-- Top User Profile Pill (Matching Radiologex Header) -->
-                    <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-slate-200/90 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 shadow-xs backdrop-blur-md">
+                    <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-slate-200/90 bg-white/80 shadow-xs backdrop-blur-md">
                         <img id="topNavUserAvatar" src="https://api.dicebear.com/7.x/initials/svg?seed=User" class="w-7 h-7 rounded-full object-cover border-2 border-blue-600 shrink-0" alt="Avatar">
                         <div class="flex flex-col text-left leading-tight hidden sm:flex">
-                            <span id="topNavUserName" class="text-xs font-bold text-slate-900 dark:text-white">Member</span>
+                            <span id="topNavUserName" class="text-xs font-bold text-slate-900">Member</span>
                         </div>
-                        <div class="flex items-center gap-1.5 pl-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                        <div class="flex items-center gap-1.5 pl-1 text-[11px] font-semibold text-slate-500">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
                             <span id="topNavUserStatus">Active</span>
                             <i class="fa-solid fa-chevron-down text-[9px] text-slate-400 ml-0.5"></i>
@@ -235,23 +232,20 @@
                     </div>
 
                     <!-- Header Action Icons (From Radiologex Screenshot) -->
-                    <div class="hidden md:flex items-center gap-1 text-slate-500 dark:text-slate-400">
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer" title="Network & Community">
+                    <div class="hidden md:flex items-center gap-1 text-slate-500">
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:text-slate-900 hover:bg-black/5 transition-colors cursor-pointer" title="Network & Community">
                             <i class="fa-solid fa-users text-xs"></i>
                         </button>
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors relative cursor-pointer" title="Notifications">
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:text-slate-900 hover:bg-black/5 transition-colors relative cursor-pointer" title="Notifications">
                             <i class="fa-regular fa-bell text-xs"></i>
                             <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-400"></span>
                         </button>
-                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors relative cursor-pointer" title="Messages">
+                        <button class="w-8 h-8 rounded-full flex items-center justify-center hover:text-slate-900 hover:bg-black/5 transition-colors relative cursor-pointer" title="Messages">
                             <i class="fa-regular fa-comment-dots text-xs"></i>
                             <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-amber-400"></span>
                         </button>
                     </div>
 
-                    <button onclick="toggleLanguage()" id="langSwitchBtn" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer flex items-center gap-1.5 text-slate-700 dark:text-slate-200">
-                        <i class="fa-solid fa-globe text-blue-500 text-xs"></i> <span>EN | BN</span>
-                    </button>
                     <button onclick="window.doRealLogout()" class="px-3.5 py-1.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
                         <i class="fa-solid fa-power-off text-xs"></i>
                         <span class="hidden sm:inline">Logout</span>

@@ -1,5 +1,5 @@
 // Ensure window.fetch has a setter if only a getter is provided by the browser environment
-// Prevents "TypeError: Cannot set property fetch of #<Window> which has only a getter" in browser extensions and automation executors
+// Prevents "TypeError: Cannot set property fetch of #<Window> which has only a getter" in browser extensions
 (function() {
   try {
     if (typeof window !== 'undefined') {
@@ -29,97 +29,37 @@
   } catch (e) {}
 })();
 
-// Habib iFix .Tech Global Dual-Theme & Luxury Responsive Collapsible Sidebar Controller
+// Habib iFix .Tech - Single Light Mode Engine & ChatGPT-Style Collapsible Sidebar Controller
 (function() {
-  // Theme Management
+  'use strict';
+
+  // Force Pure Premium Light Mode Always
   window.setSiteTheme = function(theme) {
-    const isDark = theme === 'dark';
-    document.documentElement.classList.toggle('dark', isDark);
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.setAttribute('data-theme', 'light');
     if (document.body) {
-      document.body.classList.toggle('dark-mode', isDark);
-      document.body.classList.toggle('light-mode', !isDark);
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
     }
-    localStorage.setItem('habib_theme', isDark ? 'dark' : 'light');
-    updateThemeToggleUI(isDark);
     try {
-      window.dispatchEvent(new CustomEvent('habibThemeChanged', { detail: { theme: isDark ? 'dark' : 'light' } }));
+      localStorage.setItem('habib_theme', 'light');
+      window.dispatchEvent(new CustomEvent('habibThemeChanged', { detail: { theme: 'light' } }));
     } catch(e) {}
   };
 
   window.toggleTheme = function() {
-    const currentTheme = localStorage.getItem('habib_theme') || 'dark';
-    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    window.setSiteTheme(nextTheme);
+    window.setSiteTheme('light');
   };
-
-  // WCAG 2.2 AA Contrast Diagnostic Tool for Developers
-  window.checkThemeContrast = function() {
-    const elements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, label, input, td, th');
-    let issues = 0;
-    elements.forEach(el => {
-      const style = window.getComputedStyle(el);
-      const color = style.color;
-      const bg = style.backgroundColor;
-      if (color === bg && color !== 'rgba(0, 0, 0, 0)' && el.offsetParent !== null) {
-        issues++;
-        console.warn('[Accessibility Contrast Warning]: Element text and background match:', el, color);
-      }
-    });
-    return { status: issues === 0 ? 'PASS' : 'WARNING', issuesFound: issues };
-  };
-
-  function updateThemeToggleUI(isDark) {
-    const darkBtns = document.querySelectorAll('#themeBtnDark, .btn-theme-dark');
-    const lightBtns = document.querySelectorAll('#themeBtnLight, .btn-theme-light');
-
-    darkBtns.forEach(btn => {
-      if (isDark) {
-        btn.classList.add('bg-[#282d3c]', 'text-white', 'shadow-sm', 'font-extrabold');
-        btn.classList.remove('text-slate-400', 'text-slate-500');
-      } else {
-        btn.classList.remove('bg-[#282d3c]', 'text-white', 'shadow-sm', 'font-extrabold');
-        btn.classList.add('text-slate-400');
-      }
-    });
-
-    lightBtns.forEach(btn => {
-      if (!isDark) {
-        btn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-extrabold');
-        btn.classList.remove('text-slate-400', 'text-slate-500');
-      } else {
-        btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-extrabold');
-        btn.classList.add('text-slate-400');
-      }
-    });
-  }
 
   function initTheme() {
-    let savedTheme = localStorage.getItem('habib_theme');
-    if (!savedTheme) {
-      savedTheme = 'dark';
-      try { localStorage.setItem('habib_theme', 'dark'); } catch(e) {}
-    }
-    const isDark = savedTheme === 'dark';
-    document.documentElement.classList.toggle('dark', isDark);
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    if (document.body) {
-      document.body.classList.toggle('dark-mode', isDark);
-      document.body.classList.toggle('light-mode', !isDark);
-    }
-    updateThemeToggleUI(isDark);
+    window.setSiteTheme('light');
   }
 
-  // Execute immediately to prevent flash of wrong theme and wrong sidebar width
+  // Execute immediately to prevent dark flash and initialize sidebar state
   try {
-    let savedTheme = localStorage.getItem('habib_theme');
-    if (!savedTheme) {
-      savedTheme = 'dark';
-      localStorage.setItem('habib_theme', 'dark');
-    }
-    const dark = savedTheme === 'dark';
-    document.documentElement.classList.toggle('dark', dark);
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('habib_theme', 'light');
 
     const isCollapsed = localStorage.getItem('habib_sidebar_collapsed') === 'true';
     if (isCollapsed) {
@@ -127,7 +67,7 @@
     }
   } catch(e) {}
 
-  // Desktop Collapsible Sidebar
+  // ChatGPT-Style Desktop Collapsible Sidebar Toggle
   window.toggleDesktopSidebar = function() {
     const isCollapsed = document.documentElement.classList.toggle('sidebar-collapsed-mode');
     if (document.body) {
@@ -138,8 +78,8 @@
   };
 
   function updateCollapseButtonUI(isCollapsed) {
-    const btn = document.getElementById('sidebarCollapseBtn');
-    if (btn) {
+    const btns = document.querySelectorAll('#sidebarCollapseBtn, .sidebar-collapse-btn');
+    btns.forEach(btn => {
       const icon = btn.querySelector('i');
       if (icon) {
         if (isCollapsed) {
@@ -150,7 +90,7 @@
           btn.setAttribute('title', 'Collapse Sidebar');
         }
       }
-    }
+    });
   }
 
   function initSidebarState() {
@@ -173,7 +113,7 @@
     });
   };
 
-  // Luxury Mobile Drawer Toggle
+  // Mobile Drawer Toggle (Slide-out menu)
   window.toggleSidebar = function() {
     const sidebar = document.getElementById('sidebar');
     const backdrop = document.getElementById('sidebarBackdrop');
@@ -230,7 +170,9 @@
       'frp.html': 'frp.html',
       'admin.html': 'admin.html',
       'about.html': 'about.html',
-      'login.html': 'login.html'
+      'login.html': 'login.html',
+      'passport-photo.html': 'passport-photo.html',
+      'birth-certificate.html': 'birth-certificate.html'
     };
 
     const target = pathMap[currentPath] || currentPath;
@@ -279,29 +221,13 @@
     sessionStorage.setItem('habib_promo_dismissed', 'true');
   };
 
-  // Language Manager
-  let currentLang = localStorage.getItem('habib_lang') || 'en';
+  // Deprecated Language Manager (Default English Always)
   window.applyLanguage = function(lang) {
-    currentLang = lang;
-    localStorage.setItem('habib_lang', lang);
-    const btn = document.getElementById('langSwitchBtn');
-    if (btn) {
-      btn.innerHTML = `<i class="fa-solid fa-globe text-cyan-400 text-xs"></i> <span class="hidden sm:inline font-bold">${lang === 'en' ? 'বাংলা (BAN)' : 'English (ENG)'}</span><span class="sm:hidden font-extrabold">${lang === 'en' ? 'বাংলা' : 'EN'}</span>`;
-    }
-    document.querySelectorAll('[data-en]').forEach(el => {
-      const text = el.getAttribute(`data-${lang}`);
-      if (text) {
-        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-          el.placeholder = text;
-        } else {
-          el.innerText = text;
-        }
-      }
-    });
+    localStorage.setItem('habib_lang', 'en');
   };
 
   window.toggleLanguage = function() {
-    window.applyLanguage(currentLang === 'en' ? 'bn' : 'en');
+    window.applyLanguage('en');
   };
 
   // Close popups when clicking outside
@@ -326,14 +252,13 @@
     initTheme();
     initSidebarState();
     setupSidebarNavigation();
-    window.applyLanguage(currentLang);
 
     if (sessionStorage.getItem('habib_promo_dismissed') === 'true') {
       const banner = document.getElementById('topPromoBanner');
       if (banner) banner.style.display = 'none';
     }
 
-    // Analytics record visit
+    // Record visit analytics
     try {
       const currentPath = window.location.pathname.split('/').pop() || 'index.html';
       if (!currentPath.includes('admin')) {

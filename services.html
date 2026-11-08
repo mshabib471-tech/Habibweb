@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
 <head>
     <!-- Chrome Extension Compatibility & Window Error Guard -->
     <script>
@@ -79,7 +79,7 @@
     <!-- Theme Manager -->
     <script src="/js/theme.js"></script>
 </head>
-<body class="antialiased selection:bg-indigo-500 selection:text-white dark-mode">
+<body class="antialiased selection:bg-indigo-500 selection:text-white font-sans">
 
     <!-- TOP PROMO BANNER -->
     <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all">
@@ -101,37 +101,37 @@
     </div>
 
     <!-- Mobile Backdrop -->
-    <div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-45 lg:hidden transition-opacity"></div>
+    <div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-45 lg:hidden transition-opacity"></div>
 
-    <!-- Luxury Sidebar Navigation (Responsive Desktop Collapsible & Mobile Drawer) -->
+    <!-- ChatGPT-Style Collapsible Sidebar Navigation -->
     <nav id="sidebar" class="sidebar-luxury fixed left-0 top-0 h-full w-64 z-50 transition-all duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col justify-between select-none">
         <div class="p-4 border-b sidebar-divider flex flex-col gap-3">
             <div class="flex items-center justify-between">
-                <a href="index.html" class="flex items-center gap-2 group overflow-hidden">
-                    <img src="/logo.png" class="w-8 h-8 rounded-lg object-contain shadow-sm shrink-0" alt="Habib iFix">
+                <a href="index.html" class="flex items-center gap-2.5 group overflow-hidden">
+                    <img src="/logo.png" class="w-8 h-8 rounded-xl object-contain shadow-sm shrink-0" alt="Habib iFix">
                     <div class="sidebar-brand-text flex flex-col">
                         <span class="text-xs font-black tracking-wider uppercase brand-name-habib">Habib iFix</span>
-                        <span class="text-[9px] text-cyan-500 font-mono font-bold tracking-tight">MASTER LAB</span>
+                        <span class="text-[9px] text-cyan-600 font-mono font-bold tracking-tight">MASTER LAB</span>
                     </div>
                 </a>
                 <div class="flex items-center gap-1">
-                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer" title="Collapse / Expand Sidebar">
+                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer" title="Collapse / Expand Sidebar">
                         <i class="fa-solid fa-angles-left text-xs transition-transform duration-300"></i>
                     </button>
-                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
+                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-900 p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
                         <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
                 </div>
             </div>
 
             <div id="sidebarProfileSection" class="pt-2 border-t sidebar-divider">
-                <a href="login.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left" title="Sign In / Register">
-                    <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+                <a href="login.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-slate-100/80 transition-all text-left" title="Sign In / Register">
+                    <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 shrink-0 border border-slate-200">
                         <i class="fa-solid fa-user text-base"></i>
                     </div>
                     <div class="sidebar-user-info flex-1 min-w-0">
-                        <div class="sidebar-user-name text-sm font-black text-slate-900 dark:text-white">Account</div>
-                        <div class="sidebar-user-email text-xs text-indigo-600 dark:text-cyan-400 font-bold">Sign In / Register &rarr;</div>
+                        <div class="sidebar-user-name text-sm font-black text-slate-900">Account</div>
+                        <div class="sidebar-user-email text-xs text-indigo-600 font-bold">Sign In / Register &rarr;</div>
                     </div>
                 </a>
             </div>
@@ -181,23 +181,10 @@
                 <i class="fa-solid fa-gear w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Settings</span>
             </a>
-            <button id="sidebarLogoutBtn" onclick="window.doRealLogout()" class="sidebar-link hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-red-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer text-left" title="Log Out">
+            <button id="sidebarLogoutBtn" onclick="window.doRealLogout()" class="sidebar-link hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-all cursor-pointer text-left" title="Log Out">
                 <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Log Out</span>
             </button>
-        </div>
-        
-        <div class="p-3 border-t sidebar-divider">
-            <div class="theme-switch-pill flex items-center p-1 rounded-xl">
-                <button onclick="setSiteTheme('light')" id="themeBtnLight" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Light Theme">
-                    <i class="fa-regular fa-sun text-sm shrink-0"></i>
-                    <span class="theme-btn-label">Light</span>
-                </button>
-                <button onclick="setSiteTheme('dark')" id="themeBtnDark" type="button" class="theme-btn-option flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Dark Theme">
-                    <i class="fa-regular fa-moon text-sm shrink-0"></i>
-                    <span class="theme-btn-label">Dark</span>
-                </button>
-            </div>
         </div>
     </nav>
 
@@ -206,22 +193,33 @@
         <header class="sticky top-0 left-0 w-full z-40 glass-nav">
             <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">
-                        <i class="fa-solid fa-bars text-lg text-slate-800 dark:text-white"></i>
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 cursor-pointer flex items-center justify-center text-slate-800" aria-label="Toggle Sidebar Navigation">
+                        <svg class="w-5 h-5 text-slate-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
+                            <path d="M9 3v18"></path>
+                            <path d="m14 9 3 3-3 3"></path>
+                        </svg>
                     </button>
-                    <a href="index.html" class="lg:hidden flex items-center gap-2">
-                        <img src="/logo.png" class="w-7 h-7 rounded-lg object-contain" alt="Habib iFix">
-                        <span class="text-xs font-black uppercase brand-name-habib">Habib iFix</span>
+                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 text-slate-700 cursor-pointer" title="Toggle Desktop Sidebar">
+                        <svg class="w-5 h-5 text-slate-800 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
+                            <path d="M9 3v18"></path>
+                            <path d="m14 9 3 3-3 3"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html" class="flex items-center gap-2">
+                        <img src="/logo.png" class="w-8 h-8 rounded-xl object-contain" alt="Habib iFix">
+                        <span class="text-sm font-black uppercase brand-name-habib">Habib iFix <span class="text-xs font-mono text-cyan-600 font-bold">.TECH</span></span>
                     </a>
                 </div>
 
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <button onclick="toggleLanguage()" id="langSwitchBtn" class="text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer flex items-center gap-1.5 text-slate-700 dark:text-slate-200">
-                        <i class="fa-solid fa-globe text-cyan-400 text-xs"></i> <span>EN | BN</span>
-                    </button>
-                    <div id="loginNavBtn" class="sm:hidden">
-                        <a href="login.html" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-indigo-600 text-white">Login</a>
-                    </div>
+                    <a href="services.html" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white shadow-sm flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> <span class="hidden sm:inline">Free Services</span>
+                    </a>
+                    <a href="login.html" id="headerAuthBtn" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-user"></i> <span class="hidden sm:inline">Sign In</span>
+                    </a>
                 </div>
             </div>
         </header>
@@ -838,37 +836,62 @@
             </script>
         </main>
 
-        <!-- FOOTER -->
-        <footer class="glass-card border-t mt-auto py-12 px-4 sm:px-6 lg:px-8 text-xs text-slate-400">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="font-black text-lg text-white">Habib <span class="text-cyan-400">iFix</span> <span class="text-xs font-mono text-cyan-300">.Tech</span></span>
+        <!-- FOOTER (Matching Homepage) -->
+        <footer class="border-t border-slate-200/80 bg-white/88 backdrop-blur-xl py-12 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2.5">
+                            <img src="/logo.png" alt="Habib iFix" class="w-9 h-9 rounded-xl object-contain">
+                            <span class="font-black text-slate-900 text-base">Habib iFix <span class="text-cyan-600">.Tech</span></span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            12+ years of master mobile hardware engineering, display lamination, and verified tech services hub.
+                        </p>
                     </div>
-                    <p class="text-xs leading-relaxed max-w-md text-slate-400">
-                        Trusted Mobile Engineering Lab, OCA Display Refurbishment Center & IT Services Hub in Bangladesh.
-                    </p>
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Quick Navigation</h4>
+                        <ul class="space-y-2 text-xs text-slate-600">
+                            <li><a href="index.html" class="hover:text-slate-900 transition-colors">Home</a></li>
+                            <li><a href="free-offer.html" class="text-purple-600 font-bold hover:underline">Free Offers & Perks 🎁</a></li>
+                            <li><a href="services.html" class="hover:text-slate-900 transition-colors font-bold text-cyan-600">All Services</a></li>
+                            <li><a href="frp.html" class="hover:text-cyan-600 transition-colors">Remove FRP 2027</a></li>
+                            <li><a href="courses.html" class="hover:text-slate-900 transition-colors">Hardware Training</a></li>
+                            <li><a href="blog.html" class="hover:text-slate-900 transition-colors">Tech Blog</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Diagnostic & Free Tools</h4>
+                        <ul class="space-y-2 text-xs text-slate-600">
+                            <li><a href="birth-certificate.html" class="hover:text-emerald-600 transition-colors font-medium">🇧🇩 Birth Certificate Check (BDRIS)</a></li>
+                            <li><a href="passport-photo.html" class="hover:text-teal-600 transition-colors">Passport Photo Maker HD</a></li>
+                            <li><a href="services.html#fbTool" class="hover:text-slate-900 transition-colors">FB Profile Pic Fetcher</a></li>
+                            <li><a href="services.html#smsTool" class="hover:text-slate-900 transition-colors">Custom SMS Portal</a></li>
+                            <li><a href="services.html#blTool" class="hover:text-slate-900 transition-colors">Banglalink SIM Bar Tool</a></li>
+                            <li><a href="admin.html" class="hover:text-indigo-600 transition-colors">Admin Dashboard</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Contact Habib</h4>
+                        <p class="text-xs text-slate-600 mb-1">Phone: +880 1868-461577</p>
+                        <p class="text-xs text-slate-600 mb-3">WhatsApp Available 24/7</p>
+                        <div class="flex gap-3">
+                            <a href="https://wa.me/8801868461577" target="_blank" class="w-8 h-8 rounded-lg bg-emerald-600/10 text-emerald-600 flex items-center justify-center hover:bg-emerald-600/20 transition-colors">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                            </a>
+                            <a href="https://youtube.com/@habibifix" target="_blank" class="w-8 h-8 rounded-lg bg-red-600/10 text-red-600 flex items-center justify-center hover:bg-red-600/20 transition-colors">
+                                <i class="fa-brands fa-youtube text-sm"></i>
+                            </a>
+                            <a href="https://facebook.com" target="_blank" class="w-8 h-8 rounded-lg bg-indigo-600/10 text-indigo-600 flex items-center justify-center hover:bg-indigo-600/20 transition-colors">
+                                <i class="fa-brands fa-facebook text-sm"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h4 class="font-bold text-white uppercase text-[11px] mb-3">Quick Navigation</h4>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="hover:text-white">Home Page</a></li>
-                        <li><a href="shop.html" class="hover:text-white">Tech Parts Shop</a></li>
-                        <li><a href="courses.html" class="hover:text-white">Training Courses</a></li>
-                        <li><a href="services.html" class="text-cyan-400 font-bold">Free Services</a></li>
-                        <li><a href="frp.html" class="hover:text-white">FRP 2027 Bypass</a></li>
-                    </ul>
+                <div class="border-t border-slate-200/80 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-500 gap-2">
+                    <p>&copy; 2026 Habib iFix .Tech. All rights reserved.</p>
+                    <p>Habib iFix .Tech Precision Mobile Engineering & IT Lab</p>
                 </div>
-                <div>
-                    <h4 class="font-bold text-white uppercase text-[11px] mb-3">Direct Support</h4>
-                    <p class="mb-2"><strong class="text-white">Hotline / WhatsApp:</strong> +880 1868-461577</p>
-                    <p class="mb-2"><strong class="text-white">Email:</strong> tec.habiburrahman@gmail.com</p>
-                    <p><strong class="text-white">Location:</strong> Chattogram, Bangladesh</p>
-                </div>
-            </div>
-            <div class="max-w-7xl mx-auto border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
-                <p>&copy; 2026 Habib iFix .Tech — All Rights Reserved.</p>
-                <p class="text-slate-500">Quality Guaranteed &bull; Fast Delivery &bull; Safe Checkout</p>
             </div>
         </footer>
     </div>

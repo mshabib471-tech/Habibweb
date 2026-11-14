@@ -107,6 +107,12 @@
   `;
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Only show Ask AI floating widget on the Home Screen (index.html or root /)
+    const p = (window.location.pathname || '').toLowerCase().trim();
+    const isHomePage = p === '' || p === '/' || p === '/index.html' || p === '/index' || p.endsWith('/index.html') || p.endsWith('/');
+    if (!isHomePage) {
+      return; // Strictly suppress Ask AI on shop.html, free-offer.html, courses.html, contact.html, about.html, etc.
+    }
     if (!document.getElementById('habib-ai-widget')) {
       const div = document.createElement('div');
       div.innerHTML = widgetHTML;

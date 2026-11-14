@@ -552,3 +552,69 @@ article[class*="dark:bg-slate-900"] {
   color: #0f172a !important;
 }
 
+/* Footer Branding & High Visibility Guarantees */
+footer span.font-black,
+footer span.font-extrabold,
+footer .brand-name-habib,
+footer h3,
+footer h4 {
+  color: #0f172a !important;
+}
+
+footer a {
+  color: #334155 !important;
+}
+
+footer a:hover {
+  color: #2563eb !important;
+}
+
+footer p {
+  color: #475569 !important;
+}
+
+footer span[class*="text-cyan"] {
+  color: #0284c7 !important;
+}
+
+footer span[class*="text-blue"] {
+  color: #2563eb !important;
+}
+
+/* Force Light Mode on shop & free offer hero sections */
+.dark\:from-slate-900,
+.dark\:via-indigo-950,
+.dark\:to-slate-900,
+.dark\:from-purple-950\/30,
+.dark\:via-slate-950,
+.dark\:to-slate-950 {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Footer Habib iFix Brand Guarantee */
+footer .brand-name-habib,
+footer span:has(+ span.text-blue-600),
+footer span:has(+ span[class*="text-cyan"]),
+footer a span.font-black {
+  color: #0f172a !important;
+}
+
+/* Guarantee readable tab button labels */
+.cat-btn:not(.active),
+.cat-filter-btn:not(.active) {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+}
+
+/* Modal text and background protection */
+#checkoutModal > div,
+#successModal > div,
+#offerModal > div,
+#shareModal > div {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+
+

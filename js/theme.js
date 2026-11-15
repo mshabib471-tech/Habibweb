@@ -172,6 +172,7 @@
       'about.html': 'about.html',
       'login.html': 'login.html',
       'passport-photo.html': 'passport-photo.html',
+      'background-remover.html': 'background-remover.html',
       'birth-certificate.html': 'birth-certificate.html'
     };
 

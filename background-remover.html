@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <!-- Chrome Extension Compatibility & Window Error Guard -->
+    <script>
+      (function() {
+        window.addEventListener("error", function(e) {
+          if ((e.filename && e.filename.indexOf("chrome-extension://") !== -1) ||
+              (e.message && e.message.indexOf("fetch of #<Window>") !== -1)) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return true;
+          }
+        }, true);
+        try {
+          var _f = window.fetch;
+          Object.defineProperty(window, "fetch", {
+            get: function() { return _f; },
+            set: function(v) { _f = v; },
+            configurable: true,
+            enumerable: true
+          });
+          if (typeof Window !== "undefined" && Window.prototype) {
+            Object.defineProperty(Window.prototype, "fetch", {
+              get: function() { return _f; },
+              set: function(v) { _f = v; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch(err) {}
+      })();
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Background Remover (100% Browser Studio) - Habib iFix .Tech</title>
+    <meta name="description" content="Remove image backgrounds directly in your browser using AI. Unlimited, private, no server upload, HD transparent PNG download up to 4096px by Habib iFix .Tech.">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <script>
+        tailwind = { darkMode: 'class' };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <script src="/js/theme.js"></script>
+    <script src="/js/bgRemoverService.js"></script>
+
+    <style>
+        .checkerboard-bg {
+            background-color: #ffffff;
+            background-image:
+                linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+                linear-gradient(-45deg, #e2e8f0 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #e2e8f0 75%),
+                linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+        }
+        .dropzone-active {
+            border-color: #dc2626 !important;
+            background: rgba(254, 242, 242, 0.9) !important;
+            box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.25) !important;
+            transform: scale(1.01);
+        }
+        .compare-stage {
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            touch-action: none;
+        }
+        .compare-overlay {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        .compare-divider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #dc2626 0%, #eab308 100%);
+            box-shadow: 0 0 12px rgba(220, 38, 38, 0.45);
+            pointer-events: none;
+            z-index: 20;
+        }
+        .compare-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #dc2626 0%, #eab308 100%);
+            border: 3px solid #ffffff;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-red-500 selection:text-white font-sans overflow-x-hidden">
+
+    <!-- TOP PROMO BANNER -->
+    <div id="topPromoBanner" class="top-promo-banner border-b border-red-600/30 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all shadow-md">
+        <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
+            <span class="inline-flex items-center gap-1.5 bg-white/20 text-white border border-white/40 px-2.5 py-0.5 rounded-full text-[10px] font-black font-mono-code uppercase tracking-wider">
+                <span class="w-2 h-2 rounded-full bg-yellow-300 animate-ping"></span>
+                100% PRIVATE BROWSER AI
+            </span>
+            <span class="font-extrabold text-white text-xs sm:text-sm">
+                Zero Server Upload • Unlimited 4K HD Background Removal Directly in Your Browser!
+            </span>
+        </div>
+        <button onclick="closePromoBanner()" class="text-white hover:text-yellow-200 p-1 rounded-full transition-colors ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
+            <i class="fa-solid fa-xmark text-sm font-black"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-45 lg:hidden transition-opacity"></div>
+
+    <!-- Collapsible Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar-luxury fixed left-0 top-0 h-full w-64 z-50 transition-all duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col justify-between select-none">
+        <div class="p-4 border-b sidebar-divider flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-2.5 group overflow-hidden">
+                    <img src="/logo.png" class="w-8 h-8 rounded-xl object-contain shadow-sm shrink-0" alt="Habib iFix">
+                    <div class="sidebar-brand-text flex flex-col">
+                        <span class="text-xs font-black tracking-wider uppercase brand-name-habib">Habib iFix</span>
+                        <span class="text-[9px] text-red-600 font-mono font-bold tracking-tight">MASTER LAB</span>
+                    </div>
+                </a>
+                <div class="flex items-center gap-1">
+                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer" title="Collapse / Expand Sidebar">
+                        <i class="fa-solid fa-angles-left text-xs transition-transform duration-300"></i>
+                    </button>
+                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-900 p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="sidebarProfileSection" class="pt-2 border-t sidebar-divider">
+                <a href="login.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-slate-100/80 transition-all text-left" title="Sign In / Register">
+                    <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 shrink-0 border border-slate-200">
+                        <i class="fa-solid fa-user text-base"></i>
+                    </div>
+                    <div class="sidebar-user-info flex-1 min-w-0">
+                        <div class="sidebar-user-name text-sm font-black text-slate-900">Account</div>
+                        <div class="sidebar-user-email text-xs text-red-600 font-bold">Sign In / Register &rarr;</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div id="sidebar-links" class="p-3 space-y-1.5 flex-1 overflow-y-auto">
+            <a href="index.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="index.html" title="Home">
+                <i class="fa-solid fa-house w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Home</span>
+            </a>
+            <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="dashboard.html" title="Dashboard">
+                <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Dashboard</span>
+            </a>
+            <a href="frp.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="frp.html" title="FRP 2027">
+                <i class="fa-solid fa-unlock-keyhole w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">FRP 2027</span>
+            </a>
+            <a href="free-offer.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="free-offer.html" title="Free Offers">
+                <i class="fa-solid fa-gift w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Free Offers</span>
+            </a>
+            <a href="services.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="services.html" title="Free Services">
+                <i class="fa-solid fa-screwdriver-wrench w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Free Services</span>
+            </a>
+            <a href="background-remover.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="background-remover.html" title="AI Background Remover">
+                <i class="fa-solid fa-wand-magic-sparkles w-5 text-center text-sm shrink-0 text-red-600"></i>
+                <span class="sidebar-label text-sm font-bold">BG Remover Studio</span>
+            </a>
+            <a href="shop.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="shop.html" title="Shop">
+                <i class="fa-solid fa-bag-shopping w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Shop</span>
+            </a>
+            <a href="courses.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="courses.html" title="Courses">
+                <i class="fa-solid fa-graduation-cap w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Courses</span>
+            </a>
+            <a href="blog.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="blog.html" title="Blog">
+                <i class="fa-solid fa-newspaper w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Blog</span>
+            </a>
+
+            <div class="my-2 border-t sidebar-divider"></div>
+
+            <a href="contact.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="contact.html" title="Support">
+                <i class="fa-solid fa-headset w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Support</span>
+            </a>
+            <a href="about.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="about.html" title="Settings">
+                <i class="fa-solid fa-gear w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Settings</span>
+            </a>
+            <button id="sidebarLogoutBtn" onclick="window.doRealLogout()" class="sidebar-link hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-all cursor-pointer text-left" title="Log Out">
+                <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">Log Out</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col min-h-screen">
+        <header class="sticky top-0 left-0 w-full z-40 glass-nav">
+            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 cursor-pointer flex items-center justify-center text-slate-800" aria-label="Toggle Sidebar Navigation">
+                        <svg class="w-5 h-5 text-slate-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
+                            <path d="M9 3v18"></path>
+                            <path d="m14 9 3 3-3 3"></path>
+                        </svg>
+                    </button>
+                    <button id="sidebarCollapseBtnTop" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 text-slate-700 cursor-pointer" title="Toggle Desktop Sidebar">
+                        <svg class="w-5 h-5 text-slate-800 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
+                            <path d="M9 3v18"></path>
+                            <path d="m14 9 3 3-3 3"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html" class="flex items-center gap-2">
+                        <img src="/logo.png" class="w-8 h-8 rounded-xl object-contain" alt="Habib iFix">
+                        <span class="text-sm font-black uppercase brand-name-habib">Habib iFix <span class="text-xs font-mono text-red-600 font-bold">.TECH</span></span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <a href="services.html" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-white/90 border border-slate-200 hover:border-red-400 text-slate-900 shadow-sm flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-arrow-left text-red-600"></i> <span class="hidden sm:inline">Free Services</span>
+                    </a>
+                    <a href="login.html" id="headerAuthBtn" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-sm flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-user"></i> <span class="hidden sm:inline">Sign In</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 flex-1 w-full">
+            <!-- Hero Header -->
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-red-200 shadow-sm mb-3">
+                    <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                    <span class="text-[11px] font-mono font-extrabold text-red-600 uppercase tracking-widest">
+                        FREE SERVICE STUDIO • ON-DEVICE AI
+                    </span>
+                    <span id="sdkPreloadBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-yellow-100 text-amber-700 border border-yellow-300">
+                        Preloading Model...
+                    </span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-3 tracking-tight">
+                    AI Background Remover <span class="text-red-600">HD Studio</span>
+                </h1>
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-2xl mx-auto">
+                    Remove image backgrounds up to <strong>4096px</strong> resolution directly inside your browser. Your photos never leave your device — zero uploads, zero API limits, instant transparent PNG export.
+                </p>
+            </div>
+
+            <!-- Error Alert Banner -->
+            <div id="studioErrorBanner" class="hidden mb-6 glass-card p-4 border-l-4 border-l-red-600 bg-red-50/95 flex items-start justify-between gap-3">
+                <div class="flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <i class="fa-solid fa-circle-exclamation text-base"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900">Processing Notice</h3>
+                        <p id="studioErrorMessage" class="text-xs font-semibold text-red-700 mt-0.5">An error occurred.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="hideError()" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-white/80 cursor-pointer" aria-label="Dismiss error">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Main White Glass Studio Card -->
+            <div class="glass-card p-5 sm:p-8 border border-white/80 shadow-xl mb-8">
+                <!-- Top Action & Status Bar -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-slate-200/80">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-amber-500 text-white flex items-center justify-center text-lg shadow-md shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-black text-slate-900">Client-Side RMBG-1.4 Engine</h2>
+                            <p class="text-xs text-slate-600">Supports JPG, PNG, WebP (Max 30 MB • Output up to 4096px PNG)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="button" id="browseImageBtn" class="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 font-bold text-xs flex items-center gap-2 shadow-xs transition-all cursor-pointer">
+                            <i class="fa-solid fa-folder-open text-red-600"></i> Browse Image
+                        </button>
+                        <button type="button" id="resetStudioBtn" class="hidden px-4 py-2.5 rounded-xl bg-white border border-amber-400 hover:bg-yellow-50 text-slate-900 font-bold text-xs flex items-center gap-2 shadow-xs transition-all cursor-pointer">
+                            <i class="fa-solid fa-rotate-left text-amber-600"></i> Reset & Upload Another
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1. Drag & Drop Upload Zone -->
+                <div id="dropzoneArea" tabindex="0" role="button" aria-label="Drag and drop or browse image"
+                     class="border-2 border-dashed border-red-300 hover:border-red-500 bg-white/70 hover:bg-red-50/40 rounded-3xl p-8 sm:p-12 text-center transition-all cursor-pointer mb-6">
+                    <input type="file" id="studioFileInput" accept="image/jpeg,image/png,image/webp" class="hidden">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-red-50 to-yellow-100 border border-red-200 flex items-center justify-center shadow-sm">
+                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-red-600"></i>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-black text-slate-900 mb-1.5">Drag &amp; Drop Your Image Here</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mb-4 max-w-md mx-auto">
+                        Or click anywhere in this box or press <strong>Browse Image</strong> to select a portrait, product, or ID photo.
+                    </p>
+                    <div class="inline-flex flex-wrap items-center justify-center gap-2 text-[11px] font-mono font-bold">
+                        <span class="px-2.5 py-1 rounded-lg bg-red-50 text-red-700 border border-red-200">JPG / PNG / WebP</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-yellow-50 text-amber-700 border border-yellow-300">Max 4096px HD</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 border border-slate-200">100% Local Processing</span>
+                    </div>
+                </div>
+
+                <!-- 2. Selected Image Preview & Primary Action (Shown after image selection) -->
+                <div id="previewActionPanel" class="hidden space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                        <!-- Image Preview Before Processing -->
+                        <div class="lg:col-span-7 white-glass-box p-4 sm:p-5 flex flex-col justify-between border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-image text-red-600"></i> Image Preview (Ready)
+                                </span>
+                                <span id="fileMetaBadge" class="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg bg-yellow-100 text-slate-900 border border-yellow-300">
+                                    --
+                                </span>
+                            </div>
+                            <div class="w-full h-64 sm:h-80 rounded-2xl bg-slate-100/90 border border-slate-200 flex items-center justify-center overflow-hidden p-2">
+                                <img id="preProcessPreviewImg" src="" alt="Selected Image Preview" class="max-w-full max-h-full object-contain rounded-xl">
+                            </div>
+                            <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-700">
+                                <span id="fileNameLabel" class="font-bold text-slate-900 truncate max-w-[260px]">photo.jpg</span>
+                                <span id="fileDimLabel" class="font-mono font-semibold text-slate-600">-- × -- px</span>
+                            </div>
+                        </div>
+
+                        <!-- Action & Progress Control Card -->
+                        <div class="lg:col-span-5 white-glass-box p-5 sm:p-6 flex flex-col justify-between border border-red-200/80">
+                            <div>
+                                <span class="inline-block text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md bg-red-100 text-red-700 mb-3">
+                                    STEP 2 • REMOVE BACKGROUND
+                                </span>
+                                <h3 class="text-lg font-black text-slate-900 mb-2">Ready to Extract Subject</h3>
+                                <p class="text-xs text-slate-600 leading-relaxed mb-5">
+                                    Click below to run the AI segmentation model directly in your browser. First run caches the model locally for instant future edits.
+                                </p>
+
+                                <!-- Processing Progress Indicator -->
+                                <div id="progressCard" class="hidden mb-5 p-4 rounded-2xl bg-white/95 border border-amber-300 shadow-xs">
+                                    <div class="flex items-center justify-between text-xs font-extrabold text-slate-900 mb-2">
+                                        <span id="progressStageText" class="flex items-center gap-2">
+                                            <i class="fa-solid fa-spinner fa-spin text-red-600"></i> Initializing...
+                                        </span>
+                                        <span id="progressPercentText" class="font-mono text-red-600">0%</span>
+                                    </div>
+                                    <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                        <div id="progressBarFill" class="h-full bg-gradient-to-r from-red-600 via-red-500 to-yellow-400 transition-all duration-200 rounded-full" style="width: 0%;"></div>
+                                    </div>
+                                    <p id="progressSubNote" class="text-[11px] text-slate-600 mt-2">
+                                        Processing locally in browser memory — your image is not uploaded anywhere.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <button type="button" id="removeBgActionBtn" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black text-sm shadow-lg shadow-red-600/20 flex items-center justify-center gap-2.5 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    <span id="removeBgActionText">Remove Background</span>
+                                </button>
+                                <button type="button" id="secondaryResetBtn" class="w-full py-2.5 px-4 rounded-xl bg-white border border-slate-300 hover:border-red-400 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+                                    <i class="fa-solid fa-arrow-up-from-bracket text-amber-600"></i> Choose Different Image
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Results, Side-by-Side Preview & Interactive Before/After Comparison -->
+                <div id="resultWorkspace" class="hidden mt-8 pt-8 border-t border-slate-200/80 space-y-8">
+                    <!-- Download & Output Summary Bar -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-50/90 via-white/95 to-yellow-50/90 border border-amber-300/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-amber-500 text-white flex items-center justify-center text-lg shadow shrink-0">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-black text-slate-900">Transparent PNG Ready!</h3>
+                                <p id="resultMetaSummary" class="text-xs font-semibold text-slate-700">
+                                    Alpha transparency verified • Processed 100% locally in browser
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+                            <a id="downloadPngBtn" href="#" download="habib-ifix-transparent.png" class="flex-1 md:flex-initial py-3 px-5 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all">
+                                <i class="fa-solid fa-download"></i> Download Transparent PNG
+                            </a>
+                            <button type="button" id="resultResetBtn" class="py-3 px-4 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+                                <i class="fa-solid fa-rotate-left text-red-600"></i> Upload Another
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Original & Transparent Result Side-by-Side Preview -->
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                            <h3 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-table-columns text-red-600"></i> Original &amp; Transparent Result Preview
+                            </h3>
+                            <div class="flex items-center gap-2 text-[11px] font-bold text-slate-700">
+                                <span>Preview Backdrop:</span>
+                                <button type="button" onclick="setResultBackdrop('checker')" data-backdrop="checker" class="backdrop-pill px-2.5 py-1 rounded-lg border border-red-500 bg-white text-slate-900 cursor-pointer">Checkerboard</button>
+                                <button type="button" onclick="setResultBackdrop('white')" data-backdrop="white" class="backdrop-pill px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-slate-900 cursor-pointer">White</button>
+                                <button type="button" onclick="setResultBackdrop('red')" data-backdrop="red" class="backdrop-pill px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-slate-900 cursor-pointer">Red</button>
+                                <button type="button" onclick="setResultBackdrop('yellow')" data-backdrop="yellow" class="backdrop-pill px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-slate-900 cursor-pointer">Yellow</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="white-glass-box p-4 border border-slate-200">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-extrabold uppercase tracking-wider text-slate-900">Original Image</span>
+                                    <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">BEFORE</span>
+                                </div>
+                                <div class="w-full h-72 sm:h-80 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden p-2">
+                                    <img id="resultOriginalImg" src="" alt="Original Image" class="max-w-full max-h-full object-contain">
+                                </div>
+                            </div>
+                            <div class="white-glass-box p-4 border border-amber-300">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-extrabold uppercase tracking-wider text-slate-900">Transparent PNG Result</span>
+                                    <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-yellow-100 text-red-700 border border-yellow-300">AFTER • PNG ALPHA</span>
+                                </div>
+                                <div id="resultTransparentStage" class="w-full h-72 sm:h-80 rounded-2xl checkerboard-bg border border-slate-300 flex items-center justify-center overflow-hidden p-2 transition-colors">
+                                    <img id="resultTransparentImg" src="" alt="Transparent PNG Result" class="max-w-full max-h-full object-contain">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Before / After Comparison Slider -->
+                    <div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                            <div>
+                                <h3 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-sliders text-amber-600"></i> Interactive Before / After Comparison
+                                </h3>
+                                <p class="text-xs text-slate-600">Drag the slider handle left or right to compare the original photo against the transparent cutout.</p>
+                            </div>
+                            <span id="comparePercentLabel" class="text-xs font-mono font-bold px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-900 self-start sm:self-auto">
+                                Split: 50%
+                            </span>
+                        </div>
+
+                        <div id="compareStage" class="compare-stage w-full h-80 sm:h-[420px] rounded-3xl checkerboard-bg border-2 border-slate-200 shadow-inner">
+                            <!-- Base Layer: Transparent Result -->
+                            <img id="compareAfterImg" src="" alt="After Transparent PNG" class="absolute inset-0 w-full h-full object-contain p-3 pointer-events-none select-none">
+
+                            <!-- Top Clipped Layer: Original Image -->
+                            <div id="compareBeforeOverlay" class="compare-overlay" style="clip-path: inset(0 50% 0 0);">
+                                <div class="w-full h-full bg-slate-100 flex items-center justify-center">
+                                    <img id="compareBeforeImg" src="" alt="Before Original Image" class="w-full h-full object-contain p-3 pointer-events-none select-none">
+                                </div>
+                            </div>
+
+                            <!-- Labels -->
+                            <span class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg bg-white/95 border border-slate-200 text-[10px] font-mono font-black text-slate-900 shadow-xs pointer-events-none">BEFORE (ORIGINAL)</span>
+                            <span class="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg bg-white/95 border border-amber-300 text-[10px] font-mono font-black text-red-600 shadow-xs pointer-events-none">AFTER (TRANSPARENT)</span>
+
+                            <!-- Divider & Handle -->
+                            <div id="compareDivider" class="compare-divider" style="left: 50%;">
+                                <div class="compare-handle">
+                                    <i class="fa-solid fa-left-right text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accessible Range Control -->
+                        <div class="mt-3 flex items-center gap-3">
+                            <span class="text-[11px] font-bold text-slate-700 shrink-0">Before</span>
+                            <input type="range" id="compareSliderInput" min="0" max="100" value="50" class="w-full accent-red-600 cursor-pointer" aria-label="Before and after comparison slider">
+                            <span class="text-[11px] font-bold text-red-600 shrink-0">After</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Highlights (White Glass Cards with Red & Yellow Accents) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="glass-card p-5 border border-white/80">
+                    <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 border border-red-200 flex items-center justify-center mb-3">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-sm font-black text-slate-900 mb-1">100% On-Device Privacy</h3>
+                    <p class="text-xs text-slate-600">Powered by BgRemove JavaScript SDK (RMBG-1.4). Images are processed in your browser memory and never uploaded.</p>
+                </div>
+                <div class="glass-card p-5 border border-white/80">
+                    <div class="w-10 h-10 rounded-xl bg-yellow-50 text-amber-600 border border-yellow-300 flex items-center justify-center mb-3">
+                        <i class="fa-solid fa-expand"></i>
+                    </div>
+                    <h3 class="text-sm font-black text-slate-900 mb-1">4096px High Definition</h3>
+                    <p class="text-xs text-slate-600">Configured with <code class="font-mono text-red-600">maxDimension: 4096</code> to preserve crisp edges on high-resolution portraits and products.</p>
+                </div>
+                <div class="glass-card p-5 border border-white/80">
+                    <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 border border-red-200 flex items-center justify-center mb-3">
+                        <i class="fa-solid fa-infinity"></i>
+                    </div>
+                    <h3 class="text-sm font-black text-slate-900 mb-1">Unlimited &amp; Free Forever</h3>
+                    <p class="text-xs text-slate-600">No API keys, no daily quotas, and instant transparent PNG downloads ready for Passport Studio or e-commerce.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-slate-200/80 bg-white/88 backdrop-blur-xl py-10 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-600 gap-3">
+                <div class="flex items-center gap-2">
+                    <img src="/logo.png" alt="Habib iFix" class="w-7 h-7 rounded-lg object-contain">
+                    <span class="font-black text-slate-900">Habib iFix <span class="text-red-600">.Tech</span></span>
+                </div>
+                <div class="flex flex-wrap items-center gap-4 font-semibold">
+                    <a href="services.html" class="hover:text-red-600">Free Services</a>
+                    <a href="passport-photo.html" class="hover:text-red-600">Passport Photo Studio</a>
+                    <a href="birth-certificate.html" class="hover:text-red-600">BDRIS Check</a>
+                    <a href="index.html" class="hover:text-red-600">Home</a>
+                </div>
+                <p>&copy; 2026 Habib iFix .Tech. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            const fileInput = document.getElementById('studioFileInput');
+            const dropzone = document.getElementById('dropzoneArea');
+            const browseBtn = document.getElementById('browseImageBtn');
+            const resetStudioBtn = document.getElementById('resetStudioBtn');
+            const secondaryResetBtn = document.getElementById('secondaryResetBtn');
+            const resultResetBtn = document.getElementById('resultResetBtn');
+            const removeBgBtn = document.getElementById('removeBgActionBtn');
+            const removeBgActionText = document.getElementById('removeBgActionText');
+
+            const previewActionPanel = document.getElementById('previewActionPanel');
+            const preProcessPreviewImg = document.getElementById('preProcessPreviewImg');
+            const fileMetaBadge = document.getElementById('fileMetaBadge');
+            const fileNameLabel = document.getElementById('fileNameLabel');
+            const fileDimLabel = document.getElementById('fileDimLabel');
+
+            const progressCard = document.getElementById('progressCard');
+            const progressStageText = document.getElementById('progressStageText');
+            const progressPercentText = document.getElementById('progressPercentText');
+            const progressBarFill = document.getElementById('progressBarFill');
+
+            const errorBanner = document.getElementById('studioErrorBanner');
+            const errorMessage = document.getElementById('studioErrorMessage');
+
+            const resultWorkspace = document.getElementById('resultWorkspace');
+            const resultMetaSummary = document.getElementById('resultMetaSummary');
+            const resultOriginalImg = document.getElementById('resultOriginalImg');
+            const resultTransparentImg = document.getElementById('resultTransparentImg');
+            const resultTransparentStage = document.getElementById('resultTransparentStage');
+            const downloadPngBtn = document.getElementById('downloadPngBtn');
+
+            const compareStage = document.getElementById('compareStage');
+            const compareBeforeOverlay = document.getElementById('compareBeforeOverlay');
+            const compareBeforeImg = document.getElementById('compareBeforeImg');
+            const compareAfterImg = document.getElementById('compareAfterImg');
+            const compareDivider = document.getElementById('compareDivider');
+            const compareSliderInput = document.getElementById('compareSliderInput');
+            const comparePercentLabel = document.getElementById('comparePercentLabel');
+            const sdkPreloadBadge = document.getElementById('sdkPreloadBadge');
+
+            let selectedFile = null;
+            let currentOriginalBlobUrl = null;
+            let currentResultBlobUrl = null;
+            let isDraggingCompare = false;
+
+            const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ maxDimension: 4096 });
+
+            // Trigger background model preload cleanly and reflect readiness badge
+            sdk.preload().then((ready) => {
+                if (!sdkPreloadBadge) return;
+                if (ready) {
+                    sdkPreloadBadge.textContent = 'AI Model Ready';
+                    sdkPreloadBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-yellow-100 text-red-700 border border-yellow-300';
+                } else {
+                    sdkPreloadBadge.textContent = 'On-Demand Load';
+                }
+            });
+
+            window.hideError = function () {
+                errorBanner.classList.add('hidden');
+            };
+
+            function showError(msg) {
+                errorMessage.textContent = msg || 'An unexpected error occurred.';
+                errorBanner.classList.remove('hidden');
+                errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            function formatBytes(bytes) {
+                if (!bytes) return '0 B';
+                if (bytes < 1024) return bytes + ' B';
+                if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+                return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+            }
+
+            function releasePreviewUrl() {
+                if (currentOriginalBlobUrl) {
+                    sdk.revokeBlobUrl(currentOriginalBlobUrl);
+                    currentOriginalBlobUrl = null;
+                }
+            }
+
+            function releaseResultUrl() {
+                if (currentResultBlobUrl) {
+                    sdk.revokeBlobUrl(currentResultBlobUrl);
+                    currentResultBlobUrl = null;
+                }
+            }
+
+            function validateSelectedFile(file) {
+                if (!file) return 'Please select an image file.';
+                if (file.size === 0) return 'Selected image file is empty.';
+                if (file.size > 30 * 1024 * 1024) {
+                    return `File is too large (${formatBytes(file.size)}). Maximum allowed size is 30 MB.`;
+                }
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                const validExt = /\.(jpe?g|png|webp)$/i.test(file.name || '');
+                if (file.type && !validTypes.includes(file.type.toLowerCase()) && !validExt) {
+                    return `Unsupported file format (${file.type}). Please use JPG, PNG, or WebP.`;
+                }
+                if (!file.type && !validExt) {
+                    return 'Unsupported file type. Please choose a JPG, PNG, or WebP image.';
+                }
+                return null;
+            }
+
+            function handleFileSelection(file) {
+                if (sdk.isProcessing()) {
+                    showError('Please wait for the current image to finish processing before selecting a new one.');
+                    return;
+                }
+
+                window.hideError();
+                const err = validateSelectedFile(file);
+                if (err) {
+                    showError(err);
+                    return;
+                }
+
+                releasePreviewUrl();
+                releaseResultUrl();
+
+                selectedFile = file;
+                currentOriginalBlobUrl = sdk.createTrackedBlobUrl(file);
+
+                preProcessPreviewImg.src = currentOriginalBlobUrl;
+                preProcessPreviewImg.onload = () => {
+                    const w = preProcessPreviewImg.naturalWidth;
+                    const h = preProcessPreviewImg.naturalHeight;
+                    fileDimLabel.textContent = `${w} × ${h} px`;
+                };
+                preProcessPreviewImg.onerror = () => {
+                    showError('Could not read this image in your browser. Please select another JPG, PNG, or WebP file.');
+                    resetStudio();
+                };
+
+                fileNameLabel.textContent = file.name || 'image';
+                fileMetaBadge.textContent = formatBytes(file.size);
+
+                dropzone.classList.add('hidden');
+                previewActionPanel.classList.remove('hidden');
+                resultWorkspace.classList.add('hidden');
+                progressCard.classList.add('hidden');
+                resetStudioBtn.classList.remove('hidden');
+                removeBgBtn.disabled = false;
+                removeBgActionText.textContent = 'Remove Background';
+            }
+
+            function resetStudio() {
+                if (sdk.isProcessing()) {
+                    showError('Cannot reset while processing is in progress.');
+                    return;
+                }
+                window.hideError();
+                releasePreviewUrl();
+                releaseResultUrl();
+                selectedFile = null;
+                fileInput.value = '';
+                preProcessPreviewImg.removeAttribute('src');
+                resultOriginalImg.removeAttribute('src');
+                resultTransparentImg.removeAttribute('src');
+                compareBeforeImg.removeAttribute('src');
+                compareAfterImg.removeAttribute('src');
+                downloadPngBtn.setAttribute('href', '#');
+
+                previewActionPanel.classList.add('hidden');
+                resultWorkspace.classList.add('hidden');
+                progressCard.classList.add('hidden');
+                resetStudioBtn.classList.add('hidden');
+                dropzone.classList.remove('hidden');
+            }
+
+            async function startBackgroundRemoval() {
+                if (!selectedFile) {
+                    showError('Please upload or drop an image first.');
+                    return;
+                }
+                if (sdk.isProcessing()) {
+                    showError('Background removal is already running. Please wait.');
+                    return;
+                }
+
+                window.hideError();
+                progressCard.classList.remove('hidden');
+                progressBarFill.style.width = '4%';
+                progressPercentText.textContent = '4%';
+                progressStageText.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-red-600"></i> Preparing image...';
+
+                removeBgBtn.disabled = true;
+                secondaryResetBtn.disabled = true;
+                browseBtn.disabled = true;
+                resetStudioBtn.disabled = true;
+                removeBgActionText.textContent = 'Processing in Browser...';
+
+                try {
+                    const result = await sdk.removeBackground(
+                        selectedFile,
+                        (percent, statusText) => {
+                            progressBarFill.style.width = `${percent}%`;
+                            progressPercentText.textContent = `${percent}%`;
+                            progressStageText.innerHTML = percent >= 100
+                                ? '<i class="fa-solid fa-circle-check text-amber-500"></i> ' + statusText
+                                : '<i class="fa-solid fa-spinner fa-spin text-red-600"></i> ' + statusText;
+                        },
+                        { maxDimension: 4096, includeDataUrl: false }
+                    );
+
+                    releaseResultUrl();
+                    currentResultBlobUrl = result.blobUrl;
+
+                    resultOriginalImg.src = currentOriginalBlobUrl;
+                    resultTransparentImg.src = currentResultBlobUrl;
+                    compareBeforeImg.src = currentOriginalBlobUrl;
+                    compareAfterImg.src = currentResultBlobUrl;
+
+                    const baseName = (selectedFile.name || 'image').replace(/\.[^/.]+$/, '');
+                    downloadPngBtn.href = currentResultBlobUrl;
+                    downloadPngBtn.download = `${baseName}-habib-ifix-no-bg.png`;
+
+                    resultTransparentImg.onload = () => {
+                        const outW = resultTransparentImg.naturalWidth;
+                        const outH = resultTransparentImg.naturalHeight;
+                        resultMetaSummary.textContent = `PNG (${outW} × ${outH} px • ${formatBytes(result.blob.size)}) • Alpha transparency ready`;
+                    };
+
+                    if (sdkPreloadBadge) {
+                        sdkPreloadBadge.textContent = 'AI Model Ready';
+                    }
+
+                    updateCompareSplit(50);
+                    resultWorkspace.classList.remove('hidden');
+                    resultWorkspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } catch (err) {
+                    showError(err && err.message ? err.message : 'Background removal failed. Please try another image.');
+                    progressCard.classList.add('hidden');
+                } finally {
+                    removeBgBtn.disabled = false;
+                    secondaryResetBtn.disabled = false;
+                    browseBtn.disabled = false;
+                    resetStudioBtn.disabled = false;
+                    removeBgActionText.textContent = 'Remove Background';
+                }
+            }
+
+            window.setResultBackdrop = function (mode) {
+                resultTransparentStage.classList.remove('checkerboard-bg');
+                resultTransparentStage.style.backgroundColor = '';
+                if (mode === 'checker') {
+                    resultTransparentStage.classList.add('checkerboard-bg');
+                } else if (mode === 'white') {
+                    resultTransparentStage.style.backgroundColor = '#ffffff';
+                } else if (mode === 'red') {
+                    resultTransparentStage.style.backgroundColor = '#dc2626';
+                } else if (mode === 'yellow') {
+                    resultTransparentStage.style.backgroundColor = '#eab308';
+                }
+                document.querySelectorAll('.backdrop-pill').forEach((btn) => {
+                    const active = btn.getAttribute('data-backdrop') === mode;
+                    btn.classList.toggle('border-red-500', active);
+                    btn.classList.toggle('border-slate-300', !active);
+                });
+            };
+
+            function updateCompareSplit(percent) {
+                const clamped = Math.max(0, Math.min(100, Number(percent)));
+                compareBeforeOverlay.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`;
+                compareDivider.style.left = `${clamped}%`;
+                compareSliderInput.value = Math.round(clamped);
+                comparePercentLabel.textContent = `Split: ${Math.round(clamped)}%`;
+            }
+
+            function handleComparePointer(clientX) {
+                const rect = compareStage.getBoundingClientRect();
+                if (!rect.width) return;
+                const pct = ((clientX - rect.left) / rect.width) * 100;
+                updateCompareSplit(pct);
+            }
+
+            compareStage.addEventListener('pointerdown', (e) => {
+                isDraggingCompare = true;
+                compareStage.setPointerCapture(e.pointerId);
+                handleComparePointer(e.clientX);
+            });
+            compareStage.addEventListener('pointermove', (e) => {
+                if (isDraggingCompare) handleComparePointer(e.clientX);
+            });
+            compareStage.addEventListener('pointerup', () => { isDraggingCompare = false; });
+            compareStage.addEventListener('pointercancel', () => { isDraggingCompare = false; });
+            compareSliderInput.addEventListener('input', (e) => updateCompareSplit(e.target.value));
+
+            // Browse & Dropzone Listeners
+            browseBtn.addEventListener('click', () => fileInput.click());
+            dropzone.addEventListener('click', () => fileInput.click());
+            dropzone.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    fileInput.click();
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (file) handleFileSelection(file);
+            });
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((evtName) => {
+                dropzone.addEventListener(evtName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+            });
+
+            ['dragenter', 'dragover'].forEach((evtName) => {
+                dropzone.addEventListener(evtName, () => dropzone.classList.add('dropzone-active'), false);
+            });
+
+            ['dragleave', 'drop'].forEach((evtName) => {
+                dropzone.addEventListener(evtName, () => dropzone.classList.remove('dropzone-active'), false);
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer && e.dataTransfer.files;
+                if (files && files.length > 0) {
+                    handleFileSelection(files[0]);
+                }
+            }, false);
+
+            removeBgBtn.addEventListener('click', startBackgroundRemoval);
+            resetStudioBtn.addEventListener('click', resetStudio);
+            secondaryResetBtn.addEventListener('click', resetStudio);
+            resultResetBtn.addEventListener('click', resetStudio);
+
+            window.addEventListener('beforeunload', () => {
+                sdk.revokeAllBlobUrls();
+            });
+        })();
+    </script>
+    <script type="module" src="/js/site-auth.js"></script>
+</body>
+</html>

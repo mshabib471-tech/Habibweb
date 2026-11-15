@@ -3,7 +3,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const { GoogleGenAI } = require('@google/genai');
-const admin = require('firebase-admin');
+const { initializeApp: initializeAdminApp, getApps: getAdminApps } = require('firebase-admin/app');
+const { getAuth: getAdminAuth } = require('firebase-admin/auth');
 const jwt = require('jsonwebtoken');
 
 const app = express();
@@ -28,8 +29,8 @@ const firebaseConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'firebase
 
 // Initialize Firebase Admin SDK
 try {
-  if (!admin.apps.length) {
-    admin.initializeApp({
+  if (!getAdminApps().length) {
+    initializeAdminApp({
       projectId: firebaseConfig.projectId
     });
   }
@@ -42,8 +43,20 @@ app.get('/api/firebase-config', (req, res) => {
   res.json(firebaseConfig);
 });
 
-// DB Helper with Serverless Fallback
+const EXAMPLE_DB_FILE = path.join(__dirname, 'database.example.json');
+
+// DB Helper with Serverless Fallback & Automatic Example Seeding
 function readDB() {
+  if (!fs.existsSync(DB_FILE)) {
+    if (fs.existsSync(EXAMPLE_DB_FILE)) {
+      try {
+        const seedContent = fs.readFileSync(EXAMPLE_DB_FILE, 'utf8');
+        fs.writeFileSync(DB_FILE, seedContent);
+      } catch (seedErr) {
+        console.warn('Could not seed database.json from database.example.json:', seedErr.message);
+      }
+    }
+  }
   if (!fs.existsSync(DB_FILE)) {
     return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1, auditLogs: [] };
   }
@@ -109,7 +122,7 @@ async function verifyFirebaseToken(idToken) {
 
   // 1. Try Firebase Admin SDK verification
   try {
-    const decoded = await admin.auth().verifyIdToken(token, false);
+    const decoded = await getAdminAuth().verifyIdToken(token, false);
     if (decoded && decoded.email) {
       return {
         uid: decoded.uid,
@@ -240,6 +253,7 @@ app.get(['/admin', '/admin.html'], async (req, res) => {
 });
 
 app.use(express.static(__dirname, {
+  extensions: ['html'],
   maxAge: '1h',
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.html')) {
@@ -248,20 +262,22 @@ app.use(express.static(__dirname, {
   }
 }));
 
-// Initialize Gemini SDK with process.env.GEMINI_API_KEY or provided fallback
-const geminiApiKey = process.env.GEMINI_API_KEY || "AQ.Ab8RN6LDdo6X2fu5yXbCKlV8anEezQeeh87dYZvrTevblG7dsQ";
+// Initialize Gemini SDK with process.env.GEMINI_API_KEY
+const geminiApiKey = process.env.GEMINI_API_KEY;
 let aiClient = null;
-try {
-  aiClient = new GoogleGenAI({
-    apiKey: geminiApiKey,
-    httpOptions: {
-      headers: {
-        'User-Agent': 'aistudio-build',
+if (geminiApiKey) {
+  try {
+    aiClient = new GoogleGenAI({
+      apiKey: geminiApiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
       }
-    }
-  });
-} catch (err) {
-  console.warn("Gemini client initialization notice:", err.message);
+    });
+  } catch (err) {
+    console.warn("Gemini client initialization notice:", err.message);
+  }
 }
 
 // Intelligent Conversational AI Diagnostic Engine for Habib iFix
@@ -721,7 +737,7 @@ Tone & Style:
       const prompt = `User Query: "${queryText}". Please provide a helpful, intelligent, direct response in fluent Bengali addressing the user's specific inquiry.`;
 
       const response = await aiClient.models.generateContent({
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
         config: {
           systemInstruction,
@@ -2131,125 +2147,6 @@ app.all('/api/tools/banglalink-sim-bar', async (req, res) => {
     }
   } catch (err) {
     return res.status(500).json({ error: "Server cURL Error", message: err.message });
-  }
-});
-
-app.all('/api/tools/remove-bg', async (req, res) => {
-  const imageUrl = req.query.image || req.body.image || '';
-  const provider = (req.headers['x-provider'] || req.body.provider || 'bgremovers').toLowerCase();
-
-  if (!imageUrl) {
-    return res.status(400).json({ status: 'error', message: 'Please provide an image URL or base64. Example: /api/tools/remove-bg?image=IMAGE_URL' });
-  }
-
-  try {
-    let imageBuffer;
-    if (imageUrl.startsWith('data:image')) {
-      const base64Data = imageUrl.split(',')[1];
-      imageBuffer = Buffer.from(base64Data, 'base64');
-    } else {
-      if (!isSafeExternalUrl(imageUrl)) {
-        return res.status(400).json({ status: 'error', message: 'Restricted or invalid external image URL (SSRF protection).' });
-      }
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000);
-      const imgRes = await fetch(imageUrl, { signal: controller.signal });
-      clearTimeout(timeout);
-      if (!imgRes.ok) {
-        return res.status(400).json({ status: 'error', message: 'Failed to download image from the provided URL.' });
-      }
-      imageBuffer = Buffer.from(await imgRes.arrayBuffer());
-    }
-
-    // Modular AI Background Remover Engine
-    // Primary Provider: BgRemovers API (bgremovers.org) with AI fallback pipeline
-    let apiRes = null;
-    let errDetails = '';
-
-    // Provider Option 1: BgRemovers API Engine (bgremovers.org REST API)
-    if (provider === 'bgremovers' || provider === 'auto') {
-      try {
-        const bgRemoversKey = process.env.BG_REMOVER_API_KEY || 'bgrem_pub_7c248e0b55e6f238c8034604c309ff7c';
-        const formData = new FormData();
-        const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
-        formData.append('file', blob, 'image.jpg');
-        formData.append('image_file', blob, 'image.jpg');
-
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 20000);
-
-        // Attempt official bgremovers endpoint
-        apiRes = await fetch('https://api.bgremover.org/v1/remove-bg', {
-          method: 'POST',
-          headers: {
-            'X-Api-Key': bgRemoversKey,
-            'Authorization': `Bearer ${bgRemoversKey}`
-          },
-          body: formData,
-          signal: controller.signal
-        }).catch(err => {
-          errDetails = err.message;
-          return null;
-        });
-
-        clearTimeout(timeout);
-      } catch (e) {
-        errDetails = e.message;
-      }
-    }
-
-    // Provider Option 2 / Fallback: Clipdrop AI Engine
-    if (!apiRes || !apiRes.ok) {
-      if (apiRes && apiRes.status === 429) {
-        return res.status(429).json({
-          status: 'error',
-          code: 'RATE_LIMIT_EXCEEDED',
-          message: 'Background removal rate limit exceeded. Please wait a moment before trying again.'
-        });
-      }
-
-      const apiKey = process.env.CLIPDROP_API_KEY || '7c248e0b55e6f238c8034604c309ff7cdc4a5f7c5cfccfe71e59ec9d7ee70b8c223c527bc738e38ee0c0f9ab0569cee4';
-
-      const formData = new FormData();
-      const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
-      formData.append('image_file', blob, 'image.jpg');
-
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 25000);
-      apiRes = await fetch('https://clipdrop-api.co/remove-background/v1', {
-        method: 'POST',
-        headers: {
-          'x-api-key': apiKey
-        },
-        body: formData,
-        signal: controller.signal
-      });
-      clearTimeout(timeout);
-    }
-
-    if (!apiRes.ok) {
-      const errText = await apiRes.text().catch(() => '');
-      if (apiRes.status === 429) {
-        return res.status(429).json({
-          status: 'error',
-          code: 'RATE_LIMIT_EXCEEDED',
-          message: 'Rate limit exceeded on background removal service. Please try again shortly.'
-        });
-      }
-      return res.status(apiRes.status).json({
-        status: 'error',
-        message: 'Failed to process image with AI Background Removal engine.',
-        details: errText || errDetails
-      });
-    }
-
-    const arrayBuffer = await apiRes.arrayBuffer();
-    res.setHeader('Content-Type', 'image/png');
-    res.setHeader('Cache-Control', 'public, max-age=3600');
-    return res.send(Buffer.from(arrayBuffer));
-
-  } catch (err) {
-    return res.status(500).json({ status: 'error', message: 'Server Background Removal Error: ' + err.message });
   }
 });
 

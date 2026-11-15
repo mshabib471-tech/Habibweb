@@ -158,6 +158,10 @@
                 <i class="fa-solid fa-screwdriver-wrench w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Free Services</span>
             </a>
+            <a href="background-remover.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="background-remover.html" title="BG Remover Studio">
+                <i class="fa-solid fa-wand-magic-sparkles w-5 text-center text-sm shrink-0"></i>
+                <span class="sidebar-label text-sm font-bold">BG Remover Studio</span>
+            </a>
             <a href="shop.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="shop.html" title="Shop">
                 <i class="fa-solid fa-bag-shopping w-5 text-center text-sm shrink-0"></i>
                 <span class="sidebar-label text-sm font-bold">Shop</span>
@@ -441,73 +445,119 @@
                     </a>
                 </div>
 
-                <!-- 5. AI Background Remover & HD PNG Downloader -->
-                <div class="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 shadow-xl flex flex-col justify-between">
+                <!-- 5. AI Background Remover & HD PNG Studio (100% Browser-Side JS SDK) -->
+                <div id="bgRemoverTool" class="glass-card p-6 sm:p-8 rounded-3xl border border-red-500/30 shadow-xl flex flex-col justify-between">
                     <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center text-xl shrink-0">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <div class="flex items-center justify-between gap-3 mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-amber-500 text-white flex items-center justify-center text-xl shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-mono font-bold text-red-600 uppercase tracking-widest">FREE SERVICE TOOL #5 • BROWSER AI</span>
+                                    <h3 class="text-lg font-black text-slate-900">AI Background Remover (HD PNG)</h3>
+                                </div>
                             </div>
-                            <div>
-                                <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest">FREE SERVICE TOOL #5 🌟 AI BG REMOVER</span>
-                                <h3 class="text-lg font-black text-slate-900 dark:text-white">AI Background Remover (HD PNG)</h3>
-                            </div>
+                            <a href="background-remover.html" class="px-3 py-1.5 rounded-xl bg-white border border-amber-400 hover:border-red-500 text-slate-900 text-[11px] font-extrabold shadow-xs transition-all shrink-0 inline-flex items-center gap-1">
+                                <span>Full Studio</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-red-600"></i>
+                            </a>
                         </div>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-5 leading-relaxed">
-                            Upload or drag & drop any portrait or product photo to remove its background using 1-click AI and download transparent HD PNG.
+                        <p class="text-xs text-slate-700 mb-4 leading-relaxed">
+                            Remove backgrounds up to <strong>4096px</strong> directly in your browser using the BgRemovers JS SDK. Zero server uploads, zero API keys, instant transparent PNG.
                         </p>
 
-                        <!-- Upload Dropzone & File Input -->
+                        <!-- Upload Dropzone & Browse Button -->
                         <div class="space-y-3 mb-4">
-                            <div id="bgDropzone" onclick="document.getElementById('bgRemoverFileInput').click()" class="border-2 border-dashed border-emerald-500/40 hover:border-emerald-500 bg-emerald-500/5 hover:bg-emerald-500/10 transition-all rounded-2xl p-4 text-center cursor-pointer">
-                                <i class="fa-solid fa-cloud-arrow-up text-emerald-500 text-2xl mb-1.5"></i>
-                                <p class="text-xs font-bold text-slate-800 dark:text-slate-200">Click or Drag & Drop Image Here</p>
-                                <p class="text-[10px] text-slate-500">Supports JPG, PNG, WebP format</p>
-                                <input type="file" id="bgRemoverFileInput" accept="image/*" class="hidden" onchange="handleBgFileSelected(this)">
+                            <div id="bgDropzone" class="border-2 border-dashed border-red-300 hover:border-red-500 bg-white/75 hover:bg-red-50/40 transition-all rounded-2xl p-4 text-center cursor-pointer">
+                                <i class="fa-solid fa-cloud-arrow-up text-red-600 text-2xl mb-1.5"></i>
+                                <p class="text-xs font-extrabold text-slate-900">Drag &amp; Drop Image Here</p>
+                                <p class="text-[10px] text-slate-600 mb-2.5">Supports JPG, PNG, WebP up to 30 MB (Max 4096px)</p>
+                                <button type="button" id="bgBrowseBtn" onclick="event.stopPropagation(); document.getElementById('bgRemoverFileInput').click()" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 text-[11px] font-bold shadow-xs cursor-pointer inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-folder-open text-red-600"></i> Browse Image
+                                </button>
+                                <input type="file" id="bgRemoverFileInput" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleBgFileSelected(this)">
                             </div>
 
-                            <button onclick="removeBgStandalone()" id="bgRemoverBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition-all shadow cursor-pointer flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> Remove Background & Get HD PNG
-                            </button>
+                            <!-- Pre-processing Image Preview -->
+                            <div id="bgPrePreviewBox" class="hidden p-3 rounded-2xl bg-white/90 border border-amber-300/80">
+                                <div class="flex items-center justify-between text-[11px] font-bold text-slate-900 mb-2">
+                                    <span id="bgPrePreviewName" class="truncate max-w-[190px]">selected-image.png</span>
+                                    <span id="bgPrePreviewMeta" class="font-mono text-[10px] px-2 py-0.5 rounded bg-yellow-100 text-slate-900 border border-yellow-300">--</span>
+                                </div>
+                                <div class="w-full h-36 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden p-1.5">
+                                    <img id="bgPrePreviewImg" src="" alt="Selected Image Preview" class="max-w-full max-h-full object-contain">
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button type="button" onclick="removeBgStandalone()" id="bgRemoverBtn" class="flex-1 bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black py-3 rounded-xl text-xs transition-all shadow cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Remove Background
+                                </button>
+                                <button type="button" onclick="resetBgRemoverTool()" id="bgResetBtn" class="hidden px-3.5 py-3 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 font-bold text-xs transition-all cursor-pointer shrink-0" title="Reset & upload another image">
+                                    <i class="fa-solid fa-rotate-left text-red-600"></i> Reset
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Animated Progress Container -->
-                        <div id="bgRemoverProgressContainer" class="hidden mb-4 p-3 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-emerald-500/30">
-                            <div class="flex items-center justify-between text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">
-                                <span id="bgRemoverStatusText">Uploading image...</span>
-                                <span id="bgRemoverPercentText">0%</span>
+                        <div id="bgRemoverProgressContainer" class="hidden mb-4 p-3 rounded-xl bg-white/95 border border-amber-300">
+                            <div class="flex items-center justify-between text-[11px] font-bold text-slate-900 mb-1.5">
+                                <span id="bgRemoverStatusText">Initializing local AI...</span>
+                                <span id="bgRemoverPercentText" class="font-mono text-red-600">0%</span>
                             </div>
-                            <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                                <div id="bgRemoverProgressBar" class="h-full bg-emerald-500 transition-all duration-300 w-0"></div>
+                            <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                                <div id="bgRemoverProgressBar" class="h-full bg-gradient-to-r from-red-600 to-amber-500 transition-all duration-200 w-0"></div>
                             </div>
                         </div>
 
                         <!-- Error Banner -->
-                        <div id="bgRemoverErrorBanner" class="hidden mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <span id="bgRemoverErrorMessage">An error occurred.</span>
+                        <div id="bgRemoverErrorBanner" class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-300 text-red-700 text-xs font-bold flex items-start gap-2">
+                            <i class="fa-solid fa-triangle-exclamation mt-0.5 text-red-600"></i>
+                            <span id="bgRemoverErrorMessage" class="flex-1">An error occurred.</span>
                         </div>
 
-                        <!-- Result & Comparison Box -->
-                        <div id="bgRemoverResultContainer" class="hidden p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center">
-                            <div class="grid grid-cols-2 gap-3 mb-3">
+                        <!-- Result & Before/After Comparison Box -->
+                        <div id="bgRemoverResultContainer" class="hidden p-4 rounded-2xl bg-white/90 border border-slate-200 text-center space-y-3">
+                            <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <span class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Original Photo</span>
-                                    <div class="w-full h-28 rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700 bg-black/20">
-                                        <img id="bgRemoverOriginalImg" src="" alt="Original Image" class="w-full h-full object-contain">
+                                    <span class="block text-[10px] font-bold text-slate-700 uppercase mb-1">Original</span>
+                                    <div class="w-full h-28 rounded-xl overflow-hidden border border-slate-300 bg-slate-100 flex items-center justify-center p-1">
+                                        <img id="bgRemoverOriginalImg" src="" alt="Original Image" class="max-w-full max-h-full object-contain">
                                     </div>
                                 </div>
                                 <div>
-                                    <span class="block text-[10px] font-bold text-emerald-500 uppercase mb-1">Transparent PNG</span>
-                                    <div class="w-full h-28 rounded-xl overflow-hidden border-2 border-emerald-400 shadow-sm bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:12px_12px]">
-                                        <img id="bgRemoverResultImg" src="" alt="Transparent PNG" class="w-full h-full object-contain">
+                                    <span class="block text-[10px] font-bold text-red-600 uppercase mb-1">Transparent PNG</span>
+                                    <div class="w-full h-28 rounded-xl overflow-hidden border-2 border-amber-400 shadow-sm flex items-center justify-center p-1" style="background-color:#fff;background-image:linear-gradient(45deg,#e2e8f0 25%,transparent 25%),linear-gradient(-45deg,#e2e8f0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e2e8f0 75%),linear-gradient(-45deg,transparent 75%,#e2e8f0 75%);background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0;">
+                                        <img id="bgRemoverResultImg" src="" alt="Transparent PNG" class="max-w-full max-h-full object-contain">
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-xs font-bold text-emerald-500 mb-3"><i class="fa-solid fa-circle-check"></i> Background Removed Successfully!</p>
-                            <a id="bgRemoverDownloadLink" href="#" target="_blank" download="habib-ifix-transparent-hd.png" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow">
-                                <i class="fa-solid fa-cloud-arrow-down"></i> Download Transparent HD PNG
-                            </a>
+
+                            <!-- Inline Before/After Comparison Slider -->
+                            <div class="text-left">
+                                <div class="flex items-center justify-between text-[10px] font-extrabold text-slate-900 uppercase mb-1">
+                                    <span>Before / After Comparison</span>
+                                    <span id="svcComparePct" class="font-mono text-red-600">50%</span>
+                                </div>
+                                <div class="relative w-full h-40 rounded-xl overflow-hidden border border-slate-300 select-none" style="background-color:#fff;background-image:linear-gradient(45deg,#e2e8f0 25%,transparent 25%),linear-gradient(-45deg,#e2e8f0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e2e8f0 75%),linear-gradient(-45deg,transparent 75%,#e2e8f0 75%);background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0;">
+                                    <img id="svcCompareAfterImg" src="" alt="After" class="absolute inset-0 w-full h-full object-contain p-1">
+                                    <div id="svcCompareOverlay" class="absolute inset-0 overflow-hidden bg-slate-100" style="clip-path: inset(0 50% 0 0);">
+                                        <img id="svcCompareBeforeImg" src="" alt="Before" class="w-full h-full object-contain p-1">
+                                    </div>
+                                    <div id="svcCompareLine" class="absolute top-0 bottom-0 w-0.5 bg-red-600 pointer-events-none" style="left: 50%;"></div>
+                                </div>
+                                <input type="range" id="svcCompareRange" min="0" max="100" value="50" oninput="updateSvcComparison(this.value)" class="w-full mt-1.5 accent-red-600 cursor-pointer" aria-label="Before and after comparison">
+                            </div>
+
+                            <p class="text-xs font-bold text-slate-900"><i class="fa-solid fa-circle-check text-amber-500"></i> Transparent PNG Ready!</p>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <a id="bgRemoverDownloadLink" href="#" download="habib-ifix-transparent-hd.png" class="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow">
+                                    <i class="fa-solid fa-cloud-arrow-down"></i> Download Transparent PNG
+                                </a>
+                                <button type="button" onclick="resetBgRemoverTool()" class="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 text-xs font-bold cursor-pointer">
+                                    Upload Another
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -681,17 +731,101 @@
                 }
 
                 let selectedBgFile = null;
+                let selectedBgOriginalUrl = null;
+                let selectedBgResultUrl = null;
+
+                function showBgToolError(msg) {
+                    const errorBanner = document.getElementById('bgRemoverErrorBanner');
+                    const errorMessage = document.getElementById('bgRemoverErrorMessage');
+                    if (errorMessage) errorMessage.textContent = msg || 'Failed to process image.';
+                    if (errorBanner) errorBanner.classList.remove('hidden');
+                }
+
+                function hideBgToolError() {
+                    const errorBanner = document.getElementById('bgRemoverErrorBanner');
+                    if (errorBanner) errorBanner.classList.add('hidden');
+                }
+
+                function updateSvcComparison(pct) {
+                    const val = Math.max(0, Math.min(100, Number(pct)));
+                    const overlay = document.getElementById('svcCompareOverlay');
+                    const line = document.getElementById('svcCompareLine');
+                    const label = document.getElementById('svcComparePct');
+                    if (overlay) overlay.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+                    if (line) line.style.left = `${val}%`;
+                    if (label) label.textContent = `${Math.round(val)}%`;
+                }
+
+                function resetBgRemoverTool() {
+                    const sdk = window.bgRemoverInstance;
+                    if (sdk && sdk.isProcessing && sdk.isProcessing()) {
+                        showBgToolError('Please wait for the current image to finish processing.');
+                        return;
+                    }
+                    hideBgToolError();
+                    if (sdk && selectedBgOriginalUrl) sdk.revokeBlobUrl(selectedBgOriginalUrl);
+                    if (sdk && selectedBgResultUrl) sdk.revokeBlobUrl(selectedBgResultUrl);
+                    selectedBgOriginalUrl = null;
+                    selectedBgResultUrl = null;
+                    selectedBgFile = null;
+
+                    const fileInput = document.getElementById('bgRemoverFileInput');
+                    if (fileInput) fileInput.value = '';
+                    document.getElementById('bgPrePreviewBox')?.classList.add('hidden');
+                    document.getElementById('bgResetBtn')?.classList.add('hidden');
+                    document.getElementById('bgRemoverResultContainer')?.classList.add('hidden');
+                    document.getElementById('bgRemoverProgressContainer')?.classList.add('hidden');
+                    document.getElementById('bgPrePreviewImg')?.removeAttribute('src');
+                    document.getElementById('bgRemoverOriginalImg')?.removeAttribute('src');
+                    document.getElementById('bgRemoverResultImg')?.removeAttribute('src');
+                    document.getElementById('svcCompareBeforeImg')?.removeAttribute('src');
+                    document.getElementById('svcCompareAfterImg')?.removeAttribute('src');
+                }
 
                 function handleBgFileSelected(input) {
-                    if (input.files && input.files[0]) {
-                        selectedBgFile = input.files[0];
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const origImg = document.getElementById('bgRemoverOriginalImg');
-                            if (origImg) origImg.src = e.target.result;
-                        };
-                        reader.readAsDataURL(selectedBgFile);
+                    const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ maxDimension: 4096 });
+                    if (sdk.isProcessing && sdk.isProcessing()) {
+                        showBgToolError('Another image is currently being processed. Please wait.');
+                        return;
                     }
+                    const file = input.files && input.files[0];
+                    if (!file) return;
+
+                    hideBgToolError();
+                    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                    const validExt = /\.(jpe?g|png|webp)$/i.test(file.name || '');
+                    if ((file.type && !validTypes.includes(file.type.toLowerCase()) && !validExt) || (!file.type && !validExt)) {
+                        showBgToolError('Unsupported image format. Please choose a JPG, PNG, or WebP file.');
+                        return;
+                    }
+                    if (file.size > 30 * 1024 * 1024) {
+                        showBgToolError('Image file exceeds the 30 MB limit.');
+                        return;
+                    }
+
+                    if (selectedBgOriginalUrl) sdk.revokeBlobUrl(selectedBgOriginalUrl);
+                    if (selectedBgResultUrl) sdk.revokeBlobUrl(selectedBgResultUrl);
+                    selectedBgResultUrl = null;
+
+                    selectedBgFile = file;
+                    selectedBgOriginalUrl = sdk.createTrackedBlobUrl(file);
+
+                    const preImg = document.getElementById('bgPrePreviewImg');
+                    const preName = document.getElementById('bgPrePreviewName');
+                    const preMeta = document.getElementById('bgPrePreviewMeta');
+                    const origImg = document.getElementById('bgRemoverOriginalImg');
+                    if (preImg) {
+                        preImg.src = selectedBgOriginalUrl;
+                        preImg.onload = () => {
+                            if (preMeta) preMeta.textContent = `${preImg.naturalWidth}×${preImg.naturalHeight}`;
+                        };
+                    }
+                    if (preName) preName.textContent = file.name || 'selected-image';
+                    if (origImg) origImg.src = selectedBgOriginalUrl;
+
+                    document.getElementById('bgPrePreviewBox')?.classList.remove('hidden');
+                    document.getElementById('bgResetBtn')?.classList.remove('hidden');
+                    document.getElementById('bgRemoverResultContainer')?.classList.add('hidden');
                 }
 
                 // Drag & Drop event setup for AI Background Remover
@@ -699,6 +833,8 @@
                     const dropzone = document.getElementById('bgDropzone');
                     const fileInput = document.getElementById('bgRemoverFileInput');
                     if (!dropzone) return;
+
+                    dropzone.addEventListener('click', () => fileInput && fileInput.click());
 
                     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                         dropzone.addEventListener(eventName, (e) => {
@@ -709,13 +845,13 @@
 
                     ['dragenter', 'dragover'].forEach(eventName => {
                         dropzone.addEventListener(eventName, () => {
-                            dropzone.classList.add('border-emerald-500', 'bg-emerald-500/20');
+                            dropzone.classList.add('border-red-500', 'bg-red-50/70');
                         }, false);
                     });
 
                     ['dragleave', 'drop'].forEach(eventName => {
                         dropzone.addEventListener(eventName, () => {
-                            dropzone.classList.remove('border-emerald-500', 'bg-emerald-500/20');
+                            dropzone.classList.remove('border-red-500', 'bg-red-50/70');
                         }, false);
                     });
 
@@ -723,8 +859,8 @@
                         const dt = e.dataTransfer;
                         const files = dt.files;
                         if (files && files.length > 0) {
-                            fileInput.files = files;
-                            handleBgFileSelected(fileInput);
+                            try { fileInput.files = files; } catch (_) {}
+                            handleBgFileSelected({ files });
                         }
                     }, false);
                 });
@@ -732,62 +868,90 @@
                 async function removeBgStandalone() {
                     const fileInput = document.getElementById('bgRemoverFileInput');
                     const btn = document.getElementById('bgRemoverBtn');
+                    const resetBtn = document.getElementById('bgResetBtn');
                     const progressContainer = document.getElementById('bgRemoverProgressContainer');
                     const progressBar = document.getElementById('bgRemoverProgressBar');
                     const statusText = document.getElementById('bgRemoverStatusText');
                     const percentText = document.getElementById('bgRemoverPercentText');
-                    const errorBanner = document.getElementById('bgRemoverErrorBanner');
-                    const errorMessage = document.getElementById('bgRemoverErrorMessage');
                     const resultContainer = document.getElementById('bgRemoverResultContainer');
                     const origImg = document.getElementById('bgRemoverOriginalImg');
                     const resultImg = document.getElementById('bgRemoverResultImg');
                     const downloadLink = document.getElementById('bgRemoverDownloadLink');
+                    const cmpBefore = document.getElementById('svcCompareBeforeImg');
+                    const cmpAfter = document.getElementById('svcCompareAfterImg');
+                    const cmpRange = document.getElementById('svcCompareRange');
 
                     const file = selectedBgFile || (fileInput.files ? fileInput.files[0] : null);
                     if (!file) {
-                        alert('Please select or drop an image file first.');
+                        showBgToolError('Please select or drag & drop an image file first.');
                         return;
                     }
 
-                    // Reset UI elements
-                    errorBanner.classList.add('hidden');
+                    const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ maxDimension: 4096 });
+                    if (sdk.isProcessing && sdk.isProcessing()) {
+                        showBgToolError('Another image is already being processed. Please wait.');
+                        return;
+                    }
+
+                    hideBgToolError();
                     resultContainer.classList.add('hidden');
                     progressContainer.classList.remove('hidden');
+                    progressBar.style.width = '4%';
+                    percentText.textContent = '4%';
+                    statusText.textContent = 'Starting local browser AI...';
                     btn.disabled = true;
-                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Background Removal...';
+                    if (resetBtn) resetBtn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing in Browser...';
 
-                    // Ensure original image preview is shown
-                    if (origImg && !origImg.src) {
-                        const r = new FileReader();
-                        r.onload = (e) => { origImg.src = e.target.result; };
-                        r.readAsDataURL(file);
+                    if (origImg && selectedBgOriginalUrl) {
+                        origImg.src = selectedBgOriginalUrl;
                     }
 
                     try {
-                        const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ provider: 'bgremovers' });
-                        const result = await sdk.removeBackground(file, (percent, text) => {
-                            progressBar.style.width = `${percent}%`;
-                            percentText.textContent = `${percent}%`;
-                            statusText.textContent = text;
-                        });
+                        const result = await sdk.removeBackground(
+                            file,
+                            (percent, text) => {
+                                progressBar.style.width = `${percent}%`;
+                                percentText.textContent = `${percent}%`;
+                                statusText.textContent = text;
+                            },
+                            { maxDimension: 4096, includeDataUrl: false }
+                        );
 
                         if (result && result.blobUrl) {
+                            if (selectedBgResultUrl) sdk.revokeBlobUrl(selectedBgResultUrl);
+                            selectedBgResultUrl = result.blobUrl;
+
                             resultImg.src = result.blobUrl;
+                            if (cmpBefore && selectedBgOriginalUrl) cmpBefore.src = selectedBgOriginalUrl;
+                            if (cmpAfter) cmpAfter.src = result.blobUrl;
+                            if (cmpRange) cmpRange.value = '50';
+                            updateSvcComparison(50);
+
+                            const baseName = (file.name || 'image').replace(/\.[^/.]+$/, '');
                             downloadLink.href = result.blobUrl;
+                            downloadLink.download = `${baseName}-habib-ifix-no-bg.png`;
                             resultContainer.classList.remove('hidden');
                             resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         }
                     } catch (err) {
-                        errorMessage.textContent = err.message || 'Failed to remove background.';
-                        errorBanner.classList.remove('hidden');
+                        showBgToolError(err.message || 'Failed to remove background.');
+                        progressContainer.classList.add('hidden');
                     } finally {
                         btn.disabled = false;
-                        btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Remove Background & Get HD PNG';
+                        if (resetBtn) resetBtn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Remove Background';
                         setTimeout(() => {
                             progressContainer.classList.add('hidden');
                         }, 1000);
                     }
                 }
+
+                window.addEventListener('beforeunload', () => {
+                    if (window.bgRemoverInstance && typeof window.bgRemoverInstance.revokeAllBlobUrls === 'function') {
+                        window.bgRemoverInstance.revokeAllBlobUrls();
+                    }
+                });
 
                 async function checkBirthCertificateInline() {
                     const brn = document.getElementById('svcBrnInput').value.trim();
@@ -864,6 +1028,7 @@
                         <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Diagnostic & Free Tools</h4>
                         <ul class="space-y-2 text-xs text-slate-600">
                             <li><a href="birth-certificate.html" class="hover:text-emerald-600 transition-colors font-medium">🇧🇩 Birth Certificate Check (BDRIS)</a></li>
+                            <li><a href="background-remover.html" class="hover:text-red-600 transition-colors font-medium">AI Background Remover Studio</a></li>
                             <li><a href="passport-photo.html" class="hover:text-teal-600 transition-colors">Passport Photo Maker HD</a></li>
                             <li><a href="services.html#fbTool" class="hover:text-slate-900 transition-colors">FB Profile Pic Fetcher</a></li>
                             <li><a href="services.html#smsTool" class="hover:text-slate-900 transition-colors">Custom SMS Portal</a></li>

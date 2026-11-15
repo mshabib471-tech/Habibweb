@@ -347,7 +347,6 @@
     </div>
 
     <script>
-        const API_KEY = "qa8L7NGGQeasDCWhjrnNp9U5";
         let userImage = null;
         let selectedColor = '#ffffff';
         
@@ -473,10 +472,10 @@
             loaderText.textContent = "Initializing AI Background Remover...";
 
             try {
-                const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ provider: 'bgremovers' });
+                const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ maxDimension: 4096 });
                 const result = await sdk.removeBackground(userImage, (percent, statusText) => {
                     loaderText.textContent = `${statusText} (${percent}%)`;
-                });
+                }, { maxDimension: 4096 });
 
                 if (result && result.dataUrl) {
                     userImage = result.dataUrl;
@@ -485,7 +484,7 @@
                     showToast("Background successfully removed!");
                 }
             } catch (err) {
-                alert("Background Removal Failed: " + err.message);
+                showToast("Background Removal Failed: " + err.message);
             } finally {
                 loader.classList.add('hidden');
             }

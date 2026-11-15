@@ -20,17 +20,11 @@ import {
   getFirestore 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  projectId: "composite-entropy-26pck",
-  appId: "1:799648339661:web:cf5ef3e467363f64d33b84",
-  apiKey: "AIzaSyCyv5mWrOTxhdjVzEH_Go9cZ8kwAeWxzGU",
-  authDomain: "composite-entropy-26pck.firebaseapp.com",
-  firestoreDatabaseId: "ai-studio-habibweb-c47ad6be-1c6a-4e92-9a01-4d4f3334d43e",
-  storageBucket: "composite-entropy-26pck.firebasestorage.app",
-  messagingSenderId: "799648339661",
-  measurementId: "",
-  oAuthClientId: "799648339661-h724lekklaluoadvqqlvkgc3tvt4hop9.apps.googleusercontent.com"
-};
+const configRes = await fetch('/api/firebase-config');
+if (!configRes.ok) {
+  throw new Error('Failed to load Firebase configuration');
+}
+const firebaseConfig = await configRes.json();
 
 // Singleton Firebase App and Auth initialization
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
@@ -690,6 +684,10 @@ window.HabibAuth = {
 
 window.doRealLogout = signOutReal;
 
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    updateAllNavbars();
+  });
+} else {
   updateAllNavbars();
-});
+}

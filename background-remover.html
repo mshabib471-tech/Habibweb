@@ -113,6 +113,24 @@
             justify-content: center;
             color: #ffffff;
         }
+        .studio-tool-btn.active {
+            background: rgba(254, 242, 242, 0.95);
+            border-color: rgba(220, 38, 38, 0.35);
+            color: #b91c1c;
+        }
+        .kbd-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 7px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 1px 0 #cbd5e1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 800;
+            color: #0f172a;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-red-500 selection:text-white font-sans overflow-x-hidden">
@@ -261,34 +279,15 @@
             </div>
         </header>
 
-        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 flex-1 w-full">
-            <!-- Hero Header -->
-            <div class="text-center max-w-3xl mx-auto mb-8">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-red-200 shadow-sm mb-3">
-                    <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span class="text-[11px] font-mono font-extrabold text-red-600 uppercase tracking-widest">
-                        FREE SERVICE STUDIO • ON-DEVICE AI
-                    </span>
-                    <span id="sdkPreloadBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-yellow-100 text-amber-700 border border-yellow-300">
-                        Preloading Model...
-                    </span>
-                </div>
-                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-3 tracking-tight">
-                    AI Background Remover <span class="text-red-600">HD Studio</span>
-                </h1>
-                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-2xl mx-auto">
-                    Remove image backgrounds up to <strong>4096px</strong> resolution directly inside your browser. Your photos never leave your device — zero uploads, zero API limits, instant transparent PNG export.
-                </p>
-            </div>
-
-            <!-- Error Alert Banner -->
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-20 flex-1 w-full">
+            <!-- Inline Error Alert Banner -->
             <div id="studioErrorBanner" class="hidden mb-6 glass-card p-4 border-l-4 border-l-red-600 bg-red-50/95 flex items-start justify-between gap-3">
                 <div class="flex items-start gap-3">
                     <div class="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0 mt-0.5">
                         <i class="fa-solid fa-circle-exclamation text-base"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-black text-slate-900">Processing Notice</h3>
+                        <h3 class="text-sm font-black text-slate-900">Notice</h3>
                         <p id="studioErrorMessage" class="text-xs font-semibold text-red-700 mt-0.5">An error occurred.</p>
                     </div>
                 </div>
@@ -297,157 +296,291 @@
                 </button>
             </div>
 
-            <!-- Main White Glass Studio Card -->
-            <div class="glass-card p-5 sm:p-8 border border-white/80 shadow-xl mb-8">
-                <!-- Top Action & Status Bar -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-slate-200/80">
-                    <div class="flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-amber-500 text-white flex items-center justify-center text-lg shadow-md shrink-0">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <!-- STATE 1: Clean 2-Column Hero Upload Studio (Styled like Reference 1 in Habib iFix White Glass) -->
+            <section id="heroUploadSection" class="py-4 sm:py-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+                    <!-- Left Column: Visual Showcase + Bold Headline -->
+                    <div class="lg:col-span-6 space-y-5 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-4 p-3 rounded-3xl glass-card border border-white/90 shadow-lg mx-auto lg:mx-0">
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl checkerboard-bg border border-slate-200 flex items-center justify-center overflow-hidden p-2 relative">
+                                <img src="/logo.png" alt="Transparent Cutout Demo" class="w-full h-full object-contain drop-shadow-md">
+                                <span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-red-600 text-[9px] font-mono font-black text-white">PNG</span>
+                            </div>
+                            <div class="text-left pr-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-mono font-extrabold uppercase tracking-widest text-red-600">HABIB IFIX STUDIO</span>
+                                    <span id="sdkPreloadBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-yellow-100 text-slate-900 border border-yellow-300">
+                                        Preloading AI...
+                                    </span>
+                                </div>
+                                <p class="text-sm font-black text-slate-900 leading-snug mt-0.5">Instant HD Cutouts</p>
+                                <p class="text-[11px] text-slate-600 font-medium mt-0.5">Non-blocking Web Worker • Zero UI freeze</p>
+                            </div>
                         </div>
+
                         <div>
-                            <h2 class="text-base sm:text-lg font-black text-slate-900">Client-Side RMBG-1.4 Engine</h2>
-                            <p class="text-xs text-slate-600">Supports JPG, PNG, WebP (Max 30 MB • Output up to 4096px PNG)</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button type="button" id="browseImageBtn" class="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 font-bold text-xs flex items-center gap-2 shadow-xs transition-all cursor-pointer">
-                            <i class="fa-solid fa-folder-open text-red-600"></i> Browse Image
-                        </button>
-                        <button type="button" id="resetStudioBtn" class="hidden px-4 py-2.5 rounded-xl bg-white border border-amber-400 hover:bg-yellow-50 text-slate-900 font-bold text-xs flex items-center gap-2 shadow-xs transition-all cursor-pointer">
-                            <i class="fa-solid fa-rotate-left text-amber-600"></i> Reset & Upload Another
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 1. Drag & Drop Upload Zone -->
-                <div id="dropzoneArea" tabindex="0" role="button" aria-label="Drag and drop or browse image"
-                     class="border-2 border-dashed border-red-300 hover:border-red-500 bg-white/70 hover:bg-red-50/40 rounded-3xl p-8 sm:p-12 text-center transition-all cursor-pointer mb-6">
-                    <input type="file" id="studioFileInput" accept="image/jpeg,image/png,image/webp" class="hidden">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-red-50 to-yellow-100 border border-red-200 flex items-center justify-center shadow-sm">
-                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-red-600"></i>
-                    </div>
-                    <h3 class="text-lg sm:text-xl font-black text-slate-900 mb-1.5">Drag &amp; Drop Your Image Here</h3>
-                    <p class="text-xs sm:text-sm text-slate-600 mb-4 max-w-md mx-auto">
-                        Or click anywhere in this box or press <strong>Browse Image</strong> to select a portrait, product, or ID photo.
-                    </p>
-                    <div class="inline-flex flex-wrap items-center justify-center gap-2 text-[11px] font-mono font-bold">
-                        <span class="px-2.5 py-1 rounded-lg bg-red-50 text-red-700 border border-red-200">JPG / PNG / WebP</span>
-                        <span class="px-2.5 py-1 rounded-lg bg-yellow-50 text-amber-700 border border-yellow-300">Max 4096px HD</span>
-                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 border border-slate-200">100% Local Processing</span>
-                    </div>
-                </div>
-
-                <!-- 2. Selected Image Preview & Primary Action (Shown after image selection) -->
-                <div id="previewActionPanel" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                        <!-- Image Preview Before Processing -->
-                        <div class="lg:col-span-7 white-glass-box p-4 sm:p-5 flex flex-col justify-between border border-slate-200/80">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                                    <i class="fa-solid fa-image text-red-600"></i> Image Preview (Ready)
+                            <h1 class="text-4xl sm:text-5xl xl:text-[56px] font-black text-slate-900 leading-[1.06] tracking-tight mb-4">
+                                Remove Image<br>Background
+                            </h1>
+                            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 text-lg sm:text-xl font-extrabold text-slate-800">
+                                <span>100% Automatically and</span>
+                                <span class="inline-flex items-center px-4 py-1 rounded-full bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-base shadow-md">
+                                    Free
                                 </span>
-                                <span id="fileMetaBadge" class="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg bg-yellow-100 text-slate-900 border border-yellow-300">
-                                    --
-                                </span>
-                            </div>
-                            <div class="w-full h-64 sm:h-80 rounded-2xl bg-slate-100/90 border border-slate-200 flex items-center justify-center overflow-hidden p-2">
-                                <img id="preProcessPreviewImg" src="" alt="Selected Image Preview" class="max-w-full max-h-full object-contain rounded-xl">
-                            </div>
-                            <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-700">
-                                <span id="fileNameLabel" class="font-bold text-slate-900 truncate max-w-[260px]">photo.jpg</span>
-                                <span id="fileDimLabel" class="font-mono font-semibold text-slate-600">-- × -- px</span>
                             </div>
                         </div>
 
-                        <!-- Action & Progress Control Card -->
-                        <div class="lg:col-span-5 white-glass-box p-5 sm:p-6 flex flex-col justify-between border border-red-200/80">
-                            <div>
-                                <span class="inline-block text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md bg-red-100 text-red-700 mb-3">
-                                    STEP 2 • REMOVE BACKGROUND
-                                </span>
-                                <h3 class="text-lg font-black text-slate-900 mb-2">Ready to Extract Subject</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed mb-5">
-                                    Click below to run the AI segmentation model directly in your browser. First run caches the model locally for instant future edits.
-                                </p>
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs text-slate-700 font-medium pt-1">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/85 border border-slate-200/90 shadow-xs">
+                                <i class="fa-solid fa-paste text-red-600"></i>
+                                Press <span class="kbd-chip">Ctrl + V</span> to paste image
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/85 border border-slate-200/90 shadow-xs">
+                                <i class="fa-solid fa-shield-halved text-amber-600"></i>
+                                No server upload • 4096px PNG
+                            </span>
+                        </div>
+                    </div>
 
-                                <!-- Processing Progress Indicator -->
-                                <div id="progressCard" class="hidden mb-5 p-4 rounded-2xl bg-white/95 border border-amber-300 shadow-xs">
-                                    <div class="flex items-center justify-between text-xs font-extrabold text-slate-900 mb-2">
-                                        <span id="progressStageText" class="flex items-center gap-2">
-                                            <i class="fa-solid fa-spinner fa-spin text-red-600"></i> Initializing...
-                                        </span>
-                                        <span id="progressPercentText" class="font-mono text-red-600">0%</span>
-                                    </div>
-                                    <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
-                                        <div id="progressBarFill" class="h-full bg-gradient-to-r from-red-600 via-red-500 to-yellow-400 transition-all duration-200 rounded-full" style="width: 0%;"></div>
-                                    </div>
-                                    <p id="progressSubNote" class="text-[11px] text-slate-600 mt-2">
-                                        Processing locally in browser memory — your image is not uploaded anywhere.
-                                    </p>
+                    <!-- Right Column: Clean White Glass Upload Card + Try Samples -->
+                    <div class="lg:col-span-6">
+                        <div id="dropzoneArea" tabindex="0" role="region" aria-label="Image upload dropzone"
+                             class="glass-card rounded-[32px] p-8 sm:p-12 border border-white/95 shadow-2xl text-center transition-all cursor-pointer">
+                            <input type="file" id="studioFileInput" accept="image/jpeg,image/png,image/webp" class="hidden">
+
+                            <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-red-50 to-yellow-100 border border-red-200 flex items-center justify-center shadow-sm">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-red-600"></i>
+                            </div>
+
+                            <button type="button" id="browseImageBtn"
+                                    class="inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black text-base sm:text-lg shadow-xl shadow-red-600/20 hover:scale-[1.02] active:scale-[0.99] transition-all cursor-pointer">
+                                <i class="fa-solid fa-folder-open"></i>
+                                <span>Upload Image</span>
+                            </button>
+
+                            <p class="text-base font-bold text-slate-800 mt-5">or drop a file,</p>
+
+                            <div class="mt-1.5 flex flex-wrap items-center justify-center gap-1.5 text-xs sm:text-sm text-slate-600 font-semibold">
+                                <button type="button" id="pasteClipboardBtn" class="underline decoration-red-400 hover:text-red-600 font-bold cursor-pointer">
+                                    paste image
+                                </button>
+                                <span class="kbd-chip">Ctrl+V</span>
+                                <span>or</span>
+                                <button type="button" id="toggleUrlPasteBtn" class="underline decoration-amber-500 hover:text-red-600 font-bold cursor-pointer">
+                                    URL
+                                </button>
+                            </div>
+
+                            <!-- Inline URL Paste Input -->
+                            <div id="urlPasteBox" class="hidden mt-5 pt-4 border-t border-slate-200/80 text-left" onclick="event.stopPropagation()">
+                                <label for="imageUrlInput" class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">
+                                    Paste Direct Image URL (Loaded Locally in Browser)
+                                </label>
+                                <div class="flex gap-2">
+                                    <input type="url" id="imageUrlInput" placeholder="https://example.com/photo.jpg"
+                                           class="flex-1 px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-red-500 focus:outline-none text-xs font-medium text-slate-900">
+                                    <button type="button" id="loadUrlBtn"
+                                            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-xs cursor-pointer shrink-0">
+                                        Load
+                                    </button>
                                 </div>
                             </div>
 
-                            <div class="space-y-3">
-                                <button type="button" id="removeBgActionBtn" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black text-sm shadow-lg shadow-red-600/20 flex items-center justify-center gap-2.5 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                                    <span id="removeBgActionText">Remove Background</span>
-                                </button>
-                                <button type="button" id="secondaryResetBtn" class="w-full py-2.5 px-4 rounded-xl bg-white border border-slate-300 hover:border-red-400 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
-                                    <i class="fa-solid fa-arrow-up-from-bracket text-amber-600"></i> Choose Different Image
-                                </button>
+                            <p class="text-[11px] text-slate-500 font-medium mt-5">
+                                Supports JPG, PNG, WebP • Up to 30 MB • 100% browser processing
+                            </p>
+                        </div>
+
+                        <!-- "No image? Try one of these:" Sample Strip -->
+                        <div class="mt-5 flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
+                            <div class="text-center sm:text-left">
+                                <p class="text-xs font-extrabold text-slate-800">No image?</p>
+                                <p class="text-xs font-semibold text-slate-600">Try one of these:</p>
                             </div>
+                            <div id="sampleThumbGrid" class="flex items-center gap-2.5"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STATE 2: Pre-Processing Preview & Remove Background Trigger -->
+            <section id="previewActionPanel" class="hidden glass-card p-5 sm:p-8 rounded-[28px] border border-white/95 shadow-2xl mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 mb-6 border-b border-slate-200/80">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Remove Image Background</h2>
+                        <p class="text-xs sm:text-sm font-bold text-slate-700 mt-0.5">
+                            100% Automatically and <span class="text-red-600">Free</span> • Preview ready below
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-700 px-3 py-1.5 rounded-xl bg-white border border-slate-200">
+                            <span class="kbd-chip">Ctrl+V</span> to replace
+                        </span>
+                        <button type="button" id="resetStudioBtn" class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 font-bold text-xs flex items-center gap-2 shadow-xs transition-all cursor-pointer">
+                            <i class="fa-solid fa-rotate-left text-red-600"></i> Reset &amp; Upload Another
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                    <div class="lg:col-span-7 white-glass-box p-4 sm:p-5 flex flex-col justify-between border border-slate-200/80">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-image text-red-600"></i> Image Preview
+                            </span>
+                            <span id="fileMetaBadge" class="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg bg-yellow-100 text-slate-900 border border-yellow-300">--</span>
+                        </div>
+                        <div class="w-full h-72 sm:h-88 rounded-2xl bg-slate-100/90 border border-slate-200 flex items-center justify-center overflow-hidden p-3">
+                            <img id="preProcessPreviewImg" src="" alt="Image Preview Before Processing" class="max-w-full max-h-full object-contain rounded-xl shadow-xs">
+                        </div>
+                        <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-700">
+                            <span id="fileNameLabel" class="font-bold text-slate-900 truncate max-w-[260px]">photo.png</span>
+                            <span id="fileDimLabel" class="font-mono font-semibold text-slate-600">-- × -- px</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 white-glass-box p-5 sm:p-6 flex flex-col justify-between border border-red-200/80">
+                        <div>
+                            <span class="inline-flex items-center gap-1.5 text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-red-100 text-red-700 mb-3">
+                                <i class="fa-solid fa-bolt text-amber-600"></i> ZERO-FREEZE WORKER ENGINE
+                            </span>
+                            <h3 class="text-lg font-black text-slate-900 mb-2">Ready to Extract Cutout</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-5">
+                                Click <strong>Remove Background</strong> to isolate the subject cleanly up to 4096px inside a background worker thread — your phone and PC never freeze.
+                            </p>
+
+                            <div id="progressCard" class="hidden mb-5 p-4 rounded-2xl bg-white/95 border border-amber-300 shadow-xs">
+                                <div class="flex items-center justify-between text-xs font-extrabold text-slate-900 mb-2">
+                                    <span id="progressStageText" class="flex items-center gap-2">
+                                        <i class="fa-solid fa-spinner fa-spin text-red-600"></i> Starting worker...
+                                    </span>
+                                    <span id="progressPercentText" class="font-mono text-red-600">0%</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                                    <div id="progressBarFill" class="h-full bg-gradient-to-r from-red-600 via-red-500 to-yellow-400 transition-all duration-200 rounded-full" style="width: 0%;"></div>
+                                </div>
+                                <p class="text-[11px] text-slate-600 mt-2">
+                                    Running off the main UI thread — zero hang on desktop &amp; mobile.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <button type="button" id="removeBgActionBtn"
+                                    class="w-full py-4 px-5 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black text-sm shadow-lg shadow-red-600/20 flex items-center justify-center gap-2.5 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span id="removeBgActionText">Remove Background</span>
+                            </button>
+                            <button type="button" id="secondaryResetBtn"
+                                    class="w-full py-2.5 px-4 rounded-full bg-white border border-slate-300 hover:border-red-400 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+                                <i class="fa-solid fa-arrow-up-from-bracket text-amber-600"></i> Choose Different Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STATE 3: Studio Editor & Result Workspace (Styled like Reference 2 in White Glass UI) -->
+            <section id="resultWorkspace" class="hidden space-y-6">
+                <div class="text-center">
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Remove Image Background</h2>
+                    <p id="resultMetaSummary" class="text-xs font-bold text-slate-700 mt-1">
+                        100% Automatically and Free • Transparent PNG ready
+                    </p>
+                </div>
+
+                <!-- Floating White Glass Studio Toolbar Pill -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white/95 backdrop-blur-xl border border-slate-200/95 rounded-3xl sm:rounded-full px-3 sm:px-4 py-2.5 shadow-xl flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap items-center gap-1 sm:gap-1.5">
+                            <button type="button" id="tabCutoutBtn" onclick="setStudioViewMode('cutout')"
+                                    class="studio-tool-btn active px-3 py-2 rounded-full border border-transparent text-xs font-extrabold text-slate-800 hover:bg-slate-100 flex items-center gap-1.5 cursor-pointer transition-all">
+                                <i class="fa-solid fa-wand-sparkles text-red-600"></i>
+                                <span>Cutout</span>
+                            </button>
+                            <button type="button" id="tabSideBySideBtn" onclick="setStudioViewMode('sidebyside')"
+                                    class="studio-tool-btn px-3 py-2 rounded-full border border-transparent text-xs font-extrabold text-slate-800 hover:bg-slate-100 flex items-center gap-1.5 cursor-pointer transition-all">
+                                <i class="fa-solid fa-table-columns text-amber-600"></i>
+                                <span>Original &amp; Result</span>
+                            </button>
+                            <button type="button" id="tabBgPanelBtn" onclick="toggleSubPanel('background')"
+                                    class="studio-tool-btn px-3 py-2 rounded-full border border-transparent text-xs font-extrabold text-slate-800 hover:bg-slate-100 flex items-center gap-1.5 cursor-pointer transition-all">
+                                <i class="fa-regular fa-image text-red-600"></i>
+                                <span>Background</span>
+                            </button>
+                            <button type="button" id="tabEffectsPanelBtn" onclick="toggleSubPanel('effects')"
+                                    class="studio-tool-btn px-3 py-2 rounded-full border border-transparent text-xs font-extrabold text-slate-800 hover:bg-slate-100 flex items-center gap-1.5 cursor-pointer transition-all">
+                                <i class="fa-solid fa-circle-half-stroke text-amber-600"></i>
+                                <span>Effects</span>
+                            </button>
+                            <button type="button" id="tabCompareBtn" onclick="setStudioViewMode('compare')"
+                                    class="studio-tool-btn px-3 py-2 rounded-full border border-transparent text-xs font-extrabold text-slate-800 hover:bg-slate-100 flex items-center gap-1.5 cursor-pointer transition-all"
+                                    title="Before / After Comparison">
+                                <i class="fa-solid fa-sliders text-red-600"></i>
+                                <span>Before / After</span>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-2 ml-auto">
+                            <a id="downloadPngBtn" href="#" download="habib-ifix-transparent.png"
+                               class="px-5 py-2.5 rounded-full bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black text-xs sm:text-sm shadow-md flex items-center gap-2 transition-all">
+                                <i class="fa-solid fa-download"></i>
+                                <span>Download Transparent PNG</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Background Swatches Popover -->
+                    <div id="backgroundSubPanel" class="hidden mt-3 glass-card p-3.5 rounded-2xl border border-white/90 shadow-lg flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-xs font-extrabold text-slate-900 mr-1">Backdrop:</span>
+                            <button type="button" onclick="setResultBackdrop('checker')" data-backdrop="checker" class="backdrop-pill px-3 py-1.5 rounded-full border border-red-500 bg-white text-slate-900 text-xs font-bold cursor-pointer">Transparent</button>
+                            <button type="button" onclick="setResultBackdrop('white')" data-backdrop="white" class="backdrop-pill px-3 py-1.5 rounded-full border border-slate-300 bg-white text-slate-900 text-xs font-bold cursor-pointer">White</button>
+                            <button type="button" onclick="setResultBackdrop('red')" data-backdrop="red" class="backdrop-pill px-3 py-1.5 rounded-full border border-slate-300 bg-red-600 text-white text-xs font-bold cursor-pointer">Red</button>
+                            <button type="button" onclick="setResultBackdrop('yellow')" data-backdrop="yellow" class="backdrop-pill px-3 py-1.5 rounded-full border border-slate-300 bg-yellow-400 text-slate-900 text-xs font-bold cursor-pointer">Yellow</button>
+                            <button type="button" onclick="setResultBackdrop('blue')" data-backdrop="blue" class="backdrop-pill px-3 py-1.5 rounded-full border border-slate-300 bg-blue-600 text-white text-xs font-bold cursor-pointer">Studio Blue</button>
+                            <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-slate-300 bg-white text-xs font-bold text-slate-800 cursor-pointer">
+                                <span>Custom</span>
+                                <input type="color" id="customBackdropColor" value="#f8fafc" class="w-5 h-5 rounded-full border-0 bg-transparent cursor-pointer">
+                            </label>
+                        </div>
+                        <button type="button" id="downloadStyledBtn" class="hidden px-4 py-1.5 rounded-full bg-white border border-red-400 hover:bg-red-50 text-red-700 font-extrabold text-xs cursor-pointer flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-export"></i> Download With Backdrop
+                        </button>
+                    </div>
+
+                    <!-- Effects Popover -->
+                    <div id="effectsSubPanel" class="hidden mt-3 glass-card p-3.5 rounded-2xl border border-white/90 shadow-lg flex flex-wrap items-center gap-5">
+                        <label class="flex items-center gap-2 text-xs font-bold text-slate-900 cursor-pointer">
+                            <input type="checkbox" id="effectShadowToggle" class="accent-red-600 w-4 h-4">
+                            <span>Studio Drop Shadow</span>
+                        </label>
+                        <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
+                            <span>Contrast:</span>
+                            <input type="range" id="effectContrastRange" min="90" max="125" value="100" class="accent-red-600 cursor-pointer">
+                            <span id="effectContrastVal" class="font-mono text-red-600">100%</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. Results, Side-by-Side Preview & Interactive Before/After Comparison -->
-                <div id="resultWorkspace" class="hidden mt-8 pt-8 border-t border-slate-200/80 space-y-8">
-                    <!-- Download & Output Summary Bar -->
-                    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-50/90 via-white/95 to-yellow-50/90 border border-amber-300/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-amber-500 text-white flex items-center justify-center text-lg shadow shrink-0">
-                                <i class="fa-solid fa-check"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-base font-black text-slate-900">Transparent PNG Ready!</h3>
-                                <p id="resultMetaSummary" class="text-xs font-semibold text-slate-700">
-                                    Alpha transparency verified • Processed 100% locally in browser
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
-                            <a id="downloadPngBtn" href="#" download="habib-ifix-transparent.png" class="flex-1 md:flex-initial py-3 px-5 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all">
-                                <i class="fa-solid fa-download"></i> Download Transparent PNG
-                            </a>
-                            <button type="button" id="resultResetBtn" class="py-3 px-4 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
-                                <i class="fa-solid fa-rotate-left text-red-600"></i> Upload Another
-                            </button>
+                <!-- Centered Studio Canvas Stage -->
+                <div class="max-w-4xl mx-auto">
+                    <div id="viewModeCutout" class="glass-card p-4 sm:p-6 rounded-[30px] border border-white/95 shadow-2xl">
+                        <div id="resultTransparentStage" class="w-full h-80 sm:h-[460px] rounded-2xl checkerboard-bg border border-slate-200 flex items-center justify-center overflow-hidden p-4 transition-colors relative">
+                            <img id="resultTransparentImg" src="" alt="Transparent PNG Result" class="max-w-full max-h-full object-contain transition-all">
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 border border-slate-200 text-[10px] font-mono font-black text-slate-900 shadow-xs">TRANSPARENT PNG</span>
                         </div>
                     </div>
 
-                    <!-- Original & Transparent Result Side-by-Side Preview -->
-                    <div>
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                            <h3 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
-                                <i class="fa-solid fa-table-columns text-red-600"></i> Original &amp; Transparent Result Preview
-                            </h3>
-                            <div class="flex items-center gap-2 text-[11px] font-bold text-slate-700">
-                                <span>Preview Backdrop:</span>
-                                <button type="button" onclick="setResultBackdrop('checker')" data-backdrop="checker" class="backdrop-pill px-2.5 py-1 rounded-lg border border-red-500 bg-white text-slate-900 cursor-pointer">Checkerboard</button>
-                                <button type="button" onclick="setResultBackdrop('white')" data-backdrop="white" class="backdrop-pill px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-slate-900 cursor-pointer">White</button>
-                                <button type="button" onclick="setResultBackdrop('red')" data-backdrop="red" class="backdrop-pill px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-slate-900 cursor-pointer">Red</button>
-                                <button type="button" onclick="setResultBackdrop('yellow')" data-backdrop="yellow" class="backdrop-pill px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-slate-900 cursor-pointer">Yellow</button>
-                            </div>
-                        </div>
+                    <div id="viewModeSideBySide" class="hidden glass-card p-4 sm:p-6 rounded-[30px] border border-white/95 shadow-2xl">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div class="white-glass-box p-4 border border-slate-200">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-xs font-extrabold uppercase tracking-wider text-slate-900">Original Image</span>
                                     <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">BEFORE</span>
                                 </div>
-                                <div class="w-full h-72 sm:h-80 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden p-2">
+                                <div class="w-full h-72 sm:h-84 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden p-2">
                                     <img id="resultOriginalImg" src="" alt="Original Image" class="max-w-full max-h-full object-contain">
                                 </div>
                             </div>
@@ -456,43 +589,38 @@
                                     <span class="text-xs font-extrabold uppercase tracking-wider text-slate-900">Transparent PNG Result</span>
                                     <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-yellow-100 text-red-700 border border-yellow-300">AFTER • PNG ALPHA</span>
                                 </div>
-                                <div id="resultTransparentStage" class="w-full h-72 sm:h-80 rounded-2xl checkerboard-bg border border-slate-300 flex items-center justify-center overflow-hidden p-2 transition-colors">
-                                    <img id="resultTransparentImg" src="" alt="Transparent PNG Result" class="max-w-full max-h-full object-contain">
+                                <div id="sideBySideTransparentStage" class="w-full h-72 sm:h-84 rounded-2xl checkerboard-bg border border-slate-300 flex items-center justify-center overflow-hidden p-2">
+                                    <img id="sideBySideResultImg" src="" alt="Transparent Result Preview" class="max-w-full max-h-full object-contain">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Interactive Before / After Comparison Slider -->
-                    <div>
+                    <div id="viewModeCompare" class="hidden glass-card p-4 sm:p-6 rounded-[30px] border border-white/95 shadow-2xl">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                             <div>
                                 <h3 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
-                                    <i class="fa-solid fa-sliders text-amber-600"></i> Interactive Before / After Comparison
+                                    <i class="fa-solid fa-sliders text-red-600"></i> Interactive Before / After Comparison
                                 </h3>
-                                <p class="text-xs text-slate-600">Drag the slider handle left or right to compare the original photo against the transparent cutout.</p>
+                                <p class="text-xs text-slate-600">Drag across the canvas or use the slider below to compare original vs transparent cutout.</p>
                             </div>
-                            <span id="comparePercentLabel" class="text-xs font-mono font-bold px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-900 self-start sm:self-auto">
+                            <span id="comparePercentLabel" class="text-xs font-mono font-bold px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-900 self-start sm:self-auto">
                                 Split: 50%
                             </span>
                         </div>
 
-                        <div id="compareStage" class="compare-stage w-full h-80 sm:h-[420px] rounded-3xl checkerboard-bg border-2 border-slate-200 shadow-inner">
-                            <!-- Base Layer: Transparent Result -->
+                        <div id="compareStage" class="compare-stage w-full h-80 sm:h-[440px] rounded-2xl checkerboard-bg border-2 border-slate-200 shadow-inner">
                             <img id="compareAfterImg" src="" alt="After Transparent PNG" class="absolute inset-0 w-full h-full object-contain p-3 pointer-events-none select-none">
 
-                            <!-- Top Clipped Layer: Original Image -->
                             <div id="compareBeforeOverlay" class="compare-overlay" style="clip-path: inset(0 50% 0 0);">
                                 <div class="w-full h-full bg-slate-100 flex items-center justify-center">
                                     <img id="compareBeforeImg" src="" alt="Before Original Image" class="w-full h-full object-contain p-3 pointer-events-none select-none">
                                 </div>
                             </div>
 
-                            <!-- Labels -->
-                            <span class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg bg-white/95 border border-slate-200 text-[10px] font-mono font-black text-slate-900 shadow-xs pointer-events-none">BEFORE (ORIGINAL)</span>
-                            <span class="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg bg-white/95 border border-amber-300 text-[10px] font-mono font-black text-red-600 shadow-xs pointer-events-none">AFTER (TRANSPARENT)</span>
+                            <span class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg bg-white/95 border border-slate-200 text-[10px] font-mono font-black text-slate-900 shadow-xs pointer-events-none">BEFORE</span>
+                            <span class="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg bg-white/95 border border-amber-300 text-[10px] font-mono font-black text-red-600 shadow-xs pointer-events-none">AFTER (PNG)</span>
 
-                            <!-- Divider & Handle -->
                             <div id="compareDivider" class="compare-divider" style="left: 50%;">
                                 <div class="compare-handle">
                                     <i class="fa-solid fa-left-right text-xs"></i>
@@ -500,7 +628,6 @@
                             </div>
                         </div>
 
-                        <!-- Accessible Range Control -->
                         <div class="mt-3 flex items-center gap-3">
                             <span class="text-[11px] font-bold text-slate-700 shrink-0">Before</span>
                             <input type="range" id="compareSliderInput" min="0" max="100" value="50" class="w-full accent-red-600 cursor-pointer" aria-label="Before and after comparison slider">
@@ -508,32 +635,59 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Feature Highlights (White Glass Cards with Red & Yellow Accents) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Bottom Thumbnail Strip (Matching Reference 2) -->
+                <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-3 pt-1">
+                    <button type="button" id="resultResetBtn" title="Reset & Upload Another Image"
+                            class="w-16 h-16 rounded-2xl bg-white/95 border-2 border-dashed border-red-300 hover:border-red-600 text-slate-900 flex flex-col items-center justify-center gap-0.5 shadow-sm hover:scale-105 transition-all cursor-pointer">
+                        <i class="fa-solid fa-plus text-lg text-red-600"></i>
+                        <span class="text-[9px] font-extrabold">New</span>
+                    </button>
+
+                    <button type="button" onclick="setStudioViewMode('sidebyside')" title="View Original vs Transparent Side-by-Side"
+                            class="w-16 h-16 rounded-2xl bg-white border border-slate-300 hover:border-red-500 p-1 overflow-hidden shadow-sm relative cursor-pointer">
+                        <img id="thumbOriginalImg" src="" alt="Original Thumb" class="w-full h-full object-cover rounded-xl">
+                        <span class="absolute bottom-0.5 inset-x-1 text-[8px] font-mono font-black text-center bg-white/90 text-slate-900 rounded">ORIG</span>
+                    </button>
+
+                    <button type="button" onclick="setStudioViewMode('cutout')" title="View Transparent PNG Cutout"
+                            class="w-16 h-16 rounded-2xl checkerboard-bg border-2 border-red-500 p-1 overflow-hidden shadow-md relative cursor-pointer">
+                        <img id="thumbCutoutImg" src="" alt="Cutout Thumb" class="w-full h-full object-contain">
+                        <span class="absolute bottom-0.5 inset-x-1 text-[8px] font-mono font-black text-center bg-red-600 text-white rounded">PNG</span>
+                    </button>
+
+                    <button type="button" onclick="setStudioViewMode('compare')" title="Before / After Comparison"
+                            class="h-16 px-4 rounded-2xl bg-white/95 border border-slate-200 hover:border-amber-500 text-slate-900 text-xs font-extrabold flex items-center gap-2 shadow-sm cursor-pointer">
+                        <i class="fa-solid fa-sliders text-amber-600"></i>
+                        <span>Compare</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Feature Highlights -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-12">
+                <div class="glass-card p-5 border border-white/80">
+                    <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 border border-red-200 flex items-center justify-center mb-3">
+                        <i class="fa-solid fa-paste"></i>
+                    </div>
+                    <h3 class="text-sm font-black text-slate-900 mb-1">Instant Ctrl+V Paste</h3>
+                    <p class="text-xs text-slate-600">Copy any photo or screenshot and press <code class="font-mono text-red-600">Ctrl+V</code> anywhere on the page to load it immediately.</p>
+                </div>
+                <div class="glass-card p-5 border border-white/80">
+                    <div class="w-10 h-10 rounded-xl bg-yellow-50 text-amber-600 border border-yellow-300 flex items-center justify-center mb-3">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <h3 class="text-sm font-black text-slate-900 mb-1">Zero-Hang Web Worker</h3>
+                    <p class="text-xs text-slate-600">AI segmentation runs in a background thread so your phone and computer never freeze during 4096px HD export.</p>
+                </div>
                 <div class="glass-card p-5 border border-white/80">
                     <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 border border-red-200 flex items-center justify-center mb-3">
                         <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <h3 class="text-sm font-black text-slate-900 mb-1">100% On-Device Privacy</h3>
-                    <p class="text-xs text-slate-600">Powered by BgRemove JavaScript SDK (RMBG-1.4). Images are processed in your browser memory and never uploaded.</p>
+                    <h3 class="text-sm font-black text-slate-900 mb-1">100% Automatic &amp; Private</h3>
+                    <p class="text-xs text-slate-600">No API key, no daily quota, and zero server uploads — every photo stays safely inside your browser.</p>
                 </div>
-                <div class="glass-card p-5 border border-white/80">
-                    <div class="w-10 h-10 rounded-xl bg-yellow-50 text-amber-600 border border-yellow-300 flex items-center justify-center mb-3">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                    <h3 class="text-sm font-black text-slate-900 mb-1">4096px High Definition</h3>
-                    <p class="text-xs text-slate-600">Configured with <code class="font-mono text-red-600">maxDimension: 4096</code> to preserve crisp edges on high-resolution portraits and products.</p>
-                </div>
-                <div class="glass-card p-5 border border-white/80">
-                    <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 border border-red-200 flex items-center justify-center mb-3">
-                        <i class="fa-solid fa-infinity"></i>
-                    </div>
-                    <h3 class="text-sm font-black text-slate-900 mb-1">Unlimited &amp; Free Forever</h3>
-                    <p class="text-xs text-slate-600">No API keys, no daily quotas, and instant transparent PNG downloads ready for Passport Studio or e-commerce.</p>
-                </div>
-            </div>
+            </section>
         </main>
 
         <!-- Footer -->
@@ -561,17 +715,25 @@
             const fileInput = document.getElementById('studioFileInput');
             const dropzone = document.getElementById('dropzoneArea');
             const browseBtn = document.getElementById('browseImageBtn');
-            const resetStudioBtn = document.getElementById('resetStudioBtn');
-            const secondaryResetBtn = document.getElementById('secondaryResetBtn');
-            const resultResetBtn = document.getElementById('resultResetBtn');
-            const removeBgBtn = document.getElementById('removeBgActionBtn');
-            const removeBgActionText = document.getElementById('removeBgActionText');
+            const pasteClipboardBtn = document.getElementById('pasteClipboardBtn');
+            const toggleUrlPasteBtn = document.getElementById('toggleUrlPasteBtn');
+            const urlPasteBox = document.getElementById('urlPasteBox');
+            const imageUrlInput = document.getElementById('imageUrlInput');
+            const loadUrlBtn = document.getElementById('loadUrlBtn');
+            const sampleThumbGrid = document.getElementById('sampleThumbGrid');
 
+            const heroUploadSection = document.getElementById('heroUploadSection');
             const previewActionPanel = document.getElementById('previewActionPanel');
             const preProcessPreviewImg = document.getElementById('preProcessPreviewImg');
             const fileMetaBadge = document.getElementById('fileMetaBadge');
             const fileNameLabel = document.getElementById('fileNameLabel');
             const fileDimLabel = document.getElementById('fileDimLabel');
+
+            const removeBgBtn = document.getElementById('removeBgActionBtn');
+            const removeBgActionText = document.getElementById('removeBgActionText');
+            const resetStudioBtn = document.getElementById('resetStudioBtn');
+            const secondaryResetBtn = document.getElementById('secondaryResetBtn');
+            const resultResetBtn = document.getElementById('resultResetBtn');
 
             const progressCard = document.getElementById('progressCard');
             const progressStageText = document.getElementById('progressStageText');
@@ -580,13 +742,30 @@
 
             const errorBanner = document.getElementById('studioErrorBanner');
             const errorMessage = document.getElementById('studioErrorMessage');
+            const sdkPreloadBadge = document.getElementById('sdkPreloadBadge');
 
             const resultWorkspace = document.getElementById('resultWorkspace');
             const resultMetaSummary = document.getElementById('resultMetaSummary');
             const resultOriginalImg = document.getElementById('resultOriginalImg');
             const resultTransparentImg = document.getElementById('resultTransparentImg');
+            const sideBySideResultImg = document.getElementById('sideBySideResultImg');
+            const thumbOriginalImg = document.getElementById('thumbOriginalImg');
+            const thumbCutoutImg = document.getElementById('thumbCutoutImg');
+
             const resultTransparentStage = document.getElementById('resultTransparentStage');
+            const sideBySideTransparentStage = document.getElementById('sideBySideTransparentStage');
             const downloadPngBtn = document.getElementById('downloadPngBtn');
+            const downloadStyledBtn = document.getElementById('downloadStyledBtn');
+            const customBackdropColor = document.getElementById('customBackdropColor');
+            const effectShadowToggle = document.getElementById('effectShadowToggle');
+            const effectContrastRange = document.getElementById('effectContrastRange');
+            const effectContrastVal = document.getElementById('effectContrastVal');
+
+            const viewModeCutout = document.getElementById('viewModeCutout');
+            const viewModeSideBySide = document.getElementById('viewModeSideBySide');
+            const viewModeCompare = document.getElementById('viewModeCompare');
+            const backgroundSubPanel = document.getElementById('backgroundSubPanel');
+            const effectsSubPanel = document.getElementById('effectsSubPanel');
 
             const compareStage = document.getElementById('compareStage');
             const compareBeforeOverlay = document.getElementById('compareBeforeOverlay');
@@ -595,23 +774,21 @@
             const compareDivider = document.getElementById('compareDivider');
             const compareSliderInput = document.getElementById('compareSliderInput');
             const comparePercentLabel = document.getElementById('comparePercentLabel');
-            const sdkPreloadBadge = document.getElementById('sdkPreloadBadge');
 
             let selectedFile = null;
             let currentOriginalBlobUrl = null;
             let currentResultBlobUrl = null;
+            let activeBackdropColor = 'checker';
             let isDraggingCompare = false;
 
             const sdk = window.bgRemoverInstance || new window.BgRemoverSDK({ maxDimension: 4096 });
 
-            // Trigger background model preload cleanly and reflect readiness badge
             sdk.preload().then((ready) => {
                 if (!sdkPreloadBadge) return;
                 if (ready) {
-                    sdkPreloadBadge.textContent = 'AI Model Ready';
-                    sdkPreloadBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-yellow-100 text-red-700 border border-yellow-300';
+                    sdkPreloadBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-600"></span> AI Ready';
                 } else {
-                    sdkPreloadBadge.textContent = 'On-Demand Load';
+                    sdkPreloadBadge.textContent = 'Ready on Demand';
                 }
             });
 
@@ -647,7 +824,7 @@
             }
 
             function validateSelectedFile(file) {
-                if (!file) return 'Please select an image file.';
+                if (!file) return 'Please select or paste an image file.';
                 if (file.size === 0) return 'Selected image file is empty.';
                 if (file.size > 30 * 1024 * 1024) {
                     return `File is too large (${formatBytes(file.size)}). Maximum allowed size is 30 MB.`;
@@ -665,7 +842,7 @@
 
             function handleFileSelection(file) {
                 if (sdk.isProcessing()) {
-                    showError('Please wait for the current image to finish processing before selecting a new one.');
+                    showError('Please wait for the current image to finish processing before loading another.');
                     return;
                 }
 
@@ -684,23 +861,20 @@
 
                 preProcessPreviewImg.src = currentOriginalBlobUrl;
                 preProcessPreviewImg.onload = () => {
-                    const w = preProcessPreviewImg.naturalWidth;
-                    const h = preProcessPreviewImg.naturalHeight;
-                    fileDimLabel.textContent = `${w} × ${h} px`;
+                    fileDimLabel.textContent = `${preProcessPreviewImg.naturalWidth} × ${preProcessPreviewImg.naturalHeight} px`;
                 };
                 preProcessPreviewImg.onerror = () => {
-                    showError('Could not read this image in your browser. Please select another JPG, PNG, or WebP file.');
+                    showError('Could not read this image in your browser. Please select another JPG, PNG, or WebP photo.');
                     resetStudio();
                 };
 
-                fileNameLabel.textContent = file.name || 'image';
+                fileNameLabel.textContent = file.name || 'pasted-image.png';
                 fileMetaBadge.textContent = formatBytes(file.size);
 
-                dropzone.classList.add('hidden');
+                heroUploadSection.classList.add('hidden');
                 previewActionPanel.classList.remove('hidden');
                 resultWorkspace.classList.add('hidden');
                 progressCard.classList.add('hidden');
-                resetStudioBtn.classList.remove('hidden');
                 removeBgBtn.disabled = false;
                 removeBgActionText.textContent = 'Remove Background';
             }
@@ -718,6 +892,9 @@
                 preProcessPreviewImg.removeAttribute('src');
                 resultOriginalImg.removeAttribute('src');
                 resultTransparentImg.removeAttribute('src');
+                sideBySideResultImg.removeAttribute('src');
+                thumbOriginalImg.removeAttribute('src');
+                thumbCutoutImg.removeAttribute('src');
                 compareBeforeImg.removeAttribute('src');
                 compareAfterImg.removeAttribute('src');
                 downloadPngBtn.setAttribute('href', '#');
@@ -725,13 +902,12 @@
                 previewActionPanel.classList.add('hidden');
                 resultWorkspace.classList.add('hidden');
                 progressCard.classList.add('hidden');
-                resetStudioBtn.classList.add('hidden');
-                dropzone.classList.remove('hidden');
+                heroUploadSection.classList.remove('hidden');
             }
 
             async function startBackgroundRemoval() {
                 if (!selectedFile) {
-                    showError('Please upload or drop an image first.');
+                    showError('Please upload, drop, or Ctrl+V paste an image first.');
                     return;
                 }
                 if (sdk.isProcessing()) {
@@ -743,13 +919,12 @@
                 progressCard.classList.remove('hidden');
                 progressBarFill.style.width = '4%';
                 progressPercentText.textContent = '4%';
-                progressStageText.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-red-600"></i> Preparing image...';
+                progressStageText.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-red-600"></i> Starting worker...';
 
                 removeBgBtn.disabled = true;
                 secondaryResetBtn.disabled = true;
-                browseBtn.disabled = true;
                 resetStudioBtn.disabled = true;
-                removeBgActionText.textContent = 'Processing in Browser...';
+                removeBgActionText.textContent = 'Removing Background...';
 
                 try {
                     const result = await sdk.removeBackground(
@@ -769,6 +944,9 @@
 
                     resultOriginalImg.src = currentOriginalBlobUrl;
                     resultTransparentImg.src = currentResultBlobUrl;
+                    sideBySideResultImg.src = currentResultBlobUrl;
+                    thumbOriginalImg.src = currentOriginalBlobUrl;
+                    thumbCutoutImg.src = currentResultBlobUrl;
                     compareBeforeImg.src = currentOriginalBlobUrl;
                     compareAfterImg.src = currentResultBlobUrl;
 
@@ -779,14 +957,18 @@
                     resultTransparentImg.onload = () => {
                         const outW = resultTransparentImg.naturalWidth;
                         const outH = resultTransparentImg.naturalHeight;
-                        resultMetaSummary.textContent = `PNG (${outW} × ${outH} px • ${formatBytes(result.blob.size)}) • Alpha transparency ready`;
+                        resultMetaSummary.textContent = `100% Automatically and Free • PNG (${outW} × ${outH} px • ${formatBytes(result.blob.size)})`;
                     };
 
                     if (sdkPreloadBadge) {
-                        sdkPreloadBadge.textContent = 'AI Model Ready';
+                        sdkPreloadBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-600"></span> AI Ready';
                     }
 
+                    setResultBackdrop('checker');
+                    setStudioViewMode('cutout');
                     updateCompareSplit(50);
+
+                    previewActionPanel.classList.add('hidden');
                     resultWorkspace.classList.remove('hidden');
                     resultWorkspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 } catch (err) {
@@ -795,30 +977,114 @@
                 } finally {
                     removeBgBtn.disabled = false;
                     secondaryResetBtn.disabled = false;
-                    browseBtn.disabled = false;
                     resetStudioBtn.disabled = false;
                     removeBgActionText.textContent = 'Remove Background';
                 }
             }
 
-            window.setResultBackdrop = function (mode) {
-                resultTransparentStage.classList.remove('checkerboard-bg');
-                resultTransparentStage.style.backgroundColor = '';
-                if (mode === 'checker') {
-                    resultTransparentStage.classList.add('checkerboard-bg');
-                } else if (mode === 'white') {
-                    resultTransparentStage.style.backgroundColor = '#ffffff';
-                } else if (mode === 'red') {
-                    resultTransparentStage.style.backgroundColor = '#dc2626';
-                } else if (mode === 'yellow') {
-                    resultTransparentStage.style.backgroundColor = '#eab308';
+            window.setStudioViewMode = function (mode) {
+                viewModeCutout.classList.toggle('hidden', mode !== 'cutout');
+                viewModeSideBySide.classList.toggle('hidden', mode !== 'sidebyside');
+                viewModeCompare.classList.toggle('hidden', mode !== 'compare');
+
+                document.getElementById('tabCutoutBtn').classList.toggle('active', mode === 'cutout');
+                document.getElementById('tabSideBySideBtn').classList.toggle('active', mode === 'sidebyside');
+                document.getElementById('tabCompareBtn').classList.toggle('active', mode === 'compare');
+            };
+
+            window.toggleSubPanel = function (panel) {
+                if (panel === 'background') {
+                    backgroundSubPanel.classList.toggle('hidden');
+                    effectsSubPanel.classList.add('hidden');
+                    document.getElementById('tabBgPanelBtn').classList.toggle('active', !backgroundSubPanel.classList.contains('hidden'));
+                    document.getElementById('tabEffectsPanelBtn').classList.remove('active');
+                } else if (panel === 'effects') {
+                    effectsSubPanel.classList.toggle('hidden');
+                    backgroundSubPanel.classList.add('hidden');
+                    document.getElementById('tabEffectsPanelBtn').classList.toggle('active', !effectsSubPanel.classList.contains('hidden'));
+                    document.getElementById('tabBgPanelBtn').classList.remove('active');
                 }
+            };
+
+            window.setResultBackdrop = function (mode) {
+                activeBackdropColor = mode;
+                [resultTransparentStage, sideBySideTransparentStage].forEach((stage) => {
+                    if (!stage) return;
+                    stage.classList.remove('checkerboard-bg');
+                    stage.style.backgroundColor = '';
+                    if (mode === 'checker') {
+                        stage.classList.add('checkerboard-bg');
+                    } else if (mode === 'white') {
+                        stage.style.backgroundColor = '#ffffff';
+                    } else if (mode === 'red') {
+                        stage.style.backgroundColor = '#dc2626';
+                    } else if (mode === 'yellow') {
+                        stage.style.backgroundColor = '#eab308';
+                    } else if (mode === 'blue') {
+                        stage.style.backgroundColor = '#2563eb';
+                    } else if (mode && mode.startsWith('#')) {
+                        stage.style.backgroundColor = mode;
+                    }
+                });
+
                 document.querySelectorAll('.backdrop-pill').forEach((btn) => {
                     const active = btn.getAttribute('data-backdrop') === mode;
                     btn.classList.toggle('border-red-500', active);
-                    btn.classList.toggle('border-slate-300', !active);
+                    btn.classList.toggle('ring-2', active);
+                    btn.classList.toggle('ring-yellow-400', active);
                 });
+
+                downloadStyledBtn.classList.toggle('hidden', mode === 'checker');
             };
+
+            function applyImageEffects() {
+                const shadowOn = effectShadowToggle.checked;
+                const contrastVal = effectContrastRange.value;
+                effectContrastVal.textContent = contrastVal + '%';
+                const filterStr = `${shadowOn ? 'drop-shadow(0 16px 24px rgba(15,23,42,0.38)) ' : ''}contrast(${contrastVal}%)`;
+                [resultTransparentImg, sideBySideResultImg].forEach((el) => {
+                    if (el) el.style.filter = filterStr;
+                });
+            }
+
+            customBackdropColor.addEventListener('input', (e) => setResultBackdrop(e.target.value));
+            effectShadowToggle.addEventListener('change', applyImageEffects);
+            effectContrastRange.addEventListener('input', applyImageEffects);
+
+            downloadStyledBtn.addEventListener('click', async () => {
+                if (!currentResultBlobUrl) return;
+                try {
+                    const img = new Image();
+                    img.src = currentResultBlobUrl;
+                    await new Promise((res, rej) => { img.onload = res; img.onerror = rej; });
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.naturalWidth;
+                    canvas.height = img.naturalHeight;
+                    const ctx = canvas.getContext('2d');
+                    const colorMap = { white: '#ffffff', red: '#dc2626', yellow: '#eab308', blue: '#2563eb' };
+                    const fillHex = colorMap[activeBackdropColor] || (activeBackdropColor.startsWith('#') ? activeBackdropColor : '#ffffff');
+                    ctx.fillStyle = fillHex;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    if (effectShadowToggle.checked) {
+                        ctx.shadowColor = 'rgba(15, 23, 42, 0.35)';
+                        ctx.shadowBlur = Math.max(12, Math.round(canvas.width * 0.025));
+                        ctx.shadowOffsetY = Math.round(canvas.height * 0.015);
+                    }
+                    ctx.drawImage(img, 0, 0);
+                    const outBlob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+                    const tmpUrl = URL.createObjectURL(outBlob);
+                    const a = document.createElement('a');
+                    const baseName = (selectedFile && selectedFile.name ? selectedFile.name : 'image').replace(/\.[^/.]+$/, '');
+                    a.href = tmpUrl;
+                    a.download = `${baseName}-habib-ifix-styled.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    setTimeout(() => URL.revokeObjectURL(tmpUrl), 2500);
+                } catch (err) {
+                    showError('Could not export styled PNG: ' + (err.message || 'Unknown error'));
+                }
+            });
 
             function updateCompareSplit(percent) {
                 const clamped = Math.max(0, Math.min(100, Number(percent)));
@@ -847,11 +1113,137 @@
             compareStage.addEventListener('pointercancel', () => { isDraggingCompare = false; });
             compareSliderInput.addEventListener('input', (e) => updateCompareSplit(e.target.value));
 
-            // Browse & Dropzone Listeners
-            browseBtn.addEventListener('click', () => fileInput.click());
-            dropzone.addEventListener('click', () => fileInput.click());
+            // Global Ctrl+V / Cmd+V Paste Handler (Image Binary OR Image URL)
+            window.addEventListener('paste', async (e) => {
+                const activeTag = document.activeElement && document.activeElement.tagName;
+                if (activeTag === 'INPUT' && document.activeElement.id === 'imageUrlInput') {
+                    return;
+                }
+                const extracted = sdk.extractFromPasteEvent(e);
+                if (!extracted) return;
+
+                e.preventDefault();
+                if (extracted.kind === 'file') {
+                    const pastedFile = extracted.file.name
+                        ? extracted.file
+                        : new File([extracted.file], 'pasted-image.png', { type: extracted.file.type || 'image/png' });
+                    handleFileSelection(pastedFile);
+                } else if (extracted.kind === 'url') {
+                    try {
+                        window.hideError();
+                        const fetchedFile = await sdk.fetchImageUrlAsFile(extracted.url);
+                        handleFileSelection(fetchedFile);
+                    } catch (err) {
+                        showError(err.message);
+                    }
+                }
+            });
+
+            pasteClipboardBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (navigator.clipboard && typeof navigator.clipboard.read === 'function') {
+                    try {
+                        const items = await navigator.clipboard.read();
+                        for (const item of items) {
+                            const imgType = item.types.find((t) => t.startsWith('image/'));
+                            if (imgType) {
+                                const blob = await item.getType(imgType);
+                                const ext = imgType.includes('png') ? 'png' : imgType.includes('webp') ? 'webp' : 'jpg';
+                                handleFileSelection(new File([blob], `clipboard-image.${ext}`, { type: imgType }));
+                                return;
+                            }
+                        }
+                        showError('No image found in clipboard. Copy an image first and press Ctrl+V.');
+                    } catch (_) {
+                        showError('Press Ctrl+V (or Cmd+V on Mac) anywhere on this page to paste your copied image.');
+                    }
+                } else {
+                    showError('Press Ctrl+V (or Cmd+V on Mac) anywhere on this page to paste your copied image.');
+                }
+            });
+
+            toggleUrlPasteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                urlPasteBox.classList.toggle('hidden');
+                if (!urlPasteBox.classList.contains('hidden')) {
+                    imageUrlInput.focus();
+                }
+            });
+
+            loadUrlBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                loadUrlBtn.disabled = true;
+                loadUrlBtn.textContent = 'Loading...';
+                try {
+                    window.hideError();
+                    const file = await sdk.fetchImageUrlAsFile(imageUrlInput.value);
+                    handleFileSelection(file);
+                } catch (err) {
+                    showError(err.message);
+                } finally {
+                    loadUrlBtn.disabled = false;
+                    loadUrlBtn.textContent = 'Load';
+                }
+            });
+
+            function initSampleImages() {
+                const samples = [
+                    {
+                        label: 'Smartphone',
+                        svg: `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e0f2fe"/><stop offset="100%" stop-color="#bae6fd"/></linearGradient><linearGradient id="scr1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#dc2626"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient></defs><rect width="512" height="512" fill="url(#bg1)"/><rect y="388" width="512" height="124" fill="#93c5fd"/><rect x="166" y="76" width="180" height="340" rx="28" fill="#0f172a" stroke="#475569" stroke-width="6"/><rect x="180" y="98" width="152" height="294" rx="16" fill="url(#scr1)"/><circle cx="256" cy="220" r="40" fill="#ffffff" fill-opacity="0.92"/><rect x="206" y="280" width="100" height="18" rx="9" fill="#ffffff" fill-opacity="0.9"/></svg>`
+                    },
+                    {
+                        label: 'Portrait',
+                        svg: `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><defs><linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fde68a"/></linearGradient></defs><rect width="512" height="512" fill="url(#bg2)"/><path d="M118 480 C118 355 394 355 394 480 Z" fill="#b91c1c"/><circle cx="256" cy="210" r="90" fill="#fdba74"/><path d="M166 196 C166 112 346 112 346 196 C320 155 192 155 166 196 Z" fill="#1e293b"/><circle cx="225" cy="208" r="9" fill="#0f172a"/><circle cx="287" cy="208" r="9" fill="#0f172a"/><path d="M230 245 Q256 268 282 245" stroke="#7c2d12" stroke-width="7" fill="none" stroke-linecap="round"/></svg>`
+                    },
+                    {
+                        label: 'Camera',
+                        svg: `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><rect width="512" height="512" fill="#e2e8f0"/><rect y="370" width="512" height="142" fill="#cbd5e1"/><rect x="96" y="164" width="320" height="220" rx="28" fill="#1e293b"/><rect x="176" y="124" width="160" height="50" rx="14" fill="#334155"/><circle cx="256" cy="274" r="78" fill="#0f172a" stroke="#94a3b8" stroke-width="10"/><circle cx="256" cy="274" r="46" fill="#2563eb"/><circle cx="238" cy="256" r="14" fill="#93c5fd" fill-opacity="0.8"/><circle cx="368" cy="204" r="12" fill="#ef4444"/></svg>`
+                    },
+                    {
+                        label: 'Watch',
+                        svg: `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><rect width="512" height="512" fill="#fce7f3"/><rect x="206" y="48" width="100" height="416" rx="24" fill="#0f172a"/><circle cx="256" cy="256" r="112" fill="#f59e0b" stroke="#78350f" stroke-width="12"/><circle cx="256" cy="256" r="90" fill="#ffffff"/><line x1="256" y1="256" x2="256" y2="196" stroke="#0f172a" stroke-width="8" stroke-linecap="round"/><line x1="256" y1="256" x2="306" y2="256" stroke="#dc2626" stroke-width="6" stroke-linecap="round"/></svg>`
+                    }
+                ];
+
+                samples.forEach((sample) => {
+                    const dataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(sample.svg);
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.title = `Try ${sample.label} sample`;
+                    btn.className = 'w-12 h-12 rounded-xl overflow-hidden border-2 border-white shadow-md hover:border-red-500 hover:scale-105 transition-all cursor-pointer bg-white';
+                    btn.innerHTML = `<img src="${dataUri}" alt="${sample.label}" class="w-full h-full object-cover">`;
+                    btn.addEventListener('click', async () => {
+                        try {
+                            const img = new Image();
+                            img.src = dataUri;
+                            await new Promise((res, rej) => { img.onload = res; img.onerror = rej; });
+                            const canvas = document.createElement('canvas');
+                            canvas.width = 512;
+                            canvas.height = 512;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, 512, 512);
+                            const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+                            handleFileSelection(new File([blob], `${sample.label.toLowerCase()}-sample.png`, { type: 'image/png' }));
+                        } catch (_) {
+                            showError('Could not load sample image.');
+                        }
+                    });
+                    sampleThumbGrid.appendChild(btn);
+                });
+            }
+            initSampleImages();
+
+            browseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+            dropzone.addEventListener('click', (e) => {
+                if (e.target.closest('#urlPasteBox') || e.target.closest('button')) return;
+                fileInput.click();
+            });
             dropzone.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if ((e.key === 'Enter' || e.key === ' ') && e.target === dropzone) {
                     e.preventDefault();
                     fileInput.click();
                 }
@@ -868,15 +1260,12 @@
                     e.stopPropagation();
                 }, false);
             });
-
             ['dragenter', 'dragover'].forEach((evtName) => {
                 dropzone.addEventListener(evtName, () => dropzone.classList.add('dropzone-active'), false);
             });
-
             ['dragleave', 'drop'].forEach((evtName) => {
                 dropzone.addEventListener(evtName, () => dropzone.classList.remove('dropzone-active'), false);
             });
-
             dropzone.addEventListener('drop', (e) => {
                 const files = e.dataTransfer && e.dataTransfer.files;
                 if (files && files.length > 0) {

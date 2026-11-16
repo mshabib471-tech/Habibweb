@@ -454,8 +454,8 @@
                                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                                 </div>
                                 <div>
-                                    <span class="text-[10px] font-mono font-bold text-red-600 uppercase tracking-widest">FREE SERVICE TOOL #5 • BROWSER AI</span>
-                                    <h3 class="text-lg font-black text-slate-900">AI Background Remover (HD PNG)</h3>
+                                    <span class="text-[10px] font-mono font-bold text-red-600 uppercase tracking-widest">FREE SERVICE TOOL #5 • 100% AUTOMATICALLY &amp; FREE</span>
+                                    <h3 class="text-lg font-black text-slate-900">Remove Image Background</h3>
                                 </div>
                             </div>
                             <a href="background-remover.html" class="px-3 py-1.5 rounded-xl bg-white border border-amber-400 hover:border-red-500 text-slate-900 text-[11px] font-extrabold shadow-xs transition-all shrink-0 inline-flex items-center gap-1">
@@ -463,14 +463,14 @@
                             </a>
                         </div>
                         <p class="text-xs text-slate-700 mb-4 leading-relaxed">
-                            Remove backgrounds up to <strong>4096px</strong> directly in your browser using the BgRemovers JS SDK. Zero server uploads, zero API keys, instant transparent PNG.
+                            <strong>100% Automatically and Free</strong> — upload, drop, or press <strong>Ctrl+V</strong> to paste an image. Runs in a zero-freeze browser worker up to 4096px.
                         </p>
 
                         <!-- Upload Dropzone & Browse Button -->
                         <div class="space-y-3 mb-4">
                             <div id="bgDropzone" class="border-2 border-dashed border-red-300 hover:border-red-500 bg-white/75 hover:bg-red-50/40 transition-all rounded-2xl p-4 text-center cursor-pointer">
                                 <i class="fa-solid fa-cloud-arrow-up text-red-600 text-2xl mb-1.5"></i>
-                                <p class="text-xs font-extrabold text-slate-900">Drag &amp; Drop Image Here</p>
+                                <p class="text-xs font-extrabold text-slate-900">Drop Image or Press Ctrl+V to Paste</p>
                                 <p class="text-[10px] text-slate-600 mb-2.5">Supports JPG, PNG, WebP up to 30 MB (Max 4096px)</p>
                                 <button type="button" id="bgBrowseBtn" onclick="event.stopPropagation(); document.getElementById('bgRemoverFileInput').click()" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 hover:border-red-500 text-slate-900 text-[11px] font-bold shadow-xs cursor-pointer inline-flex items-center gap-1.5">
                                     <i class="fa-solid fa-folder-open text-red-600"></i> Browse Image
@@ -863,6 +863,30 @@
                             handleBgFileSelected({ files });
                         }
                     }, false);
+
+                    // Ctrl+V paste support on Free Services page
+                    window.addEventListener('paste', async (e) => {
+                        const tag = document.activeElement && document.activeElement.tagName;
+                        if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+                        const sdk = window.bgRemoverInstance;
+                        if (!sdk || typeof sdk.extractFromPasteEvent !== 'function') return;
+                        const extracted = sdk.extractFromPasteEvent(e);
+                        if (!extracted) return;
+                        e.preventDefault();
+                        if (extracted.kind === 'file') {
+                            const f = extracted.file.name ? extracted.file : new File([extracted.file], 'pasted-image.png', { type: extracted.file.type || 'image/png' });
+                            handleBgFileSelected({ files: [f] });
+                            document.getElementById('bgRemoverTool')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        } else if (extracted.kind === 'url') {
+                            try {
+                                const fetched = await sdk.fetchImageUrlAsFile(extracted.url);
+                                handleBgFileSelected({ files: [fetched] });
+                                document.getElementById('bgRemoverTool')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            } catch (err) {
+                                showBgToolError(err.message);
+                            }
+                        }
+                    });
                 });
 
                 async function removeBgStandalone() {

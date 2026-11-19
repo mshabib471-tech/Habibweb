@@ -1,39 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Offers | Habib iFix .Tech</title>
+    <title>Free Offers | 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/theme.js"></script>
+    <script src="/js/global-layout.js"></script>
 </head>
-<body class="bg-slate-950 text-white min-h-screen">
-    <div class="max-w-4xl mx-auto p-8">
-        <h1 class="text-4xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">🎁 Free Offers & Perks</h1>
-        
-        <div id="offersContainer" class="space-y-6">
-            <!-- Offers will be injected here via Firestore -->
-        </div>
+<body class="min-h-screen text-slate-900 antialiased overflow-x-hidden">
+    <div id="global-sidebar-root"></div>
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col min-h-screen">
+        <div id="global-header-root"></div>
+        <script>if (window.HabibLayout) window.HabibLayout.mount();</script>
+
+        <main class="max-w-4xl mx-auto p-6 sm:p-8 flex-1 w-full">
+            <h1 class="text-3xl sm:text-4xl font-black mb-8 text-slate-900">🎁 Free Offers &amp; Perks</h1>
+            <div id="offersContainer" class="space-y-6"></div>
+        </main>
     </div>
-    
-    <script type="module" src="/js/firebase-init.js"></script>
+
+    <script type="module" src="/js/site-auth.js"></script>
     <script type="module">
-        import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-        
+        import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
         async function loadOffers() {
-            // Need to wait for window.db to be populated by firebase-init.js
             const checkDb = setInterval(async () => {
-                if (window.db) {
+                if (window.HabibAuth && window.HabibAuth.db) {
                     clearInterval(checkDb);
-                    const offersSnapshot = await getDocs(collection(window.db, 'offers'));
+                    const offersSnapshot = await getDocs(collection(window.HabibAuth.db, 'offers'));
                     const container = document.getElementById('offersContainer');
                     offersSnapshot.forEach((doc) => {
                         const offer = doc.data();
                         container.innerHTML += `
-                            <div class="p-6 bg-slate-900 rounded-2xl border border-white/10">
-                                <h2 class="text-xl font-bold">${offer.title}</h2>
-                                <p class="text-slate-400 mt-2">${offer.description}</p>
-                                <a href="${offer.link}" class="inline-block mt-4 text-cyan-400 font-bold underline">Official Link</a>
+                            <div class="glass-card p-6 rounded-2xl border border-slate-200">
+                                <h2 class="text-xl font-bold text-slate-900">${offer.title || ''}</h2>
+                                <p class="text-slate-600 mt-2">${offer.description || ''}</p>
+                                <a href="${offer.link || 'free-offer.html'}" class="inline-block mt-4 text-sky-600 font-bold underline">Official Link</a>
                             </div>
                         `;
                     });

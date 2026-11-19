@@ -20,16 +20,38 @@ import {
   getFirestore 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const configRes = await fetch('/api/firebase-config');
-if (!configRes.ok) {
-  throw new Error('Failed to load Firebase configuration');
+let firebaseConfig;
+try {
+  const configRes = await fetch('/api/firebase-config');
+  if (configRes.ok) {
+    firebaseConfig = await configRes.json();
+  }
+} catch (e) {
+  console.warn("Using fallback Firebase config", e);
 }
-const firebaseConfig = await configRes.json();
+
+if (!firebaseConfig || !firebaseConfig.apiKey) {
+  firebaseConfig = {
+    apiKey: "AIzaSyCyv5mWrOTxhdjVzEH_Go9cZ8kwAeWxzGU",
+    authDomain: "composite-entropy-26pck.firebaseapp.com",
+    projectId: "composite-entropy-26pck",
+    storageBucket: "composite-entropy-26pck.firebasestorage.app",
+    messagingSenderId: "799648339661",
+    appId: "1:799648339661:web:cf5ef3e467363f64d33b84"
+  };
+}
 
 // Singleton Firebase App and Auth initialization
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+let dbInstance;
+try {
+  dbInstance = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+} catch (e) {
+  dbInstance = getFirestore(app);
+}
+export const db = dbInstance;
 
 // Enforce browser local persistence for resilient session preservation across refreshes
 setPersistence(auth, browserLocalPersistence).catch(err => {
@@ -99,12 +121,15 @@ export function setCurrentUser(user) {
 // Universal Navbar & Sidebar Sync
 export function updateAllNavbars() {
   const user = getCurrentUser();
+  if (window.HabibLayout && typeof window.HabibLayout.updateAuthChrome === 'function') {
+    window.HabibLayout.updateAuthChrome(user);
+  }
   const loginNavContainers = document.querySelectorAll('#loginNavBtn, .login-nav-btn');
   const profileContainers = document.querySelectorAll('#profileBtn, .user-profile-widget');
   const sidebarProfile = document.getElementById('sidebarProfileSection');
   const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
 
-  if (sidebarProfile) {
+  if (!window.HabibLayout && sidebarProfile) {
     if (user) {
       const avatarUrl = user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || 'User')}`;
       const isAdmin = isAuthorizedAdminEmail(user.email);
@@ -112,92 +137,30 @@ export function updateAllNavbars() {
       const safeEmail = window.escapeHtml ? window.escapeHtml(user.email || 'Member') : (user.email || 'Member');
       sidebarProfile.innerHTML = `
         <div class="relative w-full">
-          <div onclick="window.toggleSidebarUserPopup(event)" class="sidebar-user-card w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left cursor-pointer" title="${safeName} (${safeEmail})">
-            <img src="${avatarUrl}" class="sidebar-user-avatar w-10 h-10 rounded-xl object-cover border-2 ${isAdmin ? 'border-amber-400' : 'border-cyan-400'} shrink-0 shadow-sm" alt="Avatar">
+          <div onclick="window.toggleSidebarUserPopup(event)" class="sidebar-user-card sidebar-user-card-surface w-full flex items-center gap-3 p-2.5 rounded-2xl transition-all text-left cursor-pointer" title="${safeName} (${safeEmail})">
+            <img src="${avatarUrl}" class="sidebar-user-avatar w-10 h-10 rounded-xl object-cover border-2 ${isAdmin ? 'border-amber-400' : 'border-sky-400'} shrink-0 shadow-sm" alt="Avatar">
             <div class="sidebar-user-info flex-1 min-w-0">
-              <div class="sidebar-user-name text-sm font-black truncate text-slate-900 dark:text-white">${safeName}</div>
-              <div class="sidebar-user-email text-xs truncate text-slate-500 dark:text-slate-400">${safeEmail}</div>
+              <div class="sidebar-user-name text-sm font-black truncate text-slate-900">${safeName}</div>
+              <div class="sidebar-user-email text-xs truncate text-sky-600 font-semibold">${safeEmail}</div>
             </div>
-            <i class="sidebar-user-chevron fa-solid fa-chevron-right text-xs opacity-60 text-slate-400"></i>
-          </div>
-          <div id="sidebarUserPopup" class="hidden absolute left-0 right-0 top-full mt-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-2xl p-3 z-50 divide-y divide-slate-100 dark:divide-white/10">
-            <div class="pb-2">
-              <div class="text-xs font-black text-slate-900 dark:text-white">${safeName}</div>
-              <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate">${safeEmail}</div>
-              <div class="mt-1 flex items-center gap-1.5 flex-wrap">
-                <span class="text-[10px] font-mono font-bold ${isAdmin ? 'text-amber-500' : 'text-cyan-500'}">${isAdmin ? '★ ADMINISTRATOR' : '✓ MEMBER'}</span>
-                ${user.emailVerified ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-bold font-mono">VERIFIED</span>' : '<span class="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 font-bold font-mono">UNVERIFIED</span>'}
-              </div>
-            </div>
-            <div class="py-2 space-y-1">
-              <a href="dashboard.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
-                <i class="fa-solid fa-gauge text-cyan-500"></i> My Dashboard
-              </a>
-              ${isAdmin ? `
-              <a href="admin.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
-                <i class="fa-solid fa-shield-halved text-amber-500"></i> Admin CMS & Control
-              </a>
-              ` : ''}
-              <a href="contact.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
-                <i class="fa-solid fa-wrench text-cyan-500"></i> My Repairs / Tickets
-              </a>
-              <a href="free-offer.html" class="flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
-                <i class="fa-solid fa-gift text-purple-500"></i> Free Offers & Perks
-              </a>
-            </div>
-            <div class="pt-2">
-              <button onclick="window.doRealLogout()" class="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer">
-                <i class="fa-solid fa-power-off"></i> Log Out
-              </button>
-            </div>
+            <i class="sidebar-user-chevron fa-solid fa-chevron-right text-xs text-slate-400"></i>
           </div>
         </div>
       `;
       if (sidebarLogoutBtn) sidebarLogoutBtn.classList.remove('hidden');
     } else {
       sidebarProfile.innerHTML = `
-        <a href="login.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left" title="Sign In / Register">
-          <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
-            <i class="fa-solid fa-user text-base"></i>
+        <a href="login.html" class="sidebar-user-card sidebar-user-card-surface flex items-center gap-3 p-2.5 rounded-2xl transition-all text-left" title="Sign In / Register">
+          <div class="blue-glass-login-icon">
+            <i class="fa-solid fa-right-to-bracket text-sky-700 text-sm"></i>
           </div>
           <div class="sidebar-user-info flex-1 min-w-0">
-            <div class="sidebar-user-name text-sm font-black text-slate-900 dark:text-white">Account</div>
-            <div class="sidebar-user-email text-xs text-indigo-600 dark:text-cyan-400 font-bold">Sign In / Register &rarr;</div>
+            <div class="sidebar-user-name text-sm font-black text-slate-900">Account</div>
+            <div class="sidebar-user-email text-xs text-sky-600 font-extrabold">Sign In / Register &rarr;</div>
           </div>
         </a>
       `;
       if (sidebarLogoutBtn) sidebarLogoutBtn.classList.add('hidden');
-    }
-  }
-
-  // Sidebar admin CMS link inject for authorized administrators only
-  const sidebarLinks = document.getElementById('sidebar-links');
-  if (sidebarLinks) {
-    const existingAdminLink = document.getElementById('sidebarAdminLink');
-    if (user && isAuthorizedAdminEmail(user.email)) {
-      if (!existingAdminLink) {
-        const adminLink = document.createElement('a');
-        adminLink.id = 'sidebarAdminLink';
-        adminLink.href = 'admin.html';
-        adminLink.className = 'sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-amber-500 hover:text-amber-400 bg-amber-500/10 border border-amber-500/20';
-        adminLink.setAttribute('data-page', 'admin.html');
-        adminLink.setAttribute('title', 'Admin CMS');
-        adminLink.setAttribute('data-tooltip', 'Admin CMS');
-        adminLink.innerHTML = `
-          <i class="fa-solid fa-shield-halved w-5 text-center text-sm shrink-0 text-amber-500"></i>
-          <span class="sidebar-label text-sm font-bold">Admin CMS</span>
-        `;
-        const dashItem = sidebarLinks.querySelector('[data-page="dashboard.html"]');
-        if (dashItem && dashItem.nextSibling) {
-          sidebarLinks.insertBefore(adminLink, dashItem.nextSibling);
-        } else {
-          sidebarLinks.appendChild(adminLink);
-        }
-      }
-    } else {
-      if (existingAdminLink) {
-        existingAdminLink.remove();
-      }
     }
   }
 
@@ -220,48 +183,48 @@ export function updateAllNavbars() {
         wrapper.id = 'userDropdownMenu';
         wrapper.className = 'relative inline-block text-left';
         wrapper.innerHTML = `
-          <button id="userMenuToggleBtn" type="button" class="flex items-center gap-2 p-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-white/20 transition-all text-xs font-bold text-white shadow-md cursor-pointer">
-            <img id="navUserAvatar" src="${avatarUrl}" class="w-8 h-8 rounded-lg object-cover border-2 ${isAdmin ? 'border-amber-400' : 'border-cyan-400'}">
+          <button id="userMenuToggleBtn" type="button" class="flex items-center gap-2 p-1.5 rounded-xl bg-white/95 hover:bg-white border border-slate-200 transition-all text-xs font-bold text-slate-900 shadow-sm cursor-pointer">
+            <img id="navUserAvatar" src="${avatarUrl}" class="w-8 h-8 rounded-lg object-cover border-2 ${isAdmin ? 'border-amber-400' : 'border-sky-400'}">
             <div class="hidden sm:flex flex-col text-left pr-1 leading-tight">
-              <span class="text-xs font-black text-white max-w-[110px] truncate">${user.name || 'Account'}</span>
-              <span class="text-[9px] ${isAdmin ? 'text-amber-400 font-extrabold' : 'text-cyan-400 font-bold'} uppercase font-mono tracking-wider">${isAdmin ? 'ADMIN' : 'MEMBER'}</span>
+              <span class="text-xs font-black text-slate-900 max-w-[110px] truncate">${user.name || 'Account'}</span>
+              <span class="text-[9px] ${isAdmin ? 'text-amber-600 font-extrabold' : 'text-sky-600 font-bold'} uppercase font-mono tracking-wider">${isAdmin ? 'ADMIN' : 'MEMBER'}</span>
             </div>
-            <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-500"></i>
           </button>
-          <div id="userDropdownPanel" class="hidden absolute right-0 mt-2 w-60 rounded-2xl bg-slate-950/98 border border-white/20 shadow-2xl p-2 z-50 divide-y divide-white/10 backdrop-blur-xl">
+          <div id="userDropdownPanel" class="hidden absolute right-0 mt-2 w-60 rounded-2xl bg-white/95 border border-slate-200 shadow-2xl p-2 z-50 divide-y divide-slate-100 backdrop-blur-xl">
             <div class="p-3">
-              <p class="text-xs font-extrabold text-white">${user.name || 'User'}</p>
-              <p class="text-[10px] text-slate-300 font-mono truncate">${user.email || ''}</p>
-              <div class="mt-2 flex items-center justify-between bg-slate-900/90 px-2 py-1 rounded-lg border border-white/10">
-                <span class="text-[9px] text-slate-400 font-mono font-bold">USER ID:</span>
-                <span class="text-[10px] text-cyan-300 font-mono font-black tracking-wide">${user.userCode || ('HIFIX-USR-' + (1000 + (user.id || 1)))}</span>
+              <p class="text-xs font-extrabold text-slate-900">${user.name || 'User'}</p>
+              <p class="text-[10px] text-slate-500 font-mono truncate">${user.email || ''}</p>
+              <div class="mt-2 flex items-center justify-between bg-slate-50 px-2 py-1 rounded-lg border border-slate-200">
+                <span class="text-[9px] text-slate-500 font-mono font-bold">USER ID:</span>
+                <span class="text-[10px] text-sky-700 font-mono font-black tracking-wide">${user.userCode || ('HIFIX-USR-' + (1000 + (user.id || 1)))}</span>
               </div>
-              <span class="mt-1.5 inline-block text-[9px] px-2 py-0.5 rounded-md font-mono font-bold ${isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'}">
+              <span class="mt-1.5 inline-block text-[9px] px-2 py-0.5 rounded-md font-mono font-bold ${isAdmin ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-sky-50 text-sky-700 border border-sky-200'}">
                 ${isAdmin ? '★ Verified Administrator' : '✓ Verified Member'}
               </span>
             </div>
             <div class="py-1.5 space-y-0.5">
-              <a href="dashboard.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-cyan-300 hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fa-solid fa-gauge text-cyan-400"></i> My Dashboard
+              <a href="dashboard.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-800 hover:bg-sky-50 rounded-xl transition-colors">
+                <i class="fa-solid fa-gauge text-sky-600"></i> My Dashboard
               </a>
               ${isAdmin ? `
-                <a href="admin.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-amber-300 hover:bg-white/10 rounded-xl transition-colors">
-                  <i class="fa-solid fa-shield-halved text-amber-400"></i> Admin CMS
+                <a href="admin.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-amber-700 hover:bg-amber-50 rounded-xl transition-colors">
+                  <i class="fa-solid fa-shield-halved text-amber-600"></i> Admin CMS
                 </a>
               ` : ''}
-              <a href="free-offer.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-purple-300 hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fa-solid fa-gift text-purple-400"></i> Free Offers & Perks 🎁
+              <a href="free-offer.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-purple-700 hover:bg-purple-50 rounded-xl transition-colors">
+                <i class="fa-solid fa-gift text-purple-600"></i> Free Offers & Perks
               </a>
-              <a href="contact.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fa-solid fa-wrench text-cyan-400"></i> Book Repair / Ticket
+              <a href="contact.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
+                <i class="fa-solid fa-wrench text-sky-600"></i> Book Repair / Ticket
               </a>
-              <a href="courses.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fa-solid fa-graduation-cap text-indigo-400"></i> Training Courses
+              <a href="courses.html" class="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
+                <i class="fa-solid fa-graduation-cap text-indigo-600"></i> Training Courses
               </a>
             </div>
             <div class="pt-1.5">
-              <button onclick="window.doRealLogout()" class="w-full text-left flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer">
-                <i class="fa-solid fa-power-off text-red-400"></i> Sign Out
+              <button onclick="window.doRealLogout()" class="w-full text-left flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer">
+                <i class="fa-solid fa-power-off text-rose-600"></i> Sign Out
               </button>
             </div>
           </div>
@@ -283,25 +246,25 @@ export function updateAllNavbars() {
         }
       }
 
-      // Universal Floating Admin Ribbon for logged-in admin
+      // Universal Floating Admin Ribbon for logged-in admin (Light Glassmorphism)
       if (isAdmin && !window.location.pathname.endsWith('admin.html')) {
         let adminBar = document.getElementById('adminUniversalQuickBar');
         if (!adminBar) {
           adminBar = document.createElement('div');
           adminBar.id = 'adminUniversalQuickBar';
-          adminBar.className = 'fixed bottom-4 right-4 z-50 flex items-center gap-2 p-2 rounded-2xl bg-slate-950/95 border border-amber-500/40 shadow-[0_10px_35px_rgba(0,0,0,0.8)] backdrop-blur-xl';
+          adminBar.className = 'fixed bottom-4 right-4 z-50 flex items-center gap-2 p-2 rounded-2xl bg-white/95 border border-amber-300 shadow-[0_12px_32px_rgba(15,23,42,0.14)] backdrop-blur-xl';
           adminBar.innerHTML = `
             <div class="flex items-center gap-2 pl-2 pr-1">
-              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
-              <span class="text-xs font-black text-amber-300 hidden md:inline">Admin Mode</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+              <span class="text-xs font-black text-amber-800 hidden md:inline">Admin Mode</span>
             </div>
-            <a href="admin.html" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-black border border-amber-500/40 transition-colors flex items-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-gauge"></i> <span>Dashboard</span>
+            <a href="admin.html" class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-black border border-amber-300 transition-colors flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-gauge text-amber-600"></i> <span>Dashboard</span>
             </a>
-            <a href="free-offer.html" class="px-3 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 text-xs font-black border border-purple-500/40 transition-colors flex items-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-gift"></i> <span>Free Offers</span>
+            <a href="free-offer.html" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 text-xs font-black border border-purple-200 transition-colors flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-gift text-purple-600"></i> <span>Free Offers</span>
             </a>
-            <button onclick="window.doRealLogout()" title="Logout" class="p-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-400 text-xs border border-red-500/40 transition-colors cursor-pointer">
+            <button onclick="window.doRealLogout()" title="Logout" class="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs border border-rose-200 transition-colors cursor-pointer">
               <i class="fa-solid fa-power-off"></i>
             </button>
           `;

@@ -48,54 +48,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/theme.js"></script>
+    <script src="/js/global-layout.js"></script>
     <script src="/js/bgRemoverService.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap');
-
-        body {
-            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('https://i.ibb.co/5W1BQp3L/images.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #ffffff;
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 2rem;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
-        }
-
         .upload-box {
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px dashed rgba(2, 132, 199, 0.35);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(14px);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .upload-box:hover { 
-            border-color: #06b6d4; 
-            background: rgba(6, 182, 212, 0.1);
-            transform: translateY(-5px);
+        .upload-box:hover {
+            border-color: #0284c7;
+            background: rgba(240, 249, 255, 0.95);
+            transform: translateY(-3px);
         }
-        
+
         .preview-frame {
             width: 140px;
             height: 175px;
             background: white;
-            border: 4px solid rgba(255, 255, 255, 0.8);
+            border: 4px solid #e2e8f0;
             border-radius: 12px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: 0 20px 30px -5px rgb(0 0 0 / 0.6);
+            box-shadow: 0 16px 30px -8px rgba(15, 23, 42, 0.22);
             cursor: move;
             touch-action: none;
         }
@@ -113,18 +92,18 @@
             height: 36px;
             border-radius: 50%;
             cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.2);
+            border: 2px solid #cbd5e1;
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .color-circle.active { 
-            border: 3px solid #06b6d4; 
+        .color-circle.active {
+            border: 3px solid #0284c7;
             transform: scale(1.1);
         }
 
         #color-palette {
             transform-origin: top center;
             transition: all 0.3s ease;
-            background: rgba(30, 41, 59, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
         }
 
@@ -146,7 +125,7 @@
             grid-auto-rows: 45mm;
             gap: 5mm;
             justify-content: center;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 45px -12px rgba(15, 23, 42, 0.2);
             transform-origin: top center;
         }
 
@@ -171,7 +150,7 @@
             max-width: none;
             transform-origin: center center;
         }
-        
+
         #toast { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .floating-logo { animation: float 4s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
@@ -180,12 +159,13 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: #0f172a;
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 10;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
         }
         .loader-logo-container img {
             width: 80%;
@@ -197,139 +177,162 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top-color: #06b6d4;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: #0284c7;
             animation: spin 1s linear infinite;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        input[type=range] { accent-color: #06b6d4; }
+        input[type=range] { accent-color: #0284c7; }
     </style>
 </head>
-<body class="p-4 md:p-8 relative">
+<body class="antialiased selection:bg-sky-500 selection:text-white font-sans overflow-x-hidden">
 
-    <div class="max-w-5xl mx-auto relative z-10">
-        
-        <header class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4 glass-panel py-4 px-6 md:px-8 border-t border-white/20">
-            <div class="flex items-center gap-4">
-                <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center shadow-lg p-1 border border-white/20 floating-logo">
-                    <img src="/logo.png" alt="Habib iFix Logo" class="w-full h-full object-contain">
+    <!-- Global Sidebar Mount -->
+    <div id="global-sidebar-root"></div>
+
+    <!-- Main Content Wrapper -->
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col min-h-screen">
+        <!-- Global Header Mount -->
+        <div id="global-header-root"></div>
+        <script>if (window.HabibLayout) window.HabibLayout.mount();</script>
+
+        <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-20 flex-1 w-full">
+
+            <!-- Studio Intro Banner -->
+            <div class="glass-card p-5 sm:p-6 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-sky-50 border border-sky-200 flex items-center justify-center p-1.5 shadow-sm floating-logo shrink-0">
+                        <img src="/logo.png" alt="Habib iFix Logo" class="w-full h-full object-contain">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Passport Size Photo Studio</h1>
+                        <p class="text-sky-600 text-xs sm:text-sm font-bold">Professional Lab Editor • 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-3xl font-extrabold text-white tracking-tight drop-shadow-md">Passport Size Photo</h1>
-                    <p class="text-cyan-300 text-sm font-medium tracking-wide">Professional Lab Editor <span class="text-slate-300 font-normal">| © Habib iFix .Tech</span></p>
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="services.html" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 transition-colors">
-                    &larr; Back to Services
-                </a>
-                <div class="bg-black/40 p-1.5 rounded-full border border-white/10 backdrop-blur-md">
-                    <span class="bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 px-5 py-1.5 rounded-full text-xs font-black shadow-lg uppercase tracking-wider">
+                <div class="flex items-center gap-2.5 shrink-0">
+                    <a href="services.html" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold border border-slate-200 transition-colors shadow-xs">
+                        &larr; Free Services
+                    </a>
+                    <span class="bg-gradient-to-r from-sky-600 to-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-black shadow-md uppercase tracking-wider">
                         <i class="fas fa-crown mr-1"></i> Pro Tool
                     </span>
                 </div>
             </div>
-        </header>
 
-        <div id="upload-container" class="upload-box rounded-[2.5rem] p-16 text-center mb-10 cursor-pointer">
-            <input type="file" id="file-input" class="hidden" accept="image/*">
-            <div onclick="document.getElementById('file-input').click()">
-                <div class="bg-white/10 backdrop-blur-sm w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl border border-white/20">
-                    <i class="fas fa-cloud-upload-alt text-4xl text-cyan-400"></i>
+            <div id="upload-container" class="upload-box rounded-[2rem] p-10 sm:p-16 text-center mb-10 cursor-pointer shadow-sm">
+                <input type="file" id="file-input" class="hidden" accept="image/*">
+                <div onclick="document.getElementById('file-input').click()">
+                    <div class="bg-sky-50 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-5 shadow-sm border border-sky-200">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-sky-600"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Upload Your Photo</h2>
+                    <p class="text-slate-600 text-sm max-w-sm mx-auto leading-relaxed">Photo automatically centered. You can zoom, drag, and remove background instantly.</p>
                 </div>
-                <h2 class="text-3xl font-bold text-white mb-3">Upload Your Photo</h2>
-                <p class="text-slate-300 text-sm max-w-sm mx-auto leading-relaxed">Photo automatically centered. You can zoom, drag, and remove background instantly.</p>
             </div>
-        </div>
 
-        <div id="editor-section" class="hidden glass-panel p-8 md:p-10 mb-10">
-            <div class="flex flex-col lg:flex-row gap-12">
-                
-                <div class="flex flex-col items-center justify-center w-full lg:w-auto">
-                    <span class="text-[11px] font-bold text-slate-300 uppercase mb-4 tracking-[0.2em]">Adjust Photo (Drag to Move)</span>
-                    <div id="main-preview" class="preview-frame" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
-                        <img id="preview-img" alt="Preview">
-                    </div>
-                    
-                    <div class="mt-6 w-full max-w-[200px]">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase flex justify-between">Zoom <span id="zoom-val">100%</span></label>
-                        <input type="range" id="zoom-slider" min="10" max="400" value="100" class="w-full h-2 bg-black/40 rounded-lg appearance-none cursor-pointer mt-2" oninput="updatePhoto()">
-                    </div>
-                </div>
+            <div id="editor-section" class="hidden glass-card p-6 sm:p-8 md:p-10 mb-10">
+                <div class="flex flex-col lg:flex-row gap-10">
 
-                <div class="flex-grow flex flex-col justify-center">
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-6">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Photo Settings</h2>
-                            <p class="text-sm text-slate-300">Background and copies configuration</p>
+                    <div class="flex flex-col items-center justify-center w-full lg:w-auto">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase mb-4 tracking-[0.2em]">Adjust Photo (Drag to Move)</span>
+                        <div id="main-preview" class="preview-frame" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
+                            <img id="preview-img" alt="Preview">
                         </div>
-                        <button onclick="removeBg()" class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-3 rounded-xl text-sm font-bold shadow-lg flex items-center gap-2 hover:-translate-y-1 transition-all cursor-pointer">
-                            <i class="fas fa-magic"></i> Remove BG
-                        </button>
+
+                        <div class="mt-6 w-full max-w-[200px]">
+                            <label class="text-[10px] font-bold text-slate-600 uppercase flex justify-between">Zoom <span id="zoom-val">100%</span></label>
+                            <input type="range" id="zoom-slider" min="10" max="400" value="100" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer mt-2" oninput="updatePhoto()">
+                        </div>
                     </div>
 
-                    <div class="mb-8 relative" id="color-dropdown-container">
-                        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-3">Select Background Color</label>
-                        <button onclick="toggleColorDropdown()" class="w-full md:w-2/3 flex justify-between items-center bg-black/30 border border-white/20 p-4 rounded-2xl cursor-pointer">
-                            <div class="flex items-center gap-3">
-                                <div id="current-color-indicator" class="w-7 h-7 rounded-full border-2 border-slate-300" style="background-color: #ffffff;"></div>
-                                <span class="font-medium text-white" id="color-name-text">White (Default)</span>
+                    <div class="flex-grow flex flex-col justify-center">
+                        <div class="flex flex-wrap justify-between items-center gap-4 mb-6 border-b border-slate-200 pb-6">
+                            <div>
+                                <h2 class="text-2xl font-black text-slate-900">Photo Settings</h2>
+                                <p class="text-sm text-slate-600">Background and copies configuration</p>
                             </div>
-                            <i class="fas fa-chevron-down text-slate-300 transition-transform" id="dropdown-icon"></i>
-                        </button>
+                            <button onclick="removeBg()" class="bg-gradient-to-r from-sky-600 to-blue-600 text-white px-5 py-3 rounded-xl text-sm font-bold shadow-md flex items-center gap-2 hover:-translate-y-0.5 transition-all cursor-pointer">
+                                <i class="fas fa-magic"></i> Remove BG
+                            </button>
+                        </div>
 
-                        <div id="color-palette" class="hidden absolute top-full left-0 mt-3 w-full md:w-2/3 border border-white/20 p-5 rounded-2xl shadow-2xl z-50">
-                            <div class="flex flex-wrap gap-3 mb-5" id="color-grid"></div>
-                            <div class="pt-4 border-t border-white/10 flex items-center justify-between">
-                                <span class="text-sm font-medium text-white">Custom Color</span>
-                                <input type="color" id="custom-color-picker" class="w-10 h-10 rounded-xl cursor-pointer" onchange="setCustomColor(this.value)">
+                        <div class="mb-8 relative" id="color-dropdown-container">
+                            <label class="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-3">Select Background Color</label>
+                            <button onclick="toggleColorDropdown()" class="w-full md:w-2/3 flex justify-between items-center bg-white border border-slate-300 p-3.5 rounded-2xl cursor-pointer shadow-xs">
+                                <div class="flex items-center gap-3">
+                                    <div id="current-color-indicator" class="w-7 h-7 rounded-full border-2 border-slate-300" style="background-color: #ffffff;"></div>
+                                    <span class="font-bold text-slate-800" id="color-name-text">White (Default)</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-slate-500 transition-transform" id="dropdown-icon"></i>
+                            </button>
+
+                            <div id="color-palette" class="hidden absolute top-full left-0 mt-3 w-full md:w-2/3 border border-slate-200 p-5 rounded-2xl shadow-2xl z-50">
+                                <div class="flex flex-wrap gap-3 mb-5" id="color-grid"></div>
+                                <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+                                    <span class="text-sm font-bold text-slate-800">Custom Color</span>
+                                    <input type="color" id="custom-color-picker" class="w-10 h-10 rounded-xl cursor-pointer" onchange="setCustomColor(this.value)">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-auto">
-                        <div class="bg-black/30 p-4 rounded-2xl border border-white/10 flex items-center justify-between">
-                            <label class="text-xs font-bold text-slate-300 uppercase tracking-wider">No. of Photos</label>
-                            <input type="number" id="copy-count" value="8" min="1" max="50" class="w-16 bg-black/50 border border-white/20 text-center rounded-lg text-xl font-bold py-1 text-white">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-auto">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center justify-between">
+                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">No. of Photos</label>
+                                <input type="number" id="copy-count" value="8" min="1" max="50" class="w-16 bg-white border border-slate-300 text-center rounded-lg text-xl font-bold py-1 text-slate-900">
+                            </div>
+                            <button onclick="generateSheet()" class="bg-gradient-to-r from-sky-500 to-blue-600 text-white py-3.5 rounded-2xl font-extrabold text-base transition-all shadow-lg shadow-sky-500/25 hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer">
+                                <i class="fas fa-layer-group"></i> Generate Sheet
+                            </button>
                         </div>
-                        <button onclick="generateSheet()" class="bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 rounded-2xl font-extrabold text-lg transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:-translate-y-1 flex items-center justify-center gap-2 cursor-pointer">
-                            <i class="fas fa-layer-group text-slate-950"></i> Generate Sheet
+                    </div>
+                </div>
+            </div>
+
+            <div id="sheet-container" class="hidden mt-10 mb-10">
+                <div class="glass-card p-6 md:p-8 mb-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+                    <div>
+                        <h2 class="font-black text-2xl text-slate-900">Printable Sheet</h2>
+                        <p class="text-sm text-sky-600 font-semibold mt-1">4K High-Resolution Quality (𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡 Lab)</p>
+                    </div>
+                    <div class="flex flex-wrap gap-4 w-full sm:w-auto">
+                        <button onclick="downloadAsImage()" class="w-full sm:w-auto bg-gradient-to-r from-sky-600 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer">
+                            <i class="fas fa-download text-lg"></i> Download 4K Image
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div id="sheet-container" class="hidden mt-10 mb-10">
-            <div class="glass-panel p-6 md:p-8 mb-8 flex flex-col sm:flex-row justify-between items-center gap-6">
-                <div>
-                    <h2 class="font-extrabold text-2xl text-white">Printable Sheet</h2>
-                    <p class="text-sm text-cyan-300 mt-1">4K High-Resolution Quality (Habib iFix Lab)</p>
-                </div>
-                <div class="flex flex-wrap gap-4 w-full sm:w-auto">
-                    <button onclick="downloadAsImage()" class="w-full sm:w-auto bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all shadow-xl hover:-translate-y-1 active:scale-95 border border-white/10 cursor-pointer">
-                        <i class="fas fa-download text-lg"></i> Download 4K Image
-                    </button>
+                <div class="sheet-viewer glass-card border border-slate-200 bg-slate-100/70">
+                    <div id="printable-sheet">
+                        <div id="photo-grid" class="contents"></div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="sheet-viewer glass-panel border-0 bg-black/20">
-                <div id="printable-sheet">
-                    <div id="photo-grid" class="contents"></div>
-                </div>
-            </div>
-        </div>
+        </main>
 
-        <footer class="text-center text-slate-600 mt-16 mb-6 text-xs bg-white/95 border border-slate-200 w-max mx-auto px-8 py-3 rounded-full shadow-md font-medium">
-            Designed & Developed by <span class="text-slate-900 font-black tracking-wide">© Habib iFix <span class="text-blue-600">.Tech</span></span>
+        <footer class="border-t border-slate-200/80 bg-white/90 backdrop-blur-xl py-8 mt-auto">
+            <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-600">
+                <div class="flex items-center gap-2.5">
+                    <img src="/logo.png" alt="Habib iFix" class="w-7 h-7 rounded-lg object-contain">
+                    <span class="font-black text-slate-900 text-sm">𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡</span>
+                </div>
+                <div class="flex flex-wrap justify-center items-center gap-2.5">
+                    <a href="https://www.habibifix.tech/" target="_blank" rel="noopener noreferrer" title="Website" aria-label="Website" class="social-icon-btn social-web"><i class="fa-solid fa-globe"></i></a>
+                    <a href="https://www.facebook.com/share/1F5aLYAJ9a/" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook" class="social-icon-btn social-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://t.me/habibifix" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Telegram" class="social-icon-btn social-tg"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="https://wa.me/8801868461577" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp" class="social-icon-btn social-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://www.tiktok.com/@habibifix.tech" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="TikTok" class="social-icon-btn social-tt"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@habibifix.t" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube" class="social-icon-btn social-yt"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/habibifix.tech?dmpr=MTJtNW1ibTk2aDUxdA==" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram" class="social-icon-btn social-ig"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <p class="font-semibold">Designed &amp; Developed by 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡 &copy; 2026</p>
+            </div>
         </footer>
-
     </div>
 
-    <div id="loader" class="fixed inset-0 bg-black/80 z-[100] hidden flex flex-col items-center justify-center backdrop-blur-xl">
+    <div id="loader" class="fixed inset-0 bg-slate-900/60 z-[100] hidden flex flex-col items-center justify-center backdrop-blur-xl">
         <div class="relative flex items-center justify-center">
             <div class="loader-ring"></div>
             <div class="loader-logo-container">
@@ -548,5 +551,6 @@
             setTimeout(() => toast.classList.remove('opacity-100', 'translate-y-0'), 3000);
         }
     </script>
+    <script type="module" src="/js/site-auth.js"></script>
 </body>
 </html>

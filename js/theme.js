@@ -78,18 +78,21 @@
   };
 
   function updateCollapseButtonUI(isCollapsed) {
-    const btns = document.querySelectorAll('#sidebarCollapseBtn, .sidebar-collapse-btn');
+    const btns = document.querySelectorAll('#sidebarCollapseBtn, #headerSidebarToggleBtn, .sidebar-collapse-btn');
     btns.forEach(btn => {
-      const icon = btn.querySelector('i');
-      if (icon) {
-        if (isCollapsed) {
-          icon.className = 'fa-solid fa-angles-right text-xs transition-transform duration-300';
-          btn.setAttribute('title', 'Expand Sidebar');
-        } else {
-          icon.className = 'fa-solid fa-angles-left text-xs transition-transform duration-300';
-          btn.setAttribute('title', 'Collapse Sidebar');
+      const img = btn.querySelector('img');
+      if (img) {
+        img.style.transition = 'transform 0.25s ease';
+        img.style.transform = isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)';
+      } else {
+        const icon = btn.querySelector('i');
+        if (icon) {
+          icon.className = isCollapsed
+            ? 'fa-solid fa-angles-right text-xs transition-transform duration-300'
+            : 'fa-solid fa-angles-left text-xs transition-transform duration-300';
         }
       }
+      btn.setAttribute('title', isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar');
     });
   }
 
@@ -254,10 +257,9 @@
     initSidebarState();
     setupSidebarNavigation();
 
-    if (sessionStorage.getItem('habib_promo_dismissed') === 'true') {
-      const banner = document.getElementById('topPromoBanner');
-      if (banner) banner.style.display = 'none';
-    }
+    // Automatically remove promo and AI banners as requested
+    const promoBanners = document.querySelectorAll('#topPromoBanner, .top-promo-banner, #habib-ai-widget');
+    promoBanners.forEach(el => el.remove());
 
     // Record visit analytics
     try {

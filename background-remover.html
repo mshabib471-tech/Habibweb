@@ -34,8 +34,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI Background Remover (100% Browser Studio) - Habib iFix .Tech</title>
-    <meta name="description" content="Remove image backgrounds directly in your browser using AI. Unlimited, private, no server upload, HD transparent PNG download up to 4096px by Habib iFix .Tech.">
+    <title>AI Background Remover (100% Browser Studio) - 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡</title>
+    <meta name="description" content="Remove image backgrounds directly in your browser using AI. Unlimited, private, no server upload, HD transparent PNG download up to 4096px by 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡.">
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -57,6 +57,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 
     <script src="/js/theme.js"></script>
+    <script src="/js/global-layout.js"></script>
     <script src="/js/bgRemoverService.js"></script>
 
     <style>
@@ -135,149 +136,16 @@
 </head>
 <body class="antialiased selection:bg-red-500 selection:text-white font-sans overflow-x-hidden">
 
-    <!-- TOP PROMO BANNER -->
-    <div id="topPromoBanner" class="top-promo-banner border-b border-red-600/30 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all shadow-md">
-        <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
-            <span class="inline-flex items-center gap-1.5 bg-white/20 text-white border border-white/40 px-2.5 py-0.5 rounded-full text-[10px] font-black font-mono-code uppercase tracking-wider">
-                <span class="w-2 h-2 rounded-full bg-yellow-300 animate-ping"></span>
-                100% PRIVATE BROWSER AI
-            </span>
-            <span class="font-extrabold text-white text-xs sm:text-sm">
-                Zero Server Upload • Unlimited 4K HD Background Removal Directly in Your Browser!
-            </span>
-        </div>
-        <button onclick="closePromoBanner()" class="text-white hover:text-yellow-200 p-1 rounded-full transition-colors ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
-            <i class="fa-solid fa-xmark text-sm font-black"></i>
-        </button>
-    </div>
+    
 
-    <!-- Mobile Backdrop -->
-    <div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-45 lg:hidden transition-opacity"></div>
-
-    <!-- Collapsible Sidebar Navigation -->
-    <nav id="sidebar" class="sidebar-luxury fixed left-0 top-0 h-full w-64 z-50 transition-all duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col justify-between select-none">
-        <div class="p-4 border-b sidebar-divider flex flex-col gap-3">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="flex items-center gap-2.5 group overflow-hidden">
-                    <img src="/logo.png" class="w-8 h-8 rounded-xl object-contain shadow-sm shrink-0" alt="Habib iFix">
-                    <div class="sidebar-brand-text flex flex-col">
-                        <span class="text-xs font-black tracking-wider uppercase brand-name-habib">Habib iFix</span>
-                        <span class="text-[9px] text-red-600 font-mono font-bold tracking-tight">MASTER LAB</span>
-                    </div>
-                </a>
-                <div class="flex items-center gap-1">
-                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer" title="Collapse / Expand Sidebar">
-                        <i class="fa-solid fa-angles-left text-xs transition-transform duration-300"></i>
-                    </button>
-                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-900 p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
-                        <i class="fa-solid fa-xmark text-lg"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div id="sidebarProfileSection" class="pt-2 border-t sidebar-divider">
-                <a href="login.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-slate-100/80 transition-all text-left" title="Sign In / Register">
-                    <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 shrink-0 border border-slate-200">
-                        <i class="fa-solid fa-user text-base"></i>
-                    </div>
-                    <div class="sidebar-user-info flex-1 min-w-0">
-                        <div class="sidebar-user-name text-sm font-black text-slate-900">Account</div>
-                        <div class="sidebar-user-email text-xs text-red-600 font-bold">Sign In / Register &rarr;</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <div id="sidebar-links" class="p-3 space-y-1.5 flex-1 overflow-y-auto">
-            <a href="index.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="index.html" title="Home">
-                <i class="fa-solid fa-house w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Home</span>
-            </a>
-            <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="dashboard.html" title="Dashboard">
-                <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Dashboard</span>
-            </a>
-            <a href="frp.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="frp.html" title="FRP 2027">
-                <i class="fa-solid fa-unlock-keyhole w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">FRP 2027</span>
-            </a>
-            <a href="free-offer.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="free-offer.html" title="Free Offers">
-                <i class="fa-solid fa-gift w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Free Offers</span>
-            </a>
-            <a href="services.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="services.html" title="Free Services">
-                <i class="fa-solid fa-screwdriver-wrench w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Free Services</span>
-            </a>
-            <a href="background-remover.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="background-remover.html" title="AI Background Remover">
-                <i class="fa-solid fa-wand-magic-sparkles w-5 text-center text-sm shrink-0 text-red-600"></i>
-                <span class="sidebar-label text-sm font-bold">BG Remover Studio</span>
-            </a>
-            <a href="shop.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="shop.html" title="Shop">
-                <i class="fa-solid fa-bag-shopping w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Shop</span>
-            </a>
-            <a href="courses.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="courses.html" title="Courses">
-                <i class="fa-solid fa-graduation-cap w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Courses</span>
-            </a>
-            <a href="blog.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="blog.html" title="Blog">
-                <i class="fa-solid fa-newspaper w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Blog</span>
-            </a>
-
-            <div class="my-2 border-t sidebar-divider"></div>
-
-            <a href="contact.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="contact.html" title="Support">
-                <i class="fa-solid fa-headset w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Support</span>
-            </a>
-            <a href="about.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="about.html" title="Settings">
-                <i class="fa-solid fa-gear w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Settings</span>
-            </a>
-            <button id="sidebarLogoutBtn" onclick="window.doRealLogout()" class="sidebar-link hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-all cursor-pointer text-left" title="Log Out">
-                <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Log Out</span>
-            </button>
-        </div>
-    </nav>
+        <!-- Global Sidebar Mount -->
+    <div id="global-sidebar-root"></div>
 
     <!-- Main Content Wrapper -->
     <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col min-h-screen">
-        <header class="sticky top-0 left-0 w-full z-40 glass-nav">
-            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 cursor-pointer flex items-center justify-center text-slate-800" aria-label="Toggle Sidebar Navigation">
-                        <svg class="w-5 h-5 text-slate-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
-                            <path d="M9 3v18"></path>
-                            <path d="m14 9 3 3-3 3"></path>
-                        </svg>
-                    </button>
-                    <button id="sidebarCollapseBtnTop" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 text-slate-700 cursor-pointer" title="Toggle Desktop Sidebar">
-                        <svg class="w-5 h-5 text-slate-800 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
-                            <path d="M9 3v18"></path>
-                            <path d="m14 9 3 3-3 3"></path>
-                        </svg>
-                    </button>
-                    <a href="index.html" class="flex items-center gap-2">
-                        <img src="/logo.png" class="w-8 h-8 rounded-xl object-contain" alt="Habib iFix">
-                        <span class="text-sm font-black uppercase brand-name-habib">Habib iFix <span class="text-xs font-mono text-red-600 font-bold">.TECH</span></span>
-                    </a>
-                </div>
-
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <a href="services.html" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-white/90 border border-slate-200 hover:border-red-400 text-slate-900 shadow-sm flex items-center gap-1.5 transition-all">
-                        <i class="fa-solid fa-arrow-left text-red-600"></i> <span class="hidden sm:inline">Free Services</span>
-                    </a>
-                    <a href="login.html" id="headerAuthBtn" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-sm flex items-center gap-1.5 transition-all">
-                        <i class="fa-solid fa-user"></i> <span class="hidden sm:inline">Sign In</span>
-                    </a>
-                </div>
-            </div>
-        </header>
+        <!-- Global Header Mount -->
+        <div id="global-header-root"></div>
+        <script>if (window.HabibLayout) window.HabibLayout.mount();</script>
 
         <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-20 flex-1 w-full">
             <!-- Inline Error Alert Banner -->
@@ -692,18 +560,27 @@
 
         <!-- Footer -->
         <footer class="border-t border-slate-200/80 bg-white/88 backdrop-blur-xl py-10 mt-auto">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-600 gap-3">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row justify-between items-center text-xs text-slate-600 gap-4">
                 <div class="flex items-center gap-2">
                     <img src="/logo.png" alt="Habib iFix" class="w-7 h-7 rounded-lg object-contain">
-                    <span class="font-black text-slate-900">Habib iFix <span class="text-red-600">.Tech</span></span>
+                    <span class="font-black text-slate-900">𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡</span>
                 </div>
-                <div class="flex flex-wrap items-center gap-4 font-semibold">
+                <div class="flex flex-wrap justify-center items-center gap-2.5">
+                    <a href="https://www.habibifix.tech/" target="_blank" rel="noopener noreferrer" title="Website" aria-label="Website" class="social-icon-btn social-web"><i class="fa-solid fa-globe"></i></a>
+                    <a href="https://www.facebook.com/share/1F5aLYAJ9a/" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook" class="social-icon-btn social-fb"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://t.me/habibifix" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Telegram" class="social-icon-btn social-tg"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="https://wa.me/8801868461577" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp" class="social-icon-btn social-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://www.tiktok.com/@habibifix.tech" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="TikTok" class="social-icon-btn social-tt"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@habibifix.t" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube" class="social-icon-btn social-yt"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/habibifix.tech?dmpr=MTJtNW1ibTk2aDUxdA==" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram" class="social-icon-btn social-ig"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <div class="flex flex-wrap justify-center items-center gap-4 font-semibold">
                     <a href="services.html" class="hover:text-red-600">Free Services</a>
                     <a href="passport-photo.html" class="hover:text-red-600">Passport Photo Studio</a>
                     <a href="birth-certificate.html" class="hover:text-red-600">BDRIS Check</a>
                     <a href="index.html" class="hover:text-red-600">Home</a>
                 </div>
-                <p>&copy; 2026 Habib iFix .Tech. All rights reserved.</p>
+                <p>&copy; 2026 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡. All rights reserved.</p>
             </div>
         </footer>
     </div>

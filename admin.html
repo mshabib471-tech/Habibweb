@@ -84,6 +84,7 @@
     
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/theme.js"></script>
+    <script src="/js/global-layout.js"></script>
     <script>
         // Immediate client-side security guard for Admin Panel
         (function() {
@@ -98,7 +99,6 @@
                 }
                 const isLoggedIn = localStorage.getItem('habib_logged_in') === 'true' || !!email;
                 if (isLoggedIn && email && !ADMIN_EMAILS.includes(email)) {
-                    // Unauthorized regular user -> immediately send to User Dashboard!
                     window.location.replace('dashboard.html?denied=admin');
                 }
             } catch(e) {}
@@ -106,205 +106,99 @@
     </script>
     <script type="module" src="/js/site-auth.js"></script>
 </head>
-<body class="bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-800 dark:text-slate-100 min-h-screen flex selection:bg-blue-600 selection:text-white" style="display: none;">
+<body class="text-slate-800 min-h-screen selection:bg-blue-600 selection:text-white" style="display: none;">
 
-    <!-- Left Sidebar (Nexora Style) -->
-    <aside id="adminSidebar" class="w-64 bg-white border-r border-slate-200/90 flex flex-col justify-between shrink-0 transition-all duration-300 z-30 fixed lg:static inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 shadow-sm">
-        <div>
-            <!-- Sidebar Header: Brand & Collapse -->
-            <div class="h-20 px-5 flex items-center justify-between border-b border-slate-100 bg-white">
-                <a href="admin.html" class="flex items-center gap-2.5">
-                    <img src="/logo.png" alt="Habib iFix" class="w-9 h-9 rounded-xl object-contain shadow-sm shrink-0">
-                    <div class="flex flex-col">
-                        <span class="text-sm font-black tracking-tight text-slate-900">Habib iFix <span class="text-blue-600">.Tech</span></span>
-                        <span class="text-[10px] text-emerald-600 font-bold tracking-wider uppercase font-mono-code">Master Admin CMS</span>
-                    </div>
-                </a>
-                <button onclick="toggleSidebarCollapse()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg text-sm transition-colors cursor-pointer" title="Toggle Sidebar">
-                    <i class="fa-solid fa-angles-left"></i>
-                </button>
-            </div>
-
-            <!-- Navigation Links -->
-            <div class="p-3.5 space-y-1">
-                <!-- Back to Home -->
-                <a href="index.html" class="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-black transition-all bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 shadow-xs cursor-pointer mb-2">
-                    <i class="fa-solid fa-house text-emerald-600 w-4 text-center text-sm"></i>
-                    <span>Back to Home (হোম পেজ)</span>
-                </a>
-
-                <!-- 1. Dashboard -->
-                <button onclick="switchNexoraTab('dashboard')" id="navBtn-dashboard" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all bg-blue-50 text-blue-700 cursor-pointer">
-                    <i class="fa-solid fa-gauge w-4 text-center text-sm"></i>
-                    <span>Dashboard</span>
-                </button>
-
-                <!-- 2. Analytics -->
-                <button onclick="switchNexoraTab('analytics')" id="navBtn-analytics" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
-                    <i class="fa-solid fa-chart-line w-4 text-center text-sm"></i>
-                    <span>Analytics</span>
-                </button>
-
-                <!-- 3. Orders & Bookings -->
-                <button onclick="switchNexoraTab('orders')" id="navBtn-orders" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
-                    <span class="flex items-center gap-3.5">
-                        <i class="fa-solid fa-bag-shopping w-4 text-center text-sm"></i>
-                        <span>Orders & Bookings</span>
-                    </span>
-                    <span id="badgeOrdersCount" class="bg-blue-100 text-blue-700 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">0</span>
-                </button>
-
-                <!-- 4. Customers (Users) -->
-                <button onclick="switchNexoraTab('customers')" id="navBtn-customers" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
-                    <span class="flex items-center gap-3.5">
-                        <i class="fa-solid fa-users w-4 text-center text-sm"></i>
-                        <span>Customers</span>
-                    </span>
-                    <span id="badgeUsersCount" class="bg-slate-100 text-slate-700 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">0</span>
-                </button>
-
-                <!-- 5. Products Inventory -->
-                <button onclick="switchNexoraTab('products')" id="navBtn-products" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
-                    <i class="fa-solid fa-box-open w-4 text-center text-sm"></i>
-                    <span>Products</span>
-                </button>
-
-                <!-- 6. Courses & Training Management -->
-                <button onclick="switchNexoraTab('courses')" id="navBtn-courses" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 cursor-pointer">
-                    <span class="flex items-center gap-3.5">
-                        <i class="fa-solid fa-graduation-cap w-4 text-center text-sm text-indigo-600"></i>
-                        <span>Courses (কোর্স ও ট্রেনিং)</span>
-                    </span>
-                    <span class="bg-indigo-100 text-indigo-700 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full">12</span>
-                </button>
-
-                <!-- 7. Messages -->
-                <button onclick="switchNexoraTab('messages')" id="navBtn-messages" class="nexora-nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
-                    <span class="flex items-center gap-3.5">
-                        <i class="fa-solid fa-message w-4 text-center text-sm"></i>
-                        <span>Messages</span>
-                    </span>
-                    <span id="badgeMessagesCount" class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded-full">8</span>
-                </button>
-
-                <!-- 8. Finance -->
-                <button onclick="switchNexoraTab('finance')" id="navBtn-finance" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
-                    <i class="fa-solid fa-circle-dollar-to-slot w-4 text-center text-sm"></i>
-                    <span>Finance</span>
-                </button>
-
-                <!-- 9. Reports (Audit Logs) -->
-                <button onclick="switchNexoraTab('reports')" id="navBtn-reports" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
-                    <i class="fa-solid fa-file-shield w-4 text-center text-sm"></i>
-                    <span>Reports & Audits</span>
-                </button>
-
-                <!-- 10. Settings -->
-                <button onclick="switchNexoraTab('settings')" id="navBtn-settings" class="nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer">
-                    <i class="fa-solid fa-gear w-4 text-center text-sm"></i>
-                    <span>Settings</span>
-                </button>
-
-                <!-- Quick External Links -->
-                <div class="pt-2 border-t border-slate-100 space-y-1">
-                    <a href="services.html" class="w-full flex items-center gap-3.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer">
-                        <i class="fa-solid fa-screwdriver-wrench w-4 text-center text-xs text-cyan-600"></i>
-                        <span>Services (সার্ভিস পেজ)</span>
-                    </a>
-                    <a href="free-offer.html" class="w-full flex items-center gap-3.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer">
-                        <i class="fa-solid fa-gift w-4 text-center text-xs text-purple-600"></i>
-                        <span>Free Offers (ফ্রি অফার)</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar Footer: Upgrade Card & Theme Switcher -->
-        <div class="p-4 space-y-4">
-            <!-- Upgrade to Pro Card (from Nexora image) -->
-            <div class="rounded-2xl p-4 bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-purple-500/10 border border-blue-500/20 text-center space-y-2">
-                <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center mx-auto text-sm">
-                    <i class="fa-solid fa-crown"></i>
-                </div>
-                <h4 class="text-xs font-extrabold text-slate-900 dark:text-white">Habib iFix Master Pro</h4>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                    Direct VIP support, board schematics, and high-frequency repair management.
-                </p>
-                <a href="https://wa.me/8801868461577" target="_blank" class="block w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[11px] transition-all shadow-md shadow-blue-600/30">
-                    Official WhatsApp Lab
-                </a>
-            </div>
-
-            <!-- Sidebar Footer Link -->
-            <div class="border-t border-slate-100 pt-3 flex items-center justify-between">
-                <span class="text-[11px] font-bold text-slate-500">Master CMS</span>
-                <a href="dashboard.html" class="text-[11px] font-bold text-blue-600 hover:underline">User Portal &rarr;</a>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Mobile Backdrop -->
-    <div id="sidebarBackdrop" onclick="closeAdminSidebar()" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-20 hidden lg:hidden"></div>
+    <!-- Global Sidebar Mount -->
+    <div id="global-sidebar-root"></div>
 
     <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col min-w-0 min-h-screen overflow-y-auto">
-        <!-- Top Navigation Bar (Nexora image top bar) -->
-        <header class="h-20 bg-white dark:bg-[#111827] border-b border-slate-200/80 dark:border-slate-800/80 px-6 sm:px-8 flex items-center justify-between gap-4 sticky top-0 z-20">
-            <!-- Left: Mobile Menu & Search Bar -->
-            <div class="flex items-center gap-4 flex-1 max-w-lg">
-                <button onclick="openAdminSidebar()" class="lg:hidden text-slate-700 p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 cursor-pointer flex items-center justify-center" aria-label="Toggle Admin Sidebar">
-                    <svg class="w-5 h-5 text-slate-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
-                        <path d="M9 3v18"></path>
-                        <path d="m14 9 3 3-3 3"></path>
-                    </svg>
-                </button>
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col min-h-screen">
+        <!-- Global Header Mount -->
+        <div id="global-header-root"></div>
+        <script>if (window.HabibLayout) window.HabibLayout.mount();</script>
 
-                <div class="relative w-full">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-xs text-slate-400"></i>
-                    <input type="text" id="globalAdminSearch" placeholder="Search for anything... ⌘K" class="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800/80 rounded-xl pl-9 pr-12 py-2 text-xs text-slate-900 dark:text-white outline-none focus:border-blue-500 font-medium">
-                    <span class="absolute right-3 top-2.5 text-[10px] font-mono text-slate-400 bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">⌘ K</span>
-                </div>
-            </div>
-
-            <!-- Right: Date Range Selector, Notifications & Admin Profile -->
-            <div class="flex items-center gap-3 sm:gap-4 shrink-0">
-                <!-- Date Range Selector (from Nexora image: May 12 – Jun 10, 2026) -->
-                <div class="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-200 cursor-pointer">
-                    <i class="fa-regular fa-calendar text-slate-400 text-xs"></i>
-                    <span id="currentDateRangeSpan">May 12 – Jun 10, 2026</span>
-                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 ml-1"></i>
-                </div>
-
-                <!-- Bell Notifications (Badge: 12) -->
-                <button class="relative w-9 h-9 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer" title="Notifications">
-                    <i class="fa-regular fa-bell text-sm"></i>
-                    <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">12</span>
-                </button>
-
-                <!-- Messages Notification (Badge: 8) -->
-                <button onclick="switchNexoraTab('messages')" class="relative w-9 h-9 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer" title="Inquiries">
-                    <i class="fa-regular fa-message text-sm"></i>
-                    <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-purple-500 text-white text-[9px] font-bold flex items-center justify-center">8</span>
-                </button>
-
-                <!-- Profile Info (from Nexora image: John Doe / Administrator -> Habibur Rahman / Administrator) -->
-                <div class="flex items-center gap-3 pl-2 sm:border-l sm:border-slate-200 sm:dark:border-slate-800">
-                    <img id="topAdminAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80" class="w-9 h-9 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-sm" alt="Admin">
-                    <div class="hidden sm:flex flex-col text-left">
-                        <span id="topAdminName" class="text-xs font-extrabold text-slate-900 dark:text-white leading-tight">Habibur Rahman</span>
-                        <span id="topAdminEmail" class="text-[10px] text-slate-400 font-medium">Administrator</span>
+        <!-- Main Workspace -->
+        <main class="p-4 sm:p-6 lg:p-8 space-y-6 flex-1">
+            <!-- Admin CMS Command Strip & Horizontal Navigation -->
+            <div class="glass-card p-4 sm:p-5 space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <img src="/logo.png" alt="Habib iFix" class="w-9 h-9 rounded-xl object-contain shadow-sm shrink-0">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-sm font-black text-slate-900">𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡</span>
+                                <span class="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold tracking-wider uppercase font-mono-code">Master Admin CMS</span>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Logout button -->
-                    <button onclick="handleAdminLogout()" class="text-slate-400 hover:text-red-500 p-1.5 transition-colors cursor-pointer" title="Sign Out">
-                        <i class="fa-solid fa-power-off text-sm"></i>
+
+                    <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 flex-1 lg:justify-end">
+                        <div class="relative flex-1 min-w-[200px] max-w-xs">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-xs text-slate-400"></i>
+                            <input type="text" id="globalAdminSearch" placeholder="Search orders, users... ⌘K" class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-10 py-2 text-xs text-slate-900 outline-none focus:border-blue-500 font-medium">
+                            <span class="hidden sm:inline absolute right-2.5 top-2 text-[10px] font-mono text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">⌘K</span>
+                        </div>
+
+                        <div class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700">
+                            <i class="fa-regular fa-calendar text-slate-400 text-xs"></i>
+                            <span id="currentDateRangeSpan">May 12 – Jun 10, 2026</span>
+                        </div>
+
+                        <button onclick="switchNexoraTab('messages')" class="relative w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors cursor-pointer" title="Inquiries">
+                            <i class="fa-regular fa-message text-sm"></i>
+                            <span id="badgeMessagesCountTop" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-purple-600 text-white text-[9px] font-bold flex items-center justify-center">8</span>
+                        </button>
+
+                        <div class="flex items-center gap-2.5 pl-2 border-l border-slate-200">
+                            <img id="topAdminAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80" class="w-8 h-8 rounded-xl object-cover border border-slate-200 shadow-sm" alt="Admin">
+                            <div class="hidden sm:flex flex-col text-left">
+                                <span id="topAdminName" class="text-xs font-extrabold text-slate-900 leading-tight">Habibur Rahman</span>
+                                <span id="topAdminEmail" class="text-[10px] text-slate-500 font-medium">Administrator</span>
+                            </div>
+                            <button onclick="handleAdminLogout()" class="text-slate-400 hover:text-red-600 p-1.5 transition-colors cursor-pointer" title="Sign Out">
+                                <i class="fa-solid fa-power-off text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CMS Navigation Tabs (Preserves all exact button IDs and counters) -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 border-t border-slate-100 pt-3">
+                    <button onclick="switchNexoraTab('dashboard')" id="navBtn-dashboard" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all bg-blue-600 text-white shadow-xs cursor-pointer">
+                        <i class="fa-solid fa-gauge text-xs"></i><span>Dashboard</span>
+                    </button>
+                    <button onclick="switchNexoraTab('analytics')" id="navBtn-analytics" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-chart-line text-xs"></i><span>Analytics</span>
+                    </button>
+                    <button onclick="switchNexoraTab('orders')" id="navBtn-orders" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-bag-shopping text-xs"></i><span>Orders &amp; Bookings</span>
+                        <span id="badgeOrdersCount" class="bg-blue-100 text-blue-700 text-[10px] font-mono px-1.5 py-0.5 rounded-full font-bold">0</span>
+                    </button>
+                    <button onclick="switchNexoraTab('customers')" id="navBtn-customers" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-users text-xs"></i><span>Customers</span>
+                        <span id="badgeUsersCount" class="bg-slate-100 text-slate-700 text-[10px] font-mono px-1.5 py-0.5 rounded-full font-bold">0</span>
+                    </button>
+                    <button onclick="switchNexoraTab('products')" id="navBtn-products" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-box-open text-xs"></i><span>Products</span>
+                    </button>
+                    <button onclick="switchNexoraTab('courses')" id="navBtn-courses" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-graduation-cap text-xs"></i><span>Courses</span>
+                    </button>
+                    <button onclick="switchNexoraTab('messages')" id="navBtn-messages" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-message text-xs"></i><span>Messages</span>
+                        <span id="badgeMessagesCount" class="bg-purple-100 text-purple-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full">8</span>
+                    </button>
+                    <button onclick="switchNexoraTab('finance')" id="navBtn-finance" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-circle-dollar-to-slot text-xs"></i><span>Finance</span>
+                    </button>
+                    <button onclick="switchNexoraTab('reports')" id="navBtn-reports" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-file-shield text-xs"></i><span>Reports &amp; Audits</span>
+                    </button>
+                    <button onclick="switchNexoraTab('settings')" id="navBtn-settings" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
+                        <i class="fa-solid fa-gear text-xs"></i><span>Settings</span>
                     </button>
                 </div>
             </div>
-        </header>
-
-        <!-- Main Workspace -->
-        <main class="p-6 sm:p-8 space-y-8 flex-1">
             
             <!-- TAB 1: NEXORA MAIN DASHBOARD (1:1 with image_7442f839.png) -->
             <div id="tabPane-dashboard" class="nexora-tab-pane space-y-6">
@@ -1101,16 +995,16 @@
                             <i class="fa-solid fa-shield-halved text-emerald-500"></i>
                             <span>Authorized Master Administrators Whitelist</span>
                         </h3>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Access to this Nexora control panel is mathematically guarded and limited strictly to the following verified Google emails:</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Access to this Nexora control panel is mathematically guarded and limited strictly to authorized master admin Google accounts.</p>
                         
                         <div class="space-y-2 pt-1 font-mono-code text-xs">
                             <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                                <span class="font-bold text-blue-600 dark:text-blue-400">tec.habiburrahman@gmail.com</span>
-                                <span class="text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full">Primary Master Admin</span>
+                                <span class="font-bold text-blue-600 dark:text-blue-400">Authorized Master Administrator 1</span>
+                                <span class="text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full">Active Owner</span>
                             </div>
                             <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                                <span class="font-bold text-blue-600 dark:text-blue-400">mshabib471@gmail.com</span>
-                                <span class="text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full">Secondary Master Admin</span>
+                                <span class="font-bold text-blue-600 dark:text-blue-400">Authorized Master Administrator 2</span>
+                                <span class="text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full">Active Owner</span>
                             </div>
                         </div>
 
@@ -1193,7 +1087,7 @@
                 const btn = document.getElementById('navBtn-' + t);
                 if (pane) pane.classList.add('hidden');
                 if (btn) {
-                    btn.className = "nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 hover:text-slate-900 hover:bg-slate-50 cursor-pointer";
+                    btn.className = "nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer";
                 }
             });
 
@@ -1201,7 +1095,7 @@
             const targetBtn = document.getElementById('navBtn-' + activeTab);
             if (targetPane) targetPane.classList.remove('hidden');
             if (targetBtn) {
-                targetBtn.className = "nexora-nav-btn w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all bg-blue-50 text-blue-700 font-extrabold cursor-pointer";
+                targetBtn.className = "nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all bg-blue-600 text-white shadow-xs cursor-pointer";
             }
 
             if (activeTab === 'dashboard') { loadAdminStats(); loadAdminOrders(); }
@@ -1913,19 +1807,15 @@
         }
         setTimeout(updateThemeButtonUI, 100);
 
-        // Mobile Sidebar Controls
+        // Mobile & Desktop Sidebar Controls (Unified GlobalLayout)
         function openAdminSidebar() {
-            document.getElementById('adminSidebar').classList.remove('-translate-x-full');
-            document.getElementById('sidebarBackdrop').classList.remove('hidden');
+            if (typeof window.toggleSidebar === 'function') window.toggleSidebar();
         }
         function closeAdminSidebar() {
-            document.getElementById('adminSidebar').classList.add('-translate-x-full');
-            document.getElementById('sidebarBackdrop').classList.add('hidden');
+            if (typeof window.closeSidebar === 'function') window.closeSidebar();
         }
         function toggleSidebarCollapse() {
-            const sidebar = document.getElementById('adminSidebar');
-            sidebar.classList.toggle('lg:w-20');
-            sidebar.classList.toggle('lg:w-64');
+            if (typeof window.toggleDesktopSidebar === 'function') window.toggleDesktopSidebar();
         }
 
         function escapeHtml(text) {

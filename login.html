@@ -44,9 +44,9 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title data-en="User & Admin Login - Habib iFix .Tech" data-bn="ইউজার ও অ্যাডমিন লগইন - হাবিব আইফিক্স .Tech">User & Admin Login - Habib iFix .Tech</title>
+    <title data-en="User & Admin Login - 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡" data-bn="ইউজার ও অ্যাডমিন লগইন - হাবিব আইফিক্স .Tech">User & Admin Login - 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡</title>
     
-    <meta name="description" content="User and Master Admin Login - Habib iFix .Tech">
+    <meta name="description" content="User and Master Admin Login - 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡">
     
     <!-- Google Search Favicons & App Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -60,13 +60,13 @@
     <!-- OpenGraph & Social Media Sharing (Google Search, WhatsApp, Facebook, Telegram) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.habibifix.tech/login.html">
-    <meta property="og:site_name" content="Habib iFix .Tech">
-    <meta property="og:title" content="User & Admin Login - Habib iFix .Tech">
-    <meta property="og:description" content="User and Master Admin Login - Habib iFix .Tech">
+    <meta property="og:site_name" content="𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡">
+    <meta property="og:title" content="User & Admin Login - 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡">
+    <meta property="og:description" content="User and Master Admin Login - 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡">
     <meta property="og:image" content="https://www.habibifix.tech/logo.png">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
-    <meta property="og:image:alt" content="Habib iFix .Tech Logo">
+    <meta property="og:image:alt" content="𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡 Logo">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://www.habibifix.tech/logo.png">
 
@@ -78,7 +78,7 @@
         {
           "@type": "Organization",
           "@id": "https://www.habibifix.tech/#organization",
-          "name": "Habib iFix .Tech",
+          "name": "𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡",
           "alternateName": ["Habib iFix", "Habib iFix Tech"],
           "url": "https://www.habibifix.tech/",
           "logo": {
@@ -86,7 +86,7 @@
             "@id": "https://www.habibifix.tech/#logo",
             "url": "https://www.habibifix.tech/logo.png",
             "contentUrl": "https://www.habibifix.tech/logo.png",
-            "caption": "Habib iFix .Tech",
+            "caption": "𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡",
             "width": 512,
             "height": 512
           },
@@ -108,164 +108,33 @@
     
     <link rel="stylesheet" href="css/style.css">
     <script src="/js/theme.js"></script>
+    <script src="/js/global-layout.js"></script>
     <script type="module" src="/js/site-auth.js"></script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white font-sans">
 
-    <!-- TOP PROMO BANNER WITH CLOSE BUTTON -->
-    <div id="topPromoBanner" class="top-promo-banner border-b py-2.5 px-4 text-center text-xs flex items-center justify-between sm:justify-center gap-2 relative z-50 transition-all">
-        <div class="flex items-center justify-center gap-2 flex-wrap flex-1 sm:flex-initial">
-            <span class="inline-flex items-center gap-1.5 bg-indigo-500/20 text-cyan-300 border border-indigo-500/40 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono-code uppercase">
-                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
-                ACTIVE
-            </span>
-            <span class="font-bold text-white" data-en="Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds." data-bn="হাবিব আইফিক্স এআই টেকনিক্যাল অ্যাসিস্ট্যান্ট অ্যাক্টিভ! সেকেন্ডেই মোবাইল ডায়াগনসিস করুন।">
-                Habib iFix AI Technical Assistant is active! Diagnose any mobile issue in seconds.
-            </span>
-            <button onclick="window.openHabibAI()" class="font-extrabold underline underline-offset-2 ml-1 cursor-pointer text-cyan-400 hover:text-cyan-300">
-                <span data-en="Try AI Now &rarr;" data-bn="এখনই এআই ট্রাই করুন &rarr;">Try AI Now &rarr;</span>
-            </button>
-        </div>
-        <button onclick="closePromoBanner()" class="close-promo-btn p-1 rounded-full ml-2 cursor-pointer shrink-0" title="Close" aria-label="Close Announcement">
-            <i class="fa-solid fa-xmark text-xs"></i>
-        </button>
-    </div>
+    
 
-        <!-- Mobile Backdrop -->
-    <div id="sidebarBackdrop" onclick="closeSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-45 lg:hidden transition-opacity"></div>
+            <!-- Global Sidebar Mount -->
+    <div id="global-sidebar-root"></div>
 
-    <!-- Luxury Sidebar Navigation (Responsive Desktop Collapsible & Mobile Drawer) -->
-    <nav id="sidebar" class="sidebar-luxury fixed left-0 top-0 h-full w-64 z-50 transition-all duration-300 transform -translate-x-full lg:translate-x-0 flex flex-col justify-between select-none">
-        <!-- Top Section: User Profile & Brand -->
-        <div class="p-4 border-b sidebar-divider flex flex-col gap-3">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="flex items-center gap-2 group overflow-hidden">
-                    <img src="/logo.png" class="w-8 h-8 rounded-lg object-contain shadow-sm shrink-0" alt="Habib iFix">
-                    <div class="sidebar-brand-text flex flex-col">
-                        <span class="text-xs font-black tracking-wider uppercase brand-name-habib">Habib iFix</span>
-                        <span class="text-[9px] text-cyan-500 font-mono font-bold tracking-tight">MASTER LAB</span>
-                    </div>
-                </a>
-                <div class="flex items-center gap-1">
-                    <button id="sidebarCollapseBtn" onclick="toggleDesktopSidebar()" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer" title="Collapse / Expand Sidebar">
-                        <i class="fa-solid fa-angles-left text-xs transition-transform duration-300"></i>
-                    </button>
-                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close sidebar">
-                        <i class="fa-solid fa-xmark text-lg"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Profile Widget Container (Populated dynamically by site-auth.js) -->
-            <div id="sidebarProfileSection" class="pt-2 border-t sidebar-divider">
-                <a href="login.html" class="sidebar-user-card flex items-center gap-3 p-2 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left" title="Sign In / Register">
-                    <div class="sidebar-user-avatar w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
-                        <i class="fa-solid fa-user text-base"></i>
-                    </div>
-                    <div class="sidebar-user-info flex-1 min-w-0">
-                        <div class="sidebar-user-name text-sm font-black text-slate-900 dark:text-white">Account</div>
-                        <div class="sidebar-user-email text-xs text-indigo-600 dark:text-cyan-400 font-bold">Sign In / Register &rarr;</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        
-        <!-- Center Section: Navigation Links -->
-        <div id="sidebar-links" class="p-3 space-y-1.5 flex-1 overflow-y-auto">
-            <a href="index.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="index.html" title="Home">
-                <i class="fa-solid fa-house w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Home</span>
-            </a>
-            <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="dashboard.html" title="Dashboard">
-                <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Dashboard</span>
-            </a>
-            <a href="frp.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="frp.html" title="FRP 2027">
-                <i class="fa-solid fa-unlock-keyhole w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">FRP 2027</span>
-            </a>
-            <a href="free-offer.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="free-offer.html" title="Free Offers">
-                <i class="fa-solid fa-gift w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Free Offers</span>
-            </a>
-            <a href="services.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="services.html" title="Free Services">
-                <i class="fa-solid fa-screwdriver-wrench w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Free Services</span>
-            </a>
-            <a href="shop.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="shop.html" title="Shop">
-                <i class="fa-solid fa-bag-shopping w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Shop</span>
-            </a>
-            <a href="courses.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="courses.html" title="Courses">
-                <i class="fa-solid fa-graduation-cap w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Courses</span>
-            </a>
-            <a href="blog.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="blog.html" title="Blog">
-                <i class="fa-solid fa-newspaper w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Blog</span>
-            </a>
-
-            <!-- Divider before utility links -->
-            <div class="my-2 border-t sidebar-divider"></div>
-
-            <a href="contact.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="contact.html" title="Support">
-                <i class="fa-solid fa-headset w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Support</span>
-            </a>
-            <a href="about.html" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all" data-page="about.html" title="Settings">
-                <i class="fa-solid fa-gear w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Settings</span>
-            </a>
-            <button id="sidebarLogoutBtn" onclick="window.doRealLogout()" class="sidebar-link hidden w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-red-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer text-left" title="Log Out">
-                <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center text-sm shrink-0"></i>
-                <span class="sidebar-label text-sm font-bold">Log Out</span>
-            </button>
-        </div>
-        
-        <div class="p-3 border-t sidebar-divider">
-            <div class="text-[11px] text-slate-500 text-center font-bold font-mono">
-                Habib iFix Tech &copy; 2026
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content Wrapper (adjust for sidebar) -->
-    <div id="mainContent" class="lg:ml-64 transition-all duration-300">
-        <header class="sticky top-0 left-0 w-full z-40 glass-nav">
-            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl border border-slate-200/90 hover:bg-slate-100/80 cursor-pointer flex items-center justify-center text-slate-800" aria-label="Toggle Sidebar Navigation">
-                        <svg class="w-5 h-5 text-slate-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="3.5"></rect>
-                            <path d="M9 3v18"></path>
-                            <path d="m14 9 3 3-3 3"></path>
-                        </svg>
-                    </button>
-                    <a href="index.html" class="lg:hidden flex items-center gap-2">
-                        <img src="/logo.png" class="w-7 h-7 rounded-lg object-contain" alt="Habib iFix">
-                        <span class="text-xs font-black uppercase brand-name-habib">Habib iFix</span>
-                    </a>
-                </div>
-
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <div id="loginNavBtn" class="sm:hidden">
-                        <a href="login.html" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-indigo-600 text-white">Login</a>
-                    </div>
-                </div>
-            </div>
-        </header>
+    <!-- Main Content Wrapper -->
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col min-h-screen">
+        <!-- Global Header Mount -->
+        <div id="global-header-root"></div>
+        <script>if (window.HabibLayout) window.HabibLayout.mount();</script>
 
     <!-- Main Content -->
     <main class="flex-1 flex items-center justify-center p-4 sm:p-6 py-12">
         <div class="glass-card p-6 sm:p-10 rounded-[32px] w-full max-w-lg border border-indigo-500/40 shadow-2xl relative">
             
             <!-- Dual Portal Selector Tabs (User vs Admin) -->
-            <div class="flex items-center justify-center bg-slate-900/90 p-1.5 rounded-2xl border border-white/15 mb-6">
-                <button type="button" id="tabUserBtn" onclick="switchPortalTab('user')" class="flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-lg">
+            <div class="flex items-center justify-center bg-slate-100/95 p-1.5 rounded-2xl border border-slate-200 mb-6">
+                <button type="button" id="tabUserBtn" onclick="switchPortalTab('user')" class="flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md cursor-pointer">
                     <i class="fa-solid fa-user-check"></i>
-                    <span>Customer & Student Portal</span>
+                    <span>Customer &amp; Student Portal</span>
                 </button>
-                <button type="button" id="tabAdminBtn" onclick="switchPortalTab('admin')" class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-300 hover:text-white transition-all flex items-center justify-center gap-2">
+                <button type="button" id="tabAdminBtn" onclick="switchPortalTab('admin')" class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-700 hover:text-slate-900 transition-all flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-shield-halved"></i>
                     <span>Admin Portal</span>
                 </button>
@@ -274,18 +143,18 @@
             <!-- SECTION 1: USER / CUSTOMER / STUDENT PORTAL -->
             <div id="userSection" class="block space-y-6">
                 <div class="text-center">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg shadow-cyan-500/30">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg shadow-cyan-500/25">
                         <i class="fa-solid fa-circle-user"></i>
                     </div>
-                    <h2 class="text-2xl sm:text-3xl font-black text-white mb-1.5 tracking-tight">Sign In to Your Account</h2>
-                    <p class="text-slate-300 text-xs sm:text-sm font-semibold max-w-sm mx-auto">
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-1.5 tracking-tight">Sign In to Your Account</h2>
+                    <p class="text-slate-600 text-xs sm:text-sm font-semibold max-w-sm mx-auto">
                         Track your mobile repair orders, manage bookings, and access your enrolled courses.
                     </p>
                 </div>
 
                 <!-- REAL GOOGLE AUTHENTICATION BUTTON -->
                 <div class="space-y-3">
-                    <button type="button" onclick="executeGoogleLogin('customer')" id="googleUserBtn" class="w-full bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-3.5 px-4 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3 cursor-pointer group text-xs sm:text-sm border border-slate-200">
+                    <button type="button" onclick="executeGoogleLogin('customer')" id="googleUserBtn" class="w-full bg-white hover:bg-slate-50 text-slate-900 font-extrabold py-3.5 px-4 rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 cursor-pointer group text-xs sm:text-sm border border-slate-200">
                         <!-- Official Google SVG Icon -->
                         <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -295,31 +164,31 @@
                         </svg>
                         <span id="googleBtnText">Continue with Google (Official)</span>
                     </button>
-                    <p class="text-[10px] text-center text-slate-400 font-medium">Opens Google OAuth account window to verify your Google identity securely.</p>
+                    <p class="text-[10px] text-center text-slate-500 font-medium">Opens Google OAuth account window to verify your Google identity securely.</p>
                 </div>
 
                 <!-- Divider -->
                 <div class="flex items-center gap-3 my-4">
-                    <div class="h-px bg-white/15 flex-1"></div>
-                    <span class="text-[11px] uppercase tracking-wider text-slate-300 font-mono font-bold">Or Email & Password</span>
-                    <div class="h-px bg-white/15 flex-1"></div>
+                    <div class="h-px bg-slate-200 flex-1"></div>
+                    <span class="text-[11px] uppercase tracking-wider text-slate-500 font-mono font-bold">Or Email &amp; Password</span>
+                    <div class="h-px bg-slate-200 flex-1"></div>
                 </div>
 
                 <!-- Real User Email Login Form -->
                 <form id="userLoginForm" onsubmit="submitEmailLogin(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-extrabold text-slate-200 mb-1.5 uppercase tracking-wider">Registered Email</label>
-                        <input type="email" id="userEmail" required class="w-full bg-slate-900/90 border border-white/20 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-cyan-400 font-medium placeholder-slate-400" placeholder="your.email@example.com">
+                        <label class="block text-xs font-extrabold text-slate-800 mb-1.5 uppercase tracking-wider">Registered Email</label>
+                        <input type="email" id="userEmail" required class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 outline-none focus:border-sky-500 font-medium placeholder-slate-400" placeholder="your.email@example.com">
                     </div>
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <label class="block text-xs font-extrabold text-slate-200 uppercase tracking-wider">Password</label>
-                            <span class="text-[10px] text-cyan-400 font-bold cursor-pointer hover:underline" onclick="alert('Please sign in with Google or create a new account below.')">Forgot Password?</span>
+                            <label class="block text-xs font-extrabold text-slate-800 uppercase tracking-wider">Password</label>
+                            <span class="text-[10px] text-sky-600 font-bold cursor-pointer hover:underline" onclick="alert('Please sign in with Google or create a new account below.')">Forgot Password?</span>
                         </div>
-                        <input type="password" id="userPassword" required class="w-full bg-slate-900/90 border border-white/20 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-cyan-400 font-medium placeholder-slate-400" placeholder="••••••••">
+                        <input type="password" id="userPassword" required class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 outline-none focus:border-sky-500 font-medium placeholder-slate-400" placeholder="••••••••">
                     </div>
                     
-                    <button type="submit" id="userSubmitBtn" class="w-full bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-indigo-600/30 text-xs flex items-center justify-center gap-2 cursor-pointer">
+                    <button type="submit" id="userSubmitBtn" class="w-full bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-indigo-600/20 text-xs flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-right-to-bracket"></i>
                         <span>Sign In</span>
                     </button>
@@ -328,9 +197,9 @@
                 </form>
 
                 <!-- New User Registration Prompt -->
-                <div class="p-3.5 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 text-center">
-                    <p class="text-xs text-slate-200 font-semibold mb-2">Don't have an account yet? Create one in seconds:</p>
-                    <button type="button" onclick="openRegisterModal()" class="text-xs font-extrabold text-cyan-400 hover:text-cyan-300 underline underline-offset-2 cursor-pointer">
+                <div class="p-3.5 rounded-2xl bg-sky-50/90 border border-sky-200 text-center">
+                    <p class="text-xs text-slate-700 font-semibold mb-2">Don't have an account yet? Create one in seconds:</p>
+                    <button type="button" onclick="openRegisterModal()" class="text-xs font-extrabold text-sky-600 hover:text-sky-700 underline underline-offset-2 cursor-pointer">
                         + Register New Account
                     </button>
                 </div>
@@ -339,28 +208,28 @@
             <!-- SECTION 2: ADMIN PORTAL (Strict Google Auth Only - No Fake/Demo Login) -->
             <div id="adminSection" class="hidden space-y-6">
                 <div class="text-center">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-600 to-red-600 flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg shadow-amber-500/30">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-600 to-red-600 flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg shadow-amber-500/25">
                         <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <h2 class="text-2xl sm:text-3xl font-black text-white mb-1.5 tracking-tight">Master Admin Access</h2>
-                    <p class="text-slate-300 text-xs sm:text-sm font-semibold max-w-sm mx-auto">
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-1.5 tracking-tight">Master Admin Access</h2>
+                    <p class="text-slate-600 text-xs sm:text-sm font-semibold max-w-sm mx-auto">
                         Official Google Authentication required. Access is restricted exclusively to authorized lab owners.
                     </p>
                 </div>
 
                 <!-- Google Auth for Admin (Only allowed method) -->
                 <div class="space-y-4">
-                    <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs space-y-1">
-                        <div class="font-extrabold flex items-center gap-2 text-white">
-                            <i class="fa-solid fa-lock text-amber-400"></i>
-                            <span>Strict Whitelist Enforcement</span>
+                    <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1">
+                        <div class="font-extrabold flex items-center gap-2 text-amber-900">
+                            <i class="fa-solid fa-lock text-amber-600"></i>
+                            <span>Secure Admin Verification</span>
                         </div>
-                        <p class="text-[11px] leading-relaxed opacity-90">
-                            Only verified Google accounts for <span class="font-mono font-bold text-amber-300">tec.habiburrahman@gmail.com</span> and <span class="font-mono font-bold text-amber-300">mshabib471@gmail.com</span> have access privileges. Demo credentials and password bypasses are disabled.
+                        <p class="text-[11px] leading-relaxed text-amber-800">
+                            Access is restricted exclusively to verified master administrator Google accounts.
                         </p>
                     </div>
 
-                    <button type="button" onclick="executeGoogleLogin('admin')" id="adminGoogleBtn" class="w-full bg-white hover:bg-slate-100 text-slate-900 font-extrabold py-4 px-4 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 cursor-pointer text-xs sm:text-sm border border-slate-200">
+                    <button type="button" onclick="executeGoogleLogin('admin')" id="adminGoogleBtn" class="w-full bg-white hover:bg-slate-50 text-slate-900 font-extrabold py-4 px-4 rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 cursor-pointer text-xs sm:text-sm border border-slate-200">
                         <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -372,48 +241,50 @@
                     
                     <div id="adminAuthAlert" class="hidden p-3.5 rounded-xl text-xs text-center font-bold"></div>
                 </div>
+            </div>
 
             <!-- Footer Note -->
-            <div class="mt-6 pt-4 border-t border-white/15 text-center">
-                <p class="text-[11px] text-slate-300 font-bold flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
-                    <span>256-bit SSL Protected • Habib iFix .Tech Official Authentication</span>
+            <div class="mt-6 pt-4 border-t border-slate-200 text-center">
+                <p class="text-[11px] text-slate-600 font-bold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+                    <span>256-bit SSL Protected • 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡 Official Authentication</span>
                 </p>
             </div>
         </div>
     </main>
+    </div>
 
     <!-- REAL REGISTER USER MODAL -->
-    <div id="registerModal" class="fixed inset-0 z-[10001] hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-        <div class="bg-slate-900 border border-indigo-500/40 rounded-3xl w-full max-w-md p-6 sm:p-8 shadow-2xl relative">
-            <button onclick="closeRegisterModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 text-base">
+    <div id="registerModal" class="fixed inset-0 z-[10001] hidden flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md">
+        <div class="bg-white/95 border border-slate-200 rounded-3xl w-full max-w-md p-6 sm:p-8 shadow-2xl relative">
+            <button type="button" onclick="closeRegisterModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 p-1 text-base cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
             <div class="text-center mb-5">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xl mx-auto mb-2">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xl mx-auto mb-2 shadow-md">
                     <i class="fa-solid fa-user-plus"></i>
                 </div>
-                <h3 class="text-xl font-black text-white">Create Real Account</h3>
-                <p class="text-xs text-slate-300 font-semibold">Join Habib iFix for verified repair tickets & course certifications</p>
+                <h3 class="text-xl font-black text-slate-900">Create Real Account</h3>
+                <p class="text-xs text-slate-600 font-semibold">Join 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡 for verified repair tickets &amp; course certifications</p>
             </div>
 
             <form onsubmit="submitRegister(event)" class="space-y-3.5">
                 <div>
-                    <label class="block text-[11px] font-extrabold text-slate-200 uppercase mb-1">Your Full Name</label>
-                    <input type="text" id="regName" required placeholder="e.g. Habibur Rahman" class="w-full bg-slate-950 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1">Your Full Name</label>
+                    <input type="text" id="regName" required placeholder="e.g. Habibur Rahman" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-500 font-medium">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-extrabold text-slate-200 uppercase mb-1">Your Email Address</label>
-                    <input type="email" id="regEmail" required placeholder="e.g. you@example.com" class="w-full bg-slate-950 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1">Your Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="e.g. you@example.com" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-500 font-medium">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-extrabold text-slate-200 uppercase mb-1">Phone Number</label>
-                    <input type="tel" id="regPhone" placeholder="018XXXXXXXX" class="w-full bg-slate-950 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1">Phone Number</label>
+                    <input type="tel" id="regPhone" placeholder="018XXXXXXXX" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-500 font-medium">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-extrabold text-slate-200 uppercase mb-1">Create Password</label>
-                    <input type="password" id="regPassword" required placeholder="••••••••" class="w-full bg-slate-950 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-cyan-400 font-medium">
+                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1">Create Password</label>
+                    <input type="password" id="regPassword" required placeholder="••••••••" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-500 font-medium">
                 </div>
 
                 <button type="submit" id="regSubmitBtn" class="w-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-extrabold py-3 rounded-xl transition-all text-xs flex items-center justify-center gap-2 cursor-pointer mt-2 shadow-lg">
@@ -437,13 +308,13 @@
             if (tab === 'user') {
                 userSection.classList.remove('hidden');
                 adminSection.classList.add('hidden');
-                tabUserBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-lg';
-                tabAdminBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-300 hover:text-white transition-all flex items-center justify-center gap-2';
+                tabUserBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md cursor-pointer';
+                tabAdminBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-700 hover:text-slate-900 transition-all flex items-center justify-center gap-2 cursor-pointer';
             } else {
                 userSection.classList.add('hidden');
                 adminSection.classList.remove('hidden');
-                tabAdminBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg';
-                tabUserBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-300 hover:text-white transition-all flex items-center justify-center gap-2';
+                tabAdminBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md cursor-pointer';
+                tabUserBtn.className = 'flex-1 py-2.5 px-4 rounded-xl font-bold text-xs text-slate-700 hover:text-slate-900 transition-all flex items-center justify-center gap-2 cursor-pointer';
             }
         }
 
@@ -507,11 +378,11 @@
 
                 if (role === 'admin') {
                     if (!isRealAdmin) {
-                        adminAlert.className = 'p-3.5 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40 space-y-1';
+                        adminAlert.className = 'p-3.5 rounded-xl text-xs text-center font-bold bg-red-50 text-red-700 border border-red-200 space-y-1';
                         adminAlert.innerHTML = `
-                            <div><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Access Denied</div>
-                            <div class="text-[11px] text-slate-200">The account <strong class="font-mono text-white">${escapeHtml(userEmail)}</strong> is not an authorized Master Admin.</div>
-                            <div class="text-[10px] text-cyan-300 pt-1">Redirecting you to your Customer Dashboard...</div>
+                            <div><i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Access Denied</div>
+                            <div class="text-[11px] text-slate-700">The account <strong class="font-mono text-slate-900">${escapeHtml(userEmail)}</strong> is not an authorized Master Admin.</div>
+                            <div class="text-[10px] text-sky-700 pt-1">Redirecting you to your Customer Dashboard...</div>
                         `;
                         adminAlert.classList.remove('hidden');
 
@@ -521,11 +392,11 @@
                         return;
                     }
 
-                    adminAlert.className = 'p-3.5 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 space-y-1';
+                    adminAlert.className = 'p-3.5 rounded-xl text-xs text-center font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 space-y-1';
                     adminAlert.innerHTML = `
                         <div><i class="fa-solid fa-circle-check"></i> Master Administrator Verified!</div>
-                        <div class="text-[11px] text-emerald-200">Welcome, ${escapeHtml(result.user.name || 'Admin')} (${escapeHtml(userEmail)})</div>
-                        <div class="text-[10px] text-slate-300">Opening Master Admin Control Panel...</div>
+                        <div class="text-[11px] text-emerald-700">Welcome, ${escapeHtml(result.user.name || 'Admin')} (${escapeHtml(userEmail)})</div>
+                        <div class="text-[10px] text-slate-600">Opening Master Admin Control Panel...</div>
                     `;
                     adminAlert.classList.remove('hidden');
 
@@ -533,7 +404,7 @@
                         window.location.href = 'admin.html';
                     }, 800);
                 } else {
-                    alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                    alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
                     alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Google Verified: Welcome ${escapeHtml(result.user.name || 'Member')}! Redirecting...`;
                     alertBox.classList.remove('hidden');
 
@@ -548,7 +419,7 @@
             } catch (err) {
                 const targetAlert = role === 'admin' ? adminAlert : alertBox;
                 if (targetAlert) {
-                    targetAlert.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
+                    targetAlert.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-50 text-red-700 border border-red-200';
                     targetAlert.innerText = err.message || 'Google Sign-In failed.';
                     targetAlert.classList.remove('hidden');
                 }
@@ -576,7 +447,7 @@
                 }
                 const result = await window.HabibAuth.signInWithEmailReal(email, password);
 
-                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
                 alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Welcome back, ${result.user.name || 'Member'}! Redirecting...`;
                 alertBox.classList.remove('hidden');
 
@@ -598,12 +469,12 @@
                 } else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential' || err.message?.includes('invalid-credential')) {
                     friendlyMsg = 'Incorrect email or password. Please try again.';
                 } else if (err.code === 'auth/user-disabled' || err.message?.includes('suspended') || err.message?.includes('disabled')) {
-                    friendlyMsg = 'This account has been suspended. Please contact Habib iFix support.';
+                    friendlyMsg = 'This account has been suspended. Please contact 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡 support.';
                 } else if (err.code === 'auth/too-many-requests') {
                     friendlyMsg = 'Too many attempts. Please wait a minute and try again.';
                 }
 
-                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
+                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-50 text-red-700 border border-red-200';
                 alertBox.innerText = friendlyMsg;
                 alertBox.classList.remove('hidden');
                 btn.disabled = false;
@@ -622,7 +493,7 @@
             const alertBox = document.getElementById('regAlert');
 
             if (password.length < 6) {
-                alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40';
+                alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-amber-50 text-amber-800 border border-amber-200';
                 alertBox.innerText = 'Password must be at least 6 characters.';
                 alertBox.classList.remove('hidden');
                 return;
@@ -638,12 +509,12 @@
                 }
                 const result = await window.HabibAuth.registerWithEmailReal(name, email, phone, password);
 
-                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
                 alertBox.innerHTML = `
                     <div class="space-y-1">
                         <div><i class="fa-solid fa-circle-check"></i> Account created successfully!</div>
-                        <div class="text-[11px] text-emerald-200">A verification link has been sent to <strong>${escapeHtml(email)}</strong>.</div>
-                        <div class="text-[11px] text-slate-300 pt-1">Redirecting to your new dashboard...</div>
+                        <div class="text-[11px] text-emerald-700">A verification link has been sent to <strong>${escapeHtml(email)}</strong>.</div>
+                        <div class="text-[11px] text-slate-600 pt-1">Redirecting to your new dashboard...</div>
                     </div>
                 `;
                 alertBox.classList.remove('hidden');
@@ -662,7 +533,7 @@
                     friendlyMsg = 'Please enter a valid email address.';
                 }
 
-                alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-red-500/20 text-red-300 border border-red-500/40';
+                alertBox.className = 'p-2.5 rounded-xl text-xs text-center font-bold bg-red-50 text-red-700 border border-red-200';
                 alertBox.innerText = friendlyMsg;
                 alertBox.classList.remove('hidden');
                 btn.disabled = false;

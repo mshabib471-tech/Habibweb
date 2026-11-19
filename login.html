@@ -420,7 +420,11 @@
                 const targetAlert = role === 'admin' ? adminAlert : alertBox;
                 if (targetAlert) {
                     targetAlert.className = 'p-3 rounded-xl text-xs text-center font-bold bg-red-50 text-red-700 border border-red-200';
-                    targetAlert.innerText = err.message || 'Google Sign-In failed.';
+                    let displayMsg = err.message || 'Google Sign-In failed.';
+                    if (displayMsg.includes('JSON') || displayMsg.includes('Unexpected token') || displayMsg.includes('server error')) {
+                        displayMsg = 'সার্ভারের সাথে সংযোগে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন (Temporary connection issue. Please try again).';
+                    }
+                    targetAlert.innerText = displayMsg;
                     targetAlert.classList.remove('hidden');
                 }
             } finally {

@@ -649,13 +649,19 @@ export async function signOutReal() {
 // AUTHORITATIVE SINGLE SOURCE OF TRUTH: onAuthStateChanged
 onAuthStateChanged(auth, async (firebaseUser) => {
   if (firebaseUser) {
-    try {
-      const cleanEmail = (firebaseUser.email || '').toLowerCase().trim();
-      const isGoogle = firebaseUser.providerData?.some(p => p.providerId === 'google.com');
-      const isAdmin = isAuthorizedAdminEmail(cleanEmail);
-      const effectiveVerified = !!firebaseUser.emailVerified || !!isGoogle;
-      const idToken = await firebaseUser.getIdToken();
+    const cleanEmail = (firebaseUser.email || '').toLowerCase().trim();
+    const isGoogle = firebaseUser.providerData?.some(p => p.providerId === 'google.com');
+    const isAdmin = isAuthorizedAdminEmail(cleanEmail);
+    const effectiveVerified = !!firebaseUser.emailVerified || !!isGoogle;
 
+    // Resolve auth readiness immediately so admin/dashboard pages don't stall waiting for network sync
+    if (!authIsReady) {
+      authIsReady = true;
+      authReadyResolve(firebaseUser);
+    }
+
+    try {
+      const idToken = await firebaseUser.getIdToken();
       const syncResult = await Promise.race([
         safeSyncSession(idToken, {
           uid: firebaseUser.uid,
@@ -665,7 +671,7 @@ onAuthStateChanged(auth, async (firebaseUser) => {
           emailVerified: effectiveVerified,
           authProvider: isGoogle ? 'google' : 'email'
         }),
-        new Promise((resolve) => setTimeout(() => resolve({ ok: false, data: null, timedOut: true }), 3500))
+        new Promise((resolve) => setTimeout(() => resolve({ ok: false, data: null, timedOut: true }), 4000))
       ]);
 
       if (syncResult.ok && syncResult.data && syncResult.data.success && syncResult.data.user) {
@@ -690,19 +696,39 @@ onAuthStateChanged(auth, async (firebaseUser) => {
     }
   } else {
     inMemorySessionToken = null;
-    // Only clear stale user if not in middle of popup login
-    const current = getCurrentUser();
-    if (current) {
-      setCurrentUser(null);
+    // Verify with backend cookie session before clearing local state (handles iframe/cookie-backed sessions)
+    let backendRestored = false;
+    try {
+      const meRes = await fetch('/api/user/me', {
+        credentials: 'same-origin',
+        signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(3500) : undefined
+      });
+      if (meRes.ok) {
+        const meData = await meRes.json().catch(() => null);
+        if (meData && meData.loggedIn && meData.user && meData.user.email) {
+          setCurrentUser(meData.user);
+          backendRestored = true;
+        }
+      }
+    } catch (meErr) {}
+
+    if (!backendRestored) {
+      const current = getCurrentUser();
+      if (current) {
+        setCurrentUser(null);
+      }
+    }
+
+    if (!authIsReady) {
+      authIsReady = true;
+      authReadyResolve(null);
     }
   }
 
-  // Resolve auth readiness barrier
-  if (!authIsReady) {
-    authIsReady = true;
-    authReadyResolve(firebaseUser);
-  }
   updateAllNavbars();
+  try {
+    window.dispatchEvent(new CustomEvent('habib-auth-state', { detail: { firebaseUser: firebaseUser || null } }));
+  } catch (evtErr) {}
 });
 
 // Expose globally on window for seamless inline script compatibility

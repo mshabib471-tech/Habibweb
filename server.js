@@ -12,7 +12,9 @@ const app = express();
 app.set('trust proxy', 1);
 const PORT = 3000;
 const DB_FILE = path.join(__dirname, 'database.json');
-const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(32).toString('hex');
+const JWT_SECRET = (process.env.JWT_SECRET && process.env.JWT_SECRET.trim().length >= 16)
+  ? process.env.JWT_SECRET.trim()
+  : crypto.randomBytes(32).toString('hex');
 
 process.on('uncaughtException', (err) => {
   console.error('[CRITICAL] Uncaught exception in server:', err);
@@ -229,7 +231,8 @@ async function verifyFirebaseToken(idToken) {
         const verifiedClaims = jwt.verify(token, cert, {
           algorithms: ['RS256'],
           audience: firebaseConfig.projectId,
-          issuer: `https://securetoken.google.com/${firebaseConfig.projectId}`
+          issuer: `https://securetoken.google.com/${firebaseConfig.projectId}`,
+          clockTolerance: 60
         });
         if (verifiedClaims && verifiedClaims.email) {
           const provider = verifiedClaims.firebase?.sign_in_provider || 'firebase';
@@ -373,7 +376,7 @@ app.use(express.static(__dirname, {
   extensions: ['html'],
   maxAge: '1h',
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.html')) {
+    if (filePath.endsWith('.html') || filePath.endsWith('.js') || filePath.endsWith('.css')) {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     }
   }
@@ -1074,7 +1077,8 @@ app.post('/api/user/sync-session', async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   try {
     const authHeader = req.headers['authorization'];
-    const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
+    const headerToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '').trim() : '';
+    const idToken = headerToken || (req.body && req.body.idToken ? String(req.body.idToken).trim() : '');
     const verified = idToken ? await verifyFirebaseToken(idToken) : null;
 
     if (!verified || !verified.email) {
@@ -1171,7 +1175,8 @@ app.post('/api/user/sync-session', async (req, res) => {
 
 app.post('/api/user/register', async (req, res) => {
   const authHeader = req.headers['authorization'];
-  const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
+  const headerToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '').trim() : '';
+  const idToken = headerToken || (req.body && req.body.idToken ? String(req.body.idToken).trim() : '');
   const verified = idToken ? await verifyFirebaseToken(idToken) : null;
   if (!verified || !verified.email) {
     return res.status(401).json({ error: 'Please register via Firebase Authentication.' });
@@ -1244,7 +1249,8 @@ app.post('/api/user/register', async (req, res) => {
 
 app.post('/api/user/google-auth', async (req, res) => {
   const authHeader = req.headers['authorization'];
-  const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
+  const headerToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '').trim() : '';
+  const idToken = headerToken || (req.body && req.body.idToken ? String(req.body.idToken).trim() : '');
   const verified = idToken ? await verifyFirebaseToken(idToken) : null;
   if (!verified || !verified.email) {
     return res.status(401).json({ error: 'Verified Firebase Google token is required.' });
@@ -2083,10 +2089,11 @@ app.get('/api/check-admin', async (req, res) => {
   try {
     const user = await getAuthenticatedUser(req);
     if (!user || !user.email) {
-      return res.json({ isAdmin: false, error: 'Unauthorized' });
+      return res.json({ isAdmin: false, reason: 'no_active_session', error: 'No verified session found on server.' });
     }
-    const authorized = isAuthorizedAdmin(user.email) && (!!user.emailVerified || user.provider === 'google.com');
-    if (authorized) {
+    const emailAllowed = isAuthorizedAdmin(user.email);
+    const verifiedFlag = !!user.emailVerified || user.provider === 'google.com';
+    if (emailAllowed && verifiedFlag) {
       return res.json({
         isAdmin: true,
         email: user.email,
@@ -2094,9 +2101,14 @@ app.get('/api/check-admin', async (req, res) => {
         role: 'Super Admin'
       });
     }
-    return res.json({ isAdmin: false, email: user.email });
+    return res.json({
+      isAdmin: false,
+      email: user.email,
+      reason: !emailAllowed ? 'not_admin_whitelist' : 'email_not_verified',
+      error: !emailAllowed ? 'This account is not in the authorized admin whitelist.' : 'Email verification is required for admin access.'
+    });
   } catch (err) {
-    return res.json({ isAdmin: false, error: err.message });
+    return res.json({ isAdmin: false, reason: 'server_error', error: err.message });
   }
 });
 

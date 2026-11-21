@@ -511,6 +511,44 @@
             }
         })();
 
+        let loginAutoRedirected = false;
+        async function completeVerifiedLoginRedirect(authUser, habibAuth, params) {
+            if (loginAutoRedirected || manualAccountSwitch || !authUser || !authUser.email) return;
+            loginAutoRedirected = true;
+            const email = String(authUser.email || '').toLowerCase().trim();
+            const isAdmin = ADMIN_EMAILS.includes(email);
+
+            if (habibAuth && habibAuth.auth && habibAuth.auth.currentUser && habibAuth.safeSyncSession) {
+                try {
+                    const idToken = await habibAuth.auth.currentUser.getIdToken();
+                    await habibAuth.safeSyncSession(idToken, {
+                        uid: authUser.uid,
+                        email: email,
+                        name: authUser.name || authUser.displayName || (isAdmin ? 'Habibur Rahman' : email.split('@')[0]),
+                        avatar: authUser.avatar || authUser.photoURL || '',
+                        authProvider: 'google',
+                        emailVerified: true
+                    });
+                } catch (syncErr) {
+                    console.warn('Login page session pre-sync notice:', syncErr);
+                }
+            }
+
+            showAlreadyLoggedInState(
+                authUser,
+                isAdmin
+                    ? '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Master Admin যাচাইকৃত! এডমিন প্যানেলে নিয়ে যাওয়া হচ্ছে...</span>'
+                    : '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>আপনি লগইন অবস্থায় আছেন — ড্যাশবোর্ডে নিয়ে যাওয়া হচ্ছে...</span>'
+            );
+
+            const destination = resolveRedirectDestination(isAdmin, params);
+            setTimeout(() => {
+                if (!manualAccountSwitch) {
+                    window.location.replace(destination);
+                }
+            }, 550);
+        }
+
         // Authoritative check if user is already authenticated on load
         window.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
@@ -518,12 +556,23 @@
                 return;
             }
 
+            window.addEventListener('habib-auth-state', async (ev) => {
+                if (!loginAutoRedirected && !manualAccountSwitch && ev && ev.detail && ev.detail.firebaseUser) {
+                    await completeVerifiedLoginRedirect(ev.detail.firebaseUser, window.HabibAuth || null, params);
+                }
+            });
+
             try {
                 const habibAuth = await waitForHabibAuth(8000);
                 let authUser = null;
 
-                if (habibAuth && habibAuth.waitForAuthReady) {
-                    authUser = await habibAuth.waitForAuthReady();
+                if (habibAuth && habibAuth.auth && habibAuth.auth.currentUser) {
+                    authUser = habibAuth.auth.currentUser;
+                } else if (habibAuth && habibAuth.waitForAuthReady) {
+                    authUser = await Promise.race([
+                        habibAuth.waitForAuthReady(),
+                        new Promise(resolve => setTimeout(() => resolve(habibAuth.auth?.currentUser || null), 6000))
+                    ]);
                 }
 
                 // Fallback verification with backend cookie session if Firebase persistence didn't populate authUser
@@ -543,41 +592,11 @@
                 }
 
                 if (authUser && authUser.email && !manualAccountSwitch) {
-                    const email = String(authUser.email || '').toLowerCase().trim();
-                    const isAdmin = ADMIN_EMAILS.includes(email);
-
-                    // Ensure backend cookie & memory session token are synced before navigating
-                    if (habibAuth && habibAuth.auth && habibAuth.auth.currentUser && habibAuth.safeSyncSession) {
-                        try {
-                            const idToken = await habibAuth.auth.currentUser.getIdToken();
-                            await habibAuth.safeSyncSession(idToken, {
-                                uid: authUser.uid,
-                                email: email,
-                                name: authUser.name || authUser.displayName || (isAdmin ? 'Habibur Rahman' : email.split('@')[0]),
-                                avatar: authUser.avatar || authUser.photoURL || '',
-                                authProvider: 'google',
-                                emailVerified: true
-                            });
-                        } catch (syncErr) {
-                            console.warn('Login page session pre-sync notice:', syncErr);
-                        }
-                    }
-
-                    showAlreadyLoggedInState(
-                        authUser,
-                        isAdmin
-                            ? '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Master Admin যাচাইকৃত! এডমিন প্যানেলে নিয়ে যাওয়া হচ্ছে...</span>'
-                            : '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>আপনি লগইন অবস্থায় আছেন — ড্যাশবোর্ডে নিয়ে যাওয়া হচ্ছে...</span>'
-                    );
-
-                    const destination = resolveRedirectDestination(isAdmin, params);
-                    setTimeout(() => {
-                        if (!manualAccountSwitch) {
-                            window.location.replace(destination);
-                        }
-                    }, 550);
+                    await completeVerifiedLoginRedirect(authUser, habibAuth, params);
                 } else if (!manualAccountSwitch) {
-                    // Not actually authenticated (clear stale optimistic card if any)
+                    if (habibAuth && habibAuth.getCurrentUser && habibAuth.getCurrentUser() && (!habibAuth.auth || !habibAuth.auth.currentUser)) {
+                        habibAuth.setCurrentUser(null);
+                    }
                     showLoginFormsView();
                 }
             } catch (e) {

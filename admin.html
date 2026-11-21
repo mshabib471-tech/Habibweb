@@ -1498,30 +1498,50 @@
             return window.HabibAuth || null;
         }
 
+        let adminAuthInFlight = false;
+        let adminAuthUnlocked = false;
+
         // Centralized Authorized Admin Fetch with Firebase ID Token or Session Token Injection
         async function adminFetch(url, options = {}) {
             options = Object.assign({}, options);
             const headers = new Headers(options.headers || {});
-            
+            let token = '';
+
             try {
-                let token = '';
                 if (window.HabibAuth && window.HabibAuth.auth && window.HabibAuth.auth.currentUser) {
                     token = await window.HabibAuth.auth.currentUser.getIdToken();
                 }
-                if (!token && window.HabibAuth && window.HabibAuth.getSessionToken) {
-                    token = window.HabibAuth.getSessionToken() || '';
-                }
-                if (token) {
-                    headers.set('Authorization', 'Bearer ' + token);
-                }
-                headers.set('X-Requested-With', 'XMLHttpRequest');
-            } catch (e) {
-                console.warn('[Admin Auth Token Error]:', e);
+            } catch (idTokenErr) {
+                console.warn('[Admin Firebase ID Token Notice]:', idTokenErr);
             }
-            
+
+            if (!token && window.HabibAuth && window.HabibAuth.getSessionToken) {
+                token = window.HabibAuth.getSessionToken() || '';
+            }
+            if (token) {
+                headers.set('Authorization', 'Bearer ' + token);
+            }
+            headers.set('X-Requested-With', 'XMLHttpRequest');
+
             options.headers = headers;
             options.credentials = 'same-origin';
             return fetch(url, options);
+        }
+
+        function setAdminGateAlert(message, tone = 'info') {
+            const alertEl = document.getElementById('adminGateAlert');
+            if (!alertEl) return;
+            if (!message) {
+                alertEl.classList.add('hidden');
+                alertEl.textContent = '';
+                return;
+            }
+            const toneClass = tone === 'error'
+                ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                : 'bg-amber-50 text-amber-800 border border-amber-200';
+            alertEl.className = 'p-3 rounded-xl text-xs font-bold text-center ' + toneClass;
+            alertEl.textContent = message;
+            alertEl.classList.remove('hidden');
         }
 
         function showAdminGateView(viewName, extraEmail = '') {
@@ -1553,8 +1573,7 @@
 
         async function executeInlineAdminGoogleLogin() {
             const btnText = document.getElementById('adminGateGoogleBtnText');
-            const alertEl = document.getElementById('adminGateAlert');
-            if (alertEl) alertEl.classList.add('hidden');
+            setAdminGateAlert('');
             if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Authenticating Admin...';
 
             try {
@@ -1566,11 +1585,7 @@
                 showAdminGateView('loading');
                 await initAdminAuth();
             } catch (err) {
-                if (alertEl) {
-                    alertEl.className = 'p-3 rounded-xl text-xs font-bold text-center bg-rose-50 text-rose-700 border border-rose-200';
-                    alertEl.textContent = err.message || 'Admin Google Sign-In failed.';
-                    alertEl.classList.remove('hidden');
-                }
+                setAdminGateAlert(err.message || 'Admin Google Sign-In failed.', 'error');
             } finally {
                 if (btnText) btnText.textContent = 'Sign In with Admin Google Account';
             }
@@ -1578,16 +1593,20 @@
 
         // Authoritative Check Auth with Firebase Persistence & Server Whitelist
         async function initAdminAuth() {
+            if (adminAuthUnlocked || adminAuthInFlight) return;
+            adminAuthInFlight = true;
             showAdminGateView('loading');
             try {
                 const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
-                const habibAuth = await waitForHabibAuth(5000);
+                const habibAuth = await waitForHabibAuth(7000);
                 let firebaseUser = null;
 
-                if (habibAuth && habibAuth.waitForAuthReady) {
+                if (habibAuth && habibAuth.auth && habibAuth.auth.currentUser) {
+                    firebaseUser = habibAuth.auth.currentUser;
+                } else if (habibAuth && habibAuth.waitForAuthReady) {
                     firebaseUser = await Promise.race([
                         habibAuth.waitForAuthReady(),
-                        new Promise(resolve => setTimeout(() => resolve(habibAuth.auth?.currentUser || null), 5000))
+                        new Promise(resolve => setTimeout(() => resolve(habibAuth.auth?.currentUser || null), 6000))
                     ]);
                 }
 
@@ -1611,7 +1630,14 @@
                 }
 
                 if (!firebaseUser || !firebaseUser.email) {
+                    const hadStaleLocalUser = !!(habibAuth && habibAuth.getCurrentUser && habibAuth.getCurrentUser());
+                    if (hadStaleLocalUser && (!habibAuth?.auth?.currentUser)) {
+                        habibAuth.setCurrentUser(null);
+                    }
                     showAdminGateView('login');
+                    if (hadStaleLocalUser) {
+                        setAdminGateAlert('আগের ব্রাউজার সেশনের মেয়াদ শেষ হয়েছে। অনুগ্রহ করে নিচের বাটনে ক্লিক করে Google দিয়ে Admin সাইন-ইন করুন।', 'info');
+                    }
                     return;
                 }
 
@@ -1624,7 +1650,7 @@
                 let res = await adminFetch('/api/check-admin');
                 let data = await res.json().catch(() => ({ isAdmin: false }));
 
-                // If session/cookie wasn't yet synced (e.g. iframe cookie partition), force token refresh & sync then re-verify
+                // If session/cookie wasn't yet synced (e.g. iframe cookie partition or fresh restart), force token refresh & sync then re-verify
                 if (data.isAdmin !== true && habibAuth && habibAuth.auth && habibAuth.auth.currentUser && habibAuth.safeSyncSession) {
                     try {
                         const freshToken = await habibAuth.auth.currentUser.getIdToken(true);
@@ -1644,6 +1670,8 @@
                 }
 
                 if (data.isAdmin === true) {
+                    adminAuthUnlocked = true;
+                    setAdminGateAlert('');
                     showAdminGateView('authorized');
                     const name = firebaseUser.displayName || (userEmail.includes('habibur') ? 'Habibur Rahman' : 'Master Admin');
                     const topNameEl = document.getElementById('topAdminName');
@@ -1679,14 +1707,23 @@
                     }
                 } else {
                     showAdminGateView('login');
+                    setAdminGateAlert(data.error || 'অ্যাডমিন সেশন যাচাই করা যায়নি। অনুগ্রহ করে আবার Google দিয়ে সাইন-ইন করুন।', 'error');
                 }
             } catch (err) {
                 console.error("Admin auth check error:", err);
                 showAdminGateView('login');
+                setAdminGateAlert('Authentication check failed. Please sign in again.', 'error');
+            } finally {
+                adminAuthInFlight = false;
             }
         }
 
         window.addEventListener('DOMContentLoaded', initAdminAuth);
+        window.addEventListener('habib-auth-state', (ev) => {
+            if (!adminAuthUnlocked && ev && ev.detail && ev.detail.firebaseUser) {
+                initAdminAuth();
+            }
+        });
 
         async function handleAdminLogout() {
             if (window.HabibAuth && window.HabibAuth.doRealLogout) {

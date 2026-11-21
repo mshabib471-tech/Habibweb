@@ -142,16 +142,16 @@ button[class*="bg-amber"],
 button[class*="bg-slate-900"],
 button[class*="bg-black"],
 button[class*="bg-gradient-to"],
-a[class*="bg-indigo"],
-a[class*="bg-cyan"],
-a[class*="bg-emerald"],
-a[class*="bg-purple"],
-a[class*="bg-blue"],
-a[class*="bg-red"],
-a[class*="bg-amber"],
-a[class*="bg-slate-900"],
-a[class*="bg-black"],
-a[class*="bg-gradient-to"],
+a[class*="bg-indigo"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-cyan"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-emerald"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-purple"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-blue"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-red"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-amber"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-slate-900"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-black"]:not(.sidebar-link):not(#sidebarUserPopup a),
+a[class*="bg-gradient-to"]:not(.sidebar-link):not(#sidebarUserPopup a),
 .btn-primary,
 .btn-colored,
 .badge-colored,
@@ -170,16 +170,16 @@ button[class*="bg-amber"] *,
 button[class*="bg-slate-900"] *,
 button[class*="bg-black"] *,
 button[class*="bg-gradient-to"] *,
-a[class*="bg-indigo"] *,
-a[class*="bg-cyan"] *,
-a[class*="bg-emerald"] *,
-a[class*="bg-purple"] *,
-a[class*="bg-blue"] *,
-a[class*="bg-red"] *,
-a[class*="bg-amber"] *,
-a[class*="bg-slate-900"] *,
-a[class*="bg-black"] *,
-a[class*="bg-gradient-to"] *,
+a[class*="bg-indigo"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-cyan"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-emerald"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-purple"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-blue"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-red"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-amber"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-slate-900"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-black"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
+a[class*="bg-gradient-to"]:not(.sidebar-link):not(#sidebarUserPopup a) *,
 .btn-primary *,
 .btn-colored *,
 .top-promo-banner *,
@@ -523,6 +523,30 @@ tbody tr:hover {
 .sidebar-active-page i,
 #sidebar .sidebar-link.sidebar-active-page i {
   color: #0284c7 !important;
+}
+
+#sidebar #sidebarAdminLink,
+#sidebar #sidebarAdminLink span {
+  color: #b45309 !important;
+  font-weight: 800 !important;
+}
+
+#sidebar #sidebarAdminLink i {
+  color: #d97706 !important;
+}
+
+#sidebar #sidebarAdminLink:hover {
+  background-color: #fffbeb !important;
+}
+
+#sidebar #sidebarAdminLink:hover,
+#sidebar #sidebarAdminLink:hover * {
+  color: #92400e !important;
+}
+
+#sidebar #sidebarAdminLink.sidebar-active-page,
+#sidebar #sidebarAdminLink.sidebar-active-page * {
+  color: #92400e !important;
 }
 
 /* ========================================================

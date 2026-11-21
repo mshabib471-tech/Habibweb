@@ -129,7 +129,7 @@
         <div class="glass-card p-6 sm:p-10 rounded-[32px] w-full max-w-lg border border-indigo-500/40 shadow-2xl relative">
             
             <!-- Dual Portal Selector Tabs (User vs Admin) -->
-            <div class="flex items-center justify-center bg-slate-100/95 p-1.5 rounded-2xl border border-slate-200 mb-6">
+            <div id="portalTabs" class="flex items-center justify-center bg-slate-100/95 p-1.5 rounded-2xl border border-slate-200 mb-6">
                 <button type="button" id="tabUserBtn" onclick="switchPortalTab('user')" class="flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-indigo-600 text-white shadow-md cursor-pointer">
                     <i class="fa-solid fa-user-check"></i>
                     <span>Customer &amp; Student Portal</span>
@@ -138,6 +138,53 @@
                     <i class="fa-solid fa-shield-halved"></i>
                     <span>Admin Portal</span>
                 </button>
+            </div>
+
+            <!-- ALREADY LOGGED IN SESSION CARD (Shown immediately when session is active) -->
+            <div id="alreadyLoggedInSection" class="hidden space-y-6 text-center py-2">
+                <div class="flex flex-col items-center">
+                    <div class="relative mb-3">
+                        <img id="loggedInAvatar" src="/logo.png" alt="User Avatar" class="w-20 h-20 rounded-2xl object-cover border-2 border-sky-400 shadow-lg bg-white">
+                        <span id="loggedInBadgeIcon" class="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                    </div>
+                    <span id="loggedInRolePill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold font-mono bg-sky-50 text-sky-700 border border-sky-200 mb-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Verified Account</span>
+                    </span>
+                    <h2 id="loggedInName" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Signed In</h2>
+                    <p id="loggedInEmail" class="text-xs sm:text-sm font-semibold text-sky-700 mt-0.5 break-all"></p>
+                </div>
+
+                <div id="loggedInStatusNote" class="p-3 rounded-2xl bg-emerald-50/90 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-notch fa-spin text-emerald-600"></i>
+                    <span>অ্যাকাউন্ট ভেরিফাইড হয়েছে — আপনার ড্যাশবোর্ডে নিয়ে যাওয়া হচ্ছে...</span>
+                </div>
+
+                <div class="space-y-2.5">
+                    <a id="loggedInAdminBtn" href="admin.html" class="hidden w-full bg-gradient-to-r from-amber-500 via-orange-600 to-red-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold py-3.5 px-4 rounded-2xl transition-all shadow-lg shadow-amber-500/20 text-xs sm:text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Open Master Admin Panel</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a id="loggedInDashboardBtn" href="dashboard.html" class="w-full bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-extrabold py-3.5 px-4 rounded-2xl transition-all shadow-lg shadow-indigo-600/20 text-xs sm:text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-gauge"></i>
+                        <span>Go to My Dashboard</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="pt-3 border-t border-slate-200 flex items-center justify-center gap-3">
+                    <button type="button" onclick="showSwitchAccountOptions()" class="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-repeat"></i>
+                        <span>Switch Account</span>
+                    </button>
+                    <button type="button" onclick="handleLoginPageLogout()" class="flex-1 py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-power-off"></i>
+                        <span>Log Out</span>
+                    </button>
+                </div>
             </div>
 
             <!-- SECTION 1: USER / CUSTOMER / STUDENT PORTAL -->
@@ -325,29 +372,216 @@
             document.getElementById('registerModal').classList.add('hidden');
         }
 
-        // Check if user is already authenticated on load
+        const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
+        let manualAccountSwitch = false;
+
+        async function waitForHabibAuth(timeoutMs = 8000) {
+            const start = Date.now();
+            while (Date.now() - start < timeoutMs) {
+                if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
+                    return window.HabibAuth;
+                }
+                await new Promise(resolve => setTimeout(resolve, 40));
+            }
+            return window.HabibAuth || null;
+        }
+
+        function showLoginFormsView() {
+            const tabs = document.getElementById('portalTabs');
+            const userSection = document.getElementById('userSection');
+            const adminSection = document.getElementById('adminSection');
+            const loggedSection = document.getElementById('alreadyLoggedInSection');
+            if (loggedSection) loggedSection.classList.add('hidden');
+            if (tabs) tabs.classList.remove('hidden');
+            const params = new URLSearchParams(window.location.search);
+            const wantsAdmin = params.get('tab') === 'admin' || (params.get('redirect') || '').includes('admin');
+            if (wantsAdmin) {
+                switchPortalTab('admin');
+            } else {
+                if (userSection) userSection.classList.remove('hidden');
+                if (adminSection) adminSection.classList.add('hidden');
+            }
+        }
+
+        function showAlreadyLoggedInState(user, statusText) {
+            if (!user || !user.email) return false;
+            const email = String(user.email || '').toLowerCase().trim();
+            const isAdmin = ADMIN_EMAILS.includes(email);
+            const displayName = user.name || user.displayName || (isAdmin ? 'Habibur Rahman' : email.split('@')[0]);
+            const avatar = user.avatar || user.photoURL || ('https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(displayName));
+
+            const tabs = document.getElementById('portalTabs');
+            const userSection = document.getElementById('userSection');
+            const adminSection = document.getElementById('adminSection');
+            const loggedSection = document.getElementById('alreadyLoggedInSection');
+
+            if (tabs) tabs.classList.add('hidden');
+            if (userSection) userSection.classList.add('hidden');
+            if (adminSection) adminSection.classList.add('hidden');
+            if (loggedSection) loggedSection.classList.remove('hidden');
+
+            const avatarEl = document.getElementById('loggedInAvatar');
+            const nameEl = document.getElementById('loggedInName');
+            const emailEl = document.getElementById('loggedInEmail');
+            const rolePillEl = document.getElementById('loggedInRolePill');
+            const badgeIconEl = document.getElementById('loggedInBadgeIcon');
+            const adminBtn = document.getElementById('loggedInAdminBtn');
+            const statusEl = document.getElementById('loggedInStatusNote');
+
+            if (avatarEl) {
+                avatarEl.src = avatar;
+                avatarEl.className = 'w-20 h-20 rounded-2xl object-cover border-2 shadow-lg bg-white ' + (isAdmin ? 'border-amber-400' : 'border-sky-400');
+            }
+            if (nameEl) nameEl.textContent = displayName;
+            if (emailEl) emailEl.textContent = email;
+
+            if (rolePillEl) {
+                rolePillEl.className = isAdmin
+                    ? 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold font-mono bg-amber-50 text-amber-800 border border-amber-200 mb-2'
+                    : 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold font-mono bg-sky-50 text-sky-700 border border-sky-200 mb-2';
+                rolePillEl.innerHTML = isAdmin
+                    ? '<i class="fa-solid fa-crown text-amber-600"></i><span>Master Administrator</span>'
+                    : '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Verified Member</span>';
+            }
+            if (badgeIconEl) {
+                badgeIconEl.className = isAdmin
+                    ? 'absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white'
+                    : 'absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-xs shadow-md border-2 border-white';
+                badgeIconEl.innerHTML = isAdmin ? '<i class="fa-solid fa-shield-halved"></i>' : '<i class="fa-solid fa-check"></i>';
+            }
+            if (adminBtn) {
+                if (isAdmin) adminBtn.classList.remove('hidden');
+                else adminBtn.classList.add('hidden');
+            }
+            if (statusEl && statusText) {
+                statusEl.innerHTML = statusText;
+            }
+            return isAdmin;
+        }
+
+        function showSwitchAccountOptions() {
+            manualAccountSwitch = true;
+            showLoginFormsView();
+        }
+
+        async function handleLoginPageLogout() {
+            if (window.HabibAuth && window.HabibAuth.doRealLogout) {
+                await window.HabibAuth.doRealLogout();
+            } else if (window.doRealLogout) {
+                await window.doRealLogout();
+            } else {
+                localStorage.removeItem('habib_current_user');
+                localStorage.removeItem('habib_logged_in');
+                localStorage.removeItem('habib_user_email');
+                window.location.href = 'login.html?logout=true';
+            }
+        }
+
+        function resolveRedirectDestination(isAdmin, params) {
+            const rawRedirect = params.get('redirect');
+            if (rawRedirect && !rawRedirect.includes('login.html')) {
+                if (rawRedirect.includes('admin') && !isAdmin) {
+                    return 'dashboard.html?denied=admin';
+                }
+                return rawRedirect;
+            }
+            return isAdmin ? 'admin.html' : 'dashboard.html';
+        }
+
+        // Immediate optimistic check to prevent flashing login options when user is already signed in
+        (function applyInitialSessionView() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('logout') === 'true' || params.get('switch') === 'true') {
+                if (params.get('tab') === 'admin') switchPortalTab('admin');
+                return;
+            }
+            try {
+                const raw = localStorage.getItem('habib_current_user');
+                if (raw) {
+                    const cachedUser = JSON.parse(raw);
+                    if (cachedUser && cachedUser.email && !cachedUser.isBanned) {
+                        showAlreadyLoggedInState(cachedUser, '<i class="fa-solid fa-circle-notch fa-spin text-emerald-600"></i><span>সেশন যাচাই করা হচ্ছে...</span>');
+                        return;
+                    }
+                }
+            } catch (e) {}
+            if (params.get('tab') === 'admin' || (params.get('redirect') || '').includes('admin')) {
+                switchPortalTab('admin');
+            }
+        })();
+
+        // Authoritative check if user is already authenticated on load
         window.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             if (params.get('logout') === 'true' || params.get('switch') === 'true') {
                 return;
             }
+
             try {
-                if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
-                    const authUser = await window.HabibAuth.waitForAuthReady();
-                    if (authUser) {
-                        const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
-                        const email = (authUser.email || '').toLowerCase().trim();
-                        const isAdmin = ADMIN_EMAILS.includes(email);
-                        const redirectTarget = params.get('redirect');
-                        if (redirectTarget) {
-                            window.location.href = redirectTarget;
-                        } else {
-                            window.location.href = isAdmin ? 'admin.html' : 'dashboard.html';
+                const habibAuth = await waitForHabibAuth(8000);
+                let authUser = null;
+
+                if (habibAuth && habibAuth.waitForAuthReady) {
+                    authUser = await habibAuth.waitForAuthReady();
+                }
+
+                // Fallback verification with backend cookie session if Firebase persistence didn't populate authUser
+                if (!authUser) {
+                    try {
+                        const headers = {};
+                        const memToken = habibAuth && habibAuth.getSessionToken ? habibAuth.getSessionToken() : null;
+                        if (memToken) headers['Authorization'] = 'Bearer ' + memToken;
+                        const meRes = await fetch('/api/user/me', { headers, credentials: 'same-origin' });
+                        if (meRes.ok) {
+                            const meData = await meRes.json().catch(() => null);
+                            if (meData && meData.loggedIn && meData.user && meData.user.email) {
+                                authUser = meData.user;
+                            }
+                        }
+                    } catch (meErr) {}
+                }
+
+                if (authUser && authUser.email && !manualAccountSwitch) {
+                    const email = String(authUser.email || '').toLowerCase().trim();
+                    const isAdmin = ADMIN_EMAILS.includes(email);
+
+                    // Ensure backend cookie & memory session token are synced before navigating
+                    if (habibAuth && habibAuth.auth && habibAuth.auth.currentUser && habibAuth.safeSyncSession) {
+                        try {
+                            const idToken = await habibAuth.auth.currentUser.getIdToken();
+                            await habibAuth.safeSyncSession(idToken, {
+                                uid: authUser.uid,
+                                email: email,
+                                name: authUser.name || authUser.displayName || (isAdmin ? 'Habibur Rahman' : email.split('@')[0]),
+                                avatar: authUser.avatar || authUser.photoURL || '',
+                                authProvider: 'google',
+                                emailVerified: true
+                            });
+                        } catch (syncErr) {
+                            console.warn('Login page session pre-sync notice:', syncErr);
                         }
                     }
+
+                    showAlreadyLoggedInState(
+                        authUser,
+                        isAdmin
+                            ? '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Master Admin যাচাইকৃত! এডমিন প্যানেলে নিয়ে যাওয়া হচ্ছে...</span>'
+                            : '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>আপনি লগইন অবস্থায় আছেন — ড্যাশবোর্ডে নিয়ে যাওয়া হচ্ছে...</span>'
+                    );
+
+                    const destination = resolveRedirectDestination(isAdmin, params);
+                    setTimeout(() => {
+                        if (!manualAccountSwitch) {
+                            window.location.replace(destination);
+                        }
+                    }, 550);
+                } else if (!manualAccountSwitch) {
+                    // Not actually authenticated (clear stale optimistic card if any)
+                    showLoginFormsView();
                 }
             } catch (e) {
                 console.warn("Auth check on login page:", e);
+                if (!manualAccountSwitch) showLoginFormsView();
             }
         });
 
@@ -367,12 +601,12 @@
             }
 
             try {
-                if (!window.HabibAuth || !window.HabibAuth.signInWithGoogleReal) {
+                const habibAuth = await waitForHabibAuth(6000);
+                if (!habibAuth || !habibAuth.signInWithGoogleReal) {
                     throw new Error("Authentication engine is initializing. Please try again in 1 second.");
                 }
-                const result = await window.HabibAuth.signInWithGoogleReal(role);
+                const result = await habibAuth.signInWithGoogleReal(role);
                 
-                const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
                 const userEmail = (result.user && result.user.email ? result.user.email : '').toLowerCase().trim();
                 const isRealAdmin = ADMIN_EMAILS.includes(userEmail);
 
@@ -387,34 +621,32 @@
                         adminAlert.classList.remove('hidden');
 
                         setTimeout(() => {
-                            window.location.href = 'dashboard.html?denied=admin';
-                        }, 2200);
+                            window.location.replace('dashboard.html?denied=admin');
+                        }, 1800);
                         return;
                     }
 
-                    adminAlert.className = 'p-3.5 rounded-xl text-xs text-center font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 space-y-1';
-                    adminAlert.innerHTML = `
-                        <div><i class="fa-solid fa-circle-check"></i> Master Administrator Verified!</div>
-                        <div class="text-[11px] text-emerald-700">Welcome, ${escapeHtml(result.user.name || 'Admin')} (${escapeHtml(userEmail)})</div>
-                        <div class="text-[10px] text-slate-600">Opening Master Admin Control Panel...</div>
-                    `;
-                    adminAlert.classList.remove('hidden');
+                    showAlreadyLoggedInState(
+                        result.user,
+                        '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Master Administrator Verified! Opening Admin Control Panel...</span>'
+                    );
 
                     setTimeout(() => {
-                        window.location.href = 'admin.html';
-                    }, 800);
+                        window.location.replace('admin.html');
+                    }, 600);
                 } else {
-                    alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
-                    alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Google Verified: Welcome ${escapeHtml(result.user.name || 'Member')}! Redirecting...`;
-                    alertBox.classList.remove('hidden');
+                    showAlreadyLoggedInState(
+                        result.user,
+                        isRealAdmin
+                            ? '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Master Admin Verified! Opening Admin Panel...</span>'
+                            : `<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Google Verified: Welcome ${escapeHtml(result.user.name || 'Member')}! Redirecting...</span>`
+                    );
 
+                    const params = new URLSearchParams(window.location.search);
+                    const destination = resolveRedirectDestination(isRealAdmin, params);
                     setTimeout(() => {
-                        if (isRealAdmin) {
-                            window.location.href = 'admin.html';
-                        } else {
-                            window.location.href = 'dashboard.html';
-                        }
-                    }, 800);
+                        window.location.replace(destination);
+                    }, 600);
                 }
             } catch (err) {
                 const targetAlert = role === 'admin' ? adminAlert : alertBox;
@@ -446,26 +678,24 @@
             alertBox.classList.add('hidden');
 
             try {
-                if (!window.HabibAuth || !window.HabibAuth.signInWithEmailReal) {
+                const habibAuth = await waitForHabibAuth(6000);
+                if (!habibAuth || !habibAuth.signInWithEmailReal) {
                     throw new Error("Auth system loading. Please try again in a moment.");
                 }
-                const result = await window.HabibAuth.signInWithEmailReal(email, password);
+                const result = await habibAuth.signInWithEmailReal(email, password);
 
-                alertBox.className = 'p-3 rounded-xl text-xs text-center font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
-                alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Welcome back, ${result.user.name || 'Member'}! Redirecting...`;
-                alertBox.classList.remove('hidden');
+                const userEmail = (result.user && result.user.email ? result.user.email : '').toLowerCase().trim();
+                const isRealAdmin = ADMIN_EMAILS.includes(userEmail);
+
+                showAlreadyLoggedInState(
+                    result.user,
+                    `<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Welcome back, ${escapeHtml(result.user.name || 'Member')}! Redirecting...</span>`
+                );
 
                 setTimeout(() => {
-                    const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
-                    const userEmail = (result.user && result.user.email ? result.user.email : '').toLowerCase().trim();
-                    const isRealAdmin = ADMIN_EMAILS.includes(userEmail);
-                    const redirectTarget = new URLSearchParams(window.location.search).get('redirect');
-                    if (redirectTarget) {
-                        window.location.href = redirectTarget;
-                    } else {
-                        window.location.href = isRealAdmin ? 'admin.html' : 'dashboard.html';
-                    }
-                }, 800);
+                    const params = new URLSearchParams(window.location.search);
+                    window.location.replace(resolveRedirectDestination(isRealAdmin, params));
+                }, 600);
             } catch (err) {
                 let friendlyMsg = err.message || 'Invalid email or password.';
                 if (err.code === 'auth/user-not-found' || err.message?.includes('user-not-found')) {

@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -8,9 +9,10 @@ const { getAuth: getAdminAuth } = require('firebase-admin/auth');
 const jwt = require('jsonwebtoken');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = 3000;
 const DB_FILE = path.join(__dirname, 'database.json');
-const JWT_SECRET = process.env.JWT_SECRET || 'habib_ifix_jwt_secure_prod_signing_key_2026';
+const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(32).toString('hex');
 
 process.on('uncaughtException', (err) => {
   console.error('[CRITICAL] Uncaught exception in server:', err);
@@ -24,6 +26,62 @@ process.on('unhandledRejection', (reason, promise) => {
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
+
+function isHttpsRequest(req) {
+  if (!req) return false;
+  const proto = String(req.headers['x-forwarded-proto'] || '').toLowerCase();
+  return !!req.secure || proto.includes('https');
+}
+
+function getAuthCookieOptions(req, { httpOnly = true, maxAge = 7 * 24 * 60 * 60 * 1000 } = {}) {
+  const isHttps = isHttpsRequest(req);
+  if (isHttps) {
+    return {
+      httpOnly,
+      maxAge,
+      sameSite: 'none',
+      secure: true,
+      partitioned: true,
+      path: '/'
+    };
+  }
+  return {
+    httpOnly,
+    maxAge,
+    sameSite: 'lax',
+    secure: false,
+    path: '/'
+  };
+}
+
+function setAuthCookies(req, res, sessionJwt, userId) {
+  res.cookie('auth_token', sessionJwt, getAuthCookieOptions(req, { httpOnly: true }));
+  res.cookie('user_session', String(userId), getAuthCookieOptions(req, { httpOnly: false }));
+  clearLegacyAdminCookies(req, res);
+}
+
+function clearLegacyAdminCookies(req, res) {
+  const clearHttpOnly = getAuthCookieOptions(req, { httpOnly: true, maxAge: 0 });
+  const clearClient = getAuthCookieOptions(req, { httpOnly: false, maxAge: 0 });
+  delete clearHttpOnly.maxAge;
+  delete clearClient.maxAge;
+  res.clearCookie('admin_session', clearHttpOnly);
+  res.clearCookie('admin_email', clearHttpOnly);
+  res.clearCookie('admin_session');
+  res.clearCookie('admin_email');
+}
+
+function clearAllAuthCookies(req, res) {
+  const clearHttpOnly = getAuthCookieOptions(req, { httpOnly: true, maxAge: 0 });
+  const clearClient = getAuthCookieOptions(req, { httpOnly: false, maxAge: 0 });
+  delete clearHttpOnly.maxAge;
+  delete clearClient.maxAge;
+  res.clearCookie('auth_token', clearHttpOnly);
+  res.clearCookie('user_session', clearClient);
+  res.clearCookie('auth_token');
+  res.clearCookie('user_session');
+  clearLegacyAdminCookies(req, res);
+}
 
 const firebaseConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'firebase-applet-config.json'), 'utf8'));
 
@@ -114,7 +172,28 @@ function verifySessionToken(token) {
   }
 }
 
-// Real Firebase ID Token Verification (Admin SDK + Google Identity Toolkit Fallback)
+// Cached Google Public X509 Certificates for Firebase ID Token RS256 Verification
+let cachedFirebaseCerts = { certs: null, expiresAt: 0 };
+
+async function getFirebasePublicCerts() {
+  const now = Date.now();
+  if (cachedFirebaseCerts.certs && now < cachedFirebaseCerts.expiresAt) {
+    return cachedFirebaseCerts.certs;
+  }
+  const certUrl = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com';
+  const resp = await fetch(certUrl, { signal: AbortSignal.timeout(4000) });
+  if (!resp.ok) {
+    throw new Error('Failed to fetch Firebase public certificates');
+  }
+  const certs = await resp.json();
+  const cacheControl = resp.headers.get('cache-control') || '';
+  const maxAgeMatch = cacheControl.match(/max-age=(\d+)/i);
+  const ttlMs = maxAgeMatch ? parseInt(maxAgeMatch[1], 10) * 1000 : 3600 * 1000;
+  cachedFirebaseCerts = { certs, expiresAt: now + Math.max(ttlMs, 60000) };
+  return certs;
+}
+
+// Real Firebase ID Token Verification (Admin SDK + Google X509 RS256 + Identity Toolkit)
 async function verifyFirebaseToken(idToken) {
   if (!idToken || typeof idToken !== 'string') return null;
   const token = idToken.trim().replace(/^Bearer\s+/i, '');
@@ -133,10 +212,39 @@ async function verifyFirebaseToken(idToken) {
       };
     }
   } catch (err) {
-    // Expected in environments without service account credentials, fallback to Google Accounts API
+    // Expected in environments without service account credentials, continue to X509 verification
   }
 
-  // 2. Google Identity Toolkit lookup with Project Web API Key
+  // 2. Cryptographic RS256 Verification against Google's Official Firebase X509 Public Certificates
+  try {
+    const unverifiedHeader = jwt.decode(token, { complete: true });
+    const kid = unverifiedHeader && unverifiedHeader.header && unverifiedHeader.header.kid;
+    if (kid) {
+      const certs = await getFirebasePublicCerts();
+      const cert = certs[kid];
+      if (cert) {
+        const verifiedClaims = jwt.verify(token, cert, {
+          algorithms: ['RS256'],
+          audience: firebaseConfig.projectId,
+          issuer: `https://securetoken.google.com/${firebaseConfig.projectId}`
+        });
+        if (verifiedClaims && verifiedClaims.email) {
+          const provider = verifiedClaims.firebase?.sign_in_provider || 'firebase';
+          return {
+            uid: verifiedClaims.user_id || verifiedClaims.sub || '',
+            email: String(verifiedClaims.email).toLowerCase().trim(),
+            emailVerified: !!verifiedClaims.email_verified || provider === 'google.com',
+            name: verifiedClaims.name || verifiedClaims.email.split('@')[0],
+            provider
+          };
+        }
+      }
+    }
+  } catch (x509Err) {
+    console.warn('[Firebase X509 Verify Notice]:', x509Err.message);
+  }
+
+  // 3. Google Identity Toolkit lookup with Project Web API Key
   try {
     const lookupRes = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseConfig.apiKey}`, {
       method: 'POST',
@@ -148,12 +256,13 @@ async function verifyFirebaseToken(idToken) {
       const data = await lookupRes.json();
       if (data.users && data.users.length > 0) {
         const u = data.users[0];
+        const provider = u.providerUserInfo?.[0]?.providerId || 'google.com';
         return {
           uid: u.localId,
           email: u.email.toLowerCase(),
-          emailVerified: !!u.emailVerified,
+          emailVerified: !!u.emailVerified || provider === 'google.com',
           name: u.displayName || u.email.split('@')[0],
-          provider: u.providerUserInfo?.[0]?.providerId || 'google.com'
+          provider
         };
       }
     }
@@ -161,48 +270,27 @@ async function verifyFirebaseToken(idToken) {
     console.warn('[Google Token Lookup Notice]:', e.message);
   }
 
-  // 3. Resilient Fallback: Decode Firebase Auth JWT Claims
-  try {
-    const decoded = jwt.decode(token);
-    if (decoded && decoded.email) {
-      const isGoogleIssuer = (decoded.iss && (decoded.iss.includes('securetoken.google.com') || decoded.iss.includes('accounts.google.com')));
-      const isMatchingAud = (decoded.aud === firebaseConfig.projectId || decoded.aud === firebaseConfig.oAuthClientId);
-      if (isGoogleIssuer || isMatchingAud || decoded.email_verified !== undefined) {
-        return {
-          uid: decoded.user_id || decoded.sub || '',
-          email: String(decoded.email).toLowerCase().trim(),
-          emailVerified: !!decoded.email_verified,
-          name: decoded.name || decoded.email.split('@')[0],
-          provider: decoded.firebase?.sign_in_provider || 'google.com'
-        };
-      }
-    }
-  } catch (jwtErr) {
-    console.warn('[JWT Decode Notice]:', jwtErr.message);
-  }
-
   return null;
 }
 
 // Unified Authenticated User Resolver
 async function getAuthenticatedUser(req) {
-  // 1. Check Authorization: Bearer <idToken>
+  // 1. Check Authorization: Bearer <idToken or sessionJwt>
   const authHeader = req.headers['authorization'];
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.slice(7);
-    // Could be a Firebase ID token or a server session JWT
     const jwtDecoded = verifySessionToken(token);
     if (jwtDecoded && jwtDecoded.email) {
       return {
         ...jwtDecoded,
-        isAdmin: isAuthorizedAdmin(jwtDecoded.email) && jwtDecoded.emailVerified
+        isAdmin: isAuthorizedAdmin(jwtDecoded.email) && !!jwtDecoded.emailVerified
       };
     }
     const verified = await verifyFirebaseToken(token);
     if (verified) {
       return {
         ...verified,
-        isAdmin: isAuthorizedAdmin(verified.email) && verified.emailVerified
+        isAdmin: isAuthorizedAdmin(verified.email) && (!!verified.emailVerified || verified.provider === 'google.com')
       };
     }
   }
@@ -218,7 +306,7 @@ async function getAuthenticatedUser(req) {
         email: decoded.email.toLowerCase(),
         emailVerified: !!decoded.emailVerified,
         name: decoded.name,
-        isAdmin: isAuthorizedAdmin(decoded.email) && decoded.emailVerified
+        isAdmin: isAuthorizedAdmin(decoded.email) && !!decoded.emailVerified
       };
     }
   }
@@ -254,21 +342,21 @@ const checkAdmin = async (req, res, next) => {
   }
 };
 
-// Route Gatekeeper for Admin Panel (Runs BEFORE express.static to prevent static bypass)
+// Route Gatekeeper for Admin Panel
+// Note: When browser third-party iframe cookies are absent on GET navigation, admin.html keeps body hidden
+// and completes verification with Firebase ID token + Bearer auth against /api/check-admin.
 app.get(['/admin', '/admin.html'], async (req, res) => {
   try {
     const user = await getAuthenticatedUser(req);
-    if (user && user.isAdmin && isAuthorizedAdmin(user.email)) {
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      return res.sendFile(path.join(__dirname, 'admin.html'));
-    }
-    if (user) {
-      // Normal customer trying to access admin panel -> redirect to user dashboard
+    if (user && (!user.isAdmin || !isAuthorizedAdmin(user.email))) {
+      // Authenticated non-admin customer trying to access admin panel -> redirect to user dashboard
       return res.redirect('/dashboard.html?denied=admin');
     }
-    return res.redirect('/login.html?redirect=admin.html');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    return res.sendFile(path.join(__dirname, 'admin.html'));
   } catch (err) {
-    return res.redirect('/login.html?redirect=admin.html');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    return res.sendFile(path.join(__dirname, 'admin.html'));
   }
 });
 
@@ -828,26 +916,35 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-app.post('/api/google-login', (req, res) => {
-  const { email, name, picture } = req.body;
-  const userEmail = (email || '').toLowerCase().trim();
-  const userName = name || userEmail.split('@')[0];
+app.post('/api/google-login', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
+  const verified = idToken ? await verifyFirebaseToken(idToken) : null;
+  if (!verified || !verified.email) {
+    return res.status(401).json({ error: 'Verified Firebase ID token is required.' });
+  }
+
+  const { name, picture } = req.body;
+  const userEmail = verified.email.toLowerCase().trim();
+  const userName = name || verified.name || userEmail.split('@')[0];
   const db = readDB();
   
   let user = db.users.find(u => u.email.toLowerCase() === userEmail);
-  const isAdminEmail = isAuthorizedAdmin(userEmail);
+  const isAdminEmail = isAuthorizedAdmin(userEmail) && (!!verified.emailVerified || verified.provider === 'google.com');
 
   if (!user) {
     const newId = db.nextUserId++;
     user = {
       id: newId,
-      userCode: `HIFIX-USR-${1000 + newId}`,
+      uid: verified.uid || '',
+      userCode: isAdminEmail ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
       name: userName,
       email: userEmail,
       phone: '',
       role: isAdminEmail ? 'admin' : 'customer',
       avatar: picture || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(userName)}`,
       authProvider: 'google',
+      emailVerified: !!verified.emailVerified || verified.provider === 'google.com',
       createdAt: new Date().toLocaleDateString('en-GB'),
       lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
       loginCount: 1
@@ -857,6 +954,7 @@ app.post('/api/google-login', (req, res) => {
   } else {
     user.userCode = user.userCode || `HIFIX-USR-${1000 + user.id}`;
     if (picture) user.avatar = picture;
+    user.emailVerified = !!verified.emailVerified || verified.provider === 'google.com';
     user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
     user.loginCount = (user.loginCount || 0) + 1;
     user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -872,15 +970,7 @@ app.post('/api/google-login', (req, res) => {
     isAdmin: isAdminEmail
   });
 
-  res.cookie('auth_token', sessionJwt, {
-    httpOnly: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production'
-  });
-  res.cookie('user_session', String(user.id), { httpOnly: false, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
-  res.clearCookie('admin_session');
-  res.clearCookie('admin_email');
+  setAuthCookies(req, res, sessionJwt, user.id);
 
   res.json({ 
     success: true, 
@@ -900,24 +990,24 @@ app.post('/api/google-login', (req, res) => {
 });
 
 app.all(['/api/logout', '/api/user/logout'], (req, res) => {
-  res.clearCookie('auth_token');
-  res.clearCookie('admin_session');
-  res.clearCookie('admin_email');
-  res.clearCookie('user_session');
+  clearAllAuthCookies(req, res);
   res.json({ success: true, message: 'Logged out successfully' });
 });
 
-// Comprehensive User Authentication API (Customer & Student System)
-app.post('/api/user/login', (req, res) => {
-  const { email, password, name, phone } = req.body;
-  if (!email) {
-    return res.status(400).json({ error: 'Email is required' });
+// Legacy user login endpoint disabled unless accompanied by a verified Firebase ID token
+app.post('/api/user/login', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
+  const verified = idToken ? await verifyFirebaseToken(idToken) : null;
+  if (!verified || !verified.email) {
+    return res.status(401).json({ error: 'Please sign in via Firebase Authentication.' });
   }
 
-  const cleanEmail = email.trim().toLowerCase();
+  const { name, phone } = req.body;
+  const cleanEmail = verified.email.trim().toLowerCase();
   const db = readDB();
   let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
-  const isAdminEmail = isAuthorizedAdmin(cleanEmail);
+  const isAdminEmail = isAuthorizedAdmin(cleanEmail) && !!verified.emailVerified;
 
   if (!user) {
     return res.status(401).json({ error: 'No account found with this email. Please create an account first.' });
@@ -931,6 +1021,7 @@ app.post('/api/user/login', (req, res) => {
   if (phone && phone.trim()) user.phone = phone.trim();
 
   user.userCode = user.userCode || (isAdminEmail ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`);
+  user.emailVerified = !!verified.emailVerified;
   user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
   user.loginCount = (user.loginCount || 0) + 1;
   user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -945,15 +1036,7 @@ app.post('/api/user/login', (req, res) => {
     isAdmin: isAdminEmail
   });
 
-  res.cookie('auth_token', sessionJwt, {
-    httpOnly: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production'
-  });
-  res.cookie('user_session', String(user.id), { httpOnly: false, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
-  res.clearCookie('admin_session');
-  res.clearCookie('admin_email');
+  setAuthCookies(req, res, sessionJwt, user.id);
 
   res.json({
     success: true,
@@ -983,46 +1066,33 @@ app.post('/api/user/sync-session', async (req, res) => {
   try {
     const authHeader = req.headers['authorization'];
     const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
-    let verified = null;
-    if (idToken) {
-      verified = await verifyFirebaseToken(idToken);
+    const verified = idToken ? await verifyFirebaseToken(idToken) : null;
+
+    if (!verified || !verified.email) {
+      return res.status(401).json({ success: false, error: 'Valid Firebase authentication token is required for session synchronization.' });
     }
 
-    // Must have verified token or fallback to provided email from client auth
-    let cleanEmail = '';
-    let verifiedUid = '';
-    let isEmailVerified = false;
-
-    if (verified && verified.email) {
-      cleanEmail = verified.email;
-      verifiedUid = verified.uid;
-      isEmailVerified = verified.emailVerified;
-    } else if (req.body && req.body.email && typeof req.body.email === 'string') {
-      cleanEmail = req.body.email.trim().toLowerCase();
-      verifiedUid = req.body.uid || '';
-      isEmailVerified = !!req.body.emailVerified;
-    } else {
-      return res.status(400).json({ success: false, error: 'A valid email is required for session synchronization.' });
-    }
+    const cleanEmail = verified.email.trim().toLowerCase();
+    const verifiedUid = verified.uid || '';
+    const isEmailVerified = !!verified.emailVerified;
 
     const db = readDB();
     let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
-    const isRealAdmin = isAuthorizedAdmin(cleanEmail) && isEmailVerified;
+    const { name, phone, avatar, authProvider } = req.body;
+    const effectiveVerified = isEmailVerified || verified.provider === 'google.com';
+    const isRealAdmin = isAuthorizedAdmin(cleanEmail) && effectiveVerified;
 
     if (user && user.isBanned) {
-      res.clearCookie('auth_token');
-      res.clearCookie('user_session');
+      clearAllAuthCookies(req, res);
       return res.status(403).json({ error: 'Your account has been suspended by the administrator.' });
     }
-
-    const { name, phone, avatar, authProvider } = req.body;
 
     if (user) {
       if (verifiedUid) user.uid = verifiedUid;
       if (name && name.trim()) user.name = name.trim();
       if (phone && phone.trim()) user.phone = phone.trim();
       if (avatar) user.avatar = avatar;
-      user.emailVerified = isEmailVerified;
+      user.emailVerified = effectiveVerified;
       if (authProvider) user.authProvider = authProvider;
       user.role = isRealAdmin ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
       user.loginCount = (user.loginCount || 0) + 1;
@@ -1042,7 +1112,7 @@ app.post('/api/user/sync-session', async (req, res) => {
         role: isRealAdmin ? 'admin' : 'customer',
         avatar: avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(derivedName)}`,
         authProvider: authProvider || (verified && verified.provider) || 'google',
-        emailVerified: isEmailVerified,
+        emailVerified: effectiveVerified,
         isBanned: false,
         createdAt: new Date().toLocaleDateString('en-GB'),
         lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
@@ -1052,25 +1122,17 @@ app.post('/api/user/sync-session', async (req, res) => {
       writeDB(db);
     }
 
-    // Set signed JWT session cookie
+    // Set signed JWT session cookie (SameSite=None; Secure; Partitioned on HTTPS for iframe compatibility)
     const sessionJwt = createSessionToken({
       id: user.id,
       uid: user.uid,
       email: user.email,
       name: user.name,
-      emailVerified: user.emailVerified,
+      emailVerified: !!user.emailVerified,
       isAdmin: isRealAdmin
     });
 
-    res.cookie('auth_token', sessionJwt, {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production'
-    });
-    res.cookie('user_session', String(user.id), { httpOnly: false, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
-    res.clearCookie('admin_session');
-    res.clearCookie('admin_email');
+    setAuthCookies(req, res, sessionJwt, user.id);
 
     return res.json({
       success: true,
@@ -1098,13 +1160,20 @@ app.post('/api/user/sync-session', async (req, res) => {
   }
 });
 
-app.post('/api/user/register', (req, res) => {
-  const { name, email, phone, password, role, uid } = req.body;
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
+app.post('/api/user/register', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
+  const verified = idToken ? await verifyFirebaseToken(idToken) : null;
+  if (!verified || !verified.email) {
+    return res.status(401).json({ error: 'Please register via Firebase Authentication.' });
   }
 
-  const cleanEmail = email.trim().toLowerCase();
+  const { name, phone, role } = req.body;
+  if (!name) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
+
+  const cleanEmail = verified.email.trim().toLowerCase();
   const db = readDB();
   const existing = db.users.find(u => u.email.toLowerCase() === cleanEmail);
   if (existing) {
@@ -1112,19 +1181,18 @@ app.post('/api/user/register', (req, res) => {
   }
 
   const newId = db.nextUserId++;
-  const isAdminEmail = isAuthorizedAdmin(cleanEmail);
+  const isAdminEmail = isAuthorizedAdmin(cleanEmail) && !!verified.emailVerified;
   const newUser = {
     id: newId,
-    uid: uid || '',
+    uid: verified.uid || '',
     userCode: isAdminEmail ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
     name: name.trim(),
     email: cleanEmail,
     phone: phone ? phone.trim() : '',
-    password: password || '',
-    role: isAdminEmail ? 'admin' : (role || 'customer'),
+    role: isAdminEmail ? 'admin' : (role === 'student' ? 'student' : 'customer'),
     avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}`,
     authProvider: 'email',
-    emailVerified: false,
+    emailVerified: !!verified.emailVerified,
     isBanned: false,
     createdAt: new Date().toLocaleDateString('en-GB'),
     lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
@@ -1134,9 +1202,19 @@ app.post('/api/user/register', (req, res) => {
   db.users.push(newUser);
   writeDB(db);
 
-  res.cookie('user_session', newUser.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+  const sessionJwt = createSessionToken({
+    id: newUser.id,
+    uid: newUser.uid,
+    email: newUser.email,
+    name: newUser.name,
+    emailVerified: !!newUser.emailVerified,
+    isAdmin: isAdminEmail
+  });
+  setAuthCookies(req, res, sessionJwt, newUser.id);
+
   res.json({
     success: true,
+    token: sessionJwt,
     user: {
       id: newUser.id,
       uid: newUser.uid,
@@ -1146,7 +1224,7 @@ app.post('/api/user/register', (req, res) => {
       phone: newUser.phone,
       role: newUser.role,
       avatar: newUser.avatar,
-      emailVerified: false,
+      emailVerified: !!newUser.emailVerified,
       isBanned: false,
       createdAt: newUser.createdAt,
       lastLogin: newUser.lastLogin,
@@ -1155,29 +1233,34 @@ app.post('/api/user/register', (req, res) => {
   });
 });
 
-app.post('/api/user/google-auth', (req, res) => {
-  const { email, name, picture, role } = req.body;
-  if (!email) {
-    return res.status(400).json({ error: 'Google email is required' });
+app.post('/api/user/google-auth', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const idToken = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : req.body.idToken;
+  const verified = idToken ? await verifyFirebaseToken(idToken) : null;
+  if (!verified || !verified.email) {
+    return res.status(401).json({ error: 'Verified Firebase Google token is required.' });
   }
 
-  const cleanEmail = email.trim().toLowerCase();
+  const { name, picture, role } = req.body;
+  const cleanEmail = verified.email.trim().toLowerCase();
   const db = readDB();
   let user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
 
-  const isAdminEmail = isAuthorizedAdmin(cleanEmail);
+  const isAdminEmail = isAuthorizedAdmin(cleanEmail) && (!!verified.emailVerified || verified.provider === 'google.com');
 
   if (!user) {
     const newId = db.nextUserId++;
     user = {
       id: newId,
+      uid: verified.uid || '',
       userCode: isAdminEmail ? `HIFIX-ADM-${1000 + newId}` : `HIFIX-USR-${1000 + newId}`,
-      name: name || cleanEmail.split('@')[0],
+      name: name || verified.name || cleanEmail.split('@')[0],
       email: cleanEmail,
       phone: '',
-      role: isAdminEmail ? 'admin' : (role || 'customer'),
+      role: isAdminEmail ? 'admin' : (role === 'student' ? 'student' : 'customer'),
       avatar: picture || `https://lh3.googleusercontent.com/a/default-user=s96-c`,
       authProvider: 'google',
+      emailVerified: !!verified.emailVerified || verified.provider === 'google.com',
       createdAt: new Date().toLocaleDateString('en-GB'),
       lastLogin: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
       loginCount: 1
@@ -1188,25 +1271,28 @@ app.post('/api/user/google-auth', (req, res) => {
     // update avatar, login count and userCode
     user.userCode = user.userCode || (isAdminEmail ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`);
     if (picture) user.avatar = picture;
+    user.emailVerified = !!verified.emailVerified || verified.provider === 'google.com';
     user.role = isAdminEmail ? 'admin' : (user.role === 'admin' ? 'customer' : (user.role || 'customer'));
     user.loginCount = (user.loginCount || 0) + 1;
     user.lastLogin = new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     writeDB(db);
   }
 
-  // If admin, grant admin session cookies; otherwise ensure they are cleared
-  if (isAdminEmail) {
-    res.cookie('admin_session', 'habib_admin_token_2026', { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-    res.cookie('admin_email', cleanEmail, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-  } else {
-    res.clearCookie('admin_session');
-    res.clearCookie('admin_email');
-  }
+  const sessionJwt = createSessionToken({
+    id: user.id,
+    uid: user.uid || '',
+    email: user.email,
+    name: user.name,
+    emailVerified: !!user.emailVerified,
+    isAdmin: isAdminEmail
+  });
 
-  res.cookie('user_session', user.id, { httpOnly: false, maxAge: 30 * 24 * 60 * 60 * 1000 });
+  setAuthCookies(req, res, sessionJwt, user.id);
+
   res.json({
     success: true,
     isAdmin: isAdminEmail,
+    token: sessionJwt,
     user: {
       id: user.id,
       userCode: user.userCode,
@@ -1222,70 +1308,67 @@ app.post('/api/user/google-auth', (req, res) => {
   });
 });
 
-app.get('/api/user/me', (req, res) => {
-  const userId = req.cookies.user_session;
-  if (!userId) {
-    // check if admin
-    if (req.cookies.admin_session === 'habib_admin_token_2026') {
-      const adminEmail = req.cookies.admin_email || 'tec.habiburrahman@gmail.com';
-      if (isAuthorizedAdmin(adminEmail)) {
-        const db = readDB();
-        const adminUser = db.users.find(u => u.email.toLowerCase() === adminEmail.toLowerCase());
-        if (adminUser) {
-          return res.json({
-            loggedIn: true,
-            isAdmin: true,
-            user: {
-              id: adminUser.id,
-              userCode: adminUser.userCode,
-              name: adminUser.name,
-              email: adminUser.email,
-              role: 'admin',
-              avatar: adminUser.avatar,
-              createdAt: adminUser.createdAt,
-              lastLogin: adminUser.lastLogin,
-              loginCount: adminUser.loginCount
-            }
-          });
-        }
+app.get('/api/user/me', async (req, res) => {
+  try {
+    const authUser = await getAuthenticatedUser(req);
+    const db = readDB();
+    let user = null;
+
+    if (authUser && authUser.email) {
+      user = db.users.find(u => u.email.toLowerCase() === authUser.email.toLowerCase());
+      if (!user) {
+        const isAdmin = isAuthorizedAdmin(authUser.email) && !!authUser.emailVerified;
+        return res.json({
+          loggedIn: true,
+          isAdmin,
+          user: {
+            id: authUser.id || 0,
+            uid: authUser.uid || '',
+            userCode: isAdmin ? 'HIFIX-ADM-1001' : 'HIFIX-USR-1001',
+            name: authUser.name || authUser.email.split('@')[0],
+            email: authUser.email,
+            phone: '',
+            role: isAdmin ? 'admin' : 'customer',
+            avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(authUser.name || 'User')}`,
+            emailVerified: !!authUser.emailVerified,
+            isBanned: false
+          }
+        });
       }
     }
-    return res.json({ loggedIn: false });
-  }
 
-  const db = readDB();
-  const user = db.users.find(u => u.id === parseInt(userId));
-  if (!user) {
-    return res.json({ loggedIn: false });
-  }
-
-  if (user.isBanned) {
-    res.clearCookie('user_session');
-    res.clearCookie('admin_session');
-    res.clearCookie('admin_email');
-    return res.json({ loggedIn: false, isBanned: true, error: 'Your account has been suspended by the administrator.' });
-  }
-
-  const isAdmin = isAuthorizedAdmin(user.email);
-  res.json({
-    loggedIn: true,
-    isAdmin,
-    user: {
-      id: user.id,
-      uid: user.uid || '',
-      userCode: user.userCode || (isAdmin ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`),
-      name: user.name,
-      email: user.email,
-      phone: user.phone || '',
-      role: isAdmin ? 'admin' : (user.role || 'customer'),
-      avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
-      emailVerified: !!user.emailVerified,
-      isBanned: !!user.isBanned,
-      createdAt: user.createdAt,
-      lastLogin: user.lastLogin || '',
-      loginCount: user.loginCount || 1
+    if (!user) {
+      return res.json({ loggedIn: false });
     }
-  });
+
+    if (user.isBanned) {
+      clearAllAuthCookies(req, res);
+      return res.json({ loggedIn: false, isBanned: true, error: 'Your account has been suspended by the administrator.' });
+    }
+
+    const isAdmin = isAuthorizedAdmin(user.email) && (!!user.emailVerified || user.authProvider === 'google');
+    res.json({
+      loggedIn: true,
+      isAdmin,
+      user: {
+        id: user.id,
+        uid: user.uid || '',
+        userCode: user.userCode || (isAdmin ? `HIFIX-ADM-${1000 + user.id}` : `HIFIX-USR-${1000 + user.id}`),
+        name: user.name,
+        email: user.email,
+        phone: user.phone || '',
+        role: isAdmin ? 'admin' : (user.role || 'customer'),
+        avatar: user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`,
+        emailVerified: !!user.emailVerified,
+        isBanned: !!user.isBanned,
+        createdAt: user.createdAt,
+        lastLogin: user.lastLogin || '',
+        loginCount: user.loginCount || 1
+      }
+    });
+  } catch (err) {
+    return res.json({ loggedIn: false });
+  }
 });
 
 // Admin Users & Login Stats Management API with Search & Ban support
@@ -1334,7 +1417,7 @@ app.post('/api/admin/users/:id/ban', checkAdmin, (req, res) => {
   db.auditLogs = db.auditLogs || [];
   db.auditLogs.unshift({
     action: newBannedState ? 'BAN_USER' : 'UNBAN_USER',
-    adminEmail: req.cookies.admin_email || 'tec.habiburrahman@gmail.com',
+    adminEmail: (req.adminUser && req.adminUser.email) || 'tec.habiburrahman@gmail.com',
     targetEmail: user.email,
     targetUserId: user.id,
     reason: user.bannedReason,
@@ -1367,7 +1450,7 @@ app.patch('/api/admin/users/:id', checkAdmin, (req, res) => {
   db.auditLogs = db.auditLogs || [];
   db.auditLogs.unshift({
     action: 'UPDATE_USER_PROFILE',
-    adminEmail: req.cookies.admin_email || 'tec.habiburrahman@gmail.com',
+    adminEmail: (req.adminUser && req.adminUser.email) || 'tec.habiburrahman@gmail.com',
     targetEmail: user.email,
     targetUserId: user.id,
     details: req.body,
@@ -1390,7 +1473,7 @@ app.delete('/api/admin/users/:id', checkAdmin, (req, res) => {
   db.auditLogs = db.auditLogs || [];
   db.auditLogs.unshift({
     action: 'DELETE_USER',
-    adminEmail: req.cookies.admin_email || 'tec.habiburrahman@gmail.com',
+    adminEmail: (req.adminUser && req.adminUser.email) || 'tec.habiburrahman@gmail.com',
     targetEmail: user.email,
     targetUserId: user.id,
     timestamp: new Date().toLocaleString('en-GB')
@@ -1582,12 +1665,12 @@ app.get('/api/check-admin', async (req, res) => {
     if (!user || !user.email) {
       return res.json({ isAdmin: false, error: 'Unauthorized' });
     }
-    const authorized = isAuthorizedAdmin(user.email) && user.emailVerified;
+    const authorized = isAuthorizedAdmin(user.email) && (!!user.emailVerified || user.provider === 'google.com');
     if (authorized) {
       return res.json({
         isAdmin: true,
         email: user.email,
-        name: user.name || (user.email === 'mshabib471@gmail.com' ? 'Habibur Rahman' : 'Admin'),
+        name: user.name || (user.email === 'tec.habiburrahman@gmail.com' ? 'Habibur Rahman' : 'Admin'),
         role: 'Super Admin'
       });
     }

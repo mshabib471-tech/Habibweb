@@ -72,6 +72,11 @@ export function isAuthorizedAdminEmail(email) {
 
 const STORAGE_USER_KEY = 'habib_current_user';
 const DEFAULT_AVATAR = 'https://api.dicebear.com/7.x/initials/svg?seed=User';
+let inMemorySessionToken = null;
+
+export function getSessionToken() {
+  return inMemorySessionToken;
+}
 
 // Centralized Auth Ready Promise: prevents premature redirects during session restoration
 let authIsReady = false;
@@ -294,6 +299,7 @@ async function safeSyncSession(idToken, bodyPayload) {
   try {
     const res = await fetch('/api/user/sync-session', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 
         'Content-Type': 'application/json',
         'Authorization': idToken ? `Bearer ${idToken}` : ''
@@ -306,6 +312,9 @@ async function safeSyncSession(idToken, bodyPayload) {
       data = JSON.parse(text);
     } catch (parseErr) {
       console.warn('[Sync Session Notice]: Non-JSON response from server, length:', text.length);
+    }
+    if (data && data.token) {
+      inMemorySessionToken = data.token;
     }
     return { ok: res.ok, data };
   } catch (netErr) {
@@ -532,14 +541,11 @@ export async function verifyEmailActionCode(actionCode) {
   await applyActionCode(auth, actionCode);
   if (auth.currentUser) {
     await auth.currentUser.reload();
-    await fetch('/api/user/sync-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        uid: auth.currentUser.uid,
-        email: auth.currentUser.email,
-        emailVerified: true
-      })
+    const idToken = await auth.currentUser.getIdToken(true).catch(() => '');
+    await safeSyncSession(idToken, {
+      uid: auth.currentUser.uid,
+      email: auth.currentUser.email,
+      emailVerified: true
     });
   }
   return { success: true };
@@ -551,14 +557,11 @@ export async function reloadAndCheckEmailVerified() {
   await auth.currentUser.reload();
   const verified = !!auth.currentUser.emailVerified;
   if (verified) {
-    await fetch('/api/user/sync-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        uid: auth.currentUser.uid,
-        email: auth.currentUser.email,
-        emailVerified: true
-      })
+    const idToken = await auth.currentUser.getIdToken(true).catch(() => '');
+    await safeSyncSession(idToken, {
+      uid: auth.currentUser.uid,
+      email: auth.currentUser.email,
+      emailVerified: true
     });
     const curr = getCurrentUser();
     if (curr) {
@@ -607,14 +610,15 @@ function formatAuthError(error) {
 
 // REAL LOGOUT - Clears Firebase, Server Cookies, Local Storage, & Updates UI
 export async function signOutReal() {
+  inMemorySessionToken = null;
   try {
     await signOut(auth);
   } catch (e) {
     console.warn("Firebase signOut notice:", e);
   }
   try {
-    await fetch('/api/logout', { method: 'POST' });
-    await fetch('/api/logout');
+    await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+    await fetch('/api/logout', { credentials: 'same-origin' });
   } catch (e) {
     console.warn("Server logout notice:", e);
   }
@@ -643,34 +647,43 @@ export async function signOutReal() {
 onAuthStateChanged(auth, async (firebaseUser) => {
   if (firebaseUser) {
     try {
+      const cleanEmail = (firebaseUser.email || '').toLowerCase().trim();
+      const isGoogle = firebaseUser.providerData?.some(p => p.providerId === 'google.com');
+      const isAdmin = isAuthorizedAdminEmail(cleanEmail);
+      const effectiveVerified = !!firebaseUser.emailVerified || !!isGoogle;
       const idToken = await firebaseUser.getIdToken();
-      const res = await fetch('/api/user/sync-session', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${idToken}`
-        },
-        body: JSON.stringify({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
-          avatar: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
-          emailVerified: firebaseUser.emailVerified,
-          authProvider: firebaseUser.providerData?.[0]?.providerId === 'google.com' ? 'google' : 'email'
-        })
+
+      const syncResult = await safeSyncSession(idToken, {
+        uid: firebaseUser.uid,
+        email: cleanEmail,
+        name: firebaseUser.displayName || (cleanEmail ? cleanEmail.split('@')[0] : 'User'),
+        avatar: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
+        emailVerified: effectiveVerified,
+        authProvider: isGoogle ? 'google' : 'email'
       });
 
-      const data = await res.json();
-      if (data.success && data.user) {
-        setCurrentUser(data.user);
-      } else if (data.isBanned) {
+      if (syncResult.ok && syncResult.data && syncResult.data.success && syncResult.data.user) {
+        setCurrentUser(syncResult.data.user);
+      } else if (syncResult.data && syncResult.data.isBanned) {
         await signOut(auth);
         setCurrentUser(null);
+      } else {
+        setCurrentUser({
+          uid: firebaseUser.uid,
+          userCode: isAdmin ? 'HIFIX-ADM-1001' : 'HIFIX-USR-1001',
+          name: firebaseUser.displayName || (cleanEmail ? cleanEmail.split('@')[0] : 'User'),
+          email: cleanEmail,
+          avatar: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
+          emailVerified: effectiveVerified,
+          authProvider: isGoogle ? 'google' : 'email',
+          role: isAdmin ? 'admin' : 'customer'
+        });
       }
     } catch (e) {
       console.warn("Firebase Auth sync notice:", e);
     }
   } else {
+    inMemorySessionToken = null;
     // When Firebase reports no active user, clear client state
     const current = getCurrentUser();
     if (current) {
@@ -693,6 +706,8 @@ window.HabibAuth = {
   waitForAuthReady,
   getCurrentUser,
   setCurrentUser,
+  getSessionToken,
+  safeSyncSession,
   signInWithGoogleReal,
   signInWithEmailReal,
   registerWithEmailReal,

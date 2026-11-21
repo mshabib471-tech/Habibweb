@@ -616,14 +616,30 @@
 
         async function loadDashboardUser() {
             try {
-                // Wait for Firebase Auth persistence to resolve
+                // Wait for Firebase Auth module and persistence to resolve
+                const startWait = Date.now();
+                while ((!window.HabibAuth || !window.HabibAuth.waitForAuthReady) && Date.now() - startWait < 6000) {
+                    await new Promise(resolve => setTimeout(resolve, 40));
+                }
+
                 let firebaseUser = null;
                 if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
                     firebaseUser = await window.HabibAuth.waitForAuthReady();
                 }
 
+                const headers = {};
+                try {
+                    if (window.HabibAuth && window.HabibAuth.auth && window.HabibAuth.auth.currentUser) {
+                        const tok = await window.HabibAuth.auth.currentUser.getIdToken();
+                        if (tok) headers['Authorization'] = 'Bearer ' + tok;
+                    } else if (window.HabibAuth && window.HabibAuth.getSessionToken) {
+                        const memTok = window.HabibAuth.getSessionToken();
+                        if (memTok) headers['Authorization'] = 'Bearer ' + memTok;
+                    }
+                } catch (tokErr) {}
+
                 // Verify with backend session
-                const res = await fetch('/api/user/me');
+                const res = await fetch('/api/user/me', { headers, credentials: 'same-origin' });
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.loggedIn && data.user) {

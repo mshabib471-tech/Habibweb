@@ -1173,17 +1173,32 @@
             }
         }
 
-        // Centralized Authorized Admin Fetch with Firebase ID Token Injection
+        async function waitForHabibAuth(timeoutMs = 8000) {
+            const start = Date.now();
+            while (Date.now() - start < timeoutMs) {
+                if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
+                    return window.HabibAuth;
+                }
+                await new Promise(resolve => setTimeout(resolve, 40));
+            }
+            return window.HabibAuth || null;
+        }
+
+        // Centralized Authorized Admin Fetch with Firebase ID Token or Session Token Injection
         async function adminFetch(url, options = {}) {
             options = Object.assign({}, options);
             const headers = new Headers(options.headers || {});
             
             try {
+                let token = '';
                 if (window.HabibAuth && window.HabibAuth.auth && window.HabibAuth.auth.currentUser) {
-                    const token = await window.HabibAuth.auth.currentUser.getIdToken();
-                    if (token) {
-                        headers.set('Authorization', 'Bearer ' + token);
-                    }
+                    token = await window.HabibAuth.auth.currentUser.getIdToken();
+                }
+                if (!token && window.HabibAuth && window.HabibAuth.getSessionToken) {
+                    token = window.HabibAuth.getSessionToken() || '';
+                }
+                if (token) {
+                    headers.set('Authorization', 'Bearer ' + token);
                 }
             } catch (e) {
                 console.warn('[Admin Auth Token Error]:', e);
@@ -1198,13 +1213,33 @@
         async function initAdminAuth() {
             try {
                 const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
+                const habibAuth = await waitForHabibAuth(8000);
                 let firebaseUser = null;
-                if (window.HabibAuth && window.HabibAuth.waitForAuthReady) {
-                    firebaseUser = await window.HabibAuth.waitForAuthReady();
+                if (habibAuth && habibAuth.waitForAuthReady) {
+                    firebaseUser = await habibAuth.waitForAuthReady();
+                }
+
+                // If Firebase persistence didn't populate firebaseUser, verify via backend session
+                if (!firebaseUser || !firebaseUser.email) {
+                    try {
+                        const meRes = await adminFetch('/api/user/me');
+                        if (meRes.ok) {
+                            const meData = await meRes.json().catch(() => null);
+                            if (meData && meData.loggedIn && meData.user && meData.user.email) {
+                                firebaseUser = {
+                                    uid: meData.user.uid || '',
+                                    email: meData.user.email,
+                                    displayName: meData.user.name,
+                                    photoURL: meData.user.avatar,
+                                    emailVerified: true
+                                };
+                            }
+                        }
+                    } catch (meErr) {}
                 }
 
                 if (!firebaseUser || !firebaseUser.email) {
-                    window.location.replace('login.html?redirect=admin.html');
+                    window.location.replace('login.html?redirect=admin.html&tab=admin');
                     return;
                 }
 
@@ -1215,8 +1250,27 @@
                     return;
                 }
 
-                const res = await adminFetch('/api/check-admin');
-                const data = await res.json().catch(() => ({ isAdmin: false }));
+                let res = await adminFetch('/api/check-admin');
+                let data = await res.json().catch(() => ({ isAdmin: false }));
+
+                // If session/cookie wasn't yet synced (e.g. iframe cookie partition), force token refresh & sync then re-verify
+                if (data.isAdmin !== true && habibAuth && habibAuth.auth && habibAuth.auth.currentUser && habibAuth.safeSyncSession) {
+                    try {
+                        const freshToken = await habibAuth.auth.currentUser.getIdToken(true);
+                        await habibAuth.safeSyncSession(freshToken, {
+                            uid: firebaseUser.uid,
+                            email: userEmail,
+                            name: firebaseUser.displayName || (userEmail.includes('habibur') ? 'Habibur Rahman' : 'Master Admin'),
+                            avatar: firebaseUser.photoURL || '',
+                            authProvider: 'google',
+                            emailVerified: true
+                        });
+                        res = await adminFetch('/api/check-admin');
+                        data = await res.json().catch(() => ({ isAdmin: false }));
+                    } catch (syncRetryErr) {
+                        console.warn('Admin session sync retry failed:', syncRetryErr);
+                    }
+                }
 
                 if (data.isAdmin === true) {
                     document.body.style.display = 'flex';
@@ -1227,6 +1281,9 @@
                     
                     if (firebaseUser.photoURL) {
                         document.getElementById('topAdminAvatar').src = firebaseUser.photoURL;
+                    }
+                    if (habibAuth && habibAuth.updateAllNavbars) {
+                        habibAuth.updateAllNavbars();
                     }
 
                     // Load dashboard metrics
@@ -1241,7 +1298,7 @@
                 }
             } catch (err) {
                 console.error("Admin auth check error:", err);
-                window.location.replace('login.html?redirect=admin.html');
+                window.location.replace('login.html?redirect=admin.html&tab=admin');
             }
         }
 

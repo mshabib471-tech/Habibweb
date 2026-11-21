@@ -545,7 +545,28 @@ tbody tr:hover {
 }
 
 #sidebar #sidebarAdminLink.sidebar-active-page,
-#sidebar #sidebarAdminLink.sidebar-active-page * {
+#sidebar #sidebarAdminLink.sidebar-active-page *,
+#sidebar #sidebarSimManagementLink.sidebar-active-page,
+#sidebar #sidebarSimManagementLink.sidebar-active-page * {
+  color: #92400e !important;
+}
+
+#sidebar #sidebarSimManagementLink,
+#sidebar #sidebarSimManagementLink span {
+  color: #b45309 !important;
+  font-weight: 700 !important;
+}
+
+#sidebar #sidebarSimManagementLink i {
+  color: #d97706 !important;
+}
+
+#sidebar #sidebarSimManagementLink:hover {
+  background-color: #fffbeb !important;
+}
+
+#sidebar #sidebarSimManagementLink:hover,
+#sidebar #sidebarSimManagementLink:hover * {
   color: #92400e !important;
 }
 

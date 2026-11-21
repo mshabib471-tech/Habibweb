@@ -262,10 +262,19 @@
 
     if (adminFlag) {
       var adminActive = currentPage === 'admin.html';
+      var activeTabParam = '';
+      try {
+        activeTabParam = new URLSearchParams(window.location.search).get('tab') || '';
+      } catch (e) {}
+      var simTabActive = adminActive && activeTabParam === 'sim-management';
       html +=
-        '<a href="admin.html" id="sidebarAdminLink" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-amber-700 hover:bg-amber-50' + (adminActive ? ' sidebar-active-page' : '') + '" data-page="admin.html" title="Admin CMS" data-tooltip="Admin CMS">' +
+        '<a href="admin.html" id="sidebarAdminLink" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-amber-700 hover:bg-amber-50' + (adminActive && !simTabActive ? ' sidebar-active-page' : '') + '" data-page="admin.html" title="Admin CMS" data-tooltip="Admin CMS">' +
           '<i class="fa-solid fa-shield-halved w-5 text-center text-sm shrink-0 text-amber-600"></i>' +
           '<span class="sidebar-label text-sm font-bold truncate">Admin CMS</span>' +
+        '</a>' +
+        '<a href="admin.html?tab=sim-management" id="sidebarSimManagementLink" class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-amber-700 hover:bg-amber-50' + (simTabActive ? ' sidebar-active-page' : '') + '" data-page="admin.html?tab=sim-management" title="Banglalink SIM Management" data-tooltip="Banglalink SIM Management">' +
+          '<i class="fa-solid fa-sim-card w-5 text-center text-sm shrink-0 text-amber-600"></i>' +
+          '<span class="sidebar-label text-sm font-bold truncate">Banglalink SIM Mgmt</span>' +
         '</a>';
     }
 

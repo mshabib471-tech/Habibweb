@@ -116,7 +116,7 @@ function readDB() {
     }
   }
   if (!fs.existsSync(DB_FILE)) {
-    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1, auditLogs: [] };
+    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], simRequests: [], simActivityLogs: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1, nextSimReqId: 1, auditLogs: [] };
   }
   try {
     const data = JSON.parse(fs.readFileSync(DB_FILE, "utf8"));
@@ -127,6 +127,8 @@ function readDB() {
     data.aiMessages = data.aiMessages || [];
     data.orders = data.orders || [];
     data.offers = data.offers || [];
+    data.simRequests = data.simRequests || [];
+    data.simActivityLogs = data.simActivityLogs || [];
     data.auditLogs = data.auditLogs || [];
     data.nextPostId = data.nextPostId || 1;
     data.nextBookingId = data.nextBookingId || 1;
@@ -135,9 +137,10 @@ function readDB() {
     data.nextAiMsgId = data.nextAiMsgId || 1;
     data.nextOrderId = data.nextOrderId || 1;
     data.nextOfferId = data.nextOfferId || 1;
+    data.nextSimReqId = data.nextSimReqId || 1;
     return data;
   } catch (e) {
-    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1, auditLogs: [] };
+    return { posts: [], bookings: [], users: [], contacts: [], aiMessages: [], orders: [], offers: [], simRequests: [], simActivityLogs: [], nextPostId: 1, nextBookingId: 1, nextUserId: 1, nextContactId: 1, nextAiMsgId: 1, nextOrderId: 1, nextOfferId: 1, nextSimReqId: 1, auditLogs: [] };
   }
 }
 
@@ -1482,6 +1485,417 @@ app.delete('/api/admin/users/:id', checkAdmin, (req, res) => {
   db.users = (db.users || []).filter(u => u.id !== targetId);
   writeDB(db);
   res.json({ success: true });
+});
+
+// ============================================================================
+// ADMIN-ONLY BANGLALINK SIM MANAGEMENT & OWNERSHIP VERIFICATION WORKFLOW
+// Strict checkAdmin + CSRF protection + Official Partner Authorization Boundary
+// ============================================================================
+function verifyAdminCsrf(req) {
+  const origin = req.headers['origin'];
+  const host = String(req.headers['x-forwarded-host'] || req.headers['host'] || '').split(',')[0].trim().toLowerCase();
+  if (origin) {
+    try {
+      const originHost = new URL(origin).host.toLowerCase();
+      if (host && originHost !== host) {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+  const hasBearer = Boolean(req.headers['authorization'] && req.headers['authorization'].startsWith('Bearer '));
+  const hasCustomHeader = req.headers['x-requested-with'] === 'XMLHttpRequest';
+  return hasBearer || hasCustomHeader;
+}
+
+function normalizeBanglalinkMsisdn(raw) {
+  const digits = String(raw || '').replace(/[^0-9]/g, '');
+  if (/^8801[49]\d{8}$/.test(digits)) {
+    return digits.slice(2);
+  }
+  if (/^01[49]\d{8}$/.test(digits)) {
+    return digits;
+  }
+  return null;
+}
+
+function maskNidNumber(nidDigits) {
+  const clean = String(nidDigits || '').replace(/[^0-9]/g, '');
+  if (clean.length <= 4) return '****';
+  return '*'.repeat(clean.length - 4) + clean.slice(-4);
+}
+
+function validateDobString(rawDob) {
+  const clean = String(rawDob || '').trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(clean)) return { valid: false, error: 'Date of birth must be in YYYY-MM-DD format.' };
+  const parsed = new Date(clean + 'T00:00:00Z');
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== clean) {
+    return { valid: false, error: 'Invalid calendar date of birth.' };
+  }
+  const ageMs = Date.now() - parsed.getTime();
+  const ageYears = ageMs / (365.25 * 24 * 60 * 60 * 1000);
+  if (ageYears < 18 || ageYears > 120) {
+    return { valid: false, error: 'Subscriber age must be between 18 and 120 years.' };
+  }
+  return { valid: true, dob: clean };
+}
+
+function getBanglalinkPartnerConfig() {
+  const rawUrl = String(process.env.BANGLALINK_PARTNER_API_URL || '').trim();
+  const clientId = String(process.env.BANGLALINK_PARTNER_CLIENT_ID || '').trim();
+  const clientSecret = String(process.env.BANGLALINK_PARTNER_CLIENT_SECRET || '').trim();
+  const apiKey = String(process.env.BANGLALINK_PARTNER_API_KEY || '').trim();
+
+  if (!rawUrl || (!clientSecret && !apiKey)) {
+    return {
+      authorized: false,
+      endpoint: null,
+      reason: 'Official Banglalink Partner API authorization is not configured on the server. Using Pending Request workflow.'
+    };
+  }
+
+  try {
+    const parsed = new URL(rawUrl);
+    const hostname = parsed.hostname.toLowerCase();
+    const fullLower = rawUrl.toLowerCase();
+
+    // Enforce HTTPS and block private/loopback/metadata hosts + undocumented consumer app endpoints
+    if (parsed.protocol !== 'https:') {
+      return { authorized: false, endpoint: null, reason: 'Partner API URL must use HTTPS.' };
+    }
+    if (
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname === '::1' ||
+      hostname.startsWith('10.') ||
+      hostname.startsWith('192.168.') ||
+      hostname === '169.254.169.254' ||
+      /^172\.(1[6-9]|2\d|3[01])\./.test(hostname)
+    ) {
+      return { authorized: false, endpoint: null, reason: 'Blocked non-public partner API host.' };
+    }
+    if (hostname === 'myblapi.banglalink.net' || fullLower.includes('sim-bar/initiate') || fullLower.includes('sim-bar/update')) {
+      return {
+        authorized: false,
+        endpoint: null,
+        reason: 'Undocumented consumer app endpoints are blocked. Official Banglalink Partner Gateway URL is required.'
+      };
+    }
+
+    return {
+      authorized: true,
+      endpoint: parsed.toString(),
+      clientId,
+      clientSecret,
+      apiKey,
+      reason: 'Official Banglalink Partner Gateway authorized.'
+    };
+  } catch (e) {
+    return { authorized: false, endpoint: null, reason: 'Invalid official Banglalink Partner API URL configuration.' };
+  }
+}
+
+function recordSimActivity(db, adminEmail, action, requestRef, summary) {
+  const timestamp = new Date().toLocaleString('en-GB');
+  db.simActivityLogs = db.simActivityLogs || [];
+  db.simActivityLogs.unshift({
+    id: Date.now(),
+    timestamp,
+    adminEmail: adminEmail || 'Admin',
+    action,
+    requestRef: requestRef || '',
+    summary: summary || ''
+  });
+  if (db.simActivityLogs.length > 200) db.simActivityLogs = db.simActivityLogs.slice(0, 200);
+
+  db.auditLogs = db.auditLogs || [];
+  db.auditLogs.unshift({
+    action,
+    adminEmail: adminEmail || 'Admin',
+    targetEmail: requestRef || 'SIM-MGMT',
+    reason: summary || '',
+    timestamp
+  });
+  if (db.auditLogs.length > 100) db.auditLogs = db.auditLogs.slice(0, 100);
+}
+
+app.get('/api/admin/sim/status', checkAdmin, (req, res) => {
+  const partnerCfg = getBanglalinkPartnerConfig();
+  const db = readDB();
+  const requests = db.simRequests || [];
+
+  return res.json({
+    success: true,
+    officialApiAuthorized: partnerCfg.authorized,
+    apiMode: partnerCfg.authorized ? 'OFFICIAL_PARTNER_GATEWAY' : 'PENDING_REQUEST_WORKFLOW',
+    statusMessage: partnerCfg.reason,
+    counts: {
+      total: requests.length,
+      pendingVerification: requests.filter(r => r.status === 'AWAITING_OWNERSHIP_VERIFICATION').length,
+      pendingOperatorAuth: requests.filter(r => r.status === 'PENDING_OPERATOR_AUTH').length,
+      escalated: requests.filter(r => r.status === 'ESCALATED_OFFICIAL_CHANNEL').length,
+      completed: requests.filter(r => r.status === 'OFFICIAL_API_SUBMITTED').length,
+      rejected: requests.filter(r => r.status === 'CLOSED_REJECTED').length
+    }
+  });
+});
+
+app.get('/api/admin/sim/history', checkAdmin, (req, res) => {
+  const db = readDB();
+  return res.json({
+    success: true,
+    requests: db.simRequests || [],
+    activityLogs: db.simActivityLogs || []
+  });
+});
+
+app.post('/api/admin/sim/request', checkAdmin, async (req, res) => {
+  if (!verifyAdminCsrf(req)) {
+    return res.status(403).json({ success: false, error: 'CSRF / Origin verification failed for administrative SIM action.' });
+  }
+
+  const adminEmail = (req.adminUser && req.adminUser.email) || 'Admin';
+  const { msisdn, nid, dob, customerName, requestType, ownershipVerified, customerConsent, verificationNotes } = req.body || {};
+
+  const normalizedMsisdn = normalizeBanglalinkMsisdn(msisdn);
+  if (!normalizedMsisdn) {
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid Banglalink mobile number. Enter an 11-digit number starting with 019 or 014.'
+    });
+  }
+
+  const cleanNid = String(nid || '').replace(/[^0-9]/g, '');
+  if (!/^(\d{10}|\d{13}|\d{17})$/.test(cleanNid)) {
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid NID format. NID must be 10, 13, or 17 digits.'
+    });
+  }
+
+  const dobCheck = validateDobString(dob);
+  if (!dobCheck.valid) {
+    return res.status(400).json({ success: false, error: dobCheck.error });
+  }
+
+  const allowedTypes = ['LOST_SIM_HOLD', 'OWNERSHIP_CHECK', 'SIM_SUSPENSION_ASSISTANCE'];
+  const cleanType = allowedTypes.includes(requestType) ? requestType : 'LOST_SIM_HOLD';
+  const cleanCustomerName = String(customerName || '').trim().slice(0, 80);
+  const cleanNotes = String(verificationNotes || '').trim().slice(0, 300);
+  const hasOwnership = ownershipVerified === true;
+  const hasConsent = customerConsent === true;
+  const maskedNid = maskNidNumber(cleanNid);
+  const nidHash = crypto.createHash('sha256').update(cleanNid).digest('hex').slice(0, 16);
+
+  const db = readDB();
+  const reqId = db.nextSimReqId++;
+  const createdAt = new Date().toLocaleString('en-GB');
+  const partnerCfg = getBanglalinkPartnerConfig();
+
+  // Gate 1: Require both verified customer ownership and explicit customer consent
+  if (!hasOwnership || !hasConsent) {
+    const txId = `BL-HOLD-${reqId}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+    const apiResponse = {
+      executed: false,
+      code: 'OWNERSHIP_OR_CONSENT_REQUIRED',
+      status: 'AWAITING_OWNERSHIP_VERIFICATION',
+      message: 'SIM action blocked: both Customer Ownership Verification and Explicit Customer Consent must be confirmed before operator submission.'
+    };
+    const record = {
+      id: reqId,
+      transactionId: txId,
+      msisdn: normalizedMsisdn,
+      nidMasked: maskedNid,
+      nidHash,
+      dob: dobCheck.dob,
+      customerName: cleanCustomerName || 'Not specified',
+      requestType: cleanType,
+      ownershipVerified: hasOwnership,
+      customerConsent: hasConsent,
+      verificationStatus: 'UNVERIFIED_HOLD',
+      status: 'AWAITING_OWNERSHIP_VERIFICATION',
+      notes: cleanNotes,
+      createdBy: adminEmail,
+      createdAt,
+      updatedAt: createdAt,
+      apiResponse
+    };
+    db.simRequests.unshift(record);
+    recordSimActivity(db, adminEmail, 'SIM_REQUEST_HOLD', `${normalizedMsisdn} (${txId})`, apiResponse.message);
+    writeDB(db);
+
+    return res.status(422).json({
+      success: false,
+      executed: false,
+      error: apiResponse.message,
+      request: record,
+      apiResponse
+    });
+  }
+
+  // Gate 2: Require official Banglalink Partner API authorization; otherwise run Pending Request workflow
+  if (!partnerCfg.authorized) {
+    const txId = `BL-PENDING-${reqId}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+    const apiResponse = {
+      executed: false,
+      code: 'OFFICIAL_API_AUTH_UNAVAILABLE',
+      status: 'PENDING_OPERATOR_AUTH',
+      message: partnerCfg.reason,
+      nextStep: 'Escalate via authorized Banglalink Customer Care / Official Partner Portal with verified NID & biometric ownership record.'
+    };
+    const record = {
+      id: reqId,
+      transactionId: txId,
+      msisdn: normalizedMsisdn,
+      nidMasked: maskedNid,
+      nidHash,
+      dob: dobCheck.dob,
+      customerName: cleanCustomerName || 'Verified Customer',
+      requestType: cleanType,
+      ownershipVerified: true,
+      customerConsent: true,
+      verificationStatus: 'OWNERSHIP_AND_CONSENT_VERIFIED',
+      status: 'PENDING_OPERATOR_AUTH',
+      notes: cleanNotes,
+      createdBy: adminEmail,
+      createdAt,
+      updatedAt: createdAt,
+      apiResponse
+    };
+    db.simRequests.unshift(record);
+    recordSimActivity(db, adminEmail, 'SIM_PENDING_REQUEST_LOGGED', `${normalizedMsisdn} (${txId})`, `Ownership verified (${maskedNid}); queued under Pending Request workflow because official operator API authorization is unavailable.`);
+    writeDB(db);
+
+    return res.json({
+      success: true,
+      executed: false,
+      workflow: 'PENDING_OPERATOR_AUTH',
+      request: record,
+      apiResponse
+    });
+  }
+
+  // Gate 3: Official Partner API dispatch (only reached if valid official HTTPS partner gateway & secrets exist in process.env)
+  let partnerHttpStatus = 0;
+  let partnerPayload = null;
+  let dispatchSucceeded = false;
+
+  try {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+    if (partnerCfg.apiKey) headers['X-API-Key'] = partnerCfg.apiKey;
+    if (partnerCfg.clientId && partnerCfg.clientSecret) {
+      headers['Authorization'] = 'Basic ' + Buffer.from(`${partnerCfg.clientId}:${partnerCfg.clientSecret}`).toString('base64');
+    }
+
+    const upstreamRes = await fetch(partnerCfg.endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        msisdn: normalizedMsisdn,
+        nidHash,
+        dob: dobCheck.dob,
+        requestType: cleanType,
+        ownershipVerified: true,
+        customerConsent: true
+      }),
+      signal: AbortSignal.timeout(15000)
+    });
+    partnerHttpStatus = upstreamRes.status;
+    const rawText = await upstreamRes.text();
+    try {
+      partnerPayload = JSON.parse(rawText);
+    } catch (e) {
+      partnerPayload = { raw: rawText.slice(0, 500) };
+    }
+    dispatchSucceeded = upstreamRes.ok;
+  } catch (upstreamErr) {
+    partnerPayload = { error: upstreamErr.message || 'Partner gateway network error' };
+  }
+
+  const txId = (partnerPayload && (partnerPayload.transactionId || partnerPayload.tran_id)) || `BL-GW-${reqId}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+  const apiResponse = {
+    executed: true,
+    httpStatus: partnerHttpStatus,
+    status: dispatchSucceeded ? 'OFFICIAL_API_SUBMITTED' : 'OPERATOR_API_ERROR',
+    upstream: partnerPayload
+  };
+
+  const record = {
+    id: reqId,
+    transactionId: String(txId),
+    msisdn: normalizedMsisdn,
+    nidMasked: maskedNid,
+    nidHash,
+    dob: dobCheck.dob,
+    customerName: cleanCustomerName || 'Verified Customer',
+    requestType: cleanType,
+    ownershipVerified: true,
+    customerConsent: true,
+    verificationStatus: 'OWNERSHIP_AND_CONSENT_VERIFIED',
+    status: dispatchSucceeded ? 'OFFICIAL_API_SUBMITTED' : 'OPERATOR_API_ERROR',
+    notes: cleanNotes,
+    createdBy: adminEmail,
+    createdAt,
+    updatedAt: createdAt,
+    apiResponse
+  };
+  db.simRequests.unshift(record);
+  recordSimActivity(db, adminEmail, dispatchSucceeded ? 'SIM_OFFICIAL_API_SUBMITTED' : 'SIM_OFFICIAL_API_ERROR', `${normalizedMsisdn} (${record.transactionId})`, `Official partner response HTTP ${partnerHttpStatus}`);
+  writeDB(db);
+
+  return res.status(dispatchSucceeded ? 200 : 502).json({
+    success: dispatchSucceeded,
+    executed: true,
+    request: record,
+    apiResponse
+  });
+});
+
+app.patch('/api/admin/sim/request/:id', checkAdmin, (req, res) => {
+  if (!verifyAdminCsrf(req)) {
+    return res.status(403).json({ success: false, error: 'CSRF / Origin verification failed.' });
+  }
+  const db = readDB();
+  const reqId = parseInt(req.params.id, 10);
+  const record = (db.simRequests || []).find(r => r.id === reqId);
+  if (!record) {
+    return res.status(404).json({ success: false, error: 'SIM request record not found.' });
+  }
+
+  const adminEmail = (req.adminUser && req.adminUser.email) || 'Admin';
+  const { action, notes } = req.body || {};
+  const nowStr = new Date().toLocaleString('en-GB');
+
+  if (action === 'VERIFY_OWNERSHIP') {
+    record.ownershipVerified = true;
+    record.customerConsent = true;
+    record.verificationStatus = 'OWNERSHIP_AND_CONSENT_VERIFIED';
+    if (record.status === 'AWAITING_OWNERSHIP_VERIFICATION') {
+      record.status = 'PENDING_OPERATOR_AUTH';
+    }
+  } else if (action === 'ESCALATE_OFFICIAL') {
+    if (!record.ownershipVerified || !record.customerConsent) {
+      return res.status(400).json({ success: false, error: 'Cannot escalate without verified ownership and consent.' });
+    }
+    record.status = 'ESCALATED_OFFICIAL_CHANNEL';
+  } else if (action === 'CLOSE_REJECTED') {
+    record.status = 'CLOSED_REJECTED';
+  } else {
+    return res.status(400).json({ success: false, error: 'Unsupported SIM workflow action.' });
+  }
+
+  if (notes && typeof notes === 'string') {
+    record.notes = notes.trim().slice(0, 300);
+  }
+  record.updatedAt = nowStr;
+  recordSimActivity(db, adminEmail, `SIM_${action}`, `${record.msisdn} (${record.transactionId})`, record.notes || `Status updated to ${record.status}`);
+  writeDB(db);
+
+  return res.json({ success: true, request: record });
 });
 
 // Site Visitor Counter & Live Stats API (100% Real Tracking)

@@ -194,6 +194,9 @@
                     <button onclick="switchNexoraTab('reports')" id="navBtn-reports" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
                         <i class="fa-solid fa-file-shield text-xs"></i><span>Reports &amp; Audits</span>
                     </button>
+                    <button onclick="switchNexoraTab('sim-management')" id="navBtn-sim-management" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-amber-800 hover:bg-amber-50 cursor-pointer">
+                        <i class="fa-solid fa-sim-card text-xs text-amber-600"></i><span>Banglalink SIM Mgmt</span>
+                    </button>
                     <button onclick="switchNexoraTab('settings')" id="navBtn-settings" class="nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer">
                         <i class="fa-solid fa-gear text-xs"></i><span>Settings</span>
                     </button>
@@ -982,6 +985,233 @@
                 </div>
             </div>
 
+            <!-- TAB: BANGLALINK SIM MANAGEMENT (ADMIN-ONLY) -->
+            <div id="tabPane-sim-management" class="nexora-tab-pane hidden space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2.5 flex-wrap">
+                            <h2 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-sim-card text-amber-600"></i>
+                                <span>Banglalink SIM Management</span>
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono-code font-extrabold uppercase bg-amber-50 text-amber-800 border border-amber-200">Admin-Only Restricted</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-1">Verify customer ownership &amp; consent, submit authorized Banglalink SIM requests or Pending Request tickets, and inspect operator responses.</p>
+                    </div>
+                    <button type="button" onclick="loadAdminSimDashboard()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold text-xs flex items-center gap-2 shadow-xs cursor-pointer shrink-0">
+                        <i class="fa-solid fa-rotate text-sky-600"></i> Refresh SIM Data
+                    </button>
+                </div>
+
+                <!-- Operator Authorization Banner & Counters -->
+                <div class="glass-card p-5 space-y-4">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="flex items-start gap-3">
+                            <div id="simGatewayBadgeIcon" class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-base shrink-0">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-xs font-black text-slate-900">Operator Authorization Status:</span>
+                                    <span id="simGatewayModeBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-mono-code font-bold bg-amber-100 text-amber-800 border border-amber-200">Checking...</span>
+                                </div>
+                                <p id="simGatewayStatusDesc" class="text-xs text-slate-600">Checking official Banglalink Partner API configuration on server...</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2.5 shrink-0 text-center">
+                            <div class="px-3.5 py-2 rounded-xl bg-white/90 border border-slate-200">
+                                <div class="text-[10px] font-bold text-slate-500 uppercase">Total</div>
+                                <div id="simCountTotal" class="text-base font-black font-mono-code text-slate-900">0</div>
+                            </div>
+                            <div class="px-3.5 py-2 rounded-xl bg-amber-50/90 border border-amber-200">
+                                <div class="text-[10px] font-bold text-amber-700 uppercase">Pending Auth</div>
+                                <div id="simCountPending" class="text-base font-black font-mono-code text-amber-800">0</div>
+                            </div>
+                            <div class="px-3.5 py-2 rounded-xl bg-sky-50/90 border border-sky-200">
+                                <div class="text-[10px] font-bold text-sky-700 uppercase">Escalated</div>
+                                <div id="simCountEscalated" class="text-base font-black font-mono-code text-sky-800">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid: Request Form & Live Response / Transaction Display -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    <!-- Left 7 cols: Ownership Verification & SIM Request Form -->
+                    <div class="lg:col-span-7 glass-card p-5 sm:p-6 space-y-5">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-id-card text-sky-600"></i>
+                                <span>Customer Ownership &amp; SIM Request Form</span>
+                            </h3>
+                            <span id="simLiveVerificationPill" class="px-2.5 py-1 rounded-full text-[10px] font-mono-code font-bold bg-rose-50 text-rose-700 border border-rose-200">Unverified</span>
+                        </div>
+
+                        <form id="simManagementForm" onsubmit="submitSimRequest(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1.5">Banglalink Mobile Number</label>
+                                    <input type="tel" id="simMsisdnInput" required placeholder="019XXXXXXXX or 014XXXXXXXX" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-mono-code outline-none focus:border-sky-500">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1.5">Customer NID Number</label>
+                                    <input type="text" id="simNidInput" required inputmode="numeric" placeholder="10, 13, or 17 digit NID" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-mono-code outline-none focus:border-sky-500">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1.5">Date of Birth</label>
+                                    <input type="date" id="simDobInput" required class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-mono-code outline-none focus:border-sky-500">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1.5">Request Category</label>
+                                    <select id="simRequestTypeInput" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-semibold outline-none focus:border-sky-500">
+                                        <option value="LOST_SIM_HOLD">Lost / Stolen SIM Assistance Hold</option>
+                                        <option value="OWNERSHIP_CHECK">Customer Ownership Verification</option>
+                                        <option value="SIM_SUSPENSION_ASSISTANCE">Authorized SIM Suspension Request</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1.5">Customer Full Name (Optional)</label>
+                                    <input type="text" id="simCustomerNameInput" placeholder="e.g. Md. Karim Uddin" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-500">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-extrabold text-slate-800 uppercase mb-1.5">Verification Notes / Ticket Ref</label>
+                                    <input type="text" id="simNotesInput" placeholder="Original NID matched at lab desk..." class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 outline-none focus:border-sky-500">
+                                </div>
+                            </div>
+
+                            <!-- Ownership Verification & Explicit Consent Controls -->
+                            <div class="p-4 rounded-2xl bg-slate-50/95 border border-slate-200 space-y-2.5">
+                                <div class="text-[11px] font-extrabold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+                                    <i class="fa-solid fa-user-shield text-sky-600"></i>
+                                    <span>Customer Ownership &amp; Consent Verification</span>
+                                </div>
+                                <label class="flex items-start gap-2.5 text-xs text-slate-700 font-semibold cursor-pointer">
+                                    <input type="checkbox" id="simOwnershipCheck" onchange="updateSimVerificationBadge()" class="mt-0.5 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+                                    <span>Original NID, Date of Birth, and customer ownership for this Banglalink MSISDN have been physically/officially verified.</span>
+                                </label>
+                                <label class="flex items-start gap-2.5 text-xs text-slate-700 font-semibold cursor-pointer">
+                                    <input type="checkbox" id="simConsentCheck" onchange="updateSimVerificationBadge()" class="mt-0.5 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+                                    <span>Explicit subscriber consent for this SIM request has been obtained and documented.</span>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-3 pt-1">
+                                <span class="text-[11px] text-slate-500 font-medium">Credentials remain strictly on the server via environment variables.</span>
+                                <button type="submit" id="simSubmitBtn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer shrink-0">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                    <span>Submit Request</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right 5 cols: Live Request Status, Transaction ID & Honest API Response / Error Display -->
+                    <div class="lg:col-span-5 glass-card p-5 sm:p-6 flex flex-col justify-between space-y-4">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-terminal text-indigo-600"></i>
+                                    <span>Request Status &amp; API Response</span>
+                                </h3>
+                                <span id="simLatestStatusBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-mono-code font-bold bg-slate-100 text-slate-600 border border-slate-200">Idle</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 gap-2.5 text-xs">
+                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
+                                    <span class="font-bold text-slate-600">Transaction / Ref ID</span>
+                                    <span id="simLatestTxId" class="font-mono-code font-extrabold text-slate-900">—</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
+                                    <span class="font-bold text-slate-600">Ownership Verification</span>
+                                    <span id="simLatestOwnershipState" class="font-mono-code font-bold text-slate-700">Not submitted</span>
+                                </div>
+                            </div>
+
+                            <div id="simErrorBanner" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold"></div>
+
+                            <div>
+                                <div class="text-[11px] font-extrabold text-slate-600 uppercase mb-1.5">Server / Operator Response Log</div>
+                                <pre id="simRawApiResponse" class="w-full min-h-[150px] max-h-[230px] overflow-auto p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] font-mono-code text-slate-800 whitespace-pre-wrap break-words">{
+  "ready": true,
+  "mode": "Awaiting submission"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request History Table -->
+                <div class="glass-card p-5 space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-sky-600"></i>
+                                <span>SIM Request History</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-500">All Banglalink SIM assistance &amp; verification records (NID numbers stored masked).</p>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200 bg-slate-50/80">
+                                <tr>
+                                    <th class="py-2.5 px-3">Transaction ID</th>
+                                    <th class="py-2.5 px-3">MSISDN</th>
+                                    <th class="py-2.5 px-3">NID (Masked) / DOB</th>
+                                    <th class="py-2.5 px-3">Ownership</th>
+                                    <th class="py-2.5 px-3">Status</th>
+                                    <th class="py-2.5 px-3">Submitted</th>
+                                    <th class="py-2.5 px-3 text-right">Workflow Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="simHistoryTableBody" class="divide-y divide-slate-100 text-slate-700">
+                                <tr>
+                                    <td colspan="7" class="py-6 text-center text-slate-400">Loading SIM request history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Admin-Only SIM Activity Logs -->
+                <div class="glass-card p-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-amber-600"></i>
+                                <span>Admin-Only SIM Activity Logs</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-500">Audit trail of administrative actions inside Banglalink SIM Management.</p>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200 bg-slate-50/80">
+                                <tr>
+                                    <th class="py-2.5 px-3">Timestamp</th>
+                                    <th class="py-2.5 px-3">Action</th>
+                                    <th class="py-2.5 px-3">Admin Email</th>
+                                    <th class="py-2.5 px-3">Target Ref</th>
+                                    <th class="py-2.5 px-3">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="simActivityLogsBody" class="divide-y divide-slate-100 text-slate-700">
+                                <tr>
+                                    <td colspan="5" class="py-6 text-center text-slate-400">Loading SIM activity logs...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- TAB 9: SETTINGS -->
             <div id="tabPane-settings" class="nexora-tab-pane hidden space-y-6">
                 <div>
@@ -1073,7 +1303,7 @@
 
     <!-- Script to wire real data and authentication -->
     <script>
-        const nexoraTabs = ['dashboard', 'analytics', 'orders', 'customers', 'products', 'courses', 'messages', 'finance', 'reports', 'settings'];
+        const nexoraTabs = ['dashboard', 'analytics', 'orders', 'customers', 'products', 'courses', 'messages', 'finance', 'reports', 'sim-management', 'settings'];
         let cachedUsers = [];
         let cachedContacts = [];
         let cachedOrders = [];
@@ -1106,6 +1336,7 @@
             if (activeTab === 'courses') loadAdminCourses();
             if (activeTab === 'messages') loadAdminContacts();
             if (activeTab === 'reports') loadAdminAuditLogs();
+            if (activeTab === 'sim-management') loadAdminSimDashboard();
         }
 
         function loadAdminCourses() {
@@ -1200,6 +1431,7 @@
                 if (token) {
                     headers.set('Authorization', 'Bearer ' + token);
                 }
+                headers.set('X-Requested-With', 'XMLHttpRequest');
             } catch (e) {
                 console.warn('[Admin Auth Token Error]:', e);
             }
@@ -1286,13 +1518,18 @@
                         habibAuth.updateAllNavbars();
                     }
 
-                    // Load dashboard metrics
-                    loadAdminStats();
-                    loadAdminOrders();
-                    loadAdminUsers();
-                    loadAdminContacts();
-                    loadAdminBookings();
-                    loadAdminAuditLogs();
+                    // Load requested tab or default dashboard
+                    const requestedTab = new URLSearchParams(window.location.search).get('tab');
+                    if (requestedTab && nexoraTabs.includes(requestedTab)) {
+                        switchNexoraTab(requestedTab);
+                    } else {
+                        loadAdminStats();
+                        loadAdminOrders();
+                        loadAdminUsers();
+                        loadAdminContacts();
+                        loadAdminBookings();
+                        loadAdminAuditLogs();
+                    }
                 } else {
                     window.location.replace('dashboard.html?denied=admin');
                 }
@@ -1880,6 +2117,242 @@
             return String(text).replace(/[&<>"']/g, function(m) {
                 return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
             });
+        }
+
+        // ====================================================================
+        // ADMIN-ONLY BANGLALINK SIM MANAGEMENT HANDLERS
+        // ====================================================================
+        function updateSimVerificationBadge() {
+            const ownership = document.getElementById('simOwnershipCheck')?.checked;
+            const consent = document.getElementById('simConsentCheck')?.checked;
+            const pill = document.getElementById('simLiveVerificationPill');
+            if (!pill) return;
+
+            if (ownership && consent) {
+                pill.className = 'px-2.5 py-1 rounded-full text-[10px] font-mono-code font-bold bg-emerald-50 text-emerald-700 border border-emerald-200';
+                pill.textContent = 'Ownership & Consent Verified';
+            } else if (ownership || consent) {
+                pill.className = 'px-2.5 py-1 rounded-full text-[10px] font-mono-code font-bold bg-amber-50 text-amber-800 border border-amber-200';
+                pill.textContent = 'Partial Verification';
+            } else {
+                pill.className = 'px-2.5 py-1 rounded-full text-[10px] font-mono-code font-bold bg-rose-50 text-rose-700 border border-rose-200';
+                pill.textContent = 'Unverified';
+            }
+        }
+
+        function formatSimStatusBadge(status) {
+            const map = {
+                'PENDING_OPERATOR_AUTH': { cls: 'bg-amber-50 text-amber-800 border-amber-200', label: 'Pending Operator Auth' },
+                'AWAITING_OWNERSHIP_VERIFICATION': { cls: 'bg-rose-50 text-rose-700 border-rose-200', label: 'Awaiting Ownership' },
+                'ESCALATED_OFFICIAL_CHANNEL': { cls: 'bg-sky-50 text-sky-800 border-sky-200', label: 'Escalated Official' },
+                'OFFICIAL_API_SUBMITTED': { cls: 'bg-emerald-50 text-emerald-800 border-emerald-200', label: 'Submitted (Official API)' },
+                'OPERATOR_API_ERROR': { cls: 'bg-rose-50 text-rose-700 border-rose-200', label: 'Operator API Error' },
+                'CLOSED_REJECTED': { cls: 'bg-slate-100 text-slate-600 border-slate-200', label: 'Closed / Rejected' }
+            };
+            const item = map[status] || { cls: 'bg-slate-100 text-slate-700 border-slate-200', label: status || 'Unknown' };
+            return `<span class="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-mono-code font-bold border ${item.cls}">${escapeHtml(item.label)}</span>`;
+        }
+
+        async function loadAdminSimDashboard() {
+            await Promise.all([loadSimGatewayStatus(), loadSimHistoryAndLogs()]);
+        }
+
+        async function loadSimGatewayStatus() {
+            try {
+                const res = await adminFetch('/api/admin/sim/status');
+                const data = await res.json();
+                if (!res.ok || !data.success) return;
+
+                const modeBadge = document.getElementById('simGatewayModeBadge');
+                const descEl = document.getElementById('simGatewayStatusDesc');
+                const iconBox = document.getElementById('simGatewayBadgeIcon');
+
+                if (data.officialApiAuthorized) {
+                    if (modeBadge) {
+                        modeBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-mono-code font-bold bg-emerald-100 text-emerald-800 border border-emerald-200';
+                        modeBadge.textContent = 'Official Partner Gateway Active';
+                    }
+                    if (iconBox) iconBox.className = 'w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-base shrink-0';
+                } else {
+                    if (modeBadge) {
+                        modeBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-mono-code font-bold bg-amber-100 text-amber-800 border border-amber-200';
+                        modeBadge.textContent = 'Pending Request Workflow';
+                    }
+                    if (iconBox) iconBox.className = 'w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-base shrink-0';
+                }
+                if (descEl) descEl.textContent = data.statusMessage || '';
+
+                const counts = data.counts || {};
+                const totalEl = document.getElementById('simCountTotal');
+                const pendEl = document.getElementById('simCountPending');
+                const escEl = document.getElementById('simCountEscalated');
+                if (totalEl) totalEl.textContent = counts.total || 0;
+                if (pendEl) pendEl.textContent = (counts.pendingOperatorAuth || 0) + (counts.pendingVerification || 0);
+                if (escEl) escEl.textContent = counts.escalated || 0;
+            } catch (err) {
+                console.warn('SIM status load notice:', err);
+            }
+        }
+
+        async function loadSimHistoryAndLogs() {
+            try {
+                const res = await adminFetch('/api/admin/sim/history');
+                const data = await res.json();
+                if (!res.ok || !data.success) return;
+
+                const historyBody = document.getElementById('simHistoryTableBody');
+                const logsBody = document.getElementById('simActivityLogsBody');
+                const requests = data.requests || [];
+                const logs = data.activityLogs || [];
+
+                if (historyBody) {
+                    if (requests.length === 0) {
+                        historyBody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-slate-400">No Banglalink SIM requests recorded yet.</td></tr>';
+                    } else {
+                        historyBody.innerHTML = requests.map(r => `
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="py-3 px-3 font-mono-code font-bold text-slate-900 whitespace-nowrap">${escapeHtml(r.transactionId)}</td>
+                                <td class="py-3 px-3 font-mono-code font-bold text-sky-700">${escapeHtml(r.msisdn)}</td>
+                                <td class="py-3 px-3 font-mono-code text-[11px] text-slate-600">
+                                    <div>${escapeHtml(r.nidMasked)}</div>
+                                    <div class="text-[10px] text-slate-400">DOB: ${escapeHtml(r.dob)}</div>
+                                </td>
+                                <td class="py-3 px-3">
+                                    ${r.ownershipVerified && r.customerConsent
+                                        ? '<span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">Verified + Consent</span>'
+                                        : '<span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-bold">Incomplete</span>'}
+                                </td>
+                                <td class="py-3 px-3">${formatSimStatusBadge(r.status)}</td>
+                                <td class="py-3 px-3 font-mono-code text-[10px] text-slate-500 whitespace-nowrap">${escapeHtml(r.createdAt || '')}</td>
+                                <td class="py-3 px-3 text-right whitespace-nowrap space-x-1">
+                                    ${r.status === 'AWAITING_OWNERSHIP_VERIFICATION' ? `
+                                        <button type="button" onclick="updateSimWorkflow(${r.id}, 'VERIFY_OWNERSHIP')" class="px-2 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10px] font-bold cursor-pointer">Verify</button>
+                                    ` : ''}
+                                    ${r.status === 'PENDING_OPERATOR_AUTH' ? `
+                                        <button type="button" onclick="updateSimWorkflow(${r.id}, 'ESCALATE_OFFICIAL')" class="px-2 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-[10px] font-bold cursor-pointer">Escalate</button>
+                                    ` : ''}
+                                    ${r.status !== 'CLOSED_REJECTED' ? `
+                                        <button type="button" onclick="updateSimWorkflow(${r.id}, 'CLOSE_REJECTED')" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold cursor-pointer">Close</button>
+                                    ` : ''}
+                                </td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+
+                if (logsBody) {
+                    if (logs.length === 0) {
+                        logsBody.innerHTML = '<tr><td colspan="5" class="py-6 text-center text-slate-400">No SIM activity logs recorded yet.</td></tr>';
+                    } else {
+                        logsBody.innerHTML = logs.map(l => `
+                            <tr class="hover:bg-slate-50/80 transition-colors">
+                                <td class="py-2.5 px-3 font-mono-code text-[11px] text-sky-700 whitespace-nowrap">${escapeHtml(l.timestamp || '')}</td>
+                                <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-800 font-mono-code text-[10px] font-bold">${escapeHtml(l.action || '')}</span></td>
+                                <td class="py-2.5 px-3 font-mono-code text-[11px] text-slate-700">${escapeHtml(l.adminEmail || '')}</td>
+                                <td class="py-2.5 px-3 font-mono-code text-[11px] text-slate-800">${escapeHtml(l.requestRef || '')}</td>
+                                <td class="py-2.5 px-3 text-xs text-slate-600">${escapeHtml(l.summary || '')}</td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+            } catch (err) {
+                console.warn('SIM history load error:', err);
+            }
+        }
+
+        async function submitSimRequest(e) {
+            e.preventDefault();
+            const btn = document.getElementById('simSubmitBtn');
+            const errBanner = document.getElementById('simErrorBanner');
+            const txEl = document.getElementById('simLatestTxId');
+            const statusBadge = document.getElementById('simLatestStatusBadge');
+            const ownerEl = document.getElementById('simLatestOwnershipState');
+            const rawEl = document.getElementById('simRawApiResponse');
+
+            if (errBanner) errBanner.classList.add('hidden');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i><span>Processing...</span>';
+            }
+
+            const payload = {
+                msisdn: document.getElementById('simMsisdnInput')?.value.trim() || '',
+                nid: document.getElementById('simNidInput')?.value.trim() || '',
+                dob: document.getElementById('simDobInput')?.value || '',
+                customerName: document.getElementById('simCustomerNameInput')?.value.trim() || '',
+                requestType: document.getElementById('simRequestTypeInput')?.value || 'LOST_SIM_HOLD',
+                verificationNotes: document.getElementById('simNotesInput')?.value.trim() || '',
+                ownershipVerified: !!document.getElementById('simOwnershipCheck')?.checked,
+                customerConsent: !!document.getElementById('simConsentCheck')?.checked
+            };
+
+            try {
+                const res = await adminFetch('/api/admin/sim/request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json().catch(() => ({ error: 'Invalid server JSON response' }));
+
+                if (rawEl) {
+                    rawEl.textContent = JSON.stringify(data, null, 2);
+                }
+
+                if (data.request) {
+                    if (txEl) txEl.textContent = data.request.transactionId || '—';
+                    if (statusBadge) {
+                        statusBadge.className = '';
+                        statusBadge.innerHTML = formatSimStatusBadge(data.request.status);
+                    }
+                    if (ownerEl) {
+                        ownerEl.textContent = (data.request.ownershipVerified && data.request.customerConsent)
+                            ? 'Verified + Explicit Consent'
+                            : 'Incomplete Verification';
+                    }
+                }
+
+                if (!res.ok || data.error) {
+                    if (errBanner) {
+                        errBanner.className = 'p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold';
+                        errBanner.textContent = data.error || 'Request could not be dispatched.';
+                        errBanner.classList.remove('hidden');
+                    }
+                } else if (data.executed === false && errBanner) {
+                    errBanner.className = 'p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold';
+                    errBanner.textContent = (data.apiResponse && data.apiResponse.message) || 'Saved as Pending Request (Official operator authorization required).';
+                    errBanner.classList.remove('hidden');
+                }
+
+                await loadAdminSimDashboard();
+            } catch (err) {
+                if (errBanner) {
+                    errBanner.className = 'p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold';
+                    errBanner.textContent = 'Network or server error while submitting SIM request.';
+                    errBanner.classList.remove('hidden');
+                }
+                if (rawEl) rawEl.textContent = JSON.stringify({ error: err.message }, null, 2);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i><span>Submit Request</span>';
+                }
+            }
+        }
+
+        async function updateSimWorkflow(id, action) {
+            try {
+                const res = await adminFetch(`/api/admin/sim/request/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action })
+                });
+                const data = await res.json().catch(() => ({}));
+                const rawEl = document.getElementById('simRawApiResponse');
+                if (rawEl) rawEl.textContent = JSON.stringify(data, null, 2);
+                await loadAdminSimDashboard();
+            } catch (err) {
+                console.warn('SIM workflow update notice:', err);
+            }
         }
     </script>
 </body>

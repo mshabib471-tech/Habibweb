@@ -22,7 +22,9 @@ import {
 
 let firebaseConfig;
 try {
-  const configRes = await fetch('/api/firebase-config');
+  const configRes = await fetch('/api/firebase-config', {
+    signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(4000) : undefined
+  });
   if (configRes.ok) {
     firebaseConfig = await configRes.json();
   }
@@ -300,6 +302,7 @@ async function safeSyncSession(idToken, bodyPayload) {
     const res = await fetch('/api/user/sync-session', {
       method: 'POST',
       credentials: 'same-origin',
+      signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(5000) : undefined,
       headers: { 
         'Content-Type': 'application/json',
         'Authorization': idToken ? `Bearer ${idToken}` : ''
@@ -653,14 +656,17 @@ onAuthStateChanged(auth, async (firebaseUser) => {
       const effectiveVerified = !!firebaseUser.emailVerified || !!isGoogle;
       const idToken = await firebaseUser.getIdToken();
 
-      const syncResult = await safeSyncSession(idToken, {
-        uid: firebaseUser.uid,
-        email: cleanEmail,
-        name: firebaseUser.displayName || (cleanEmail ? cleanEmail.split('@')[0] : 'User'),
-        avatar: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
-        emailVerified: effectiveVerified,
-        authProvider: isGoogle ? 'google' : 'email'
-      });
+      const syncResult = await Promise.race([
+        safeSyncSession(idToken, {
+          uid: firebaseUser.uid,
+          email: cleanEmail,
+          name: firebaseUser.displayName || (cleanEmail ? cleanEmail.split('@')[0] : 'User'),
+          avatar: firebaseUser.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(firebaseUser.displayName || 'User')}`,
+          emailVerified: effectiveVerified,
+          authProvider: isGoogle ? 'google' : 'email'
+        }),
+        new Promise((resolve) => setTimeout(() => resolve({ ok: false, data: null, timedOut: true }), 3500))
+      ]);
 
       if (syncResult.ok && syncResult.data && syncResult.data.success && syncResult.data.user) {
         setCurrentUser(syncResult.data.user);
@@ -684,7 +690,7 @@ onAuthStateChanged(auth, async (firebaseUser) => {
     }
   } else {
     inMemorySessionToken = null;
-    // When Firebase reports no active user, clear client state
+    // Only clear stale user if not in middle of popup login
     const current = getCurrentUser();
     if (current) {
       setCurrentUser(null);
@@ -692,8 +698,10 @@ onAuthStateChanged(auth, async (firebaseUser) => {
   }
 
   // Resolve auth readiness barrier
-  authIsReady = true;
-  authReadyResolve(firebaseUser);
+  if (!authIsReady) {
+    authIsReady = true;
+    authReadyResolve(firebaseUser);
+  }
   updateAllNavbars();
 });
 

@@ -333,7 +333,12 @@
     document.querySelectorAll('#sidebar .sidebar-link').forEach(function (link) {
       if (link.dataset.boundClose) return;
       link.dataset.boundClose = '1';
-      link.addEventListener('click', function () {
+      link.addEventListener('click', function (ev) {
+        if (typeof window.switchAdminSidebarTab === 'function' && (link.id === 'sidebarAdminLink' || link.id === 'sidebarSimManagementLink')) {
+          ev.preventDefault();
+          var targetTab = link.id === 'sidebarSimManagementLink' ? 'sim-management' : 'dashboard';
+          window.switchAdminSidebarTab(targetTab);
+        }
         if (window.innerWidth < 1024 && typeof window.closeSidebar === 'function') {
           window.closeSidebar();
         }

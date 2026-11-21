@@ -478,12 +478,13 @@
         }
 
         function resolveRedirectDestination(isAdmin, params) {
-            const rawRedirect = params.get('redirect');
-            if (rawRedirect && !rawRedirect.includes('login.html')) {
-                if (rawRedirect.includes('admin') && !isAdmin) {
+            const rawRedirect = (params.get('redirect') || '').trim();
+            if (rawRedirect && !rawRedirect.includes('login.html') && !rawRedirect.startsWith('//') && !/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(rawRedirect)) {
+                const cleanDest = rawRedirect.replace(/^\/+/, '');
+                if (cleanDest.includes('admin') && !isAdmin) {
                     return 'dashboard.html?denied=admin';
                 }
-                return rawRedirect;
+                return cleanDest;
             }
             return isAdmin ? 'admin.html' : 'dashboard.html';
         }
@@ -631,8 +632,10 @@
                         '<i class="fa-solid fa-circle-check text-emerald-600"></i><span>Master Administrator Verified! Opening Admin Control Panel...</span>'
                     );
 
+                    const params = new URLSearchParams(window.location.search);
+                    const destination = resolveRedirectDestination(true, params);
                     setTimeout(() => {
-                        window.location.replace('admin.html');
+                        window.location.replace(destination);
                     }, 600);
                 } else {
                     showAlreadyLoggedInState(

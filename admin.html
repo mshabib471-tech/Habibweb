@@ -43,7 +43,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexora Master Admin - Habib iFix .Tech</title>
+    <title>Master Admin CMS - 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -106,19 +106,81 @@
     </script>
     <script type="module" src="/js/site-auth.js"></script>
 </head>
-<body class="text-slate-800 min-h-screen selection:bg-blue-600 selection:text-white" style="display: none;">
+<body class="text-slate-800 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
     <!-- Global Sidebar Mount -->
     <div id="global-sidebar-root"></div>
 
     <!-- Main Content Area -->
-    <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col min-h-screen">
+    <div id="mainContent" class="lg:ml-64 transition-all duration-300 flex flex-col flex-1 min-h-screen">
         <!-- Global Header Mount -->
         <div id="global-header-root"></div>
         <script>if (window.HabibLayout) window.HabibLayout.mount();</script>
 
         <!-- Main Workspace -->
         <main class="p-4 sm:p-6 lg:p-8 space-y-6 flex-1">
+            <!-- Admin Verification & In-Page Sign-In Gate (Never leaves a blank screen) -->
+            <div id="adminAuthGate" class="max-w-lg mx-auto my-8 sm:my-14">
+                <!-- Loading State -->
+                <div id="adminAuthLoadingView" class="glass-card p-8 text-center space-y-4">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 text-2xl shadow-sm">
+                        <i class="fa-solid fa-shield-halved animate-pulse"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h2 class="text-lg font-black text-slate-900">Verifying Master Admin Session...</h2>
+                        <p class="text-xs text-slate-600 font-medium">Checking authorization with 𝐇𝐚𝐛𝐢𝐛 𝐢𝐅𝐢𝐱.𝐓𝐞𝐜𝐡 security gateway.</p>
+                    </div>
+                    <div class="flex items-center justify-center gap-2 text-xs font-mono-code font-bold text-sky-700">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        <span>Authenticating Administrator...</span>
+                    </div>
+                </div>
+
+                <!-- Sign-In Required State -->
+                <div id="adminAuthLoginView" class="hidden glass-card p-6 sm:p-8 space-y-5">
+                    <div class="text-center space-y-2">
+                        <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 text-2xl shadow-sm">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h2 class="text-xl font-black text-slate-900">Master Admin Sign-In Required</h2>
+                        <p class="text-xs text-slate-600 leading-relaxed">Sign in with your authorized Master Administrator Google account to open Admin CMS &amp; Banglalink SIM Management.</p>
+                    </div>
+
+                    <div id="adminGateAlert" class="hidden p-3 rounded-xl text-xs font-bold text-center"></div>
+
+                    <button type="button" id="adminGateGoogleBtn" onclick="executeInlineAdminGoogleLogin()" class="w-full bg-white hover:bg-slate-50 text-slate-900 font-extrabold py-3.5 px-4 rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 cursor-pointer text-xs sm:text-sm border border-slate-200">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span id="adminGateGoogleBtnText">Sign In with Admin Google Account</span>
+                    </button>
+
+                    <div class="flex items-center justify-between gap-3 pt-2 border-t border-slate-100 text-xs">
+                        <a href="index.html" class="font-bold text-slate-600 hover:text-slate-900">&larr; Back to Home</a>
+                        <a id="adminGateLoginLink" href="login.html?tab=admin&redirect=admin.html" class="font-bold text-sky-700 hover:underline">Open Full Login Page &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Access Denied State -->
+                <div id="adminAuthDeniedView" class="hidden glass-card p-6 sm:p-8 text-center space-y-4">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 text-2xl shadow-sm">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h2 class="text-xl font-black text-slate-900">Administrator Access Restricted</h2>
+                        <p class="text-xs text-slate-600">Signed in as <strong id="adminDeniedEmail" class="font-mono-code text-slate-900"></strong>, which does not have Master Admin privileges.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-2">
+                        <a href="dashboard.html" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-sm">Go to My Dashboard</a>
+                        <button type="button" onclick="executeInlineAdminGoogleLogin()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold text-xs cursor-pointer">Switch Google Account</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="adminWorkspaceContent" class="hidden space-y-6">
             <!-- Admin CMS Command Strip & Horizontal Navigation -->
             <div class="glass-card p-4 sm:p-5 space-y-4">
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -1247,7 +1309,7 @@
                     </div>
                 </div>
             </div>
-
+            </div>
         </main>
     </div>
 
@@ -1312,6 +1374,7 @@
         let activeReplyContact = null;
 
         function switchNexoraTab(activeTab) {
+            if (!nexoraTabs.includes(activeTab)) activeTab = 'dashboard';
             nexoraTabs.forEach(t => {
                 const pane = document.getElementById('tabPane-' + t);
                 const btn = document.getElementById('navBtn-' + t);
@@ -1328,6 +1391,16 @@
                 targetBtn.className = "nexora-nav-btn shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all bg-blue-600 text-white shadow-xs cursor-pointer";
             }
 
+            try {
+                const nextUrl = activeTab === 'dashboard' ? 'admin.html' : ('admin.html?tab=' + encodeURIComponent(activeTab));
+                if (window.history && typeof window.history.replaceState === 'function') {
+                    window.history.replaceState(null, '', nextUrl);
+                }
+                if (window.HabibLayout && typeof window.HabibLayout.updateAuthChrome === 'function') {
+                    window.HabibLayout.updateAuthChrome();
+                }
+            } catch (navErr) {}
+
             if (activeTab === 'dashboard') { loadAdminStats(); loadAdminOrders(); }
             if (activeTab === 'analytics') loadAdminStats();
             if (activeTab === 'orders') { loadAdminOrders(); loadAdminBookings(); }
@@ -1338,6 +1411,16 @@
             if (activeTab === 'reports') loadAdminAuditLogs();
             if (activeTab === 'sim-management') loadAdminSimDashboard();
         }
+
+        window.switchAdminSidebarTab = function(tab) {
+            const workspace = document.getElementById('adminWorkspaceContent');
+            if (workspace && !workspace.classList.contains('hidden')) {
+                switchNexoraTab(tab);
+            } else {
+                const target = tab === 'sim-management' ? 'admin.html?tab=sim-management' : 'admin.html';
+                window.location.href = target;
+            }
+        };
 
         function loadAdminCourses() {
             const grid = document.getElementById('nexoraCoursesGrid');
@@ -1441,14 +1524,71 @@
             return fetch(url, options);
         }
 
+        function showAdminGateView(viewName, extraEmail = '') {
+            const gate = document.getElementById('adminAuthGate');
+            const workspace = document.getElementById('adminWorkspaceContent');
+            const loadingView = document.getElementById('adminAuthLoadingView');
+            const loginView = document.getElementById('adminAuthLoginView');
+            const deniedView = document.getElementById('adminAuthDeniedView');
+            const deniedEmailEl = document.getElementById('adminDeniedEmail');
+            const loginLink = document.getElementById('adminGateLoginLink');
+
+            if (viewName === 'authorized') {
+                if (gate) gate.classList.add('hidden');
+                if (workspace) workspace.classList.remove('hidden');
+                return;
+            }
+
+            if (workspace) workspace.classList.add('hidden');
+            if (gate) gate.classList.remove('hidden');
+            if (loadingView) loadingView.classList.toggle('hidden', viewName !== 'loading');
+            if (loginView) loginView.classList.toggle('hidden', viewName !== 'login');
+            if (deniedView) deniedView.classList.toggle('hidden', viewName !== 'denied');
+            if (deniedEmailEl && extraEmail) deniedEmailEl.textContent = extraEmail;
+            if (loginLink) {
+                const currentTarget = (window.location.pathname.split('/').pop() || 'admin.html') + window.location.search;
+                loginLink.href = 'login.html?tab=admin&redirect=' + encodeURIComponent(currentTarget);
+            }
+        }
+
+        async function executeInlineAdminGoogleLogin() {
+            const btnText = document.getElementById('adminGateGoogleBtnText');
+            const alertEl = document.getElementById('adminGateAlert');
+            if (alertEl) alertEl.classList.add('hidden');
+            if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Authenticating Admin...';
+
+            try {
+                const habibAuth = await waitForHabibAuth(6000);
+                if (!habibAuth || !habibAuth.signInWithGoogleReal) {
+                    throw new Error('Authentication module is still loading. Please try again in a moment.');
+                }
+                await habibAuth.signInWithGoogleReal('admin');
+                showAdminGateView('loading');
+                await initAdminAuth();
+            } catch (err) {
+                if (alertEl) {
+                    alertEl.className = 'p-3 rounded-xl text-xs font-bold text-center bg-rose-50 text-rose-700 border border-rose-200';
+                    alertEl.textContent = err.message || 'Admin Google Sign-In failed.';
+                    alertEl.classList.remove('hidden');
+                }
+            } finally {
+                if (btnText) btnText.textContent = 'Sign In with Admin Google Account';
+            }
+        }
+
         // Authoritative Check Auth with Firebase Persistence & Server Whitelist
         async function initAdminAuth() {
+            showAdminGateView('loading');
             try {
                 const ADMIN_EMAILS = ['tec.habiburrahman@gmail.com', 'mshabib471@gmail.com'];
-                const habibAuth = await waitForHabibAuth(8000);
+                const habibAuth = await waitForHabibAuth(5000);
                 let firebaseUser = null;
+
                 if (habibAuth && habibAuth.waitForAuthReady) {
-                    firebaseUser = await habibAuth.waitForAuthReady();
+                    firebaseUser = await Promise.race([
+                        habibAuth.waitForAuthReady(),
+                        new Promise(resolve => setTimeout(() => resolve(habibAuth.auth?.currentUser || null), 5000))
+                    ]);
                 }
 
                 // If Firebase persistence didn't populate firebaseUser, verify via backend session
@@ -1471,14 +1611,13 @@
                 }
 
                 if (!firebaseUser || !firebaseUser.email) {
-                    window.location.replace('login.html?redirect=admin.html&tab=admin');
+                    showAdminGateView('login');
                     return;
                 }
 
                 const userEmail = (firebaseUser.email || '').toLowerCase().trim();
                 if (!ADMIN_EMAILS.includes(userEmail)) {
-                    // Regular customer signed in -> send to customer dashboard
-                    window.location.replace('dashboard.html?denied=admin');
+                    showAdminGateView('denied', userEmail);
                     return;
                 }
 
@@ -1505,14 +1644,17 @@
                 }
 
                 if (data.isAdmin === true) {
-                    document.body.style.display = 'flex';
+                    showAdminGateView('authorized');
                     const name = firebaseUser.displayName || (userEmail.includes('habibur') ? 'Habibur Rahman' : 'Master Admin');
-                    document.getElementById('topAdminName').innerText = name;
-                    document.getElementById('welcomeAdminName').innerText = name.split(' ')[0] || 'Habib';
-                    document.getElementById('topAdminEmail').innerText = userEmail;
-                    
-                    if (firebaseUser.photoURL) {
-                        document.getElementById('topAdminAvatar').src = firebaseUser.photoURL;
+                    const topNameEl = document.getElementById('topAdminName');
+                    const welcomeEl = document.getElementById('welcomeAdminName');
+                    const topEmailEl = document.getElementById('topAdminEmail');
+                    const topAvatarEl = document.getElementById('topAdminAvatar');
+                    if (topNameEl) topNameEl.innerText = name;
+                    if (welcomeEl) welcomeEl.innerText = name.split(' ')[0] || 'Habib';
+                    if (topEmailEl) topEmailEl.innerText = userEmail;
+                    if (topAvatarEl && firebaseUser.photoURL) {
+                        topAvatarEl.src = firebaseUser.photoURL;
                     }
                     if (habibAuth && habibAuth.updateAllNavbars) {
                         habibAuth.updateAllNavbars();
@@ -1520,8 +1662,13 @@
 
                     // Load requested tab or default dashboard
                     const requestedTab = new URLSearchParams(window.location.search).get('tab');
-                    if (requestedTab && nexoraTabs.includes(requestedTab)) {
-                        switchNexoraTab(requestedTab);
+                    const pathLower = window.location.pathname.toLowerCase();
+                    const initialTab = (requestedTab && nexoraTabs.includes(requestedTab))
+                        ? requestedTab
+                        : ((pathLower.includes('sim-management') || pathLower.includes('banglalink')) ? 'sim-management' : null);
+
+                    if (initialTab && initialTab !== 'dashboard') {
+                        switchNexoraTab(initialTab);
                     } else {
                         loadAdminStats();
                         loadAdminOrders();
@@ -1531,11 +1678,11 @@
                         loadAdminAuditLogs();
                     }
                 } else {
-                    window.location.replace('dashboard.html?denied=admin');
+                    showAdminGateView('login');
                 }
             } catch (err) {
                 console.error("Admin auth check error:", err);
-                window.location.replace('login.html?redirect=admin.html&tab=admin');
+                showAdminGateView('login');
             }
         }
 
@@ -1588,7 +1735,8 @@
         async function loadAdminOrders() {
             try {
                 const res = await adminFetch('/api/orders');
-                cachedOrders = await res.json();
+                const rawOrders = await res.json().catch(() => []);
+                cachedOrders = Array.isArray(rawOrders) ? rawOrders : [];
                 
                 document.getElementById('badgeOrdersCount').innerText = cachedOrders.length;
                 document.getElementById('dashMetricOrders').innerText = Number(1542 + cachedOrders.length).toLocaleString();
@@ -1692,7 +1840,8 @@
         async function loadAdminBookings() {
             try {
                 const res = await adminFetch('/api/bookings');
-                cachedBookings = await res.json();
+                const rawBookings = await res.json().catch(() => []);
+                cachedBookings = Array.isArray(rawBookings) ? rawBookings : [];
                 const grid = document.getElementById('ordersSubPane-repairs');
                 if (!grid) return;
                 
@@ -1915,7 +2064,8 @@
         async function loadAdminContacts() {
             try {
                 const res = await adminFetch('/api/contacts');
-                cachedContacts = await res.json();
+                const rawContacts = await res.json().catch(() => []);
+                cachedContacts = Array.isArray(rawContacts) ? rawContacts : [];
                 document.getElementById('badgeMessagesCount').innerText = cachedContacts.length;
 
                 const grid = document.getElementById('nexoraMessagesGrid');

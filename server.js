@@ -345,9 +345,15 @@ const checkAdmin = async (req, res, next) => {
   }
 };
 
-// Route Gatekeeper for Admin Panel
-// Note: When browser third-party iframe cookies are absent on GET navigation, admin.html keeps body hidden
-// and completes verification with Firebase ID token + Bearer auth against /api/check-admin.
+// Route Gatekeeper for Admin Panel & Banglalink SIM Management
+app.get('/admin/', (req, res) => {
+  return res.redirect('/admin.html' + (req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : ''));
+});
+
+app.get(['/admin/sim-management', '/admin/sim-management.php', '/banglalink-cms', '/banglalink-sim', '/sim-management'], (req, res) => {
+  return res.redirect('/admin.html?tab=sim-management');
+});
+
 app.get(['/admin', '/admin.html'], async (req, res) => {
   try {
     const user = await getAuthenticatedUser(req);
